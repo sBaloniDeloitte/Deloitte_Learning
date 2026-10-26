@@ -1,0 +1,51 @@
+<template>
+    <lightning-card title="TEAM AVAILABILITY" icon-name="utility:meet_focus_content">
+        <div class="slds-grid slds-grid_align-end slds-p-horizontal_medium slds-m-bottom_medium">
+            <div class="slds-col slds-size_1-of-3">
+                <lightning-input
+                    type="search"
+                    label="Search Users"
+                    placeholder="Type at least 2 characters"
+                    onchange={handleSearch}>
+                </lightning-input>
+            </div>
+        </div>
+        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Username</th>
+                    <th>Profile</th>
+                    <th>Available Today</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={users} for:item="user">
+                    <tr key={user.Id}>
+                        <td>{user.Name}</td>
+                        <td>{user.Username}</td>
+                        <td>{user.Profile.Name}</td>
+                        <td>
+                            <lightning-input
+                                type="checkbox"
+                                checked={user.I_am_available_today__c}
+                                data-id={user.Id}
+                                onchange={handleCheckboxChange}>
+                            </lightning-input>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+        <div class="slds-m-top_medium slds-align_absolute-center">
+            <lightning-button label="Previous" onclick={handlePrevious} disabled={disablePrevious}>
+            </lightning-button>
+            <span class="slds-m-horizontal_medium">
+                Page {pageNumber} of {totalPages}
+            </span>
+            <lightning-button label="Next" onclick={handleNext} disabled={disableNext}>
+            </lightning-button>
+        </div>
+
+    </lightning-card>
+</template>

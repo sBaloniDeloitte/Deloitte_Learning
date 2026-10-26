@@ -1,0 +1,55 @@
+/* @import "c/cssLibrary"; */
+:host {
+    display: block;
+    background-color: #12172b;
+    color: #ffffff;
+}
+
+lightning-tabset {
+    --slds-c-tabs-color-background: #12172b;
+    --slds-c-tabs-item-text-color: #ffffff;
+    --slds-c-tabs-item-text-color-hover: #ffffff;
+    --slds-c-tabs-item-text-color-active: #ffffff;
+}
+.capsule-button {
+    padding: 0px 8px; /* Adjust padding as needed */
+    border: none;
+    display: inline-block;
+    text-align: center;
+    /* border-radius: 20px;  */
+    /* Adjust border-radius to control the button's curvature */
+    /*background-color:#3da542 ;*/ 
+    /* background-color:#74ab76 ; Button background color */
+    /* background-image: radial-gradient(circle, #ffffff, #fbfcfd, #f6fafa, #f2f7f6, #f0f4f0); */
+    color: white; /* Text color */
+    font-size: 16px; /* Font size */
+    background-color: #dc387e;
+    align-content: center;
+    cursor: pointer; /* Cursor style */
+    transition: background-color 0.3s ease; /* Smooth transition effect */
+    /* box-shadow: 0 7px 5px rgba(0, 0, 0, 0.4); */
+    
+}
+.normal-button {
+    padding: 0px 8px; /* Adjust padding as needed */
+    border: none;
+    display: inline-block;
+    text-align: center;
+    color: white; /* Text color */
+    font-size: 16px; /* Font size */
+    align-content: center;
+    cursor: pointer; /* Cursor style */
+    transition: background-color 0.3s ease; 
+    color: black;
+}
+.previous-button{
+    margin-right: 8px;
+    width: 100px;
+    /* font-style: italic; */
+    font-weight: normal;
+    margin-bottom: .5%;
+}
+
+.slds-tabs_scoped__item .slds-is-active{
+    background-color: green !important;
+}

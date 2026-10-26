@@ -1,0 +1,133 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-23-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <span class="styleContainer"></span>
+    <div class="">
+        <!-- <lightning-layout multiple-rows="true"> -->
+            <template if:true={createdRecordsVisibility}>
+                <template if:false={small}>
+                    <div class="deviation-dark-theme">
+                    <div class="deviation-card">
+                    <div style="overflow-x: auto; width: 100%;" class="deviation-table-scroll">
+                        <div style="min-width: 1850px;">
+                            <table class="slds-table slds-table_cell-buffer deviation-table" style="width: 100%;">
+                                <thead style="position: sticky; top: 0; background: white; z-index: 4;">
+                                    <tr>
+                                        <th style="width: 110px; text-align: center;" class="deviation-header">Product Name</th>
+                                        <th style="width: 140px; text-align: center;" class="deviation-header">Deviation Code</th>
+                                        <th style="width: 350px; text-align: center;" class="deviation-header">Deviation Description</th>
+                                        <th style="width: 140px; text-align: center;" class="deviation-header">Applicable For</th>
+                                        <th style="width: 200px; text-align: center;" class="deviation-header">Applicant Name</th>
+                                        <th style="width: 140px; text-align: center;" class="deviation-header">Type</th>
+                                        <th style="width: 350px; text-align: center;" class="deviation-header">Mitigants</th>
+                                        <th style="width: 160px; text-align: center;" class="deviation-header">Approval Status</th>
+                                        <th style="width: 160px; text-align: center;" class="deviation-header">Approving Authority</th>
+                                        <!-- <th style="min-width: 160px; text-align: center;" class="deviation-header">Actions</th> -->
+                                        <th style="width: 80px; text-align: center;" class="deviation-header">Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={deviationTable} for:item="iter">
+                                        <tr key={iter.id}>
+                                            <td class="deviation-cell text-center">{iter.productName}</td>
+                                            <td class="deviation-cell text-center">{iter.name}</td>
+                                            <td class="deviation-cell text-left">{iter.Description}</td>
+                                            <td class="deviation-cell text-center">{iter.ApplicableFor}</td>
+                                            <td class="deviation-cell text-center">{iter.applicantName}</td>
+                                            <td class="deviation-cell text-center">{iter.deviationType}</td>
+                                            <td class="deviation-cell text-left">
+                                                <template if:false={hasPsvOrDisbursalStage}>
+                                                    <template if:true={iter.disableMitigants}>
+                                                        {iter.mitigants}
+                                                    </template>
+                                                    <template if:false={iter.disableMitigants}>
+                                                        <lightning-textarea 
+                                                            class="deviation-textarea"
+                                                            name="mitigants" 
+                                                            value={iter.mitigants} 
+                                                            variant="label-hidden"
+                                                            data-id={iter.id} 
+                                                            onblur={handleSaveRowValue} 
+                                                            style="white-space: normal; padding: 5px; min-height: 60px;"
+                                                            rows="6">
+                                                        </lightning-textarea>
+                                                    </template>
+                                                </template>
+                                                <template if:true={hasPsvOrDisbursalStage}>
+                                                    {iter.mitigants}
+                                                </template>
+                                            </td>
+                                            <td class="deviation-cell text-center">{iter.approvalStatus}</td>
+                                            <td class="deviation-cell text-center">{iter.ApprovalAuthority}</td>
+                                            <!-- <td class="deviation-cell text-center">
+                                            <template if:false={hideButton}>
+                                                <template if:true={iter.showApprovalButton}>
+                                                    <button data-id={iter.id} class="slds-button slds-button_neutral" style="font-size: 11px;width: 145px;color: white;background-color: #9bbf56;font-weight: 500;" disabled={hideButton} onclick={approveDeviation}>Approve</button>
+                                                    <button data-id={iter.id} class="slds-button slds-button_neutral" style="font-size: 11px;width: 145px;color: white;background-color: #dc387e;font-weight: 500;" disabled={hideButton} onclick={rejectDeviation}>Reject</button>
+                                                </template>
+                                            </template>
+                                            </td> -->
+                                            <td class="deviation-cell text-center">
+                                                <lightning-button-icon 
+                                                                variant="basic" 
+                                                                icon-name="utility:delete" 
+                                                                title="Delete Document" 
+                                                                data-id={iter.id} 
+                                                                onclick={deleteDeviation} 
+                                                                class="slds-m-left_x-small deviation-delete-icon" 
+                                                                style="margin-top: 19px;"
+                                                                disabled={hideButton}>
+                                                    </lightning-button-icon>
+                                                <!-- <template if:true={iter.isDelete}>
+                                                    <template if:true={iter.showApprovalButton}>
+                                                        <template if:false={iter.hideDeleteButton}>
+                                                            <lightning-button-icon 
+                                                                variant="basic" 
+                                                                icon-name="utility:delete" 
+                                                                title="Delete Document" 
+                                                                data-id={iter.id} 
+                                                                onclick={deleteDeviation} 
+                                                                class="slds-m-left_x-small uploaded-view deviation-delete-icon" 
+                                                                style="margin-top: 19px;"
+                                                                disabled={hideButton}>
+                                                            </lightning-button-icon>
+                                                        </template>
+                                                    </template>
+                                                    <template if:false={iter.showApprovalButton}>
+                                                        <template if:true={iter.showDeleteButtonToManualOwner}>
+                                                            <template if:false={iter.hideDeleteButton}>
+                                                                <lightning-button-icon 
+                                                                    variant="basic" 
+                                                                    icon-name="utility:delete" 
+                                                                    title="Delete Document" 
+                                                                    data-id={iter.id} 
+                                                                    onclick={deleteDeviation} 
+                                                                    class="slds-m-left_x-small uploaded-view deviation-delete-icon" 
+                                                                    style="margin-top: 19px;"
+                                                                    disabled={hideButton}>
+                                                                </lightning-button-icon>
+                                                            </template>
+                                                        </template>
+
+                                                    </template>
+                                                </template> -->
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    </div>
+                    </div>
+                </template>                
+            </template>
+        <!-- </lightning-layout> -->
+    </div>
+
+</template>

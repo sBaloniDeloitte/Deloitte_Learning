@@ -1,0 +1,25 @@
+<template>
+    <lightning-card>
+        <!-- <template if:true={showTopUpModal}>
+             <c-sales-loan-login-top-up-flow-cmp record-id={recordId}></c-sales-loan-login-top-up-flow-cmp>
+        </template> -->
+        <template if:false={showTopUpModal}>
+        <lightning-layout multiple-rows="true">
+            <lightning-layout-item size="12">
+               <template if:false={callApplicantScreen}>
+                <c-sales-loan-login-main-cmp onnavigatetonexttab={navigateNext} record-id={recordId} onrefreshmenucmp={handleRefreshCmp} onhighlightactivescreen={handleHighLightScreen} onrefreshmenucmpfinal={handleRefreshCmpFinal} onrefreshactions={refreshaction} onsubproductchange={handleSubProductChange}></c-sales-loan-login-main-cmp>
+            </template>
+            </lightning-layout-item>
+            <lightning-layout-item size="12">
+                <template if:true={callApplicantScreen}>
+                    <c-sales-login-applicant-information-cmp record-id={recordId} form-name={formName} onnavigatetonexttab={navigateNext}></c-sales-login-applicant-information-cmp>
+                </template>
+             </lightning-layout-item>
+          
+             
+           
+            
+        </lightning-layout>
+        </template>
+    </lightning-card>
+</template>

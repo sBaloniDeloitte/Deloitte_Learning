@@ -1,0 +1,67 @@
+.main-tab .slds-tabs_default__nav{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+
+:host {
+    --slds-c-tabs-item-text-color: white;
+    --slds-c-tabs-item-text-color-active: white;
+}
+/* =========================================================
+   ONE VIEW TABS - NAVY THEME
+   ========================================================= */
+
+.main-tab {
+    --slds-c-tabs-item-text-color: #ffffff;
+    --slds-c-tabs-item-text-color-hover: #ffffff;
+    --slds-c-tabs-item-text-color-active: #ffffff;
+
+    --slds-c-tabs-item-color-background: #0A1524;
+    --slds-c-tabs-item-color-background-hover: #142136;
+    --slds-c-tabs-item-color-background-active: #142136;
+
+    --slds-c-tabs-item-color-border-active: #1a73e8;
+    --slds-c-tabs-item-color-border-hover: #1a73e8;
+
+    --slds-c-tabs-list-color-border: #ffffff;
+
+    background-color: #0A1524 !important;
+}
+
+
+/* Tab text */
+.main-tab lightning-tabset {
+    --slds-c-tabs-item-text-color: #ffffff;
+    --slds-c-tabs-item-text-color-hover: #ffffff;
+    --slds-c-tabs-item-text-color-active: #ffffff;
+}
+/* =========================================================
+   GEN AI ONE PAGER - APPLICANT COMBOBOX
+   ========================================================= */
+
+.navy-combobox {
+    --slds-c-input-color-background: #142136 !important;
+    --slds-c-input-text-color: #ffffff !important;
+    --slds-c-input-placeholder-text-color: #b8c4d6 !important;
+
+    --slds-c-input-color-border: #ffffff !important;
+    --slds-c-input-color-border-focus: #1a73e8 !important;
+
+    --slds-c-combobox-color-background: #142136 !important;
+    --slds-c-combobox-text-color: #ffffff !important;
+    --slds-c-combobox-color-border: #ffffff !important;
+}
+
+
+/* Selected applicant / displayed value */
+.navy-combobox {
+    color: #ffffff !important;
+}
+
+
+/* Dropdown icon */
+.navy-combobox {
+    --slds-c-icon-color-foreground: #ffffff;
+}

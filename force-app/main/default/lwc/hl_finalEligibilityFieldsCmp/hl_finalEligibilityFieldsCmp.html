@@ -1,0 +1,36 @@
+<template>
+    <template if:true={dataLoaded}>
+        <div class="slds-grid slds-wrap slds-scrollable_x" style="padding: 10px 15px;">
+            <table class="slds-table" style="max-width:57%">
+                <thead>
+                    <tr>
+                        <th class="col-width-10 color-theme">Particulars</th>
+                        <th class="col-width-10 color-theme">BRE Output</th>
+                        <th class="col-width-10 color-theme">Sanction Output</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={fieldDetails} for:item="iterPar">
+                        <template if:true={iterPar.isSectionSeperator}>
+                            <tr key={iterPar.fieldLabel}>
+                                <td class="color-theme" colspan="3" style="text-align: center;">{iterPar.sectionName}</td>
+                            </tr>
+                        </template>
+                        <tr key={iterPar.fieldLabel}>
+                            <td class="col-width-100" style="text-align: left;">{iterPar.fieldLabel}</td>
+                            <td class="col-width-100" style="text-align: left;">{iterPar.breOutput.fieldApiVal}</td>
+                            <td class="col-width-100" style="text-align: left;">
+                                <template if:true={iterPar.sanctionTermOutput.isEditable}>
+                                    <lightning-input variant="label-hidden" type ="Number" data-name={iterPar.sanctionTermOutput.fieldApiName} value={iterPar.sanctionTermOutput.fieldApiVal} onfocusout={handleSaveField} disabled={disableActions}></lightning-input>
+                                </template>
+                                <template if:false={iterPar.sanctionTermOutput.isEditable}>
+                                    {iterPar.sanctionTermOutput.fieldApiVal}
+                                </template>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </template>
+</template>

@@ -1,0 +1,54 @@
+<template>
+    <div class="slds-p-around_medium">
+        <template if:true={apiData}>
+            <div class="recommendation-card">
+                <p class="rec-title">Recommended: {apiData.predicted_bank} Co-Lending</p>
+                <template if:true={recommendationLines}>
+                    <ul class="rec-list">
+                        <template for:each={recommendationLines} for:item="line">
+                            <li key={line}>
+                                <lightning-icon></lightning-icon>
+                                <span>{line}</span>
+                            </li>
+                        </template>
+                    </ul>
+                </template>
+                <div class="rec-divider"></div>
+
+                <template if:true={alternativeLine}>
+                    <p class="rec-alternative">
+                        <strong> {alternativeLine}</strong>
+                    </p>
+                </template>
+            </div>
+        </template>
+
+        <!-- Get Recommendations Button (shown when no data yet) -->
+        <template if:false={apiData}>
+            <lightning-button label="Get Recommendations" variant="brand" onclick={handleClick}>
+            </lightning-button>
+        </template>
+        <template if:true={spinnerRun}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+
+    </div>
+
+    <!-- Send to Senior Partner Button -->
+    <template if:true={apiData}>
+        <div class="slds-p-around_medium send-footer slds-grid slds-grid_vertical-align-center slds-grid_align-spread">
+
+            <!-- Label + Dropdown side by side -->
+            <div class="slds-grid slds-grid_vertical-align-center partner-bank-section">
+                <span class="partner-label">Select Partner Bank:</span>
+                <lightning-combobox name="partnerBank" class="partner-dropdown" value={selectedPartnerBank}
+                    placeholder="Select Partner Bank" options={partnerBankOptions} onchange={handlePartnerBankChange}>
+                </lightning-combobox>
+            </div>
+
+            <!-- Send Button -->
+            <lightning-button label="Send to CO-Lending" class="send-btn" onclick={handleSendToColending}>
+            </lightning-button>
+        </div>
+    </template>
+</template>

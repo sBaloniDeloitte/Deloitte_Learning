@@ -1,0 +1,45 @@
+@import 'c/cssLibrary';
+
+.hidden-input {
+    display: none; /* Hide the file input element */
+}
+
+.slds-modal__header{
+    border-bottom-color:black
+}
+
+.accordion{
+    --slds-c-accordion-summary-color-background : #F3F3F3
+}
+
+/* .SaveButton {
+    font-size: 11px;
+    width: 145px;
+    background-color: #113451;
+    color: white;
+    border-color: #113451;
+    font-weight: 500;
+    margin-left: 10px;
+} */
+
+
+.DisableButton {
+    font-size: 11px;
+    width: 145px;
+    background-color: lightgrey;
+    color: black;
+    border-color: #113451;
+    font-weight: 500;
+    margin-left: 10px;
+}
+
+.slds-accordion__summary-action{
+    background-color: var(--slds-g-color-neutral-base-95, var(--lwc-colorBackground, rgb(243, 243, 243)));
+
+}
+.tdBorderHeader{
+    color: black;height:20px;border: 1px solid black;padding-left: 1%;
+}
+.save-button.slds-button.slds-button_brand {
+    border-color: blue !important; 
+}

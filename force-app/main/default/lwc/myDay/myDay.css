@@ -1,0 +1,240 @@
+:host {
+    display: block;
+    background: #050b18;
+    color: #ffffff;
+    font-family: "Salesforce Sans", Arial, sans-serif;
+}
+
+/* ===================================================
+   PAGE
+=================================================== */
+
+.my-day-container {
+    width: 100%;
+    padding: 40px 28px;
+    background: #050b18;
+}
+
+.my-day-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+/* ===================================================
+   MAIN SECTION
+=================================================== */
+
+.my-day-main {
+    flex: 1;
+    min-width: 0;
+}
+
+/* ===================================================
+   RIGHT SIDEBAR
+=================================================== */
+
+.my-day-sidebar {
+    width: 340px;
+    min-width: 340px;
+    max-width: 340px;
+    flex-shrink: 0;
+}
+
+/* ===================================================
+   QUICK ACTIONS
+=================================================== */
+
+.quick-actions-metrics-card {
+    background: transparent;
+    border: none;
+}
+
+.quick-actions-section {
+    background: linear-gradient(
+        180deg,
+        #0f2243 0%,
+        #0a1a34 100%
+    );
+
+    border: 1px solid #1d3d73;
+    border-top: 3px solid #1680ff;
+
+    border-radius: 12px;
+
+    padding: 18px 20px;
+
+    /* Increased spacing */
+    margin-bottom: 60px;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.04),
+        0 4px 10px rgba(0,0,0,.30);
+}
+
+.section-divider {
+    display: none;
+}
+
+/* ===================================================
+   METRICS
+=================================================== */
+
+.metrics-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 12px;
+}
+
+/* ===================================================
+   METRIC CARD
+=================================================== */
+
+.metric-card {
+    background: linear-gradient(
+        180deg,
+        #102241 0%,
+        #0d1c36 100%
+    );
+
+    border: 1px solid #1e3863;
+    border-top: 3px solid #157dff;
+
+    border-radius: 12px;
+
+    min-height: 82px;
+
+    padding: 12px 14px;
+
+    cursor: pointer;
+
+    transition: all .25s ease;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.04),
+        0 2px 8px rgba(0,0,0,.25);
+}
+
+.metric-card:hover {
+    transform: translateY(-2px);
+
+    border-top-color: #50a1ff;
+
+    box-shadow:
+        0 0 14px rgba(21,125,255,.22);
+}
+
+/* ===================================================
+   CARD TEXT
+=================================================== */
+
+.metric-title {
+    font-size: 9px;
+    font-weight: 700;
+    color: #7e91b8;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+}
+
+.metric-value {
+    font-size: 17px;
+    font-weight: 700;
+    color: #ffffff;
+    line-height: 1;
+    margin-bottom: 6px;
+}
+
+.metric-subtitle,
+.metric-subtitle-positive,
+.metric-subtitle-warning,
+.metric-subtitle-danger {
+    font-size: 10px;
+    line-height: 1.2;
+}
+
+.metric-subtitle {
+    color: #9aabc8;
+}
+
+.metric-subtitle-positive {
+    color: #60a5fa;
+}
+
+.metric-subtitle-warning {
+    color: #3251e8;
+}
+
+.metric-subtitle-danger {
+    color: #444aef;
+}
+
+/* ===================================================
+   MOST ACTIVE LEAD CARD WRAPPER
+=================================================== */
+
+.most-active-lead-section {
+    background: linear-gradient(
+        180deg,
+        #102241 0%,
+        #0c1c36 100%
+    );
+
+    border: 1px solid #1e3863;
+    border-top: 3px solid #157dff;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+    box-shadow:
+        inset 0 1px 0 rgba(255,255,255,.04),
+        0 3px 10px rgba(0,0,0,.25);
+}
+
+/* Child Components */
+
+c-quick-actions-panel,
+c-most-active-lead-card {
+    display: block;
+    width: 100%;
+}
+
+/* ===================================================
+   RESPONSIVE
+=================================================== */
+
+@media (max-width: 1024px) {
+
+    .my-day-layout {
+        flex-direction: column;
+    }
+
+    .my-day-sidebar {
+        width: 100%;
+        min-width: 100%;
+        max-width: 100%;
+    }
+
+    .metrics-container {
+        grid-template-columns: repeat(3, 1fr);
+    }
+}
+
+@media (max-width: 768px) {
+
+    .metrics-container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .my-day-container {
+        padding: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+
+    .metrics-container {
+        grid-template-columns: 1fr;
+    }
+}

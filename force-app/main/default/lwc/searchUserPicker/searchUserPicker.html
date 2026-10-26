@@ -1,0 +1,70 @@
+<template>
+    <div class="slds-form-element">
+        <!-- <label class="slds-form-element__label" for="combobox-id-1" id="combobox-label-id-32">Relate To</label> -->
+        <div class="slds-form-element__control" style="padding-right: 2%;">
+            <template lwc:if={isSelected}>
+                <!-- <div class="slds-combobox_container slds-has-selection">
+                    <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left-right" role="none">
+                        <span class="slds-icon_container slds-icon-standard-account slds-combobox__input-entity-icon slds-m-left_xx-small" title="Account">
+                            <lightning-icon  icon-name="standard:user" alternative-text="Event" title="Event"></lightning-icon>
+                        </span>
+                        <div role="combobox" tabindex="0" class="slds-input_faux slds-combobox__input slds-combobox__input-value" aria-labelledby="combobox-label-id-37" id="combobox-id-5-selected-value" aria-controls="listbox-id-5" aria-expanded="false" aria-haspopup="listbox">
+                          <span class="slds-truncate" id="combobox-value-id-20">{selectOption.label}</span>
+                        </div>
+                        <button disabled={disabled} class="slds-button slds-button_icon slds-input__icon slds-input__icon_right" title="Remove selected option" onclick={handleRemove}>
+                            <lightning-icon  icon-name="utility:close" alternative-text="close" title="close" size="xx-small"></lightning-icon>
+                        </button>
+                    </div>
+                </div> -->
+                <template if:true={disabled}>
+                    <input type="text" class="dark-user-input" value={selectedVal}
+                        placeholder="Select Assignee" data-name="Agent Code"
+                        disabled readonly />
+                </template>
+                <template if:false={disabled}>
+                    <div class="dark-user-input-wrap">
+                        <input type="text" class="dark-user-input" value={selectedVal}
+                            placeholder="Select Assignee" onfocus={openSelection} data-name="Agent Code"
+                            readonly />
+                        <button type="button" class="dark-user-input-clear" title="Remove selected option" onclick={handleRemove}>&times;</button>
+                    </div>
+                </template>
+                
+            </template>
+            <template lwc:else>
+                <div class="slds-combobox_container">
+                    <div class={inputClassName}>
+                        <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                            <input type="text" class="slds-input slds-combobox__input slds-combobox__input-value" disabled={disabled} onfocus={handleFocus} onfocusout={handleFocusOut} oninput ={handleSearch} id="combobox-id-1" aria-autocomplete="list" aria-controls="listbox-id-1" aria-expanded="false" aria-haspopup="listbox" role="combobox" placeholder="Search..." />
+                            <span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">
+                                <svg class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default" aria-hidden="true">
+                                    <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#search"></use>
+                                </svg>
+                            </span>
+                        </div>
+                        <div id="listbox-id-1" class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid" role="listbox" aria-label="" tabindex="0" aria-busy="false">
+                            <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                <template for:each={searchOptions} for:item=option>
+                                    <li key={option.value} role="presentation" class="slds-listbox__item">
+                                        <div class="slds-media slds-listbox__option slds-listbox__option_entity slds-listbox__option_has-meta" role="option" data-label={option.label} data-value={option.value} onmousedown={handleSelection} onfocus={handleSelection}>
+                                            <span class="slds-media__figure slds-listbox__option-icon">
+                                                <span class="slds-icon_container slds-icon-standard-account">
+                                                    <lightning-icon icon-name="standard:user" alternative-text="Event" title="Event" size="small"></lightning-icon>
+                                                </span>
+                                            </span>
+                                            <span class="slds-media__body">
+                                                <span class="slds-listbox__option-text slds-listbox__option-text_entity slds-text-align_left">{option.label}</span>
+                                                <!-- <span class="slds-text-align_right">{option.label}</span> -->
+                                                <!-- <span class="slds-listbox__option-meta slds-listbox__option-meta_entity">Account • Burlington, NC</span> -->
+                                            </span>
+                                        </div>
+                                    </li>
+                                </template>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

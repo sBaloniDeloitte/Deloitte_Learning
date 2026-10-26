@@ -1,0 +1,284 @@
+@import 'c/cssLibrary';
+
+/* This Code was generated using GenAI tool : Codify, Please check for accuracy */
+/* ____GenAI: Generated code starts here - dark theme visual restyle only (look
+   and feel), no functional/structural changes. :host custom properties and
+   explicit color overrides make headings, labels and dropdown text render
+   white/light on a dark background.____ */
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+
+    /* input / textarea */
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-radius-border: 6px;
+    --slds-c-input-placeholder-text-color: #8a99b3;
+    --slds-c-input-label-color: #ffffff;
+
+    /* combobox / dropdown */
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+    --slds-c-combobox-input-value-text-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: #16283f;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+    --slds-c-combobox-label-color: #ffffff;
+
+    /* accordion */
+    --slds-c-accordion-color-background: #0e1c30;
+    --slds-c-accordion-section-heading-text-color: #ffffff;
+    --slds-c-accordion-section-color-border: #1d2f45;
+    --slds-c-accordion-section-color-background-active: #16283f;
+    --slds-c-accordion-summary-color-background: #16283f;
+    --slds-c-accordion-summary-text-color: #ffffff;
+    --slds-c-accordion-icon-color-foreground: #cfd8e6;
+
+    /* legacy design tokens - fallback for base component versions still
+       reading the "--lwc-*" naming instead of the newer style hooks */
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+
+    /* global SLDS2 neutral-base ramp - keeps any label/secondary text that
+       resolves through these tokens readable on the dark background */
+    --slds-g-color-neutral-base-30: #ffffff;
+    --slds-g-color-neutral-base-40: #ffffff;
+    --slds-g-color-neutral-base-50: #ffffff;
+}
+
+/* ----- Two-column layout: accordion content left, Process Journey panel
+   right (mirrors the loan login reference layout). Purely presentational -
+   no change to the existing accordion markup/logic. ----- */
+.journey-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    width: 100%;
+}
+
+.journey-main-column {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.journey-side-column {
+    flex: 0 0 300px;
+    width: 300px;
+    position: sticky;
+    top: 8px;
+}
+
+@media (max-width: 1024px) {
+    .journey-layout {
+        flex-direction: column;
+    }
+
+    .journey-side-column {
+        flex: 1 1 auto;
+        width: 100%;
+        position: static;
+    }
+}
+
+/* ----- Accordion container ----- */
+.container.accordian {
+    background-color: #0e1c30 !important;
+    border-color: #1d2f45 !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+}
+
+lightning-accordion-section {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    font-weight: 500;
+}
+
+/* Force the accordion section header/label text to white - matches the
+   inline style="background-color: white; font-weight:500" already set on
+   lightning-accordion-section in the template, restyled for dark theme */
+:host .slds-accordion__summary,
+:host .slds-accordion__summary-heading,
+:host .slds-accordion__summary-action,
+:host .slds-accordion__summary-content,
+:host h2,
+:host h3 {
+    color: #ffffff !important;
+}
+
+:host .slds-accordion__section {
+    background-color: #16283f !important;
+    border-color: #1d2f45 !important;
+}
+
+/* ----- Accordion headers - rounded blue-gradient "card" bar (Product
+   Details / Loan Details / PMAY Eligibility / Login Fees), matching the
+   reference "Loan portfolio" header style. Applies uniformly to every
+   section header regardless of open/closed state - purely visual, the
+   existing open/close behavior and click handlers are untouched. ----- */
+:host .slds-accordion__list-item {
+    margin-bottom: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid #004db3;
+}
+
+:host .slds-accordion__summary-action,
+:host .slds-accordion__summary-action:hover,
+:host .slds-accordion__summary-action:focus,
+:host .slds-accordion__summary-action:active,
+:host .slds-accordion__summary-action[aria-expanded="true"] {
+    background-image: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%) !important;
+    background-color: #001a5e !important;
+    border-radius: 10px !important;
+    padding: 14px 16px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+:host .slds-accordion__summary-action:hover,
+:host .slds-accordion__summary-action:focus {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+}
+
+:host .slds-accordion__summary-heading,
+:host .slds-accordion__summary-heading .slds-truncate {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 15px;
+}
+
+/* Catch-all: force every element inside the header bar (button, heading,
+   truncate span, or any other nested text node the base component renders)
+   to white, regardless of internal markup/class names, so the label is
+   always readable on the blue-gradient background. */
+:host .slds-accordion__summary-action,
+:host .slds-accordion__summary-action * {
+    color: #ffffff !important;
+}
+
+:host .slds-accordion__summary-action-icon {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+:host .slds-accordion__summary-action-icon svg {
+    fill: currentColor !important;
+}
+
+/* ----- Open All / Close All pill buttons - attractive gradient + hover lift,
+   consistent with the rest of the sales login flow ----- */
+.save-button {
+    border-radius: 20px;
+    background-image: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+    color: #ffffff;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-image 0.2s ease;
+}
+
+.save-button:hover {
+    background-image: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+    transform: translateY(-1px);
+}
+
+.previous-button {
+    border-radius: 20px;
+    background-image: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+    color: #ffffff;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    border: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-image 0.2s ease;
+}
+
+.previous-button:hover {
+    background-image: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+    transform: translateY(-1px);
+}
+
+.custom-field-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.custom-label {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #ffffff;
+    display: block;
+}
+
+.custom-combobox, .custom-lookup {
+    width: 100%;
+    min-width: 150px;
+    display: block;
+    border-radius: 4px;
+}
+
+.custom-dropdown {
+    position: relative;
+    display: inline-block;
+    width: 100%;
+}
+
+.dropdown-button {
+    width: 100%;
+    padding: 10px;
+    font-size: 14px;
+    text-align: left;
+    background: #16283f;
+    color: #ffffff;
+    border: 1px solid #33455e;
+    border-radius: 4px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.dropdown-icon {
+    font-size: 12px;
+    color: #cfd8e6;
+}
+
+.dropdown-options {
+    position: absolute;
+    width: 100%;
+    background: #16283f;
+    color: #ffffff;
+    border: 1px solid #33455e;
+    border-radius: 4px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    z-index: 10;
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.dropdown-option {
+    padding: 10px;
+    cursor: pointer;
+    color: #ffffff;
+}
+
+.dropdown-option:hover {
+    background: #1f3550;
+}
+/* ____GenAI: Generated code ends here____ */

@@ -1,0 +1,180 @@
+@import "c/cssLibrary";
+
+:host {
+	display: block;
+	min-height: 100%;
+	background: #12172b;
+	color: #ffffff;
+	--technical-page-bg: #12172b;
+	--technical-panel-bg: #1c2238;
+	--technical-field-bg: #16283f;
+	--technical-accent: #1467eb;
+	--technical-border: #2a2f45;
+	--technical-muted: #8a99b3;
+	--slds-c-input-label-color: #ffffff;
+	--slds-c-checkbox-label-color: #ffffff;
+	--slds-c-card-color-background: #1c2238;
+}
+
+.slds-p-around_medium {
+	background: var(--technical-page-bg);
+	color: #ffffff;
+}
+
+.slds-form-element__legend,
+.slds-form-element__label {
+	color: #ffffff !important;
+	font-weight: 600;
+}
+
+/* Table theme matched to the "Aadhar Details" table in
+   salesLoginAadharDetailsCmp (:host .slds-table / thead th / tbody td /
+   tbody tr:hover td) - dark navy #0e1626 body, #111d30 header with white
+   bold text, #1d2f45 borders - instead of the previous blue accent
+   (var(--technical-accent): #1467eb) header. Kept as literal colors here
+   rather than changing --technical-panel-bg/--technical-accent so the
+   modal/accordion/button theme elsewhere in this component is unaffected. */
+.slds-table {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	background: #0e1626 !important;
+	border: 1px solid #1d2f45;
+	border-radius: 8px;
+	overflow: hidden;
+	color: #ffffff;
+}
+
+.slds-table thead th {
+	background-color: #111d30 !important;
+	border-color: #1d2f45 !important;
+	color: #ffffff !important;
+	font-weight: 700 !important;
+	padding: 10px !important;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.slds-table tbody td {
+	background-color: #0e1626 !important;
+	border-color: #1d2f45 !important;
+	color: #ffffff !important;
+	vertical-align: middle;
+}
+
+.slds-table tbody tr:hover td {
+	background-color: #16283f !important;
+}
+
+.slds-table a {
+	color: #7db2ff !important;
+}
+
+.slds-table tbody td[colspan] {
+	background-color: #0e1626 !important;
+	color: #ffffff !important;
+}
+
+.slds-table tbody td[colspan] div {
+	background-color: transparent !important;
+	color: #ffffff !important;
+}
+
+/* Positive CTA (Initiate Technical) - #1467eb fill/border, 8px radius. */
+.initiate-button {
+	background-color: #1467eb !important;
+	border: 1px solid #1467eb !important;
+	border-radius: 8px !important;
+	color: #ffffff !important;
+	font-weight: 600;
+}
+
+.initiate-button:hover {
+	background-color: #1257c9 !important;
+}
+
+/* Negative CTA (Delink) - #16283f fill, 1px solid #7c3aed border, 8px radius. */
+lightning-button[variant="neutral"] {
+	--slds-c-button-neutral-color-background: #16283f !important;
+	--sds-c-button-neutral-color-background: #16283f !important;
+	--slds-c-button-neutral-color-border: #7c3aed !important;
+	--sds-c-button-neutral-color-border: #7c3aed !important;
+	--slds-c-button-text-color: #ffffff !important;
+	--sds-c-button-text-color: #ffffff !important;
+	--slds-c-button-radius-border: 8px;
+	--sds-c-button-radius-border: 8px;
+}
+
+lightning-input,
+lightning-textarea,
+lightning-combobox,
+lightning-button {
+	--slds-c-input-color-background: var(--technical-field-bg);
+	--slds-c-input-text-color: #ffffff;
+	--slds-c-input-color-border: var(--technical-border);
+	--slds-c-textarea-color-background: var(--technical-field-bg);
+	--slds-c-textarea-text-color: #ffffff;
+	--slds-c-textarea-color-border: var(--technical-border);
+	--slds-c-combobox-color-background: var(--technical-field-bg);
+	--slds-c-combobox-text-color: #ffffff;
+	--slds-c-combobox-color-border: var(--technical-border);
+}
+
+.slds-modal__container {
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.slds-modal__header,
+.header-section {
+	background-color: var(--technical-accent) !important;
+	border-bottom: 1px solid var(--technical-border);
+	color: #ffffff !important;
+}
+
+.slds-modal__title,
+.header-title,
+.slds-modal__header h2 {
+	color: #ffffff !important;
+}
+
+.slds-modal__content {
+	background-color: var(--technical-page-bg) !important;
+	color: #ffffff !important;
+}
+
+.slds-modal__footer {
+	background-color: var(--technical-page-bg) !important;
+	border-top: 1px solid var(--technical-border) !important;
+}
+
+/* Modal footer buttons - Negative CTA (first, e.g. Cancel) / Positive CTA
+   (last, e.g. Save/Confirm): #16283f+#7c3aed border / #7c3aed no border,
+   8px radius. */
+.slds-modal__footer button {
+	color: #ffffff !important;
+	border-radius: 8px !important;
+}
+
+.slds-modal__footer button:first-child {
+	background-color: #16283f !important;
+	border: 1px solid #7c3aed !important;
+}
+
+.slds-modal__footer button:last-child {
+	background-color: #7c3aed !important;
+	border: none !important;
+}
+
+lightning-accordion {
+	--slds-c-accordion-color-background: var(--technical-page-bg);
+	--slds-c-accordion-section-color-background: var(--technical-panel-bg);
+	--slds-c-accordion-summary-color-background: var(--technical-panel-bg);
+	--slds-c-accordion-summary-heading-color: #ffffff;
+	--slds-c-accordion-summary-text-color: #ffffff;
+	--slds-c-accordion-color-border: var(--technical-border);
+}
+
+.slds-backdrop_open {
+	background: rgba(10, 15, 30, 0.78);
+}

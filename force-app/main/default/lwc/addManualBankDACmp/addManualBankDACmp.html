@@ -1,0 +1,344 @@
+<template>
+    <span class="styleContainer"></span>
+    <!--fetch details  manraj -->
+    <div>
+        <template if:false={fromSales}>
+            <div style="padding: 1%;">
+                <button class="save-button slds-button slds-button_brand" onclick={handleAddBankDetailsClick}>Add Bank Details</button>
+            </div>
+        </template>
+       
+            
+        <!--         
+            <template if:true={showModal}>
+                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                    title="Close" onclick={hideModal}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                    size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <header class="slds-modal__header header-section">
+                    <div class="slds-text-align_center">
+                        <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">
+                            Add Bank Details</h2>
+                        </div>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                        <div class="slds-grid slds-gutters">
+                            
+                            
+                            <lightning-layout multiple-rows>
+                                <lightning-layout-item size="6" class="slds-p-around_small">
+                                    <div class="applicantselect">
+                                    <lightning-combobox name = "applicantName" value={applicantValue} options={applicants} onchange={handleComboboxChange}
+                                    class="validate" label="Select Applicant" placeholder="Applicant" ></lightning-combobox>
+                                </div>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="6" class="slds-p-around_small">
+                                
+                                <lightning-combobox name = "accountType" value={accountTypeValue} options={accountTypeOptions} 
+                                    class="accounttype" label="Account Type" placeholder="Account Type" onchange={handleComboboxChange} ></lightning-combobox>
+                                    
+                            </lightning-layout-item>
+                            
+                            <lightning-layout-item size="6" class="slds-p-around_small">
+                                <lightning-input type="text" name="accountNo"  value={accountNoValue} label="Account No" onchange={handleInputChange} ></lightning-input>
+                            </lightning-layout-item>
+                            
+                            <lightning-layout-item size="6" class="slds-p-around_small">
+                                
+                                <lightning-combobox name = "bank" value={bankValue} options={bankList} 
+                                class="validate" label="Bank" placeholder="Select Bank" onchange={handleComboboxChange}></lightning-combobox>
+                                
+                            </lightning-layout-item>
+                        
+                        <lightning-layout-item size="6" class="slds-p-around_small">
+                            
+                            <lightning-combobox name = "month" value={monthValue} options={monthOptions} 
+                            class="validate" label="Month" placeholder="" onchange = {handleComboboxChange} ></lightning-combobox>
+                            
+                        </lightning-layout-item>
+                        <lightning-layout-item size="6" class="slds-p-around_small">
+                            
+                            <lightning-combobox name = "year" value={yearValue} options={yearOptions} 
+                            class="validate" label="Year" placeholder={currentYear} onchange={handleComboboxChange} ></lightning-combobox>
+                            
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+                    
+                </div>
+                
+                <footer class="slds-modal__footer footer-section">
+                    <div class="slds-align_absolute-center button-container">
+                        <button class="slds-button slds-button_neutral save-button"
+                        onclick={handleSubmit}>Submit</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+        </template> -->
+    
+        <!-- <lightning-datatable key-field="id" data={bdData} columns={bdColumns}>
+    
+        </lightning-datatable> -->
+    
+    
+        <!-- bdTable -->
+        <template if:true={showBDTable}>
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover slds-border_left slds-border_right slds-table_col-bordered slds-table_striped custom-table" style="table-layout: fixed;width: 100%;">
+            <tr style=" width:fit-content; background: #5bb6e3;text-align: left;">
+                <td lwc:if={showApplicantName} style=" font-weight: 600;border-color: black;color: black;">
+                    Applicant Name
+                </td>
+                <td style=" font-weight: 600;border-color: black;color: white;">
+                    Account Type
+                </td>
+                <td style=" font-weight: 600;border-color: black;color: white;">
+                    Account No
+                </td>
+                <td style=" font-weight: 600;border-color: black;color: white;">
+                    Bank 
+                </td>
+                <!--
+                <td style=" font-weight: 600;border-color: black;color: black;">
+                    Month
+                </td>
+                <td style=" font-weight: 600;border-color: black;color: black;">
+                    Year
+                </td>-->
+                <td style=" font-weight: 600;border-color: black;color: white;">
+                    Preview Statement
+                </td>     
+                <td style=" font-weight: 600;border-color: black;color: white;">
+                    Upload Analysis
+                </td>                
+                <td style=" font-weight: 600;border-color: black;color: white;">
+                    Click to Edit Details
+                </td>
+                
+            </tr>
+            
+            <template for:each={bdData} for:item="row">
+                <tr key={row.id}>
+                    <template if:false={fromSales}>
+                        <td lwc:if={showApplicantName} style="border-color: black;"><p style="font-weight: 400;"><lightning-combobox name="applicantCombobox" options={applicants} label="" variant="label-hidden" value={row.applicantId}   placeholder="type here..." disabled={row.isEditable} data-id={row.id} onchange={handleBDUpdate}></lightning-combobox></p></td>
+                        <td style="border-color: black;"><p style="font-weight: 400;"><lightning-combobox name="accountTypeCombobox" options={accountTypeOptions} label="" variant="label-hidden" value={row.accountType} disabled={row.isEditable}  placeholder="type here..." data-id={row.id} onchange={handleBDUpdate}></lightning-combobox></p></td>
+                        <td style="border-color: black;"><p style="font-weight: 400;"><lightning-input name="accountNoInput" label="" variant="label-hidden" value={row.accountNo}    placeholder="type here..." disabled={row.isEditable} data-id={row.id} onfocusout={handleBDUpdate}></lightning-input></p></td>
+                         <!--sanawr 28/11/2025-->
+                        <template if:false={row.isEditable}>
+                            <template lwc:if={showBankStoredValue}>
+                                <td style="border-color: black;"><p style="font-weight: 400;"><lightning-combobox  name="bankCombobox" options={bankList} label="" variant="label-hidden" value={row.bank}  disabled placeholder="type here..." data-id={row.id} onchange={handleBDUpdate}></lightning-combobox></p></td> </template>
+                                <template lwc:else>
+                                    <td style="border-color: black;">
+                                        <p style="font-weight: 400;">
+                                    
+                                            <c-search-lookup 
+                                                label="Search Bank"
+                                                placeholder="Please enter Bank here.."
+                                                object-name="Bank_Branch_Master__c"
+                                                name="bankCombobox"
+                                                max-results={maxResults}
+                                                selected-id={row.bank}    
+                                                selected-name={row.bankName}
+                                                return-fields="['Id','Name','MICR__c']"
+                                                search-fields="['IFSC__c']"
+                                                filter-criteria="[RecordType.Name = 'Branch']"
+                                                data-id={row.id}          
+                                                onlookupselected={handleSelectDocument}
+                                                onlookupdeselected={handleldeselectDocument}
+                                                disabled={row.isEditable}
+                                            >
+                                            </c-search-lookup><!-- //Sanwar(29/11/2025)-->
+                                    
+                                        </p>
+                                    </td>
+                                </template>
+                        </template>
+                        <template if:true={row.isEditable}>
+                            <td style="border-color: black;"><p style="font-weight: 400;"><lightning-combobox  name="bankCombobox" options={bankList} label="" variant="label-hidden" value={row.bank}  disabled placeholder="type here..." data-id={row.id} onchange={handleBDUpdate}></lightning-combobox></p></td>
+                        </template><!--sanawr 28/11/2025-->
+                        <!--<td style="border-color: black;"><p style="font-weight: 400;"><lightning-combobox  name="monthCombobox" options={monthOptions} label="" variant="label-hidden" value={row.month} disabled  placeholder="type here..." data-id={row.docId} onchange={handleBDUpdate}></lightning-combobox></p></td>
+                        <td style="border-color: black;"><p style="font-weight: 400;"><lightning-combobox name="yearCombobox"  options={yearOptions} label="" variant="label-hidden" value={row.year}  disabled placeholder="type here..." data-id={row.docId} onchange={handleBDUpdate}></lightning-combobox></p></td>-->
+                        <td style="border-color: black;">
+                            <template if:true={row.isReUpload}>
+                                <lightning-file-upload
+                                data-id={row.id}
+                                label=""
+                                name="fileUploader"
+                                accept={acceptedFormats}
+                                record-id={recordId}
+                                onuploadfinished={handleReUpload}                                    
+                                ></lightning-file-upload>
+                            </template>
+    
+                            <template if:true={row.isPreview}>
+                                <lightning-icon icon-name="action:preview"  data-id={row.id} data-name={row.contentId} alternative-text="Event" title="Event" onclick={handlePreview}></lightning-icon>    
+                                <!-- <lightning-button label="Preview File" data-id={row.id} onclick={handlePreview}></lightning-button> -->
+                            </template>
+                            <template if:false={fromBuilderSeller}> <!--Sanwar Start-->
+                            <lightning-icon icon-name="utility:delete" alternative-text="Delete" title="Delete Document" 
+                                class="icon-action delete-icon" style="padding: 3%;" data-id={row.id} onclick={handleDeleteDoc}>
+                            </lightning-icon>
+                            </template><!--Sanwar End-->
+                            <!-- <div class ="single-upload-div">
+                                <div>
+                                    <lightning-layout>
+                                        <lightning-layout-item size="3">
+                                        </lightning-layout-item>
+                                        <lightning-layout-item size="6">
+                                            
+                                        </lightning-layout-item>
+                                        <lightning-layout-item size="3">
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+    
+                                </div>
+                            
+                            </div> -->
+                            <!--<button class="slds-button slds-button_brand continue-button"
+                                onclick={viewImage}>View</button>-->
+                                
+                            <!-- <template if:true={row.isPreview}> -->
+                                <!-- <lightning-icon icon-name="action:preview"  data-id={row.id} alternative-text="Event" title="Event" onclick={handlePreview}></lightning-icon>     -->
+                            <!-- <lightning-button label="Preview File" data-id={row.id} onclick={handlePreview}></lightning-button> -->
+                            <!-- </template> -->
+                            <!-- <template if:true={row.isReUpload}>
+                                
+                                <lightning-file-upload
+                                data-id={row.id}
+                                label="Attach Bank Statement"
+                                name="fileUploader"
+                                accept={acceptedFormats}
+                                record-id={recordId}
+                                onuploadfinished={handleReUpload}                                    
+                            >
+                                </lightning-file-upload>
+                            
+                            </template> -->
+                            <!-- <lightning-icon icon-name="utility:delete" alternative-text="Delete" title="Delete Document" 
+                                            class="icon-action delete-icon" data-id={row.id} onclick={handleDeleteDoc}>
+                            </lightning-icon> -->
+                        </td>
+
+                        <td style="border-color: black;">
+                            <template if:false={row.isAnalyticUploaded}>
+                                <lightning-file-upload
+                                data-id={row.id}
+                                label=""
+                                name="fileUploader"
+                                accept={acceptedFormats}
+                                record-id={recordId}
+                                onuploadfinished={handleReUploadAnalytic}                                    
+                                ></lightning-file-upload>
+                            </template>
+                            <template if:true={row.isAnalyticUploaded}>
+                                <lightning-icon icon-name="action:preview"  data-id={row.id} data-name={row.analyticContentId} alternative-text="Event" title="Event" onclick={handlePreview}></lightning-icon>    
+                            
+                            <lightning-icon icon-name="utility:delete" alternative-text="Delete" title="Delete Document" 
+                                class="icon-action delete-icon" style="padding: 3%;" data-id={row.id} onclick={handleDeleteDocAnalysis}>
+                            </lightning-icon>
+                            </template>
+                        </td>
+                        <td style="border-color: black;">
+                            <lightning-icon icon-name="utility:edit" variant="success" data-id={row.id} name="remarks" alternative-text="Edit" title="EDIT" size="xx-small" onclick={handleEditRow} style="cursor: pointer;" class="custom-icon"></lightning-icon>
+                            <!-- <lightning-button label="Edit" onclick={handleEditRow} data-id={row.id} variant="brand"></lightning-button> -->
+                        </td>   
+                    </template>
+                    <template if:true={fromSales}>
+                        <td style="border-color: black;"><p style="font-weight: 400;"><lightning-combobox name="applicantCombobox" options={applicants} label="" variant="label-hidden" value={row.applicantId}   placeholder="type here..." disabled data-id={row.id} onchange={handleBDUpdate}></lightning-combobox></p></td>
+                        <td style="border-color: black;"><p style="font-weight: 400;"><lightning-combobox name="accountTypeCombobox" options={accountTypeOptions} label="" variant="label-hidden" value={row.accountType} disabled  placeholder="type here..." data-id={row.id} onchange={handleBDUpdate}></lightning-combobox></p></td>
+                        <td style="border-color: black;"><p style="font-weight: 400;"><lightning-input name="accountNoInput" label="" variant="label-hidden" value={row.accountNo}    placeholder="type here..." disabled data-id={row.id} onfocusout={handleBDUpdate}></lightning-input></p></td>
+                        <td style="border-color: black;"><p style="font-weight: 400;"><lightning-combobox  name="bankCombobox" options={bankList} label="" variant="label-hidden" value={row.bank}  disabled placeholder="type here..." data-id={row.id} onchange={handleBDUpdate}></lightning-combobox></p></td>
+                        <!--<td style="border-color: black;"><p style="font-weight: 400;"><lightning-combobox  name="monthCombobox" options={monthOptions} label="" variant="label-hidden" value={row.month} disabled  placeholder="type here..." data-id={row.docId} onchange={handleBDUpdate}></lightning-combobox></p></td>
+                        <td style="border-color: black;"><p style="font-weight: 400;"><lightning-combobox name="yearCombobox"  options={yearOptions} label="" variant="label-hidden" value={row.year}  disabled placeholder="type here..." data-id={row.docId} onchange={handleBDUpdate}></lightning-combobox></p></td>-->
+                        <td style="border-color: black;">
+                            
+                        </td>
+                        <td style="border-color: black;">
+                            
+                        </td>   
+                    </template>
+                                     
+                    <!-- <td><p style="font-weight: 400;">
+                        <c-upload-view-delete-document 
+                        doc-detail-id={record.id}
+                        content-doc-id={record.contentId} 
+                        show-upload={record.showUpload}
+                        show-view={record.showView}
+                        show-delete={record.showDelete} 
+                        show-retake={record.showRetake} 
+                        show-location={record.showLocation}
+                        lattitude={record.lattitude}
+                        longitude={record.longitude}
+                        file-type={record.fileType}
+                        doc-name={record.docName}
+                        name={processObject}>
+                    </c-upload-view-delete-document></p></td> -->
+                </tr>
+            </template>
+        </table>
+        </template>
+        
+        <template if:true={showBsaTable}>
+            <div class="bsa-datatable" style="margin-top: 1%;">
+                <!--<lightning-datatable key-field="id" data={data} columns={columns}
+                sorted-by={sortBy} sorted-direction={sortDirection} onsort={doSorting}
+                hide-checkbox-column>
+            </lightning-datatable>-->
+            
+    
+                <table
+                    class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover slds-border_left slds-border_right slds-table_col-bordered slds-table_striped"
+                    style="table-layout: fixed;width: 100%;">
+                    <tr style=" width:fit-content; background: #5bb6e3;color: black;text-align: left;">
+                        <td style=" font-weight: 600;width: 33%;border-color: black;">
+                            Title
+                        </td>
+        
+                        <template for:each={daRecords.headerList} for:item="iter">
+                            <td key={iter} style="  font-weight: 400;border-color: black;">
+                                {iter}
+                            </td>
+                        </template>
+                    </tr>
+                    
+                    <template for:each={daRecords.mainWrapList} for:item="item">
+                        <tr key={item.fieldName}>
+                            <td class=""
+                                style="font-weight: 600;text-align: left;word-wrap: break-word; white-space: normal;   ">
+                                {item.fieldName}
+                            </td>
+                            <template for:each={item.valuesObj} for:item="iter2">
+                                <td key={iter2} class="" 
+                                style="  white-space: break-spaces;text-align:right;border-color: black;">
+                                <span style="display:inline-flex;">
+                                    <p style="font-weight: 400;"><lightning-input type="number" label="Enter some text" variant="label-hidden" value={iter2.recVal} data-id={iter2.recId} name={iter2.recFieldName} placeholder="type here..." onblur={handleFieldChange}></lightning-input></p>
+                                </span>
+                            </td>
+                        </template>
+                        
+                    </tr>
+                </template>
+                </table>
+                <div style="padding-top: 1%;text-align: right;">
+                    <button class="save-button slds-button slds-button_brand slds-m-right_medium" onclick={handleDataSave}>Save</button>
+                </div>
+            </div>
+        </template>
+        <!-- <div style="padding-top: 1%;">
+            <button class="save-button slds-button slds-button_brand slds-m-right_medium" onclick={addMonth}>Add Month</button>
+            <button class="cancel-button slds-button slds-button_brand" onclick={removeMonth}>Remove Month</button>
+        </div>     -->
+    </div>   
+    <template if:true={openBankAccountModal}>
+        <c-add-bank-account-cmp bsa={bsaBoolean} record-id={recordId} is-modal-open={openBankAccountModal}
+            onclosemodal={closeBankAccount} onsavedbankrecord={handleAccountSave} passed-screen-name={passedScreenName}
+            from-builder-seller={fromBuilderSeller} selected-applicant={selectedApplicant}>
+        </c-add-bank-account-cmp>
+    </template>
+</template>

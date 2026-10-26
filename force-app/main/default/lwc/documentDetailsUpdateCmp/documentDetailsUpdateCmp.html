@@ -1,0 +1,686 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 04-05-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <div class="card-panel">
+        
+        <template if:true={isSpinnerLoading}>
+            <section role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open" style="z-index: 900003;">
+                <div class="slds-modal__container">
+                    <div class="slds-spinner--brand slds-spinner slds-spinner--medium" role="alert">
+                        <span class="slds-assistive-text">Loading...</span>
+                        <div class="slds-spinner__dot-a"></div>
+                        <div class="slds-spinner__dot-b"></div>
+                    </div>
+                </div>
+            </section> 
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+        <template if:true={ir}>
+                <template if:true={showfields}>
+                <div class="input-container slds-box">
+                    <lightning-layout multiple-rows="true">
+                        <template if:false={valid}>
+                        <template for:each={fieldDetails} for:item="item">
+                            <template if:false={item.isPicklist}>
+                                <template if:false={item.hideField}>
+
+                                    <!--
+                                    <lightning-layout-item size="12" key={item.Id}
+                                        style="padding-left: 1%; padding-right: 1%;">
+                                        <lightning-input style="width:100%;" class="" key={item.Id}
+                                            type={item.Field_Type__c} name={item.Field_Type__c}
+                                            label={item.Field_Label__c} value={item.value}
+                                            required={item.Is_Mandatory__c} data-id={item.Storage_Field__c}
+                                            data-label={item.Storage_Field__c}
+                                            data-name={item.Storage_Object__c} onfocusout={handleInputChange}
+                                            disabled={item.Is_Disabled__c} onblur={handleBlur}
+                                            max-length={item.Maximum_Length__c} checked={item.value}>
+                                        </lightning-input>
+
+
+                                        
+                                    </lightning-layout-item>
+
+                                    -->
+
+                                    <lightning-layout-item size="12" key={item.Id} class={item.ocrClass} style="padding-left: 1%; padding-right: 1%;">
+                                    
+                                        <div data-id={item.Storage_Field__c}>
+                                            <template if:true={item.isCheckbox}>
+                                            <lightning-input style="width:100%;" class={item.comparisonClass} key={item.Id} type={item.Field_Type__c}
+                                                name={item.Field_Type__c} label={item.Field_Label__c} value={item.value} required={item.Is_Mandatory__c}
+                                                data-id={item.Storage_Field__c} data-label={item.Storage_Field__c} data-name={item.Storage_Object__c}
+                                                onchange={handleInputChange} disabled={item.Is_Disabled__c} onblur={handleBlur}
+                                                max-length={item.Maximum_Length__c} checked={item.value}>
+                                            </lightning-input>
+                                            </template>
+                                            <template if:false={item.isCheckbox}>
+                                                <lightning-input style="width:100%;" class={item.comparisonClass} key={item.Id} type={item.Field_Type__c}
+                                                    name={item.Field_Type__c} label={item.Field_Label__c} value={item.value} required={item.Is_Mandatory__c}
+                                                    data-id={item.Storage_Field__c} data-label={item.Storage_Field__c} data-name={item.Storage_Object__c}
+                                                    onfocusout={handleInputChange} disabled={item.Is_Disabled__c} onblur={handleBlur}
+                                                    max-length={item.Maximum_Length__c} checked={item.value}>
+                                                </lightning-input>
+                                            </template>
+                                    
+                                            <!-- ✅ NEW: OCR Confidence Indicator -->
+                                    
+                                            <template if:true={item.hasOCRValidation}>
+                                    
+                                                <div class="ocr-indicator">
+                                    
+                                                    <lightning-icon icon-name={item.ocrIcon} size="xx-small"></lightning-icon>
+                                    
+                                                    {item.ocrMessage}
+                                    
+                                                </div>
+                                    
+                                            </template>
+                                    
+                                            <template if:true={item.hasFieldComparison}>
+                                    
+                                                <template if:false={item.fieldMatches}>
+                                    
+                                                    <div class="ocr-indicator">
+                                    
+                                                        <lightning-icon icon-name={item.comparisonIcon} size="xx-small"></lightning-icon>
+                                    
+                                                        {item.comparisonMessage}
+                                    
+                                                    </div>
+                                    
+                                                </template>
+                                    
+                                            </template>
+                                    
+                                        </div>
+                                    
+                                    </lightning-layout-item>
+                                </template>
+                            </template>
+        
+                            <template if:true={item.isPicklist}>
+                                <template if:false={item.hideField}>
+
+                                    <lightning-layout-item size="12" key={item.Id} class={item.ocrClass}
+                                        style="padding-left: 1%; padding-right: 1%;">
+                                        <div data-id={item.Storage_Field__c}>
+                                            <!--
+                                            <lightning-combobox key={item.Id} class={item.comparisonClass} style="width:100%;" label={item.Field_Label__c}
+                                                placeholder="Select Picklist" name={item.Field_Type__c} data-label={item.Storage_Field__c}
+                                                options={item.picklistOptions} data-id={item.Storage_Field__c} onfocusout={handleInputChange} value={item.value}
+                                                data-name={item.Storage_Object__c} required={item.Is_Mandatory__c} disabled={item.Is_Disabled__c}>
+                                            </lightning-combobox>
+
+                                            -->
+                                            <lightning-combobox key={item.Id} class={item.comparisonClass} style="width:100%;" label={item.Field_Label__c}
+                                                placeholder="Select Picklist" name={item.Field_Type__c} data-label={item.Storage_Field__c}
+                                                options={item.picklistOptions} data-id={item.Storage_Field__c} onfocusout={handleInputChange} value={item.value}
+                                                data-name={item.Storage_Object__c} required={item.Is_Mandatory__c} disabled={item.Is_Disabled__c}>
+                                            
+                                            </lightning-combobox>
+                                            
+                                            <template if:true={item.hasOCRValidation}>
+                                            
+                                                <div class="ocr-indicator">
+                                            
+                                                    <lightning-icon icon-name={item.ocrIcon} size="xx-small"></lightning-icon>
+                                            
+                                                    {item.ocrMessage}
+                                            
+                                                </div>
+                                            
+                                            </template>
+                                            
+                                            <template if:true={item.hasFieldComparison}>
+                                            
+                                                <template if:false={item.fieldMatches}>
+                                            
+                                                    <div class="ocr-indicator">
+                                            
+                                                        <lightning-icon icon-name={item.comparisonIcon} size="xx-small"></lightning-icon>
+                                            
+                                                        {item.comparisonMessage}
+                                            
+                                                    </div>
+                                            
+                                                </template>
+                                            
+                                            </template>
+                                            
+                                        </div>
+                                    </lightning-layout-item>
+                                </template>
+                            </template>
+                        </template>
+                    </template>
+                    <template if:true={valid}>
+                        <template for:each={fieldDetails} for:item="item">
+                            <template if:true={item.Section_Seperator__c}>
+                                <lightning-layout-item size="10" key={item.Id}>
+                                    <div class="section-seperator" key={item.Id}
+                                        style="padding-top: 1%; font-weight: 700; width: 100%; text-align: center; background: lightgrey; padding-bottom: 1%;margin-top: 2%;margin-bottom: 2%;">
+                                        {item.Section_Name__c}
+                                    </div>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="2" key={item.id}
+                                style="margin-top: 2rem;padding-right: 4rem">
+                                    <!-- Add the pen icon inside the layout item -->
+                                    <lightning-icon icon-name="utility:edit" alternative-text="Edit" data-id={item.id} size="small" onclick={handleEditClick}></lightning-icon>
+                                </lightning-layout-item>
+                            </template>
+        
+                            <template if:false={item.isPicklist}>
+                                <template if:false={item.hideField}>
+                                    <lightning-layout-item size="12" key={item.Id}
+                                        style="padding-left: 1%; padding-right: 1%;">
+                                        <template if:true={item.isCheckbox}>
+                                        <lightning-input style="width:100%;" class="" key={item.Id}
+                                            type={item.Field_Type__c} name={item.Field_Type__c}
+                                            label={item.Field_Label__c} value={item.value}
+                                            required={item.Is_Mandatory__c} data-id={item.Storage_Field__c}
+                                            data-label={item.Storage_Field__c}
+                                            data-name={item.Storage_Object__c} onchange={handleInputChange}
+                                            disabled={item.Is_Disabled__c} onblur={handleBlur}
+                                            max-length={item.Maximum_Length__c} checked={item.value}>
+                                        </lightning-input>
+                                        </template>
+                                        <template if:false={item.isCheckbox}>
+                                            <lightning-input style="width:100%;" class="" key={item.Id}
+                                                type={item.Field_Type__c} name={item.Field_Type__c}
+                                                label={item.Field_Label__c} value={item.value}
+                                                required={item.Is_Mandatory__c} data-id={item.Storage_Field__c}
+                                                data-label={item.Storage_Field__c}
+                                                data-name={item.Storage_Object__c} onfocusout={handleInputChange}
+                                                disabled={item.Is_Disabled__c} onblur={handleBlur}
+                                                max-length={item.Maximum_Length__c} checked={item.value}>
+                                            </lightning-input>
+                                        </template>
+                                    </lightning-layout-item>
+                                </template>
+                            </template>
+        
+                            <template if:true={item.isPicklist}>
+                                <template if:false={item.hideField}>
+                                    <lightning-layout-item size="12" key={item.Id}
+                                        style="padding-left: 1%; padding-right: 1%;">
+                                        <lightning-combobox key={item.Id} class="" style="width:100%;"
+                                            label={item.Field_Label__c} placeholder="Select Picklist"
+                                            name={item.Field_Type__c} data-label={item.Storage_Field__c}
+                                            options={item.picklistOptions} data-id={item.Storage_Field__c}
+                                            onfocusout={handleInputChange} 
+                                            value={item.value} data-name={item.Storage_Object__c}
+                                            required={item.Is_Mandatory__c}
+                                            disabled={item.Is_Disabled__c}></lightning-combobox>
+                                    </lightning-layout-item>
+                                </template>
+                            </template>
+                        </template>
+                    </template>
+                    </lightning-layout>
+                </div>
+            </template>
+            <template if:false={showfields}>
+                <div class="no-data-container">
+                    <p class="no-data-message">No data required</p>
+                </div>
+            </template>
+        </template>
+        <template if:false={ir}>
+                <template if:false={dde}>
+                <template if:true={showfields}>
+                    <div class="input-container slds-box">
+                        <lightning-layout multiple-rows="true">
+                            <template if:true={editfields}>
+                            <template if:false={valid}>
+                            <template for:each={fieldDetails} for:item="item">
+                                <template if:false={item.isPicklist}>
+                                    <template if:false={item.hideField}>
+                                        <template if:false={item.showPinCodeLookup}>
+                                            <lightning-layout-item size="12" key={item.Id}
+                                            style="padding-left: 1%; padding-right: 1%;">
+                                                <template if:true={item.isCheckbox}>
+                                                <lightning-input style="width:100%;" class="" key={item.Id}
+                                                    type={item.Field_Type__c} name={item.Field_Type__c}
+                                                    label={item.Field_Label__c} value={item.value}
+                                                    data-id={item.Storage_Field__c}
+                                                    data-label={item.Storage_Field__c}
+                                                    data-name={item.Storage_Object__c} onchange={handleInputChange}
+                                                    disabled={item.Is_Disabled__c} onblur={handleBlur}
+                                                    max-length={item.Maximum_Length__c} checked={item.value}>
+                                                </lightning-input>
+                                                </template>
+                                                <template if:false={item.isCheckbox}>
+                                                    <lightning-input style="width:100%;" class="" key={item.Id}
+                                                        type={item.Field_Type__c} name={item.Field_Type__c}
+                                                        label={item.Field_Label__c} value={item.value}
+                                                        data-id={item.Storage_Field__c}
+                                                        data-label={item.Storage_Field__c}
+                                                        data-name={item.Storage_Object__c} onfocusout={handleInputChange}
+                                                        disabled={item.Is_Disabled__c} onblur={handleBlur}
+                                                        max-length={item.Maximum_Length__c} checked={item.value}>
+                                                    </lightning-input>
+                                                </template>
+                                            </lightning-layout-item>
+                                        </template>
+                                        
+                                    </template>
+                                </template>
+                             
+                                <template if:true={item.isPicklist}>
+                                    <template if:false={item.hideField}>
+                                           
+                                            <lightning-layout-item size="12" key={item.Id}
+                                            style="padding-left: 1%; padding-right: 1%;">
+                                            <template if:true={showMultiPicklist}>
+                                                <template if:true={showAddressType}>
+                                                    <template if:true={item.Is_Multipicklist__c}>
+                                                        <div data-id={item.Storage_Field__c}>
+                                                            <c-generic-multi-picklist-selector 
+                                                            key={multiPicklistKey}
+                                                            data-id={item.Storage_Field__c} 
+                                                            showpills="true"  label={item.Field_Label__c}
+                                                            options={item.picklistOptions} 
+                                                            onselectedvalueschange={handleMultiPicklistSelection}>
+                                                            </c-generic-multi-picklist-selector>
+                                                        </div>
+                                                    </template>
+                                                </template>
+                                            </template>
+                                            <template if:false={item.Is_Multipicklist__c}>
+                                                <lightning-combobox key={item.Id} class="" style="width:100%;"
+                                                    label={item.Field_Label__c} placeholder="Select Picklist"
+                                                    name={item.Field_Type__c} data-label={item.Storage_Field__c}
+                                                    options={item.picklistOptions} data-id={item.Storage_Field__c}
+                                                    onfocusout={handleInputChange} 
+                                                    value={item.value} data-name={item.Storage_Object__c}
+                                                   
+                                                    disabled={item.Is_Disabled__c}></lightning-combobox>
+                                            </template>
+                                            <!-- <lightning-combobox key={item.Id} class="" style="width:100%;"
+                                                label={item.Field_Label__c} placeholder="Select Picklist"
+                                                name={item.Field_Type__c} data-label={item.Storage_Field__c}
+                                                options={item.picklistOptions} data-id={item.Storage_Field__c}
+                                                onfocusout={handleInputChange}
+                                                value={item.value} data-name={item.Storage_Object__c}
+                                                required={item.Is_Mandatory__c}
+                                                disabled={item.Is_Disabled__c}></lightning-combobox> -->
+                                        </lightning-layout-item>
+                                    </template>
+                                </template>
+                                
+                                <template if:true={item.showPinCodeLookup}>
+                                    <template if:false={item.hideField}> 
+                                         <template if:true={item.forceRender}>                  
+                                        <lightning-layout-item size="12" key={item.Id} padding="around-small">
+                                            <c-search-lookup class="removelookup"
+                                                label="Pincode"
+                                                show-label="true"
+                                               
+                                                selected-id={item.value}
+                                                selected-name={item.savedName}
+                                                placeholder="Search pincode"
+                                                disabled={mfalse}
+                                                object-name="Pincode_Master__c"
+                                                return-fields="['Id','Name','Town_and_Post_Office__c','Serviceable_For_Business_Loan__c','Is_Pincode_Servicable__c','Town__c','Post_Office__c','District__c','State__c']"
+                                                onlookupselected={handlepincodelookupselected}
+                                                onlookupdeselected={handlepincodelookupdeselected}
+                                            ></c-search-lookup>
+                                        </lightning-layout-item>
+                                        </template>
+                                    </template> 
+                                    
+                                    
+                                    <!-- <c-lookup-search  saved-term={item.savedName} object-a-p-i-name = "Pincode_Master__c" query-fields = "['Name']" return-fields="['Name','Town__c','Post_Office__c','District__c','State__c','Is_Pincode_Servicable__c','Town_and_Post_Office__c']" search-box-name="Pincode" icon-name="standard:address" onpinlookupselected={handlepincodelookupselected} onpinlookupdeselected={handlepincodelookupdeselected}></c-lookup-search> -->
+                                </template>
+
+                            </template>
+                        </template>
+                        <template if:true={valid}>
+                            <template for:each={fieldDetails} for:item="item">
+                                <template if:true={item.Section_Seperator__c}>
+                                    <lightning-layout-item size="10" key={item.Id}>
+                                        <div class="section-seperator" key={item.Id}
+                                            style="padding-top: 1%; font-weight: 700; width: 100%; text-align: center; background: lightgrey; padding-bottom: 1%;margin-top: 2%;margin-bottom: 2%;">
+                                            {item.Section_Name__c}
+                                        </div>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="2" key={item.id}
+                                    style="margin-top: 2rem;padding-right: 4rem">
+                                        <!-- Add the pen icon inside the layout item -->
+                                        <lightning-icon icon-name="utility:edit" alternative-text="Edit" data-id={item.id} size="small" onclick={handleEditClick}></lightning-icon>
+                                    </lightning-layout-item>
+                                </template>
+
+                                <template if:false={item.isPicklist}>
+                                    <template if:false={item.hideField}>
+                                        <template if:false={item.showPinCodeLookup}>
+                                            <lightning-layout-item size="12" key={item.Id}
+                                                style="padding-left: 1%; padding-right: 1%;">
+                                                <template if:true={item.isCheckbox}>
+                                                <lightning-input style="width:100%;" class="" key={item.Id}
+                                                    type={item.Field_Type__c} name={item.Field_Type__c}
+                                                    label={item.Field_Label__c} value={item.value}
+                                                     data-id={item.Storage_Field__c}
+                                                    data-label={item.Storage_Field__c}
+                                                    data-name={item.Storage_Object__c} onchange={handleInputChange}
+                                                    disabled={item.Is_Disabled__c}
+                                                    max-length={item.Maximum_Length__c} checked={item.value}>
+                                                </lightning-input>
+                                                </template>
+                                                <template if:false={item.isCheckbox}>
+                                                    <lightning-input style="width:100%;" class="" key={item.Id}
+                                                        type={item.Field_Type__c} name={item.Field_Type__c}
+                                                        label={item.Field_Label__c} value={item.value}
+                                                        data-id={item.Storage_Field__c}
+                                                        data-label={item.Storage_Field__c}
+                                                        data-name={item.Storage_Object__c} onfocusout={handleInputChange}
+                                                        disabled={item.Is_Disabled__c}
+                                                        max-length={item.Maximum_Length__c} checked={item.value}>
+                                                    </lightning-input>
+                                                </template>
+                                            </lightning-layout-item>
+                                        </template>
+                                        
+                                    </template>
+                                </template>
+                            
+                                <template if:true={item.isPicklist}>
+                                    <template if:false={item.hideField}>
+                                     
+                                        <lightning-layout-item size="12" key={item.Id}
+                                            style="padding-left: 1%; padding-right: 1%;">
+                                            <template if:true={showMultiPicklist}>
+                                                <template if:true={showAddressType}>
+                                                    <template if:true={item.Is_Multipicklist__c}>
+                                                        <c-generic-multi-picklist-selector 
+                                                        key={multiPicklistKey}
+                                                        data-id={item.Storage_Field__c} 
+                                                        showpills="true"  label={item.Field_Label__c}
+                                                        options={item.picklistOptions} 
+                                                        onselectedvalueschange={handleMultiPicklistSelection}>
+                                                        </c-generic-multi-picklist-selector>
+                                                    </template>
+                                                </template>
+                                            </template>
+                                             <template if:false={item.Is_Multipicklist__c}>
+                                                <lightning-combobox key={item.Id} class="" style="width:100%;"
+                                                    label={item.Field_Label__c} placeholder="Select Picklist"
+                                                    name={item.Field_Type__c} data-label={item.Storage_Field__c}
+                                                    options={item.picklistOptions} data-id={item.Storage_Field__c}
+                                                    onfocusout={handleInputChange} 
+                                                    value={item.value} data-name={item.Storage_Object__c}
+                                                    
+                                                    disabled={item.Is_Disabled__c}></lightning-combobox>
+                                            </template>
+                                        </lightning-layout-item>
+                                    </template>
+                                </template>
+                                <template if:true={item.showPinCodeLookup}>
+                                    <template if:false={item.hideField}> 
+                                         <template if:true={item.forceRender}>                      
+                                        <lightning-layout-item size="12" key={item.Id} padding="around-small">
+                                            <c-search-lookup class="removelookup"
+                                                label="Pincode"
+                                                show-label="true"
+                                                
+                                                selected-id={item.value}
+                                                selected-name={item.savedName}
+                                                placeholder="Search pincode"
+                                                object-name="Pincode_Master__c"
+                                                return-fields="['Id','Name','Town_and_Post_Office__c','Serviceable_For_Business_Loan__c','Is_Pincode_Servicable__c','Town__c','Post_Office__c','District__c','State__c']"
+                                                onlookupselected={handlepincodelookupselected}
+                                                onlookupdeselected={handlepincodelookupdeselected}
+                                            ></c-search-lookup>
+                                        </lightning-layout-item>
+                                        </template>
+                                    </template>
+                                    
+                                    
+                                    <!-- <c-lookup-search  saved-term={item.savedName} object-a-p-i-name = "Pincode_Master__c" query-fields = "['Name']" return-fields="['Name','Town__c','Post_Office__c','District__c','State__c','Is_Pincode_Servicable__c','Town_and_Post_Office__c']" search-box-name="Pincode" icon-name="standard:address" onpinlookupselected={handlepincodelookupselected} onpinlookupdeselected={handlepincodelookupdeselected}></c-lookup-search> -->
+                                </template>
+                                <!-- <template if:true={item.Is_Multipicklist__c}>
+                                    <template if:false={item.hideField}>
+                                        <lightning-layout-item size="12" key={item.Id}
+                                            style="padding-left: 1%; padding-right: 1%;">
+                                            <c-generic-multi-picklist-selector 
+                                            data-id={item.Storage_Field__c} 
+                                           
+                                            options={item.picklistOptions} 
+                                            onselectedvalueschange={handleMultiPicklistSelection}>
+                                        </c-generic-multi-picklist-selector>
+                                        </lightning-layout-item>
+                                    </template>
+                                   
+                                </template> -->
+                            </template>
+                        </template>
+                    </template>
+                    <template if:false={editfields}>
+                        <template for:each={fieldDetails} for:item="item">
+                            <template if:false={item.isPicklist}>
+                                <template if:false={item.hideField}>
+                                    <!-- <template if:false={item.showPinCodeLookup}>
+                                        <lightning-layout-item size="12" key={item.Id}
+                                        style="padding-left: 1%; padding-right: 1%;">
+                                            <lightning-input style="width:100%;" class="" key={item.Id}
+                                                type={item.Field_Type__c} name={item.Field_Type__c}
+                                                label={item.Field_Label__c} value={item.value}
+                                                required={item.Is_Mandatory__c} data-id={item.Storage_Field__c}
+                                                data-label={item.Storage_Field__c}
+                                                data-name={item.Storage_Object__c} onfocusout={handleInputChange}
+                                                disabled={noteditfields}
+                                                max-length={item.Maximum_Length__c} checked={item.value}>
+                                            </lightning-input>
+                                        </lightning-layout-item>
+                                    </template> -->
+                                    <lightning-layout-item size="12" key={item.Id}
+                                        style="padding-left: 1%; padding-right: 1%;">
+                                        <template if:true={item.isCheckbox}>
+                                        <lightning-input style="width:100%;" class="" key={item.Id}
+                                            type={item.Field_Type__c} name={item.Field_Type__c}
+                                            label={item.Field_Label__c} value={item.value}
+                                            data-id={item.Storage_Field__c}
+                                            data-label={item.Storage_Field__c}
+                                            data-name={item.Storage_Object__c} onchange={handleInputChange}
+                                            disabled={noteditfields}
+                                            max-length={item.Maximum_Length__c} checked={item.value}>
+                                        </lightning-input>
+                                        </template>
+                                        <template if:false={item.isCheckbox}>
+                                            <lightning-input style="width:100%;" class="" key={item.Id}
+                                                type={item.Field_Type__c} name={item.Field_Type__c}
+                                                label={item.Field_Label__c} value={item.value}
+                                                data-id={item.Storage_Field__c}
+                                                data-label={item.Storage_Field__c}
+                                                data-name={item.Storage_Object__c} onfocusout={handleInputChange}
+                                                disabled={noteditfields}
+                                                max-length={item.Maximum_Length__c} checked={item.value}>
+                                            </lightning-input>
+                                        </template>
+                                    </lightning-layout-item>
+                                </template>
+                            </template>
+
+                            <template if:true={item.isPicklist}>
+                                <template if:false={item.hideField}>
+                                     <lightning-layout-item size="12" key={item.Id}
+                                        style="padding-left: 1%; padding-right: 1%;"> 
+                                         <lightning-combobox key={item.Id} class="" style="width:100%;"
+                                            label={item.Field_Label__c} placeholder="Select Picklist"
+                                            name={item.Field_Type__c} data-label={item.Storage_Field__c}
+                                            options={item.picklistOptions} data-id={item.Storage_Field__c}
+                                            onfocusout={handleInputChange}
+                                            value={item.value} data-name={item.Storage_Object__c}
+                                           
+                                            disabled={noteditfields}></lightning-combobox> 
+                                            <!-- <lightning-layout-item size="12" key={item.Id}
+                                            style="padding-left: 1%; padding-right: 1%;">
+                                            <template if:true={item.Is_Multipicklist__c}>
+                                                <c-generic-multi-picklist-selector 
+                                                data-id={item.Storage_Field__c} 
+                                                required="true"
+                                                options={item.picklistOptions} 
+                                                onselectedvalueschange={handleMultiPicklistSelection}>
+                                                </c-generic-multi-picklist-selector>
+                                            </template>
+                                            <template if:false={item.Is_Multipicklist__c}>
+                                                <lightning-combobox key={item.Id} class="" style="width:100%;"
+                                                    label={item.Field_Label__c} placeholder="Select Picklist"
+                                                    name={item.Field_Type__c} data-label={item.Storage_Field__c}
+                                                    options={item.picklistOptions} data-id={item.Storage_Field__c}
+                                                    onfocusout={handleInputChange} 
+                                                    value={item.value} data-name={item.Storage_Object__c}
+                                                    required={item.Is_Mandatory__c}
+                                                    disabled={item.Is_Disabled__c}></lightning-combobox>
+                                            <! </template> -->
+                                    </lightning-layout-item> 
+                                </template>
+                            </template>
+                            <!-- <template if:true={item.showPinCodeLookup}>
+                                                        
+                                <lightning-layout-item size="12" key={item.Id} padding="around-small">
+                                    <c-search-lookup class="removelookup"
+                                        label="Pincode"
+                                        show-label="true"
+                                        required="true"
+                                        selected-id={item.value}
+                                        selected-name={item.savedName}
+                                        placeholder="Search pincode"
+                                        
+                                        object-name="Pincode_Master__c"
+                                        return-fields="['Id','Name','Town_and_Post_Office__c','Serviceable_For_Business_Loan__c','Town__c','Post_Office__c','District__c','State__c']"
+                                        onlookupselected={handlepincodelookupselected}
+                                        onlookupdeselected={handlepincodelookupdeselected}
+                                    ></c-search-lookup>
+                                </lightning-layout-item>
+                                
+                                
+                               
+                            </template> -->
+                        </template>
+                </template>
+                        </lightning-layout>
+                    </div>
+                </template>
+                <template if:false={showfields}>
+                    <div class="no-data-container">
+                        <p class="no-data-message">No data required</p>
+                    </div>
+                </template>
+        </template>
+        </template>
+
+<template if:true={dde}>
+    <template if:true={showfields}>
+        <div class="input-container slds-box">
+            <lightning-layout multiple-rows="true">
+                <template if:false={valid}>
+                <template for:each={fieldDetails} for:item="item">
+                    <template if:false={item.isPicklist}>
+                        <template if:false={item.hideField}>
+                            <lightning-layout-item size="12" key={item.Id}
+                                style="padding-left: 1%; padding-right: 1%;">
+                                <lightning-input style="width:100%;" class="" key={item.Id}
+                                    type={item.Field_Type__c} name={item.Field_Type__c}
+                                    label={item.Field_Label__c} value={item.value}
+                                    required={item.Is_Mandatory__c} data-id={item.Storage_Field__c}
+                                    data-label={item.Storage_Field__c}
+                                    data-name={item.Storage_Object__c} onfocusout={handleInputChange}
+                                    disabled={mfalse}
+                                    max-length={item.Maximum_Length__c} checked={item.value}>
+                                </lightning-input>
+                            </lightning-layout-item>
+                        </template>
+                    </template>
+
+                    <template if:true={item.isPicklist}>
+                        <template if:false={item.hideField}>
+                            <lightning-layout-item size="12" key={item.Id}
+                                style="padding-left: 1%; padding-right: 1%;">
+                                <lightning-combobox key={item.Id} class="" style="width:100%;"
+                                    label={item.Field_Label__c} placeholder="Select Picklist"
+                                    name={item.Field_Type__c} data-label={item.Storage_Field__c}
+                                    options={item.picklistOptions} data-id={item.Storage_Field__c}
+                                    onfocusout={handleInputChange}
+                                    value={item.value} data-name={item.Storage_Object__c}
+                                    required={item.Is_Mandatory__c}
+                                    disabled={mfalse}></lightning-combobox>
+                            </lightning-layout-item>
+                        </template>
+                    </template>
+                </template>
+            </template>
+            <template if:true={valid}>
+                <template for:each={fieldDetails} for:item="item">
+                    <template if:true={item.Section_Seperator__c}>
+                        <lightning-layout-item size="10" key={item.Id}>
+                            <div class="section-seperator" key={item.Id}
+                                style="padding-top: 1%; font-weight: 700; width: 100%; text-align: center; background: lightgrey; padding-bottom: 1%;margin-top: 2%;margin-bottom: 2%;">
+                                {item.Section_Name__c}
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="2" key={item.id}
+                        style="margin-top: 2rem;padding-right: 4rem">
+                            <!-- Add the pen icon inside the layout item -->
+                            <lightning-icon icon-name="utility:edit" alternative-text="Edit" data-id={item.id} size="small" onclick={handleEditClick}></lightning-icon>
+                        </lightning-layout-item>
+                    </template>
+
+                    <template if:false={item.isPicklist}>
+                        <template if:false={item.hideField}>
+                            <lightning-layout-item size="12" key={item.Id}
+                                style="padding-left: 1%; padding-right: 1%;">
+                                <lightning-input style="width:100%;" class="" key={item.Id}
+                                    type={item.Field_Type__c} name={item.Field_Type__c}
+                                    label={item.Field_Label__c} value={item.value}
+                                    required={item.Is_Mandatory__c} data-id={item.Storage_Field__c}
+                                    data-label={item.Storage_Field__c}
+                                    data-name={item.Storage_Object__c} onfocusout={handleInputChange}
+                                    disabled={item.Is_Disabled__c}
+                                    max-length={item.Maximum_Length__c} checked={item.value}>
+                                </lightning-input>
+                            </lightning-layout-item>
+                        </template>
+                    </template>
+
+                    <template if:true={item.isPicklist}>
+                        <template if:false={item.hideField}>
+                            <lightning-layout-item size="12" key={item.Id}
+                                style="padding-left: 1%; padding-right: 1%;">
+                                <lightning-combobox key={item.Id} class="" style="width:100%;"
+                                    label={item.Field_Label__c} placeholder="Select Picklist"
+                                    name={item.Field_Type__c} data-label={item.Storage_Field__c}
+                                    options={item.picklistOptions} data-id={item.Storage_Field__c}
+                                    onfocusout={handleInputChange} 
+                                    value={item.value} data-name={item.Storage_Object__c}
+                                    required={item.Is_Mandatory__c}
+                                    disabled={item.Is_Disabled__c}></lightning-combobox>
+                            </lightning-layout-item>
+                        </template>
+                    </template>
+                </template>
+            </template>
+            </lightning-layout>
+        </div>
+    </template>
+    <template if:false={showfields}>
+        <div class="no-data-container">
+            <p class="no-data-message">No data required</p>
+        </div>
+    </template>
+</template>
+
+        <!-- <lightning-button 
+        label="Save" 
+        onclick={validateSaveAndNext} 
+        variant="brand">
+    </lightning-button> -->
+    
+    </div>
+</template>

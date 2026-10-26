@@ -1,0 +1,1223 @@
+<template>
+  <div class="collateral-dark-theme">
+    <span class="styleContainer"></span>
+  <div class="slds-m-top_large">
+    <!-- <template lwc:if={isVisible}> -->
+    <template if:false={disabledCmp}>
+        <template if:false={isFlexiLoan}>
+            <button class="slds-button slds-button_brand initiate-button add-collateral-btn"
+                    style="margin-left: 2%;"
+                    onclick={handleAddNewCollateral}>
+                Add Collateral
+            </button>
+        </template>
+        <template if:true={isFlexiLoan}>
+                <p>Collateral cannot be added for flexi loan</p>
+        </template>
+    </template>
+    <template if:true={isModalOpen}>
+        <section role="dialog" class="slds-modal slds-fade-in-open custom-mobile-modal">
+            <div class="slds-modal__container custom-modal-container">
+
+
+                    <header class="slds-modal__header modal-header">
+                        <h2 id="modal-heading" class="slds-text-heading_medium">{modalHeader}</h2>
+                    </header>
+
+                    <div class="slds-modal__content slds-p-around_medium">
+                 <template if:true={isloading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </template>
+    <template if:true={isPropertyIdentified}>
+         <lightning-layout multiple-rows>
+            <!-- Row 1: APF and Project (if visible) -->
+            <lightning-layout-item size="6" padding="around-small">
+                <lightning-combobox
+                    name="isProp"
+                    label="Is Property Identified?"
+                    placeholder="Select an option"
+                    options={apfOptions}
+                    value={isPropertyIdentifiedVal}
+                    data-field="apf"
+                    onchange={isProphandleInputChange}
+                    disabled={isEditMode}>
+                </lightning-combobox>
+            </lightning-layout-item>
+         </lightning-layout>
+    </template>
+    <template if:false={isPropertyIdentified}>
+
+
+                    <template if:true={showAPFSelection}>
+        <lightning-layout multiple-rows>
+            <!-- Row 1: APF and Project (if visible) -->
+            <lightning-layout-item size="6" padding="around-small">
+                <lightning-combobox
+                    name="apf"
+                    label="Is Property APF?"
+                    placeholder="Select an option"
+                    options={apfOptions}
+                    value={collateral.apfValue}
+                    data-field="apf"
+                    onchange={handleInputChange}
+                    disabled={isEditMode}>
+                </lightning-combobox>
+            </lightning-layout-item>
+
+        <template if:true={showAPFFields}>
+
+        <!-- Project Search -->
+        <lightning-layout-item size="6" padding="around-small">
+        <lightning-input
+        type="search"
+        label="Search Project"
+        placeholder="Search by name..."
+        value={collateral.projName}
+        onchange={handleProjectSearch}
+        required>
+    </lightning-input>
+
+        <template if:true={filteredProjectList.length}>
+            <ul class="slds-list_dotted slds-m-top_small">
+                <template for:each={filteredProjectList} for:item="project">
+                    <li key={project.Id} class="slds-p-vertical_x-small slds-border_bottom">
+                        <a href="javascript:void(0);" onclick={handleProjectSelect} data-id={project.Id} data-apfno={project.APF_No__c} data-name={project.Name} data-devname={project.Builder_Master__r.Name} data-devid={project.Builder_Master__c} data-addr1={project.Address_Line_1__c} data-addr2={project.Address_Line_2__c} data-addr3={project.Address_Line_3__c}>{project.Name}</a>
+
+                    </li>
+                </template>
+            </ul>
+        </template>
+        </lightning-layout-item>
+
+        <!-- Developer Name (Auto-filled, Readonly) -->
+        <lightning-layout-item size="6" padding="around-small">
+            <lightning-input
+                label="Developer Name"
+                value={collateral.devName}
+                disabled
+                data-field="devName">
+            </lightning-input>
+        </lightning-layout-item>
+         <template if:true={hasBuildings}>
+        <!-- Tower Search (searchable and disabled if no project selected) -->
+            <lightning-layout-item size="6" padding="around-small">
+            <lightning-input
+                type="search"
+                label="Search Tower"
+                placeholder="Search Tower..."
+                value={towerName}
+                onchange={handleTowerSearch}
+                data-field="towerNumber"
+                required
+                disabled={istowerDisabled}>
+            </lightning-input>
+
+            <template if:true={filteredTowerList.length}>
+                <ul class="slds-list_dotted slds-m-top_small">
+                            <template for:each={filteredTowerList} for:item="tower">
+                                <li key={tower.Id} class="slds-p-vertical_x-small slds-border_bottom">
+                                    <a href="javascript:void(0);"
+                                    onclick={handleTowerSelect}
+                                    data-id={tower.Id}
+                                    data-name={tower.Name}>
+                                        {tower.Name}
+                                    </a>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                </lightning-layout-item>
+         </template>
+         <template if:true={showUnitField}>
+        <!-- Unit Search (searchable and disabled if no project selected) -->
+            <lightning-layout-item size="6" padding="around-small">
+            <lightning-input
+                type="search"
+                label="Search Unit"
+                placeholder="Search unit by name or number..."
+                value={collateral.unitName}
+                onchange={handleUnitSearch}
+                 data-field="unitNumber"
+                required
+                disabled={isUnitDisabled}>
+            </lightning-input>
+
+            <template if:true={filteredUnitList.length}>
+                <ul class="slds-list_dotted slds-m-top_small">
+                            <template for:each={filteredUnitList} for:item="unit">
+                                <li key={unit.Id} class="slds-p-vertical_x-small slds-border_bottom">
+                                    <a href="javascript:void(0);"
+                                    onclick={handleUnitSelect}
+                                    data-id={unit.Id}
+                                    data-name={unit.Name}>
+                                        {unit.Name}
+                                    </a>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                </lightning-layout-item>
+         </template>
+            </template>
+
+        </lightning-layout>
+    </template>
+
+                        <template if:true={showFieldSections}>
+                            <fieldset class="custom-fieldset">
+                                <legend class="fieldset-legend">Address Details</legend>
+                                <lightning-layout multiple-rows="true" pull-to-boundary="small">
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Address 1" type="text"
+                                            value={collateral.address1}
+                                            data-field="address1"
+                                            onchange={handleInputChange}
+                                            minlength="2"
+                                            message-when-too-short="Minimum 2 characters required"
+                                            required disabled={showAPFFields}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="City" type="text"
+                                            value={collateral.city}
+                                            disabled
+                                            data-field="city"
+                                            onchange={handleInputChange}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Address 2" type="text"
+                                            value={collateral.address2}
+                                            data-field="address2"
+                                            onchange={handleInputChange}
+                                            minlength="2"
+                                            message-when-too-short="Minimum 2 characters required"
+                                            required disabled={showAPFFields}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="State" type="text"
+                                            value={collateral.state}
+                                            disabled
+                                            data-field="state"
+                                            onchange={handleInputChange}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Address 3" type="text"
+                                            value={collateral.address3}
+                                            data-field="address3"
+                                            onchange={handleInputChange}
+                                            minlength="2"
+                                            message-when-too-short="Minimum 2 characters required"
+                                            required disabled={showAPFFields}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Country" type="text"
+                                            value={collateral.country}
+                                            disabled
+                                            data-field="country"
+                                            onchange={handleInputChange}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input
+                                            type="text"
+                                            label="Pincode"
+                                            value={collateral.pincode}
+                                            data-field="pincode"
+                                            onchange={handlePincodeChange}
+                                            required>
+                                        </lightning-input>
+
+                                        <template if:true={filteredPincodeList.length}>
+                                            <ul class="slds-list_dotted slds-m-top_small">
+                                                <template for:each={filteredPincodeList} for:item="pincode">
+                                                    <li key={pincode.Id} class="slds-p-vertical_x-small slds-border_bottom">
+                                                        <a href="javascript:void(0);"
+                                                        onclick={handlePincodeSelect}
+                                                        data-id={pincode.Id}
+                                                        data-name={pincode.Name}>
+                                                            {pincode.Name}
+                                                        </a>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </template>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Block/Taluka" type="text"
+                                            value={collateral.block}
+                                            data-field="block"
+                                            onchange={handleInputChange}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox label="Address Type"
+                                            options={addressTypeOptions}
+                                            value={collateral.addressType}
+                                            data-field="addressType"
+                                            onchange={handleInputChange}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+
+                                    <template if:false={showAPFFields}>
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox
+                                            label="Unit / Property Type"
+                                            value={collateral.unitType}
+                                            options={propertyTypeOptions}
+                                            data-field="unitType"
+                                            onchange={handleInputChange}
+                                            required>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox label="Construction Stage"
+                                            options={constructionStageOptions}
+                                            value={collateral.constructionStage}
+                                            data-field="constructionStage"
+                                            onchange={handleInputChange}
+                                            required>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                     <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox label="Current Usage"
+                                            options={currentUsageOptions}
+                                            value={collateral.currentUsage}
+                                            data-field="currentUsage"
+                                            onchange={handleInputChange}
+                                            required>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Completion Timeline (In months)" type="number"
+                                            value={collateral.complitionTime}
+                                            data-field="complitionTime"
+                                            onchange={handleInputChange}
+                                            required>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox label="Collateral Type"
+                                            options={collateralTypeOptions}
+                                            value={collateral.collateralType}
+                                            data-field="collateralType"
+                                            onchange={handleInputChange}
+                                            required>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox label="Property Usage"
+                                            options={propertyUsageOptions}
+                                            value={collateral.propertyUsage}
+                                            data-field="propertyUsage"
+                                            onchange={handleInputChange}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                  <!--   <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox label="Occupancy Type"
+                                            options={occupancyTypeOptions}
+                                            value={collateral.occupancyType}
+                                            data-field="occupancyType"
+                                            onchange={handleInputChange}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>-->
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox label="Occupancy Since(In Years)"
+                                            options={occupancySinceOptions}
+                                            value={collateral.occupancySince}
+                                            data-field="occupancySince"
+                                            onchange={handleInputChange}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                    </template>
+                                </lightning-layout>
+                            </fieldset>
+                            <template if:true={showAPFFields}>
+                            <fieldset class="custom-fieldset">
+                                <legend class="fieldset-legend">Project Details</legend>
+                                <lightning-layout multiple-rows="true" pull-to-boundary="small">
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Project Name" type="text"
+                                            value={collateral.projName}
+                                            data-field="projName"
+                                            onchange={handleInputChange}
+                                            minlength="2"
+                                            message-when-too-short="Minimum 2 characters required"
+                                            disabled>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Developer Name" type="text"
+                                            value={collateral.devName}
+                                            data-field="devName"
+                                            disabled>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Unit / Property Type" type="text"
+                                            value={collateral.unitType}
+                                            data-field="unitType"
+                                            disabled>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Tower/Building Name" type="text"
+                                            value={collateral.towerName}
+                                            data-field="towerName"
+                                            disabled>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Floor" type="text"
+                                            value={collateral.floor}
+                                            data-field="floor"
+                                            disabled>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Unit Number" type="text"
+                                            value={collateral.unitNumber}
+                                            data-field="unitNumber"
+                                            disabled>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+                                    <template if:true={showAPFReraEndDate}>
+                                        <lightning-layout-item size="6" padding="around-small">
+                                            <lightning-input
+                                                type="date"
+                                                label="RERA End Date"
+                                                data-field="reraEndDate"
+                                                value={collateral.reraEndDate}
+                                                onchange={handleInputChange}
+                                                required>
+                                            </lightning-input>
+                                        </lightning-layout-item>
+                                    </template>
+                                     <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox label="Collateral Type"
+                                            options={collateralTypeOptions}
+                                            value={collateral.collateralType}
+                                            data-field="collateralType"
+                                            onchange={handleInputChange}
+                                            required>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox label="Construction Stage"
+                                            options={constructionStageOptions}
+                                            value={collateral.constructionStage}
+                                            data-field="constructionStage"
+                                            onchange={handleInputChange}
+                                            required>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox label="Current Usage"
+                                            options={currentUsageOptions}
+                                            value={collateral.currentUsage}
+                                            data-field="currentUsage"
+                                            onchange={handleInputChange}
+                                            required>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox
+                                            label="Unit / Property Type"
+                                            value={collateral.unitType}
+                                            options={propertyTypeOptions}
+                                            data-field="unitType"
+                                            onchange={handleInputChange}
+                                            required>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox label="Occupancy Since(In Years)"
+                                            options={occupancySinceOptions}
+                                            value={collateral.occupancySince}
+                                            data-field="occupancySince"
+                                            onchange={handleInputChange}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox label="Property Usage"
+                                            options={propertyUsageOptions}
+                                            value={collateral.propertyUsage}
+                                            data-field="propertyUsage"
+                                            onchange={handleInputChange}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                   <!-- <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox label="Occupancy Type"
+                                            options={occupancyTypeOptions}
+                                            value={collateral.occupancyType}
+                                            data-field="occupancyType"
+                                            onchange={handleInputChange}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>-->
+
+
+                                </lightning-layout>
+                            </fieldset>
+                            </template>
+                            <fieldset class="custom-fieldset">
+                                <legend class="fieldset-legend">Other Details</legend>
+                                <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Estimated Value" type="number" formatter="currency"
+                                            value={collateral.estimatedValue}
+                                            data-field="estimatedValue"
+                                            step="0.01"
+                                            onchange={handleInputChange}
+                                            required>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+                                    <!--<lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Market Value" type="number" formatter="currency"
+                                            value={collateral.marketValue}
+                                            data-field="marketValue"
+                                            onchange={handleInputChange}
+                                            required>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input
+                                            type="text"
+                                            label="Assign Percentage"
+                                            value={collateral.assignPercentage}
+                                            data-field="assignPercentage"
+                                            onchange={handleInputChange}
+                                            required>
+                                        </lightning-input>
+                                     </lightning-layout-item>-->
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Build up area" type="number" step="0.01"
+                                            value={collateral.areaOfPlot}
+                                            data-field="areaOfPlot"
+                                            onchange={handleInputChange}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Carpet Area of Residential Unit (sq. m)" type="text"
+                                            value={collateral.carpetArea}
+                                            data-field="carpetArea"
+                                            onchange={handleInputChange}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="RERA Registration Number" type="text"
+                                            value={collateral.reraRegNumber}
+                                            data-field="reraRegNumber"
+                                            onchange={handleInputChange}
+                                            pattern="^[a-zA-Z0-9]{15,20}$"
+                                            message-when-pattern-mismatch="RERA Registration Number must be 15-20 alphanumeric characters">
+                                        </lightning-input>
+                                    </lightning-layout-item>
+                                    <template if:true={showReraEndDate}>
+                                        <lightning-layout-item size="6" padding="around-small">
+                                            <lightning-input
+                                                type="date"
+                                                label="RERA End Date"
+                                                data-field="reraEndDate"
+                                                value={collateral.reraEndDate}
+                                                onchange={handleInputChange}
+                                                required>
+                                            </lightning-input>
+                                        </lightning-layout-item>
+                                    </template>
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox label="GPL Flag"
+                                            options={gplFlagOptions}
+                                            value={collateral.gplFlag}
+                                            data-field="gplFlag"
+                                            onchange={handleInputChange}
+                                            required>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-combobox label="Property Insurance Flag"
+                                            options={insuranceFlagOptions}
+                                            value={collateral.insuranceFlag}
+                                            data-field="insuranceFlag"
+                                            onchange={handleInputChange}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Primary/Secondary" type="text"
+                                            value={collateral.primarySecondary}
+                                            data-field="primarySecondary"
+                                            disabled></lightning-input>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Document Value" type="Integer"
+                                        value={collateral.docVal} data-field="docVal" required="true"
+                                        onchange={handleInputChange}></lightning-input>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </fieldset>
+                             <fieldset class="custom-fieldset">
+                                <legend class="fieldset-legend">Cost of Property</legend>
+                                <lightning-layout multiple-rows="true" pull-to-boundary="small">
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Cost of Plot" type="number" formatter="currency"
+                                            value={collateral.costOfPlot}
+                                            data-field="costOfPlot"
+                                            step="0.01"
+                                            onchange={handleInputChange}
+                                             onblur={handleBlur}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Improvement Cost" type="number" formatter="currency"
+                                            value={collateral.improvementCost}
+                                            data-field="improvmentCost"
+                                            step="0.01"
+                                            onchange={handleInputChange}
+                                             onblur={handleBlur}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Agreement Value" type="number" formatter="currency"
+                                            value={collateral.agreementValue}
+                                            data-field="agreementValue"
+                                            step="0.01"
+                                            onchange={handleInputChange}
+                                             onblur={handleBlur}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Society Charges/Insurance" type="number" formatter="currency"
+                                            value={collateral.societyCharges}
+                                            data-field="societyCharges"
+                                            step="0.01"
+                                            onchange={handleInputChange}
+                                             onblur={handleBlur}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Electricty Board / Municiple Charges" type="number" formatter="currency"
+                                            value={collateral.electricityMunicipleCharges}
+                                            data-field="electricityMunicipleCharges"
+                                            step="0.01"
+                                            onchange={handleInputChange}
+                                             onblur={handleBlur}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Architects / Contractors Estimate" type="number" formatter="currency"
+                                            value={collateral.architectsEstimate}
+                                            data-field="architectsEstimate"
+                                            step="0.01"
+                                            onchange={handleInputChange}
+                                             onblur={handleBlur}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Amenities as permitted by Policy" type="number" formatter="currency"
+                                            value={collateral.amenitiesPermitPolicy}
+                                            data-field="amenitiesPermitPolicy"
+                                            step="0.01"
+                                            onchange={handleInputChange}
+                                             onblur={handleBlur}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Others" type="number" formatter="currency"
+                                            value={collateral.others}
+                                            data-field="others"
+                                            step="0.01"
+                                            onchange={handleInputChange}
+                                             onblur={handleBlur}>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <lightning-input label="Total Property Cost ( Sum of all)" type="number" formatter="currency"
+                                            value={collateral.totalPropertyCost}
+                                            data-field="totalPropertyCost"
+                                            disabled>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </fieldset>
+                            <template if:true={creditStage}>
+                                <template if:true={isHLUser}>
+                                    <fieldset class="custom-fieldset extended-fields-credit">
+                                        <legend class="fieldset-legend">Extended Fields Credit</legend>
+                                        <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                                            <lightning-layout-item size="6" padding="around-small">
+                                                <lightning-input label="Building Name" type="text" formatter="currency"
+                                                    value={collateral.buildingName}
+                                                    data-field="buildingName"
+                                                    maxlength="100"
+                                                    onchange={handleInputChange}>
+                                                </lightning-input>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="6" padding="around-small">
+                                                <lightning-input label="Street Name" type="text" formatter="currency"
+                                                    value={collateral.streetName}
+                                                    data-field="streetName"
+                                                    maxlength="100"
+                                                    onchange={handleInputChange}>
+                                                </lightning-input>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="6" padding="around-small">
+                                                <lightning-combobox label="Mortgage Type"
+                                                    options={mortgageTypeOptions}
+                                                    value={collateral.mortgageType}
+                                                    data-field="mortgageType"
+                                                    onchange={handleInputChange}>
+                                                </lightning-combobox>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="6" padding="around-small">
+                                                <lightning-input
+                                                    type="text"
+                                                    label="Pocket"
+                                                    value={collateral.pocket}
+                                                    data-field="pocket"
+                                                    maxlength="100"
+                                                    onchange={handleInputChange}>
+                                                </lightning-input>
+                                            </lightning-layout-item>
+
+                                            <lightning-layout-item size="6" padding="around-small">
+                                                <lightning-input label="Survey Number / Gat No."
+                                                    type="text"
+                                                    maxlength="100"
+                                                    value={collateral.surveyNumber}
+                                                    data-field="surveyNumber"
+                                                    onchange={handleInputChange}>
+                                                </lightning-input>
+                                            </lightning-layout-item>
+
+                                            <lightning-layout-item size="6" padding="around-small">
+                                                <lightning-input label="Plot number#"
+                                                    type="text"
+                                                    maxlength="100"
+                                                    value={collateral.plotNumber}
+                                                    data-field="plotNumber"
+                                                    onchange={handleInputChange}>
+                                                </lightning-input>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="6" padding="around-small">
+                                                <lightning-input label="House/Flat/Shop/Unit No "
+                                                    type="text"
+                                                    maxlength="100"
+                                                    value={collateral.housePlotNo}
+                                                    data-field="housePlotNo"
+                                                    onchange={handleInputChange}>
+                                                </lightning-input>
+                                            </lightning-layout-item>
+                                            <template if:true={isHLUser}>
+                                                <lightning-layout-item size="6" padding="around-small">
+                                                    <lightning-combobox label="Asset Type"
+                                                        options={assetTypeOptions}
+                                                        value={collateral.assetType}
+                                                        data-field="assetType"
+                                                        onchange={handleInputChange}
+                                                        required>
+                                                    </lightning-combobox>
+                                                </lightning-layout-item>
+                                            </template>
+                                        </lightning-layout>
+                                    </fieldset>
+                                </template>
+                                <template if:false={isHLUser}>
+                                    <fieldset class="custom-fieldset extended-fields-credit">
+                                        <legend class="fieldset-legend">Extended Fields Credit</legend>
+                                        <lightning-layout multiple-rows="true" pull-to-boundary="small">
+                                            <lightning-layout-item size="6" padding="around-small">
+                                                <lightning-input label="Building Name" type="text" formatter="currency"
+                                                    value={collateral.buildingName}
+                                                    data-field="buildingName"
+                                                    maxlength="100"
+                                                    onchange={handleInputChange}
+                                                    required>
+                                                </lightning-input>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="6" padding="around-small">
+                                                <lightning-input label="Street Name" type="text" formatter="currency"
+                                                    value={collateral.streetName}
+                                                    data-field="streetName"
+                                                    maxlength="100"
+                                                    onchange={handleInputChange}
+                                                    required>
+                                                </lightning-input>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="6" padding="around-small">
+                                                <lightning-combobox label="Mortgage Type"
+                                                    options={mortgageTypeOptions}
+                                                    value={collateral.mortgageType}
+                                                    data-field="mortgageType"
+                                                    onchange={handleInputChange}
+                                                    required>
+                                                </lightning-combobox>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="6" padding="around-small">
+                                                <lightning-input
+                                                    type="text"
+                                                    label="Pocket"
+                                                    value={collateral.pocket}
+                                                    data-field="pocket"
+                                                    maxlength="100"
+                                                    onchange={handleInputChange}
+                                                    required>
+                                                </lightning-input>
+                                            </lightning-layout-item>
+
+                                            <lightning-layout-item size="6" padding="around-small">
+                                                <lightning-input label="Survey Number / Gat No."
+                                                    type="text"
+                                                    maxlength="100"
+                                                    value={collateral.surveyNumber}
+                                                    data-field="surveyNumber"
+                                                    onchange={handleInputChange} required>
+                                                </lightning-input>
+                                            </lightning-layout-item>
+
+                                            <lightning-layout-item size="6" padding="around-small">
+                                                <lightning-input label="Plot number#"
+                                                    type="text"
+                                                    maxlength="100"
+                                                    value={collateral.plotNumber}
+                                                    data-field="plotNumber"
+                                                    onchange={handleInputChange}
+                                                    required>
+                                                </lightning-input>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="6" padding="around-small">
+                                                <lightning-input label="House/Flat/Shop/Unit No "
+                                                    type="text"
+                                                    maxlength="100"
+                                                    value={collateral.housePlotNo}
+                                                    data-field="housePlotNo"
+                                                    onchange={handleInputChange}
+                                                    required>
+                                                </lightning-input>
+                                            </lightning-layout-item>
+                                            <template if:true={isHLUser}>
+                                            <lightning-layout-item size="6" padding="around-small">
+                                                <lightning-combobox label="Asset Type"
+                                                    options={assetTypeOptions}
+                                                    value={collateral.assetType}
+                                                    data-field="assetType"
+                                                    onchange={handleInputChange}
+                                                    required>
+                                                </lightning-combobox>
+                                            </lightning-layout-item>
+                                            </template>
+                                        </lightning-layout>
+                                    </fieldset>
+                                </template>
+                            </template>
+                            <template if:true={isHLUser}>
+                            <template if:true={showDocumentList}>
+                                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                                    <thead>
+                                    <tr>
+                                        <th scope="col">Document Name</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={documentList} for:item="doc">
+                                            <tr key={doc.Id}>
+
+                                                <td>{doc.documentName}</td>
+                                                <td>
+                                                    <!-- Upload icon -->
+                                                    <span style="display:inline-flex;">
+                                                           <lightning-file-upload
+                                                            name="fileUploader"
+                                                            accept={acceptedFormats}
+                                                            record-id={loanId}
+                                                            data-id={doc.documentId}
+                                                            onuploadfinished={handleUploadFinished}>
+                                                        </lightning-file-upload>
+                                                        <div class="uploaded-view" style="padding-top: 15%;margin-left: 3%;">
+                                                             <template if:true={doc.isUploaded}>
+                                                          <lightning-button-icon
+                                                            icon-name="utility:preview"
+                                                            alternative-text="Preview"
+                                                            title="Preview"
+                                                            onclick={previewHandler}
+                                                            data-id={doc.contentId}
+                                                            data-name={doc.documentName}>
+                                                        </lightning-button-icon>
+                                                        </template>
+                                                        </div>
+                                                    </span>
+
+
+
+                                                    <!-- Preview icon only if uploaded -->
+
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </template>
+                            </template>
+                            <template if:true={showCollateralMatchesScreen}>
+                                <fieldset class="custom-fieldset">
+                                <legend class="fieldset-legend">Match Collateral Found</legend>
+                                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                                            <thead>
+                                                <tr>
+                                                    <th></th>
+                                                    <th>UPID</th>
+                                                    <th>Loan Refrence</th>
+                                                    <th>Market Value</th>
+                                                    <th>Match PERCENTAGE</th>
+                                                    <th>Assign PERCENTAGE</th>
+                                                    <th>Collateral Type</th>
+                                                    <th>MATCH TYPE</th>
+                                                    <th>ADDRESS</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <template for:each={records} for:item="rec">
+                                                    <tr key={rec.UPID}>
+                                                        <!-- Radio-style checkbox -->
+                                                        <td>
+                                                            <input
+                                                                type="radio"
+                                                                name="upid"
+                                                                value={rec.upid}
+                                                                checked={rec.isSelected}
+                                                                onclick={handleRadioClickUPID} />
+                                                        </td>
+                                                        <td>{rec.upid}</td>
+                                                         <td>{rec.loanRefrence}</td>
+                                                         <td>{rec.marketValue}</td>
+                                                        <td>{rec.cscore}</td>
+                                                        <td>{rec.ASSIGNMENT_PERCENTAGE}</td>
+                                                        <td>{rec.collateralType}</td>
+                                                        <td class="wrap-text">{rec.matchType}</td>
+                                                       <td style="text-align: left;">
+                                                            <template if:true={showAPFfields}>
+                                                                APF No: {rec.apfNumber}<br/>
+                                                                Tower: {rec.tower}<br/>
+                                                                Floor No: {rec.floorNumber}<br/>
+                                                                Unit No: {rec.unitNumber}
+                                                            </template>
+                                                            <template if:false={showAPFfields}>
+                                                                Address Line 1: {rec.address1}<br/>
+                                                                Address Line 2: {rec.address2}<br/>
+                                                                Address Line 3: {rec.address3}<br/>
+                                                                City: {rec.city}<br/>
+                                                                State: {rec.state}<br/>
+                                                                Pincode: {rec.picode}
+                                                            </template>
+                                                        </td>
+
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
+                                <template if:true={error}>
+                                    <p class="error">{error}</p>
+                                </template>
+                                </fieldset>
+                                <lightning-input
+                                type="text"
+                                label="Reason for not selecting Collateral UPID"
+                                value={reason}
+                                disabled={isReasonDisabled}
+                                onchange={handleReasonChange}>
+                            </lightning-input>
+                        </template>
+                        </template>
+                        <template if:true={msgScreen}>
+                            <div class={messageContainerClass}>
+                                <template if:true={error}>
+                                    <div class="slds-text-align_center slds-text-color_error slds-text-heading_medium">
+                                        Assign UPID API failed
+                                    </div>
+                                </template>
+                                <template if:false={error}>
+                                    <div class="slds-text-align_center slds-text-color_success slds-text-heading_medium">
+                                        UPID assigned successfully
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+
+    <template if:true={showApplicantList}>
+        <div class="apf-checkbox-list">
+            <label class="section-label">Select Collateral Owner / Property Owner</label>
+
+            <template for:each={applicantOptions} for:item="option">
+                <div key={option.value} class="checkbox-item">
+                    <input
+                        type="checkbox"
+                        value={option.value}
+                        data-value={option.value}
+                        checked={option.checked}
+                        onchange={handleCheckboxChange}
+                    />
+                    <label class="applicant-label">{option.label}</label>
+                </div>
+            </template>
+        </div>
+    </template>
+
+    <template if:true={showConfirmation1}>
+  <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading" class="slds-modal slds-fade-in-open">
+    <div class="slds-modal__container">
+      <header class="slds-modal__header modal-header">
+        <h2 id="modal-heading1" class="slds-text-heading_medium">Confirm Duplicate Check</h2>
+      </header>
+      <div class="slds-modal__content slds-p-around_medium">
+        You have already checked for duplicates. Do you want to check again?
+      </div>
+      <footer class="slds-modal__footer footer-section">
+        <button class="slds-button slds-button_neutral" onclick={handleConfirmNo}>No</button>
+        <button class="slds-button slds-button_brand" onclick={handleConfirmYes}>Yes</button>
+      </footer>
+    </div>
+  </section>
+  <div class="slds-backdrop slds-backdrop_open"></div>
+</template>
+
+
+      </template>
+                </div>
+<footer class="slds-modal__footer modal-footer-right footer-section">
+
+   <!-- <template if:true={isEditMode}>
+        <lightning-button variant="brand" label="Save" onclick={handleSave} class="footer-btn"></lightning-button>
+        <lightning-button variant="brand" label="Check Duplicate" onclick={handleDedupe} class="footer-btn"></lightning-button>
+        <template if:true={showAssignUPID}>
+            <lightning-button variant="brand" label="Assign UPID" onclick={handleAssignUPID} class="footer-btn"></lightning-button>
+        </template>
+        <lightning-button variant="destructive" label="Close" onclick={handleClose} class="footer-btn"></lightning-button>
+    </template>-->
+
+    <!--<template if:false={isEditMode}>-->
+        <template if:false={isPropertyIdentified}>
+
+                <template if:true={showAPFSelection}>
+                    <button class="slds-button slds-button_brand initiate-button footer-btn"
+                            onclick={handleNext}>
+                        Next
+                    </button>
+                </template>
+
+                <template if:true={showBackButton}>
+                    <button class="slds-button slds-button_neutral footer-btn"
+                            onclick={handleBack}>
+                        Back
+                    </button>
+                </template>
+
+                <template if:true={showDedupeAPI}>
+                    <button class="slds-button slds-button_brand initiate-button footer-btn"
+                            onclick={handleDedupe}  disabled={isDedupeLoading}>
+                        Check Duplicate
+                    </button>
+                </template>
+
+                <template if:true={showAssignUPID}>
+                    <button class="slds-button slds-button_brand initiate-button footer-btn"
+                            onclick={handleAssignUPID}>
+                        Assign UPID
+                    </button>
+                </template>
+
+                <template if:true={showNext}>
+                    <button class="slds-button slds-button_brand initiate-button footer-btn"
+                            onclick={handleFinalNext}>
+                        Next
+                    </button>
+                </template>
+
+                <template if:true={showApplicantList}>
+                    <button class="slds-button slds-button_brand initiate-button footer-btn"
+                            onclick={handleSave}>
+                        Save
+                    </button>
+                </template>
+ </template>
+                <button class="slds-button slds-button_destructive footer-btn"
+                        onclick={handleClose}>
+                    Close
+                </button>
+
+
+                <!-- </template>-->
+
+</footer>
+
+            </div>
+        </section>
+
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+  </div>
+  <template lwc:if={isVisible}>
+   <template if:true={collateralList.length}>
+    <div class="slds-box slds-m-around_small" style="overflow: auto;">
+
+       <h3 class="slds-text-heading_small slds-m-bottom_small" style="font-weight: bold; text-align: left;">
+  Related Collateral
+</h3>
+
+            <table class="table-class slds-box slds-table slds-table_bordered slds-table_cell-buffer slds-table_striped">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Collateral Name</th>
+
+                        <!-- Show Project Name column only if getter returns true -->
+                        <template if:true={showProjectName}>
+                            <th class="tdBorderHeader" scope="col" style="text-align: center;">Project Name</th>
+                        </template>
+
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Address Line 1</th>
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Address Line 2</th>
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Address Line 3</th>
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Pincode</th>
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">State</th>
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Update Collateral</th>
+                        <template if:true={isHLUser}>
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Delink Collateral</th>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={collateralList} for:item="collateral">
+                        <tr key={collateral.Id}>
+                            <td class="tdBorderHeader" style="text-align: center;">{collateral.name}</td>
+
+                            <!-- Only show Project Name cell if getter is true -->
+                            <template if:true={showProjectName}>
+                                <td class="tdBorderHeader" style="text-align: center;">{collateral.projName}</td>
+                            </template>
+
+                            <td class="tdBorderHeader" style="text-align: center;">{collateral.address1}</td>
+                            <td class="tdBorderHeader" style="text-align: center;">{collateral.address2}</td>
+                            <td class="tdBorderHeader" style="text-align: center;">{collateral.address3}</td>
+                            <td class="tdBorderHeader" style="text-align: center;">{collateral.pincode}</td>
+                            <td class="tdBorderHeader" style="text-align: center;">{collateral.state}</td>
+                            <td class="tdBorderHeader" style="text-align: center;">
+                                <template if:false={disabledCmp}>
+                                    <lightning-button
+                                    class="edit-cta"
+                                    variant="neutral"
+                                    label="Edit"
+                                    title="Edit"
+                                    data-id={collateral.Id}
+                                    onclick={handleEdit}>
+                                </lightning-button>
+                                </template>
+
+                            </td>
+                             <template if:true={isHLUser}>
+                             <td class="tdBorderHeader" style="text-align: center;">
+                                <template lwc:if={showDelinkButton}>
+                                    <lightning-button
+                                        class="delink-cta"
+                                        variant="neutral"
+                                        label="Delink"
+                                        title="Delink"
+                                        data-id={collateral.Id}
+                                        onclick={handleDelink}>
+                                    </lightning-button>
+                                </template>
+                            </td>
+                            </template>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+
+    </div>
+</template>
+
+
+</template>
+
+    <template if:true={showConfirmation}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header modal-header">
+                    <h2 class="slds-text-heading_medium">Confirmation Screen</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p>Are you sure you want to delink this collateral from this Loan Application? You should check eligibility again after delink.</p>
+                </div>
+                <footer class="slds-modal__footer slds-text-align_center footer-section">
+                    <button class="slds-button slds-button_brand negative-cta" style="margin-right: 7px; width: 100px;" onclick={handleNegative}>No</button>
+                    <button class="slds-button slds-button_brand positive-cta" style="width: 100px;" onclick={handlePositive}>Yes</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Preview Modal -->
+    <template if:true={showPreviewModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Preview Document - {selectedDocName}</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p>Preview functionality goes here for {selectedDocId}</p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Close" onclick={closeModal}></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={showProjectName}>
+        <lightning-accordion allow-multiple-sections-open>
+            <lightning-accordion-section name="Technical" label="Technical">
+                <c-hl_technical-evalvation record-id={recordId}></c-hl_technical-evalvation>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </template>
+   <div style="display: flex; justify-content: flex-end; margin-top: 2%; padding-bottom: 2%;">
+                        <button class="SaveButton slds-button slds-button_brand"
+                            onclick={handleNavigateNext}>Next</button>
+                    </div>
+  </div>
+</template>

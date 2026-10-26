@@ -1,0 +1,146 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import 'c/cssLibrary';
+
+/* ----------------- Dark Theme (matches bsaOneViewCmp / customerNegotiationScreen) ----------------- */
+:host {
+    display: block;
+    color: #ffffff;
+
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #0e1c30;
+    --dt-border: #33455e;
+     --dt-positive: #8b5cf6;
+    --dt-negative: #16283f;
+
+    --slds-c-input-color-background: var(--dt-input-bg);
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: var(--dt-border);
+    --slds-c-input-label-color: #ffffff;
+
+    /* Tabset styling hooks - cross into lightning-tabset's internal shadow DOM */
+    --slds-c-tabs-item-text-color: rgba(255, 255, 255, 0.7);
+    --slds-c-tabs-item-text-color-hover: #ffffff;
+    --slds-c-tabs-item-text-color-selected: #ffffff;
+    --slds-c-tabs-item-color-background-selected: transparent;
+    --slds-c-tabs-line-color-border-active: var(--dt-header-bg);
+    --slds-c-tabs-color-background: var(--dt-panel-bg);
+
+    /* Global SLDS2 surface/border tokens - lightning-datatable's row/column
+       divider lines (and other base-component chrome) read the shared
+       neutral/border ramp when no component-specific hook is set. Without
+       overriding --slds-g-color-border-base-1 the dividers keep rendering
+       in the default light gray even after the background/text colors are
+       themed dark. */
+    --slds-g-color-neutral-base-95: var(--dt-panel-bg);
+    --slds-g-color-border-base-1: var(--dt-border);
+    --slds-g-color-border-base-2: var(--dt-border);
+    --slds-g-color-border: var(--dt-border);
+}
+
+.bsa-page {
+    background-color: var(--dt-bg);
+}
+
+.bsa-datatable .slds-line-height_reset .slds-cell-fixed .slds-th__action {
+    background: var(--dt-header-bg) !important;
+    color: #ffffff !important;
+}
+
+.bsa-datatable tbody {
+    font-weight: 400;
+}
+
+/* ----------------- Tables ----------------- */
+table, th, td {
+    border-color: var(--dt-border) !important;
+}
+
+.slds-table {
+    background-color: var(--dt-panel-bg) !important;
+    color: #ffffff !important;
+}
+
+.slds-table td {
+    background-color: var(--dt-panel-bg) !important;
+    color: #ffffff !important;
+    border-color: var(--dt-border) !important;
+}
+
+/* ____GenAI: Generated code starts here - bsaCmp derived-analysis table
+   markup consolidated from per-cell inline styles into shared classes,
+   matching the emiTrackCmp convention (bold header cells, regular-weight
+   body cells, driven by --dt-* tokens instead of scattered inline styles).____ */
+.bsa-table {
+    border: 1px solid var(--dt-border);
+}
+
+.bsa-table-header-row {
+    background: var(--dt-header-bg);
+    color: #ffffff;
+    text-align: left;
+}
+
+.bsa-table-header-cell {
+    font-weight: 700;
+    border-width: 1px;
+    color: #ffffff;
+}
+
+.bsa-table-title-cell {
+    width: 20%;
+}
+
+.bsa-table-label-cell {
+    font-weight: 700;
+    text-align: left;
+    word-wrap: break-word;
+    white-space: normal;
+    border-width: 1px;
+}
+
+.bsa-table-value-cell {
+    font-weight: 400;
+    border-width: 1px;
+    white-space: break-spaces;
+    text-align: right;
+}
+/* ____GenAI: Generated code ends here____ */
+
+/* ----------------- CTA Buttons (theme parity with the rest of the app) ----------------- */
+.save-button,
+.save-button.slds-button_brand,
+.save-button.slds-button_neutral {
+    border: none;
+    padding: 1px 0px;
+    background-color: #1467eb !important;
+    color: #ffffff !important;
+    /* border-radius: 1.25rem !important; */
+    font-weight: 500;
+}
+
+.cancel-button,
+.cancel-button.slds-button_brand,
+.cancel-button.slds-button_neutral {
+    border: none;
+    padding: 1px 0px;
+    background-color: var(--dt-negative) !important;
+    color: #ffffff !important;
+    /* border-radius: 1.25rem !important; */
+    font-weight: 500;
+}
+
+.slds-modal__header,
+.slds-modal__footer,
+.header-section,
+.footer-section {
+    background-color: var(--dt-header-bg) !important;
+    color: #ffffff !important;
+}
+
+.slds-modal__content {
+    background-color: var(--dt-panel-bg) !important;
+    color: #ffffff !important;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

@@ -1,0 +1,73 @@
+<template>
+
+    <lightning-card title="Existing Loan Exposures">
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>UCIC</th>
+                        <th>LAN No</th>
+                        <th>Full Name</th>
+                        <th>CIF NO</th>
+                        <th>Original Amount</th>
+                        <th>Installment Amount</th>
+                        <th>Outstanding Balance</th>
+                        <th>Loan Date</th>
+                        <th>Loan Status</th>
+                        <th>Entity</th>
+                        <th>DPD String</th>
+                        <th>DOB/DOI</th>
+                        <th>Loan Type</th>
+                        <th>No of bounce</th>
+                        <th>Booking Date</th>
+                        <th>Total Disbursement</th>
+                        <th>Applicant</th>
+  
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <template for:each={existingLoans} for:item="loan">
+
+                         <tr key={loan.lan_no}>
+                            <td>{loan.ucic}</td>
+                            <td>{loan.lan_no}</td>
+                            <td>{loan.full_name}</td>
+                            <td>{loan.cif}</td>
+                            <!-- <td>{loan.original_amount}</td> -->
+                            <td>{loan.original_amount_formatted}</td>
+                            <!-- <td>{loan.installment_amount}</td> -->
+                            <td>{loan.installment_amount_formatted}</td>
+                            <!-- <td>{loan.outstanding_amount}</td> -->
+                            <td>{loan.outstanding_amount_formatted}</td>
+                            <td>{loan.loan_date}</td>
+                            <td>{loan.loan_status}</td>
+                            <td>{loan.entity}</td>
+                            <td>{loan.dpd_string}</td>
+                            <td>{loan.dob}</td>
+                            <td>{loan.loan_type}</td>
+                            <td>{loan.no_of_bounce}</td>
+                            <td>{loan.booking_date}</td>
+                            <!-- <td>{loan.undisbursed_amount}</td> -->
+                            <td>{loan.undisbursed_amount_formatted }</td>
+                            <td>{loan.applicant}</td>
+                </tr>
+
+                    </template>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </lightning-card>
+
+</template>

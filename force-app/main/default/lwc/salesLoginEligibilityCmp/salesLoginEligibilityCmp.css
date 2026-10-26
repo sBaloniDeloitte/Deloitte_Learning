@@ -1,0 +1,117 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+:host {
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+}
+.slds-form-element__label {
+    color: #ffffff !important;
+}
+
+.custom-table-container {
+    width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #1467eb;
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.custom-table th,
+.custom-table td {
+    border: 1px solid #1467eb;
+    padding: 10px;
+    font: inherit;
+    color: inherit;
+}
+
+.custom-table th {
+    background-color: #f7f7f7;
+    text-align: center;
+    font-weight: bold;
+}
+
+.custom-table td {
+    vertical-align: top;
+}
+
+.highlight-color {
+    color: #1467eb;
+    font-weight: bold;
+}
+
+.button-shadow {
+    width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    border: 1px solid #1467eb;
+}
+
+.center-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.previous-button {
+    padding: 0px 8px;
+    border: none;
+    display: inline-block;
+    text-align: center;
+    color: white; 
+    font-size: 16px; 
+    background-color: #2a2f45;
+    align-content: center;
+    cursor: pointer; 
+    transition: background-color 0.3s ease;   
+    width: 140px;
+    border-color: #2a2f45;
+}
+.button-green {
+    background-color: #1467eb;
+    color: white;
+    border-color: #1467eb;
+    font-size: 11px;
+    min-width: 100px;
+    font-weight: 600;
+    display: inline-block;
+    font-size: 0.875rem;
+    line-height: 1.600rem;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 0 0.75rem;
+    border-radius: 0.25rem;
+    
+    
+    text-decoration: none;
+ 
+}
+
+.save-button {
+    background-color: #1467eb !important;
+    color: #ffffff !important;
+    border-color: #1467eb !important;
+    font-weight: 600;
+}
+
+.SaveButton {
+    background-color: #1467eb !important;
+    color: #ffffff !important;
+    border-color: #1467eb !important;
+    font-weight: 600;
+}
+
+.footer-section {
+    position: sticky; 
+    bottom: 0;
+}

@@ -1,0 +1,141 @@
+<template>
+     <span class="styleContainer"></span>
+    <div class="slds-card">
+        <div class="container port-home-container">
+
+            <!-- Progress Indicator -->
+            <!-- <div class="process-header">
+
+                <span class={downloadStepClass}>
+                    1. Download Template
+                </span>
+
+                <span class="separator">➜</span>
+
+                <span class={uploadStepClass}>
+                    2. Upload File
+                </span>
+
+                <span class="separator">➜</span>
+
+                <span class={submitStepClass}>
+                    3. Submit Import
+                </span>
+
+            </div> -->
+
+            <!-- STEP 1 -->
+            <template if:true={showHomeDownloadbutton}>
+                <div class="step-card">
+
+                    <div class="step-badge">01</div>
+
+                    <div class="step-title">
+                        Download CSV Template
+                    </div>
+
+                    <div class="step-description">
+                        Download the CSV template and populate it with lead details before proceeding.
+                    </div>
+
+                    <div class="button-group">
+                        <template if:true={showDownloadButton}>
+                            <lightning-button
+                            variant="neutral"
+                            class="dark-btn"
+                            label="Download CSV Format"
+                            icon-name="utility:download"
+                            onclick={downloadSampleCSV}>
+                        </lightning-button>
+                        </template>
+
+                        <button
+                            class="slds-button red-button"
+                            onclick={nextAction}>
+                            Next
+                        </button>
+                    </div>
+
+                </div>
+            </template>
+
+            <!-- STEP 2 -->
+            <template if:true={showHomeUploadbutton}>
+                <div class="step-card">
+
+                    <div class="step-badge">02</div>
+
+                    <div class="step-title">
+                        Upload Completed CSV File
+                    </div>
+
+                    <div class="step-description">
+                        Upload the completed CSV file containing the lead records.
+                    </div>
+
+                    <div class="button-group">
+
+                        <template if:true={showExportBtn}>
+                            <lightning-button
+                                variant="neutral"
+                                class="dark-btn"
+                                label="Bulk Import Lead"
+                                icon-name="utility:upload"
+                                onclick={openbulkImport}>
+                            </lightning-button>
+                        </template>
+
+                        <button
+                            class="slds-button red-button rounded-btn"
+                            onclick={backAction}>
+                            Back
+                        </button>
+
+                    </div>
+
+                    <template if:true={bulkImports}>
+                        <div class="upload-section">
+                            <lightning-file-upload
+                                label="Upload CSV File"
+                                name="fileUploader"
+                                accept={acceptedFormats}
+                                onuploadfinished={handleUploadFinished}>
+                            </lightning-file-upload>
+                        </div>
+                    </template>
+
+                    <!-- STEP 3 -->
+                    <template if:true={showSubmitButton}>
+
+                        <div class="submit-section">
+
+                            <div class="step-badge">03</div>
+
+                            <div class="step-title submit-title">
+                                File Uploaded Successfully
+                            </div>
+
+                            <div class="step-description">
+                                Click Submit to start the bulk lead import process.
+                            </div>
+
+                            <div class="button-group">
+
+                                <button
+                                    class="slds-button red-button rounded-btn"
+                                    onclick={submitCsv}>
+                                    Submit
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </template>
+
+                </div>
+            </template>
+
+        </div>
+    </div>
+</template>

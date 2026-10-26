@@ -1,0 +1,56 @@
+.button-green {
+    background-color: #9bbf56;
+    color: white;
+    border-color: #9bbf56;
+    font-size: 11px;
+    min-width: 100px;
+    font-weight: 500;
+    display: inline-block;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.600rem;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 0 0.75rem;
+    border-radius: 0.25rem;
+   
+   
+    text-decoration: none;
+ 
+}
+
+.button-red {
+    background-color: #dc387e;
+    color: white;
+    border-color: #dc387e;
+    font-size: 11px;
+    min-width: 100px;
+    font-weight: 500;
+    display: inline-block;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.600rem;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 0 0.75rem;
+    border-radius: 0.25rem;
+   
+   
+    text-decoration: none;
+    
+}
+.slds-m-around_xx-small {
+    margin: 4px; /* Optional: Add consistent spacing */
+}
+.custom-combobox .slds-combobox__input {
+    height: 32px; /* Match button height */
+    line-height: 1.6rem; /* Match button line height */
+    padding: 0 0.75rem; /* Match button padding */
+    font-size: 0.875rem; /* Match button font size */
+    border-radius: 0.25rem; /* Match button border-radius */
+    font-weight: 500; /* Match button font weight */
+}

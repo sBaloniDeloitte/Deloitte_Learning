@@ -1,0 +1,60 @@
+<!--_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________-->
+<template>
+    <div class="fcu-panel">
+        <div class="fcu-status-fields">
+            <div class="fcu-section-title">Overall Status</div>
+            <lightning-record-edit-form
+                record-id={recordId}
+                object-api-name="Opportunity"
+                onsuccess={handleFieldsSaveSuccess}
+                onerror={handleFieldsSaveError}>
+                <lightning-messages></lightning-messages>
+                <lightning-input-field field-name="FCU_Status__c"></lightning-input-field>
+                <lightning-input-field field-name="Overall_FCU_Verification__c"></lightning-input-field>
+                <lightning-button
+                    class="save-fields-button"
+                    variant="brand"
+                    type="submit"
+                    label="Save">
+                </lightning-button>
+            </lightning-record-edit-form>
+        </div>
+
+        <div class="fcu-action-row">
+            <c-application-verification-actions-cmp
+                record-id={recordId}
+                initiate-f-c-u-action="true">
+            </c-application-verification-actions-cmp>
+        </div>
+
+        <div class="fcu-section-title">Application Verifications</div>
+        <div class="fcu-table-wrapper">
+            <template lwc:if={hasVerifications}>
+                <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th scope="col">Name</th>
+                            <th scope="col">Applicant</th>
+                            <th scope="col">Stage</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={verifications} for:item="rec">
+                            <tr key={rec.Id}>
+                                <td>
+                                    <a href={rec.Id} data-record-id={rec.Id}>{rec.name}</a>
+                                </td>
+                                <td>{rec.applicantName}</td>
+                                <td>{rec.stage}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </template>
+            <template lwc:else>
+                <div class="fcu-empty-state">No Application Verification records found.</div>
+            </template>
+        </div>
+    </div>
+</template>
+<!--__________________________GenAI: Generated code ends here______________________________-->

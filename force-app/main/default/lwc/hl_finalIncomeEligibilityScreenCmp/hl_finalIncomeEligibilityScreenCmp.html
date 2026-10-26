@@ -1,0 +1,226 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-17-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:true={productDetails}>
+        <lightning-accordion active-section-name={activeSections} onsectiontoggle={handleSectionToggle}>
+            <template for:each={productDetails} for:item="prod" for:index="index">
+                <lightning-accordion-section 
+                    key={prod.productId} 
+                    name={prod.productId} 
+                    label={prod.productName}>
+                    
+                    <!-- Outer wrapper -->
+                    <div style="padding: 10px 15px;">
+
+                        <!-- Checkbox row (full width, does NOT affect table position) -->
+                        <template if:true={isHLUser}>
+                            <template if:true={showCalculator}>
+                            <div style="margin-bottom: 10px;">
+                                <lightning-input 
+                                    type="checkbox" 
+                                    onchange={handleCheckboxChange} 
+                                    label="Show Income Calculator Values"
+                                    value={checkVal}
+                                    checked={checkVal}>
+                                </lightning-input>
+                            </div>
+                            </template>
+                        </template>
+
+                        <!-- Your original grid + table untouched -->
+                        <div class="slds-grid slds-align_absolute-left">
+                            <table style="width: 400px; margin-top: 20px;">
+                                <tr>
+                                    <td style="padding-right: 15px; width: 250px; border-color: white !important;">
+                                        <lightning-combobox 
+                                            label="Eligibility"
+                                            placeholder="Eligibility Type"
+                                            variant="label-hidden"
+                                            options={eligibilityTypeOptions}
+                                            onchange={onChangeInput}
+                                            value={selectedEligibilityType}
+                                            required="true"
+                                            disabled={disableEligibilityType}>
+                                        </lightning-combobox>
+                                    </td>
+
+                                    <td style="border-color: rgb(239, 224, 224) !important;">
+                                        
+                                            <lightning-button 
+                                                style="background-color:rgb(219, 222, 230);"
+                                                variant="brand" 
+                                                label="Fetch Eligibility"
+                                                title="Fetch Eligibility"
+                                                class="slds-m-right_small"
+                                                data-id={prod.productName}
+                                                data-name={prod.productId}
+                                                disabled={disableActions}
+                                                onclick={handleFetchEligibility}>
+                                            </lightning-button>
+                                        
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+
+                    <template if:true={showProductData}>
+                        <div class="slds-grid slds-wrap slds-scrollable_x" style="padding: 10px 15px;">
+                            <table class="slds-table" style="width:fit-content;">
+                                <thead>
+                                    <tr>
+                                        <th class="color-theme" style="width: 260px;">Particulars</th>
+                                        <th class="color-theme" style="width: 165px;">User Input</th>
+                                        <th class="color-theme" style="width: 165px;">BRE Output</th>
+                                        <th class="color-theme" style="width: 165px;">Sanction Output</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={fieldDetails} for:item="iterPar">
+                                        <template if:true={iterPar.isSectionSeperator}>
+                                            <tr key={iterPar.fieldLabel}>
+                                                <td class="color-theme"></td>
+                                                <td class="color-theme"></td>
+                                                <td class="color-theme" colspan="2" style="text-align: center;">{iterPar.sectionName}</td>
+                                            </tr>
+                                        </template>
+                                        <tr key={iterPar.fieldLabel}>
+                                            <td class="col-width-100" style="text-align: left;">{iterPar.fieldLabel}</td>
+                                            <td class="col-width-100" style="text-align: left;">
+                                                <template if:true={iterPar.userInput.isEditable}>
+                                                    <template if:true={iterPar.userInput.isPickListField}>
+                                                        <lightning-combobox data-name={iterPar.userInput.fieldApiName} data-label={iterPar.fieldLabel} value={iterPar.userInput.fieldApiVal} disabled={disableActions} options={plrOptions} onchange={handleUserInput} variant="label-hidden"></lightning-combobox>
+                                                    </template>
+                                                    <template if:false={iterPar.userInput.isPickListField}>
+                                                        <template if:true={iterPar.allowFractional}>
+                                                            <lightning-input variant="label-hidden" type ="Number" step="0.01" data-name={iterPar.userInput.fieldApiName} data-label={iterPar.fieldLabel} value={iterPar.userInput.fieldApiVal} onfocusout={handleUserInput} disabled={disableActions}></lightning-input>
+                                                        </template>
+                                                        <template if:false={iterPar.allowFractional}>
+                                                            <lightning-input variant="label-hidden" type ="Number" data-name={iterPar.userInput.fieldApiName} data-label={iterPar.fieldLabel} value={iterPar.userInput.fieldApiVal} onfocusout={handleUserInput} disabled={disableActions}></lightning-input>
+                                                        </template>
+                                                    </template>
+                                                </template>
+                                                <template if:false={iterPar.userInput.isEditable}>
+                                                    {iterPar.userInput.fieldApiVal}
+                                                </template>
+                                            </td>
+                                            <td class="col-width-100" style="text-align: left;">{iterPar.breOutput.fieldApiVal}</td>
+                                            <td class="col-width-100" style="text-align: left;">
+                                                <template if:true={iterPar.sanctionTermOutput.isEditable}>
+                                                    <template if:true={iterPar.allowFractional}>
+                                                        <lightning-input variant="label-hidden" type ="Number" step="0.01" data-name={iterPar.sanctionTermOutput.fieldApiName} data-label={iterPar.fieldLabel} value={iterPar.sanctionTermOutput.fieldApiVal} onfocusout={handleSaveField} disabled={disableActions}></lightning-input>
+                                                    </template>
+                                                    <template if:false={iterPar.allowFractional}>
+                                                        <lightning-input variant="label-hidden" type ="Number" data-name={iterPar.sanctionTermOutput.fieldApiName} data-label={iterPar.fieldLabel} value={iterPar.sanctionTermOutput.fieldApiVal} onfocusout={handleSaveField} disabled={disableActions}></lightning-input>
+                                                    </template>
+                                                </template>
+                                                <template if:false={iterPar.sanctionTermOutput.isEditable}>
+                                                    {iterPar.sanctionTermOutput.fieldApiVal}
+                                                </template>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <table class="slds-table" style="width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th style="width: 18%; background-color: #5bb6e3;">Applicant Name</th>
+                                    <th style="width: 10%; background-color: #5bb6e3;">Score Card Key</th>
+                                    <th style="width: 24%; background-color: #5bb6e3;">Score Card Name</th>
+                                    <th style="width: 8%; background-color: #5bb6e3;">Score Card Score</th>
+                                    <th style="width: 24%; background-color: #5bb6e3;">Risk Card Name</th>
+                                    <th style="width: 8%; background-color: #5bb6e3;">Risk Card Score</th>
+                                    <th style="width: 8%; background-color: #5bb6e3;">Risk Category</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={scoreCardList} for:item="card">
+                                    <tr key={card.Id}>
+                                        <td style="text-align: left;">{card.Name}</td>
+                                        <td>{card.Score_Card_Key__c}</td>
+                                        <td>{card.Score_Card_Name__c}</td>
+                                        <td>{card.Score_Card_Score__c}</td>
+                                        <td>{card.Risk_Card_Name__c}</td>
+                                        <td>{card.Risk_Score__c}</td>
+                                        <td>{card.KYC_Risk_Categorisation_Category__c}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+
+                </lightning-accordion-section>
+            </template>
+        </lightning-accordion>
+    </template>
+
+    <template lwc:if={isLoading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+        </lightning-spinner>
+    </template>
+
+     <template if:true={showError}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="min-width: 80%;">
+                <header class="slds-modal__header" style="background-color: skyblue; font-weight:500;">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Please review the
+                        following errors</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <template for:each={errorList} for:item="listVariable" for:index="index">
+                        <div style="color: red;" key={listVariable}>
+                            {listVariable.errorMsg}
+                        </div>
+                    </template>
+                </div>
+                <div class="slds-modal__footer"
+                    style="background-color: skyblue;border-radius: 0px 0px 5px 5px;text-align: center;min-height: 30px;">
+                    <button class="slds-button slds-button_brand previous-button"
+                        style="width: 140px;background-color: #dc387e;font-weight: 500;"
+                        onclick={hideModalBox}>Cancel</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+     <template if:true={errorFields}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="min-width: 80%;">
+                <header class="slds-modal__header" style="background-color: skyblue; font-weight:500;">
+                    <h2 id="modal-heading-05" class="slds-text-heading_medium slds-hyphenate">Please review the
+                        following errors</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-5">
+                    <template for:each={errorDetailsBRE} for:item="listVariable" for:index="index">
+                        <div style="color: red;" key={listVariable}>
+                            {listVariable}
+                        </div>
+                    </template>
+                </div>
+                <div class="slds-modal__footer"
+                    style="background-color: skyblue;border-radius: 0px 0px 5px 5px;text-align: center;min-height: 30px;">
+                    <button class="slds-button slds-button_brand previous-button"
+                        style="width: 140px;background-color: #dc387e;font-weight: 500;"
+                        onclick={hideModalBoxBre}>Cancel</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+      <template if:true={isHLUser}>
+        <c-product-table record-id={recordId} from-final-income="true"> </c-product-table>
+    </template> 
+
+</template>

@@ -1,0 +1,156 @@
+<template>
+    
+    <!-- <div style="margin: 10px 10px 0px 10px !important;"> -->
+        <template lwc:if={isLoaded}>
+            <div class="slds-box slds-theme_default">
+                <template lwc:if={isMobile}>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <template if:true={showDisposition}>
+                                    <td style="width:5%; margin-bottom: 2%;">
+                                        <div style="margin-bottom: 2%;">
+                                            <lightning-combobox 
+                                                class="custom-combobox"
+                                                required 
+                                                label="Select Disposition" 
+                                                value={selectedDisposition}  
+                                                options={dispositionOption} 
+                                                onchange={handleChangeDisposition}>
+                                            </lightning-combobox>
+                                        </div>
+                                    </td>
+                                </template>
+                                <td style="width:50%;">
+                                    <template for:each={buttonTrackers} for:item="buttonTracker">
+                                        <button 
+                                            key={buttonTracker.name} 
+                                            value={buttonTracker.value} 
+                                            data-id={buttonTracker.name} 
+                                        class={buttonTracker.buttonClass} 
+                                            style="margin-left:5.5px;margin-top: 1%;"
+                                            onclick={updateRecordStatus}>
+                                            {buttonTracker.name}
+                                        </button>
+                                    </template>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </template>
+
+                <template lwc:else>
+                    <table>
+                        <tbody>
+                            <tr>
+                                <template if:true={showDisposition}>
+                                    <td style="width:5%;vertical-align: middle;">
+                                        <lightning-combobox required  style="margin-bottom: 2%;" label="Select Disposition" value={selectedDisposition}  options={dispositionOption} onchange={handleChangeDisposition} ></lightning-combobox>
+                                    </td>
+                                </template>
+                                <td style="width:50%; vertical-align: middle;padding-top: 15px;">
+                                    <template for:each={buttonTrackers} for:item="buttonTracker">
+                                        <button 
+                                            key={buttonTracker.name} 
+                                            value={buttonTracker.value} 
+                                            class={buttonTracker.buttonClass} 
+                                            style="margin-left:5.5px;margin-top: 1%;margin-bottom: 1%;"
+                                            onclick={updateRecordStatus}>
+                                            {buttonTracker.name}
+                                        </button>
+                                    </template>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </template>
+            </div>
+        </template>
+
+        <template lwc:if={isReassignModalOpen}>
+            <c-assignment-screen header-title={assignHeader} button-label={assignButtonlabel} record-id={recordId} is-modal-open={isReassignModalOpen} oncloseappraiser={closeReassingModal}></c-assignment-screen>
+        </template>
+     
+        <template if:true={openRemark}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header" style="background-color: skyblue; color:black;font-weight:500;">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeRemarkModal}>
+                            <lightning-icon icon-name="utility:close"
+                               alternative-text="close"
+                               variant="error"
+                               size="small" ></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                         </button>
+                        <div class="slds-text-align_center">
+                            <h2 slot="title" style="font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px" class="slds-text-heading_medium slds-hyphenate">Add Remarks</h2>
+                        </div>
+                    </header>
+                    <div class="slds-modal__content" style="max-height: 70% !important;overflow: auto;">
+                        <div class="slds-m-vertical_medium slds-p-around_small">
+                            <label class="slds-form-element__label" for="horizontal-form-element-id-14"><strong><abbr class="slds-required" title="required">* </abbr>Remarks</strong></label>
+                            <lightning-textarea variant="label-hidden" value={comment} onchange={handleRemark} max-length="32768"></lightning-textarea>
+                        </div>
+                    </div>
+                    <footer class="slds-modal__footer" style="border: revert; background-color:skyblue;">
+                        <div class="slds-align_absolute-center">
+                            <button class="slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color:#dc387e;color: white;border-color: skyblue;font-weight: 500;" onclick={closeRemarkModal}>Cancel</button>
+                            <button class="slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color: #9bbf56;color: white;border-color: skyblue;font-weight: 500;" onclick={updateApproval}>Proceed</button>
+                        </div>
+                    </footer>
+               </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+        <template if:true={showConfirmationMessage}>
+            <div class="slds-modal slds-fade-in-open">
+                <c-confirmation-screen confirm-message={confirmMessage} positive-label="Yes" negative-label="No" onnegativeclick={closeConfirmationModal} onpositiveclick={updateDisposition}></c-confirmation-screen>
+            </div>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+           
+           
+        </template>  
+        
+        <template if:true={showRemarks}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header" style="background-color: skyblue; color:black;font-weight:500;">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeDispositionModal}>
+                            <lightning-icon icon-name="utility:close"
+                               alternative-text="close"
+                               variant="error"
+                               size="small" ></lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                         </button>
+                        <div class="slds-text-align_center">
+                            <h2 slot="title" style="font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px" class="slds-text-heading_medium slds-hyphenate">Add Disposition</h2>
+                        </div>
+                    </header>
+                    <div class="slds-modal__content" style="max-height: 70% !important;overflow: auto;">
+                        <div class="slds-m-vertical_medium slds-p-around_small">
+                            <!-- <lightning-combobox required label="Select Disposition" value={selectedDisposition}  options={dispositionOption} onchange={handleChangeDisposition} ></lightning-combobox> -->
+                             <template if:true={showRemarks}> 
+                                <label class="slds-form-element__label" for="horizontal-form-element-id-14"><strong><abbr class="slds-required" title="required">* </abbr>Remarks</strong></label>
+                                <lightning-textarea variant="label-hidden" value={comment} onchange={handleRemark}></lightning-textarea>
+                            </template>   
+                            
+                        </div>
+                    </div>
+                    <footer class="slds-modal__footer" style="border: revert; background-color:skyblue;">
+                        <div class="slds-align_absolute-center">
+                            <button class="slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color:#dc387e;color: white;border-color: skyblue;font-weight: 500;" onclick={closeDispositionModal}>Cancel</button>
+                            <button class="slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color: #9bbf56;color: white;border-color: skyblue;font-weight: 500;" onclick={updateDisposition}>Proceed</button>
+                        </div>
+                    </footer>
+               </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+        <template if:true={showQueryModal}>
+            <c-query-module-child-cmp record-id={recordId} onclosequerymodal={closeQueryModule} width-percentage =80
+            onclosequerymodalwithdata={closeQueryModuleWithData} document-checklist-id={currentDocCheckListId} 
+             onassignedquery={handleUpdateQueryAssignment} onclosemodal={handleCloseModal} module-name="Legal Module" ></c-query-module-child-cmp>
+        </template>
+    <!-- </div> -->
+</template>

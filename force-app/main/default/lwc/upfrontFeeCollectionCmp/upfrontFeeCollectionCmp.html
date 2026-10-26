@@ -1,0 +1,216 @@
+<template>
+    <div class="table-container" style="margin-bottom: 12px;">
+        <div style="margin-top: 5px; text-align: left; font-size: 14px; font-style:oblique; font-weight:bold">
+            1. The below table is a calculator to help with the final amount calculation that will be entered in the upfront fee receipt.
+        </div>
+         <div style="margin-top: 5px; text-align: left; font-size: 14px; font-style:oblique; font-weight:bold">
+            2. You can only create one receipt at a time.
+        </div>
+        <table class="custom-table main-fee-table">
+            <thead>
+                <tr>
+                    <th style="width: 12%;">Product</th>
+                    <th style="width: 12%;">Charge Type</th>
+                    <th style="width: 12%;">Remaining Amount (Including Tax)</th>
+                    <th style="width: 16%;">To be Collected (Including Tax)</th>
+                    <th style="width: 12%;">GST</th>
+                    <th style="width: 16%;">To be Collected (Excluding Tax)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={displayRows} for:item="row">
+                    <tr key={row.id}>
+                        <td>{row.productName}</td>
+                        <td>{row.name}</td>
+                        <td>{row.finalAmount}</td>
+                        <td>
+                            <lightning-input
+                                class="hideInput"
+                                variant="bare"
+                                type="number"
+                                min="0"
+                                step="0.01"
+                                value={row.tobeCollectedInTax}
+                                data-id={row.id}
+                                onblur={handleAmountBlur}
+                                onkeydown={handleNumberValidation}
+                                placeholder="Enter amount (Incl. tax)">
+                            </lightning-input>
+                            <template if:true={row.calcLoading}>
+                                <lightning-spinner size="x-small" alternative-text="Calculating GST"></lightning-spinner>
+                            </template>
+                        </td>
+                        <td>{row.gstAmount}</td>
+                        <td>{row.tobeCollectedExTax}</td>
+                    </tr>
+                </template>
+                <tr class="total-row">
+                    <td colspan="2"></td>
+                    <td>Total *</td>
+                    <td>{totalIncludingTaxSum}</td>
+                    <td>{totalGstSum}</td>
+                    <td>{totalExcludingTaxSum}</td>
+                </tr>
+                <tr class="total-row">
+                    <td colspan="2"></td>
+                    <td>Total Fee to be deducted *</td>
+                    <td>{totalIncludingTaxSum}</td>
+                    <td colspan="2"></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <!-- Receipt Creation Box -->
+    <div class="receipt-box">
+        <lightning-card title="RECEIPT CREATION">
+            <div class="button-bar" style="padding-bottom: 5px;">
+                <lightning-button
+                    label="Add Row"
+                    variant="brand"
+                    title="Add Row"
+                    onclick={handleAddRow}>
+                </lightning-button>
+            </div>
+            <!-- Receipt Table -->
+            <div class="receipt-scroll">
+            <table class="custom-table receipt-table">
+                <thead>
+                    <tr>
+                        <th>Sr. No.</th>
+                        <th>Actual fee collected</th>
+                        <th>Sub Receipt Mode</th>
+                        <th>Receipt No</th>
+                        <th>Transaction Reference</th>
+                        <!--<th>Upload Receipt</th>
+                        <th>File Preview</th> will take this up soon-->
+                        <th>Remarks</th>
+                        <th>Initiate API</th>
+                        <th>Status</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={upfrontRows} for:item="row" for:index="index">
+                        <tr key={row.id}>
+                            <td class="center">{row.item}</td>
+                            <td class="center">
+                                <lightning-input
+                                    type="number" value={row.actualFee}
+                                    data-id={row.id} data-index={index}
+                                    disabled={row.isdisabled}
+                                    data-field="actualFee"
+                                    onchange={handleCellChange}
+                                    placeholder="Enter collected Fee..">
+                                </lightning-input>
+                            </td>
+                            <td class="center">
+                                <lightning-select value={row.subReceiptMode}
+                                    data-id={row.id} data-index={index}
+                                    disabled={row.isdisabled}
+                                    data-field="subReceiptMode"
+                                    options={subReceiptModeOptions}
+                                    onchange={handleCellChange}
+                                    placeholder="Select Sub Receipt Mode">
+                                </lightning-select>
+                            </td>
+                            <td class="center">
+                                <lightning-input
+                                    type="text" value={row.receiptNo}
+                                    data-id={row.id} data-index={index}
+                                    disabled={row.isdisabled}
+                                    data-field="receiptNo"
+                                    onchange={handleCellChange}
+                                    placeholder="Receipt No..">
+                                </lightning-input>
+                            </td>
+                            <td class="center">
+                                <lightning-input
+                                    type="text" value={row.transactionRef}
+                                    data-id={row.id} data-index={index}
+                                    disabled={row.isdisabled}
+                                    data-field="transactionRef"
+                                    onchange={handleCellChange}
+                                    placeholder="Transaction Reference..">
+                                </lightning-input>
+                            </td>
+                            <!--<td class="center">
+                                <lightning-file-upload
+                                    variant="label-hidden"
+                                    name="fileUploader"
+                                    data-id={row.id}
+                                    disabled={row.isdisabled}
+                                    onuploadfinished={handleUploadFinished}
+                                    data-record-id={index}
+                                    accept=".pdf"
+                                    multiple>
+                                </lightning-file-upload>
+                            </td>
+                            <td>
+                                <table class="file-preview-table">
+                                    <tbody>
+                                        <template for:each={row.files} for:item="iterFile">
+                                            <tr key={iterFile.contentDocId}>
+                                                <td>
+                                                    <a href="javascript:void(0);" data-id={iterFile.contentDocId}
+                                                        onclick={handlePreview}>
+                                                        {iterFile.fileName}
+                                                    </a>
+                                                </td>
+                                                <td class="center">
+                                                    <lightning-icon 
+                                                        icon-name="utility:preview"
+                                                        data-id={iterFile.contentDocId}
+                                                        alternative-text="preview"
+                                                        title="Doc Preview"
+                                                        onclick={handlePreview}
+                                                        size="small">
+                                                    </lightning-icon>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </td>-->
+                            <td class="center">
+                                <lightning-textarea
+                                    value={row.remarks}
+                                    data-id={row.id}
+                                    data-index={index}
+                                    disabled={row.isdisabled}
+                                    data-field="remarks"
+                                    onchange={handleCellChange}
+                                    placeholder="Please enter Remarks..">
+                                </lightning-textarea>
+                            </td>
+                            <td class="center">
+                                <lightning-button
+                                    class="initiate-api-btn"
+                                    variant="neutral"
+                                    label="Initiate API"
+                                    disabled={row.isdisabled}
+                                    onclick={handleInitiateApi}
+                                    data-id={row.id}
+                                    data-index={index}>
+                                </lightning-button>
+                            </td>
+                            <td class="center">{row.status}</td>
+                            <td class="center">
+                                <lightning-button-icon
+                                    icon-name="utility:delete"
+                                    variant="destructive"
+                                    alternative-text="Delete"
+                                    title="Delete"
+                                    onclick={handleDelete}
+                                    data-id={row.id}
+                                    data-index={index}
+                                    disabled={row.isdisabled}>
+                                </lightning-button-icon>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        </lightning-card>
+    </div>
+</template>

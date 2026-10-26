@@ -1,0 +1,239 @@
+@import "c/cssLibrary";
+
+/* ----------------- Dark Theme (matches salesLoginCollateralDetailCmp) ----------------- */
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-placeholder-text-color: #8a99b3;
+    --slds-c-input-label-color: #ffffff;
+
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+    --slds-c-combobox-listbox-color-background: #16283f;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+    --slds-c-combobox-label-color: #ffffff;
+
+    --slds-c-select-color-background: #16283f;
+    --slds-c-select-text-color: #ffffff;
+    --slds-c-select-color-border: #33455e;
+
+    --slds-c-textarea-color-background: #16283f;
+    --slds-c-textarea-text-color: #ffffff;
+    --slds-c-textarea-color-border: #33455e;
+
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-positive: #1467eb;
+    --dt-negative: #db2929;
+}
+
+/* Belt-and-braces alongside the :host hooks above - covers base component
+   versions that read ::part() rather than the styling hooks. Height is
+   pinned equal across single-line fields; textarea is excluded on purpose. */
+lightning-input::part(input),
+lightning-select::part(select),
+lightning-combobox::part(input) {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+    height: 2.25rem !important;
+}
+
+lightning-textarea::part(textarea) {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+lightning-input[disabled]::part(input) {
+    background-color: var(--dt-panel-bg) !important;
+    color: #8a99b3 !important;
+}
+
+.icon-size-css {
+    padding: 0.2rem;
+}
+.approve-icon {
+    background-color: #00bc00;
+}
+.add-doc-button {
+    background: #5bb6e3;
+    color: rgb(255, 255, 255);
+}
+/* .sticky-col{
+    z-index: 2; background: white
+} */
+.first-col{
+    position: sticky;
+    left: 0;
+    background-color: #f3f3f3;
+    z-index: 2;
+}
+.second-col{
+    position: sticky;
+    background-color: #f3f3f3;
+    z-index: 2;
+}
+
+
+.slds-scrollable_x {
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 70vh; /* Allow vertical scrolling */
+     max-width: 100%;
+    border: 1px solid var(--dt-border) !important;
+    padding: 1rem 1.5rem !important;
+    background-color: var(--dt-bg) !important;
+    border-radius: 0.75rem;
+}
+
+.slds-scrollable_y {
+    overflow-x: auto;
+    overflow-y: auto;
+    max-height: 70vh; /* Allow vertical scrolling */
+     max-width: 100%;
+    border: 1px solid var(--dt-border) !important;
+    padding: 1rem 1.5rem !important;
+    background-color: var(--dt-bg) !important;
+    border-radius: 0.75rem;
+}
+
+.slds-table {
+    width: max-content;           /* Allow table to expand horizontally */
+    min-width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: auto;           /* Columns adjust based on content */
+    font-size: 0.9rem;
+    background-color: var(--dt-panel-bg) !important;
+    border-radius: 0.75rem;
+    overflow: hidden;
+    margin: 0 0.5rem;
+}
+
+/* ===== Header Cells ===== */
+.slds-table thead th {
+    top: 0;
+    background-color: var(--dt-header-bg) !important;
+    color: #ffffff !important;
+    text-align: center;
+    font-weight: 600;
+    border: 1px solid var(--dt-border) !important;
+    padding: 12px 18px;
+    min-width: 150px;             /* Increased column width */
+    white-space: nowrap;
+    width: max-content;
+    z-index: 3;
+}
+
+/* ===== Table Body Cells ===== */
+.slds-table td {
+    border: 1px solid var(--dt-border) !important;
+    color: #ffffff !important;
+    padding: 12px 18px;
+    text-align: left;
+    vertical-align: middle;
+    white-space: normal;
+    word-wrap: break-word;
+    min-width: 150px;             /* Increased width for better spacing */
+    width: max-content;
+}
+
+/* CTA button colors for the nested lightning-button internals are set via
+   injectCustomStyles() in the .js file, scoped under .covenant-dark-theme -
+   plain CSS here can't reach inside lightning-button's own shadow tree. */
+.slds-modal {
+z-index: 9001 !important;
+width: auto;
+}
+
+.slds-modal__container {
+transform: translate(-50%, -50%) !important;
+position: fixed !important;
+top: 50% !important;
+left: 50% !important;
+margin: 0 !important;
+}
+
+/* Ensure modal content is scrollable */
+.slds-modal__content {
+overflow-y: auto !important;
+max-height: calc(80vh - 140px) !important;
+width: auto;
+}
+
+/* Document viewer specific styles for Split View */
+.split-view-document-container {
+height: 100% !important;
+overflow: hidden !important;
+width: auto;
+}
+
+.split-view-document-viewer {
+height: calc(100% - 60px) !important;
+overflow: auto !important;
+}
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+.slds-modal__container {
+max-width: 98vw !important;
+width: 98vw !important;
+min-height: 90vh !important;
+height: 90vh !important;
+}
+
+.slds-grid .slds-col {
+    width: 100% !important;
+    margin-bottom: 1rem;
+}
+/* Make table respect column widths */
+.slds-table {
+    table-layout: fixed !important; /* fixed layout allows narrow columns */
+}
+
+/* Checkbox column shrink */
+.checkbox-col {
+    min-width: 20px !important;
+    max-width: 20px !important;
+    width: 20px !important;
+    padding: 0 !important;
+    text-align: center !important;
+}
+
+/* Override global th/td min-width for checkbox column */
+.slds-table thead th.checkbox-col,
+.slds-table td.checkbox-col {
+    min-width: 20px !important;
+    max-width: 20px !important;
+    width: 20px !important;
+    padding: 0 !important;
+}
+
+/* Optional: shrink padding for checkbox input itself */
+.checkbox-col lightning-input {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 16px !important;
+    height: 16px !important;
+}
+
+
+}

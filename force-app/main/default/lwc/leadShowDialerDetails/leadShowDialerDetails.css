@@ -1,0 +1,60 @@
+@import "c/cssLibrary";
+
+/* ____GenAI: card was hard-coded to a white background via inline style
+   (removed from the .html) which visually clashed with the dark theme used
+   across the rest of the Lead Creation flow. Restyled to the same dark navy
+   card look as the other right-rail child components - visual only, no
+   markup/handlers/fields removed or renamed____ */
+.dialer-card {
+    background-color: #0e1c30;
+    color: #e8edf5;
+}
+
+.dialer-card .header-section {
+    background: transparent;
+}
+
+.dialer-card .header-title {
+    color: #ffffff !important;
+}
+
+.dialer-card h2 {
+    color: #cfd8e6;
+}
+
+.dialer-card .slds-table td {
+    color: #e8edf5;
+}
+
+/* ____GenAI: "Call Count" field turned pure white on the dark card - per
+   explicit request it now uses the same dark-blue field styling as the rest
+   of the form (background + text only, field stays disabled/read-only,
+   no value/behavior change) ____ */
+.call-count-input {
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-color-background-disabled: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-text-color-disabled: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-label-color: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+}
+
+.btn-col {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+
+@media (min-width: 1024px) {
+    .btn-col {
+        margin-top: 1.15rem;
+    }
+}
+
+@media (max-width: 1023px) {
+    .btn-col {
+        margin-top: 2.1rem;
+    }
+}

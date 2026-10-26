@@ -1,0 +1,80 @@
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </template>
+    <template if:false={hideButton}>
+    <template if:false={userHavePsFcuSamplerPermissionSet}>
+    <template lwc:if={showAMLCheck}>
+    <template if:false={showInitiateButton}>
+        <div style="padding-left: 1%;">
+            <button class="disabled-button slds-button slds-button_brand">Initiate AML Check</button>
+        </div>
+    </template>
+    <template if:true={showInitiateButton}>
+        <div style="padding-left: 1%;">
+            <button class="save-button slds-button slds-button_brand" onclick={hanldeInitaite}>Initiate AML Check</button>
+        </div>        
+    </template>
+    </template>
+    </template>
+    </template>
+    <div class="slds-scrollable_x aml-table-wrap" style="overflow: auto;padding: 1%;">
+        <table class="slds-table" style=" border-color: #2a2f45">
+            <thead>
+                <tr class="slds-line-height_reset">
+                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45;width: 10%;" scope="col" colspan="1">
+                        Select				
+                    </th>                   
+                    
+                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45;width: 30%;" scope="col" colspan="1">
+                        Applicant Name				
+                    </th>
+                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45;width: 20%;" scope="col" colspan="1">
+                        API Status					
+                    </th>
+                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45;width: 20%;" scope="col" colspan="1">
+                        AML Status Code			
+                    </th>
+                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45;width: 20%;" scope="col" colspan="1">
+                        View Report						
+                    </th>
+                    
+                </tr>
+            </thead>
+            
+            <tbody>
+                <template for:each={applicantAMLCheckRecords} for:item="record">
+                    <tr key={record.applicantId}>
+                        <template if:true={record.isInitiated}>
+                            <td style=" border-color: #2a2f45">
+                            <lightning-input class = "comboBoxSelect" type="checkbox" label=""  
+                            checked={record.isInitiated} disabled></lightning-input>
+                            </td>
+                        </template>
+                        <template if:false={record.isInitiated}>
+                            <td style=" border-color: #2a2f45">
+                            <lightning-input name="singleSelectGroup" class = "comboBoxSelect" type="checkbox" label="" data-id={record.applicantId}
+                            onchange={handleChildExistingChange}></lightning-input>
+                            </td>
+                        </template>
+                        <td style=" border-color: #2a2f45">{record.applicantCompName}</td>
+                        <td style=" border-color: #2a2f45">{record.apiStatus}</td>
+                        <td style=" border-color: #2a2f45">{record.amlStatus}</td>
+                        <template if:true={record.isCompleted}>
+                            <td style=" border-color: #2a2f45"><lightning-icon data-id={record.docId} icon-name="utility:preview" alternative-text="preview" title="preview" onclick={downloadAMLReport}></lightning-icon></td>
+                        </template>
+                        <template if:false={record.isCompleted}>
+                            <td style=" border-color: #2a2f45">
+                                <div style="padding: 5%;"></div>
+                            </td>
+                        </template>
+                        
+                    </tr>
+                </template> 
+                    
+               
+            </tbody>
+        </table>
+    </div>
+</template>

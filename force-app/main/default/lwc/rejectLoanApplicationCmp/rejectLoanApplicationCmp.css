@@ -1,0 +1,300 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import "c/cssLibrary";
+
+/* ----------------- Dark Theme Palette -----------------
+   Matches the modal colour scheme used on salesLoginCollateralDetailsCmp
+   so this reject-loan-application pop-up looks consistent with the rest
+   of the flow. */
+:host {
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-text: #ffffff;
+    --dt-text-muted: #cfd8e6;
+    --dt-placeholder: #8a99b3;
+    --dt-accordion: #1589ee;
+    --dt-positive: #1467eb;
+    --dt-negative: #db2929;
+    --dt-purple: #8d29db;
+
+    /* dual-listbox (multi-select) styling hooks - option background stays
+       the same as the listbox background in every state (default, hover,
+       focus, selected) so nothing stands out with a different shade. */
+   /* Dual Listbox - make BOTH Available and Selected panels dark */
+--slds-c-listbox-color-background: var(--dt-input-bg);
+--slds-c-listbox-color-border: var(--dt-border);
+--slds-c-listbox-text-color: var(--dt-text);
+
+--slds-c-listbox-option-color-background: var(--dt-input-bg);
+--slds-c-listbox-option-color-background-hover: var(--dt-input-bg);
+--slds-c-listbox-option-color-background-focus: var(--dt-input-bg);
+--slds-c-listbox-option-color-background-selected: var(--dt-input-bg);
+
+--slds-c-listbox-option-text-color: var(--dt-text);
+--slds-c-listbox-option-text-color-hover: var(--dt-text);
+--slds-c-listbox-option-text-color-focus: var(--dt-text);
+--slds-c-listbox-option-text-color-selected: var(--dt-text);
+    
+}
+
+/* ----------------- Modal layout fix -----------------
+   The quick-action host page gives the outer .slds-modal section a
+   full-viewport height, and without an explicit flex layout the
+   browser stretches/centers the header+content+footer as a block
+   inside that tall section - leaving empty space above the header and
+   below the footer instead of pinning them to the top/bottom of the
+   dialog. Pinning the container to a fixed flex column (header/footer
+   fixed size, content scrollable) fixes this. Layout only - no markup,
+   fields, or button behavior changed. */
+.slds-modal {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    /* This section is position:fixed and covers the ENTIRE viewport,
+       including the empty flex space around the centered dialog box -
+       which is where the platform's native quick-action close ("X")
+       button sits. That invisible full-screen layer was silently
+       intercepting clicks meant for it. Disabling pointer-events here
+       (and re-enabling them only on our own dialog box below) lets
+       clicks pass through to the native close button while our own
+       Cancel/Save buttons keep working exactly as before. */
+    pointer-events: none !important;
+    /* Dim + blur the page behind the dialog while it's open. This layer
+       already spans the full viewport (see comment above), so adding
+       the overlay/blur here needs no extra markup and keeps the native
+       close-button passthrough (pointer-events:none) intact. */
+    background-color: rgba(4, 9, 20, 0.55) !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.slds-modal__container {
+    background-color: var(--dt-bg);
+    display: flex;
+    flex-direction: column;
+    max-height: 90vh;
+    margin: 0 auto;
+    pointer-events: auto !important;
+    /* cssLibrary.css forces "padding: 3% 0 !important" on this same
+       class, which is exactly the empty dark strip appearing above the
+       header and below the footer. Overriding it back to 0 here (same
+       !important weight, later in the cascade) removes that gap so the
+       header/footer sit flush against the top/bottom of the dialog. */
+    padding: 0 !important;
+}
+
+/* Replaces the inline "min-width: 75%" (previously stretched across
+   almost the whole screen, with a lot of empty space below the fields).
+   Narrower, height-capped box sized to the actual form content; content
+   area still scrolls if needed via the existing .slds-modal__content
+   flex/overflow rule below. */
+.reject-loan-modal-container {
+    width: 660px !important;
+    max-width: 92vw !important;
+    min-width: auto !important;
+    max-height: 80vh !important;
+}
+
+/* "X" close button pinned to the top-right corner of the header. Purely
+   additive UI - it calls the existing handleClose() handler already
+   used by the Cancel button, so behavior is unchanged. */
+.reject-loan-close-btn {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    z-index: 11;
+    --sds-c-icon-color-foreground: #ffffff;
+    --sds-c-icon-color-foreground-default: #ffffff;
+}
+
+.reject-loan-close-btn:hover,
+.reject-loan-close-btn:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+}
+
+.slds-modal__header,
+.slds-modal__footer {
+    flex: 0 0 auto;
+}
+
+.slds-modal__content {
+    background-color: var(--dt-bg);
+    color: var(--dt-text);
+    flex: 1 1 auto;
+    overflow-y: auto;
+}
+
+.header-div {
+    background-image: linear-gradient(135deg, rgb(0, 26, 94) 0%, rgb(0, 48, 135) 55%, rgb(0, 77, 179) 100%) !important;
+    color: var(--dt-text) !important;
+    font-weight: 500;
+    border-bottom: 1px solid var(--dt-border);
+}
+
+.footer-section {
+    background-image: linear-gradient(135deg, rgb(0, 26, 94) 0%, rgb(0, 48, 135) 55%, rgb(0, 77, 179) 100%) !important;
+    border-top: 1px solid var(--dt-border);
+}
+
+/* Save - solid purple ("Start Application" look). Only colors/border
+   changed, label and click handler (handleSave) are untouched. */
+.continue-button.start-app-style-btn {
+    background-color: #8b5cf6 !important;
+    border-color: #8b5cf6 !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+}
+
+.continue-button.start-app-style-btn:hover {
+    background-color: #7c3aed !important;
+    border-color: #7c3aed !important;
+}
+
+/* Cancel - dark navy background with purple outline ("Previous" look).
+   Only colors/border changed, label and click handler (handleClose)
+   are untouched. */
+.previous-button.previous-style-btn {
+    background-color: #16283f !important;
+    border: 1px solid #8b5cf6 !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+}
+
+.previous-button.previous-style-btn:hover {
+    background-color: #1f3550 !important;
+    border-color: #a855f7 !important;
+}
+
+/* lightning-textarea::part(textarea),
+lightning-dual-listbox::part(input),
+lightning-input::part(input),
+lightning-combobox::part(input) {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    color: var(--dt-text) !important;
+} */
+ /* =========================================================
+   Input / Textarea - Dark Theme
+   ========================================================= */
+
+/* lightning-textarea::part(textarea), */
+lightning-dual-listbox::part(input),
+lightning-input::part(input),
+lightning-combobox::part(input) {
+    background-color: #16283f !important;
+    background: #16283f !important;
+    border: 1px solid #33455e !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+.slds-form-element__label,
+.slds-form-element__legend {
+    color: var(--dt-text-muted) !important;
+}
+/* =========================================================
+   Reject Loan - Dual Listbox Dark Theme
+   ========================================================= */
+
+.reject-reasons-listbox {
+    --slds-c-listbox-color-background: #16283f;
+    --slds-c-listbox-color-border: #33455e;
+    --slds-c-listbox-text-color: #ffffff;
+
+    --slds-c-listbox-option-color-background: #16283f;
+    /* Hover/focus/selected now use distinct colors (instead of matching
+       the unselected background) so a highlighted option in "Available"
+       is visibly identifiable before moving it into "Selected". Same
+       purple accent already used for this modal's Save button, for
+       visual consistency. */
+    --slds-c-listbox-option-color-background-hover: #1f3550;
+    --slds-c-listbox-option-color-background-focus: #1f3550;
+    --slds-c-listbox-option-color-background-selected: #8b5cf6;
+
+    --slds-c-listbox-option-text-color: #ffffff;
+    --slds-c-listbox-option-text-color-hover: #ffffff;
+    --slds-c-listbox-option-text-color-focus: #ffffff;
+    --slds-c-listbox-option-text-color-selected: #ffffff;
+}
+/* Detailed Rejection Reason */
+/* =========================================================
+   Detailed Rejection Reason - Dark Theme
+   ========================================================= */
+
+.rejection-textarea-native {
+    width: 100%;
+    min-height: 80px;
+    box-sizing: border-box;
+
+    background-color: #16283f !important;
+    color: #ffffff !important;
+
+    border: 1px solid #33455e !important;
+    border-radius: 6px;
+
+    padding: 10px 12px;
+    font-size: 14px;
+    resize: vertical;
+
+    outline: none;
+}
+
+/* IMPORTANT: Focus state */
+.rejection-textarea-native:focus {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    border: 1px solid #33455e !important;
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+/* Placeholder */
+.rejection-textarea-native::placeholder {
+    color: #8a99b3;
+    opacity: 1;
+}
+
+.rejection-label {
+    display: block;
+    margin-bottom: 4px;
+    color: #cfd8e6;
+    font-weight: 400;
+}
+/* =========================================================
+   Dual Listbox Scrollbar - Dark Blue/Grey Theme
+   ========================================================= */
+
+.reject-reasons-listbox {
+    --slds-c-listbox-color-background: #16283f;
+}
+
+/* Scrollbar track */
+/* .reject-reasons-listbox ::-webkit-scrollbar {
+    width: 10px;
+} */
+
+/* Scrollbar background/track */
+.reject-reasons-listbox ::-webkit-scrollbar-track {
+    background: #0e1c30 !important;
+    border-radius: 6px;
+}
+
+/* Scrollbar handle */
+.reject-reasons-listbox ::-webkit-scrollbar-thumb {
+    background: #536579 !important;
+    border-radius: 6px;
+    border: 2px solid #0e1c30;
+}
+
+/* Scrollbar handle on hover */
+.reject-reasons-listbox ::-webkit-scrollbar-thumb:hover {
+    background: #6f8198 !important;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

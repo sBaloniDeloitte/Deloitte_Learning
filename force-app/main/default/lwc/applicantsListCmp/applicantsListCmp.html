@@ -1,0 +1,46 @@
+<!--_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________-->
+<template>
+    <div class="navy-card">
+        <div class="navy-card-title">
+            Applicants ({applicantCount})
+        </div>
+
+        <template if:true={hasApplicants}>
+            <table class="navy-table">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Applicant Type</th>
+                        <th>Mobile Number</th>
+                        <th>Customer Profile / Constitution</th>
+                        <th>CIBIL Score</th>
+                        <th>Is Key Applicant</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={applicants} for:item="applicant">
+                        <tr key={applicant.Id}>
+                            <td>
+                                <a href="#" data-id={applicant.Id} onclick={handleNameClick}>{applicant.Name}</a>
+                            </td>
+                            <td>{applicant.applicantType}</td>
+                            <td>{applicant.mobileNumber}</td>
+                            <td>{applicant.customerProfile}</td>
+                            <td>{applicant.cibilScore}</td>
+                            <td>
+                                <template if:true={applicant.isKeyApplicant}>
+                                    <lightning-icon icon-name="utility:check" size="x-small"></lightning-icon>
+                                </template>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </template>
+
+        <template if:false={hasApplicants}>
+            <div class="navy-empty">No applicants found for this loan application.</div>
+        </template>
+    </div>
+</template>
+<!--__________________________GenAI: Generated code ends here______________________________-->

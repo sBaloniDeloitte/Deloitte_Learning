@@ -1,0 +1,557 @@
+@import 'c/cssLibrary';
+.sanction-line {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-text: #ffffff;
+    --dt-text-muted: #cfd8e6;
+    --dt-placeholder: #8a99b3;
+
+    --dt-positive: #1467eb;
+    --dt-negative: #db2929;
+
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+
+    --lwc-colorTextLabel: rgb(255,255,255);
+    --lwc-colorTextWeak: rgb(255,255,255);
+    --lwc-formLabelFontSize: 0.875rem;
+    --lwc-colorTextDefault: rgb(255,255,255);
+
+    --slds-c-combobox-listbox-color-background: #16283f;
+    --slds-c-listbox-color-background: #16283f;
+
+    --slds-c-listbox-option-color-background: #16283f;
+    --slds-c-listbox-option-color-background-hover: #1b304d;
+    --slds-c-listbox-option-color-background-focus: #1b304d;
+    --slds-c-listbox-option-color-background-selected: #1b304d;
+    --slds-c-listbox-option-color-background-current: #1b304d;
+
+    --slds-c-listbox-option-text-color: #ffffff;
+    --slds-c-listbox-option-text-color-hover: #ffffff;
+    --slds-c-listbox-option-text-color-focus: #ffffff;
+    --slds-c-listbox-option-text-color-selected: #ffffff;
+    --slds-c-listbox-option-text-color-current: #ffffff;
+    
+    --slds-g-color-neutral-base-10: #ffffff;
+}
+
+.sanction-table-wrapper {
+    overflow: auto;
+
+    /* Firefox */
+    scrollbar-width: 10px;
+
+    /* IE/Edge legacy */
+    -ms-overflow-style: none;
+    scrollbar-width: thin;
+    scrollbar-color: #2a3f5f #09172b;
+}
+
+lightning-input,
+lightning-combobox,
+lightning-textarea {
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextWeak: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+}
+
+.slds-modal__container {
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+.slds-form-element__help {
+    color: #ff8080 !important;
+    font-weight: 500;
+}
+
+lightning-input {
+    --slds-c-input-color-background-disabled: #16283f;
+}
+
+lightning-input::part(input) {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+}
+
+.modal-title {
+    color: white !important;
+}
+
+.slds-modal__content {
+    --lwc-colorTextLabel: #ffffff !important;
+    --lwc-colorTextWeak: #ffffff !important;
+    --lwc-colorTextDefault: #ffffff;
+    background-color: #071628 !important;
+    color: #ffffff !important;
+    font-size: 14px;
+}
+
+lightning-input {
+    --slds-c-input-color-background-disabled: #16283f;
+    --slds-c-input-text-color-disabled: #ffffff;
+}
+
+.sanction-dark-theme {
+    background-color: var(--dt-bg);
+    padding: 1.5rem 1.5rem 3rem;
+    border-radius: 12px;
+}
+
+.save-button {
+    background-color: #7c3aed !important;
+    border: none;
+    color: white !important;
+
+    border-radius: 8px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.otherButton {
+    background-color: #1467EB !important;
+    border-color: #1467EB !important;
+    color: white !important;
+
+    border-radius: 8px;
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+}
+
+.cancel-button {
+    background-color: #16283f !important;
+    border: 1px solid #7c3aed;
+    color: white !important;
+}
+
+.sanction-card .slds-table thead th {
+    background: #1b304d !important;
+    color: white !important;
+
+    font-weight: 700;
+    font-size: 15px;
+
+    padding: 6px 12px;
+
+    border-right: 1px solid #ffffff !important;
+    border-bottom: 1px solid #ffffff !important;
+}
+
+.sanction-card .slds-table {
+    width: 100%;
+    border-collapse: separate;
+    border-radius: 8px;
+    border: 1px solid #ffffff;
+    border-spacing: 0;
+    background: #1b304d;
+    overflow: visible !important;;
+}
+
+.sanction-card .slds-table thead tr:first-child th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.sanction-card .slds-table thead tr:first-child th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.sanction-card .slds-table tbody:last-of-type tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+}
+
+.sanction-card .slds-table tbody:last-of-type tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
+}
+
+.sanction-card .slds-table {
+    border: 1px solid #ffffff;
+}
+.sanction-card .slds-table tbody td {
+    background-color: #1b304d !important;
+    color: white !important;
+
+    border-right: 1px solid #ffffff !important;
+    border-bottom: 1px solid #ffffff !important;
+}
+
+.sanction-card .slds-table tbody tr td {
+    background-color: #1b304d !important;
+}
+
+.sanction-card .slds-table th:last-child,
+.sanction-card .slds-table td:last-child {
+    border-right: 0 !important;
+}
+
+.sanction-card .slds-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+
+    border: 1px solid #ffffff;
+    border-radius: 12px;
+
+    background: #1b304d;
+}
+
+/* remove top */
+.sanction-card .slds-table thead th {
+    border-top: none !important;
+}
+
+/* remove bottom */
+.sanction-card .slds-table tbody tr:last-child td {
+    border-bottom: 0 !important;
+}
+
+.sanction-card {
+    background: #09172b;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,.02),
+        0 8px 24px rgba(0,0,0,.4);
+}
+
+.sanction-card .slds-table {
+    border-radius: 8px;
+}
+
+.slds-table_striped tbody tr:nth-child(odd) td {
+    background-color: var(--dt-panel-bg);
+}
+
+.slds-table_striped tbody tr:nth-child(even) td {
+    background-color: var(--dt-input-bg);
+}
+
+.sanction-card .slds-table tbody tr:hover td {
+    border-top: 1px solid #ffffff !important;
+    border-bottom: 1px solid #ffffff !important;
+}
+
+/* Center content inside Status/Product/Remarks columns */
+.status-cell,
+.product-cell,
+.remarks-cell {
+    vertical-align: middle;
+    text-align: center;
+}
+
+/* Center the combobox */
+.status-cell lightning-combobox {
+    display: block;
+    width: 180px;
+    min-width: 180px;
+    max-width: 180px;
+    margin-top: -20px;
+}
+
+/* Center the product lookup */
+.product-cell {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.product-cell c-search-lookup {
+    display: block;
+    width: 200px;
+    margin: 0 auto;
+}
+
+/* Center remarks box */
+.remarks-cell lightning-textarea {
+    display: block;
+    width: 200px;
+    margin: 0 auto;
+}
+
+.product-cell,
+.remarks-cell {
+    text-align: center !important;
+    vertical-align: middle !important;
+}
+
+.status-cell lightning-combobox,
+.product-cell c-search-lookup,
+.remarks-cell lightning-textarea {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.status-cell {
+    vertical-align: middle !important;
+}
+
+.status-cell lightning-layout {
+    margin-top: -10px;
+}
+
+.sanction-card .slds-table td {
+    vertical-align: middle !important;
+}
+
+.modal-title {
+    color: #ffffff !important;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.slds-form-element__label {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+.slds-required {
+    color: #ff5a5a !important;
+}
+
+lightning-input::part(input),
+lightning-combobox::part(input),
+lightning-textarea::part(textarea) {
+    background-color: var(--dt-input-bg) !important;
+    color: white !important;
+    border: 1px solid var(--dt-border) !important;
+}
+
+.slds-modal__header {
+    background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+    border-bottom: 1px solid #33455e;
+    padding: 1rem;
+}
+
+.slds-required {
+    color: #ff6b6b !important;
+    font-weight: 700;
+}
+
+.slds-modal__close {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+.slds-modal__close lightning-icon {
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+.slds-modal__header h2 {
+    color: white;
+}
+
+.slds-modal__footer {
+    background: #0e1c30;
+    border-top: 1px solid #33455e;
+}
+
+.slds-modal__close lightning-icon {
+    --slds-c-icon-color-foreground-default: #ffffff;
+    background: transparent !important;
+    border: none !important;
+}
+
+c-search-lookup {
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+}
+
+.slds-grid.slds-gutters {
+    margin-top: 16px;
+}
+
+
+lightning-icon {
+    --slds-c-icon-color-foreground-default: #cfd8e6;
+}
+
+/* .edit-icon {
+    --slds-c-icon-color-foreground-default: #4ade80;
+}
+
+.delete-icon {
+    --slds-c-icon-color-foreground-default: #ff5a5a;
+} */
+
+lightning-textarea {
+    --slds-c-textarea-color-background: #16283f;
+    --slds-c-textarea-text-color: #ffffff;
+    --slds-c-textarea-color-border: #33455e;
+}
+
+.remarks-display {
+    width: 200px;
+    margin: 0 auto;
+    min-height: 70px;
+    padding: 8px;
+    background: #16283f;
+    border: 1px solid #33455e;
+    color: white;
+    border-radius: 4px;
+    white-space: pre-wrap;
+    text-align: left;
+}
+
+/*
+.slds-combobox__input {
+    width: 100% !important; 
+    max-width: 150px !important; 
+}*/
+
+.sanction-line::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: black; /* Line color */
+    top: 50%;
+    left: 0;
+    z-index: -1;
+}
+.sanction-row {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.sanction-row::after {
+    content: "";
+    position: absolute;
+    width: 50px; /* Adjust based on your UI */
+    height: 2px;
+    background-color: black;
+    top: 50%;
+    left: 100%;
+    margin-left: 10px; /* Adjust spacing between columns */
+}
+.slds-form-element .slds-dropdown_left .slds-listbox__option_plain {
+	width: 78%;
+}
+
+lightning-input {
+--slds-c-input-text-color-disabled: #ffffff;
+--slds-c-input-color-background-disabled: #16283f;
+--lwc-colorTextLabel: #ffffff;
+}
+
+.custom-label-combobox {
+    --lwc-colorTextLabel: red;
+}
+
+.readonly-field-container {
+    width: 100%;
+}
+
+.readonly-label {
+    display: block;
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.required-mark {
+    color: #ba0517;
+}
+
+.readonly-field {
+    min-height: 38px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 12px;
+
+    background-color: #16283f;
+    border: 1px solid #33455e;
+    border-radius: 4px;
+
+    color: #ffffff;
+}
+
+/* =========================================================
+   Sanction Conditions - Dark Navy Scrollbar
+   ========================================================= */
+
+.slds-scrollable,
+.slds-scrollable_x,
+.slds-scrollable_y,
+.slds-scrollable--x,
+.slds-scrollable--y {
+    scrollbar-width: thin;
+    scrollbar-color: #2a3f5f #0A1524;
+}
+
+/* Chrome / Edge */
+.slds-scrollable::-webkit-scrollbar,
+.slds-scrollable_x::-webkit-scrollbar,
+.slds-scrollable_y::-webkit-scrollbar,
+.slds-scrollable--x::-webkit-scrollbar,
+.slds-scrollable--y::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.slds-scrollable::-webkit-scrollbar-track,
+.slds-scrollable_x::-webkit-scrollbar-track,
+.slds-scrollable_y::-webkit-scrollbar-track,
+.slds-scrollable--x::-webkit-scrollbar-track,
+.slds-scrollable--y::-webkit-scrollbar-track {
+    background: #0A1524 !important;
+    border-radius: 6px;
+}
+
+.slds-scrollable::-webkit-scrollbar-thumb,
+.slds-scrollable_x::-webkit-scrollbar-thumb,
+.slds-scrollable_y::-webkit-scrollbar-thumb,
+.slds-scrollable--x::-webkit-scrollbar-thumb,
+.slds-scrollable--y::-webkit-scrollbar-thumb {
+    background: #2a3f5f !important;
+    border-radius: 6px;
+    border: 2px solid #0A1524;
+}
+
+.slds-scrollable::-webkit-scrollbar-thumb:hover,
+.slds-scrollable_x::-webkit-scrollbar-thumb:hover,
+.slds-scrollable_y::-webkit-scrollbar-thumb:hover,
+.slds-scrollable--x::-webkit-scrollbar-thumb:hover,
+.slds-scrollable--y::-webkit-scrollbar-thumb:hover {
+    background: #3b5578 !important;
+}
+
+.slds-scrollable::-webkit-scrollbar-corner,
+.slds-scrollable_x::-webkit-scrollbar-corner,
+.slds-scrollable_y::-webkit-scrollbar-corner,
+.slds-scrollable--x::-webkit-scrollbar-corner,
+.slds-scrollable--y::-webkit-scrollbar-corner {
+    background: #0A1524 !important;
+}

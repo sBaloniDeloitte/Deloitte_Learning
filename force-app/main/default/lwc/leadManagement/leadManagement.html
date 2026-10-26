@@ -1,0 +1,677 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 06-03-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <div class="page-wrapper">
+
+        <!--<template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+        </template>-->
+    <div class="form-container border-field" style="background-color: white;">
+        <template if:true={showConfirmationPopup}>
+            <c-popup-screen record-id={leadId} show-dedupe-confirmation="true" header-title="Confirmation Screen" confirm-message={confirmationMessage}
+                show-close-btn=true close-btn-text="Close" process-name="Dedupe Confirm" save-btn-text="Continue" show-save-btn="true" onhndleconfirmationyes={handleCallDedupe} onhandleclose={handleCloseConfimationPopup} is-loading ={isLoading}>
+            </c-popup-screen>
+         
+        </template>
+        <template if:true={isShownewModal}>
+            <!-- <div class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container"> -->
+            <c-lead-manage-dedupe onok={handleOK} onyes={handleYesofromMobileandPin} record-id={leadname}
+                lead-id={pinandmobileId} type={type}></c-lead-manage-dedupe>
+            <!-- </div>
+            </div> -->
+            <!-- <div class="slds-backdrop slds-backdrop_open"></div> -->
+        </template>
+
+        <template if:true={isHotWarm}>
+            <c-popup-screen record-id={leadId} show-cold-lead-cmp="true" header-title="Convert to Cold Lead"
+                show-close-btn=true close-btn-text="Close" onsave={handletypesave} onhandleclose={handleClose}>
+            </c-popup-screen>
+        </template>
+
+        <!-- <template if:true={softdedupe}>
+            <div class="slds-modal slds-fade-in-open">
+                <c-customer-dedupe name={customerName} phone={dedupemob} id={dedupeId} disableskip={softdedupe} oncancel ={handleCancelDedupe} onskip={handleSkipDedupe} ontagcustomer={handleTagCustomery}></c-customer-dedupe>
+            </div>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template> -->
+
+        <template if:true={showConfirmation}>
+            <c-confirmation-screen confirm-message={confirmMessage} positive-label="Yes" negative-label="No"
+                onnegativeclick={handleNo} onpositiveclick={handleYes}></c-confirmation-screen>
+        </template>
+
+        <template if:true={addDocuments}>
+            <c-upload-view-delete-document show-add-btn="true" show-add-big-btn="true" doc-link-recod-id={leadId}
+                doc-required-for="Lead" process-object="Lead"></c-upload-view-delete-document>
+        </template>
+
+        <template if:true={dispositionlost}>
+            <c-popup-screen record-id={leadId} show-lead-closure-cmp="true" header-title="Lead Closure Remarks"
+                process-name="Lead Closure" show-close-btn=true close-btn-text="Cancel" show-save-btn="true"
+                onhandleclose={handleClose}></c-popup-screen>
+        </template>
+
+        <template if:true={isLoading}>
+                
+    <!-- <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>-->
+                <div class="spinner-overlay">
+                    <lightning-spinner
+                    alternative-text="Loading"
+                    variant="brand"
+                    size="large">
+                    </lightning-spinner>
+                </div>
+
+        </template>
+        <template if:true={showfields}>
+            <template if:false={hideHeader}>
+                <header class="slds-modal__header header-section">
+                    <div class="slds-text-align_center">
+                        <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">{headerTitle}</h2>
+                    </div>
+                </header>
+            </template>
+            <!--<div if:true={showConsent} class="slds-modal__content slds-p-around_medium">
+                <c-sales-otp-consent lead-id={recordId} parent-screen="Lead Screen"></c-sales-otp-consent>
+            </div>-->
+            <div if:false={showConsent} class="slds-modal__content slds-p-around_medium">
+                <c-lead-stage-path record-id={leadId}></c-lead-stage-path>
+
+                <template if:true={fillfirstinformation}>
+                    <lightning-combobox data-id="ProductType" label="Product" value={selectedProductType}
+                        options={productList} onchange={handleProductChange} disabled={disableProductField}
+                        required></lightning-combobox><!-- disabled={productDisabled} -->
+                    <template if:true={showExternalOnlineFields}>
+                        <lightning-input label="Sub Product" value={subProduct} onchange={handleSubProductChange} disabled={disableSubProductField}></lightning-input>
+                    </template>
+                    <lightning-combobox   label="Applicant Type" value={customerType} options={customerTypeOptions}
+                        onchange={handleCustomerTypeChange} disabled={disableCustomerTypeField} placeholder="Select an option." required></lightning-combobox>
+                    <!--<template if:true={showCustProfile}>-->
+                        <!-- <lightning-combobox label="Customer Profile" value={custProfile} options={custProfileOptions}
+                            onchange={handleProfileChange} disabled={isDisableCustomerProf} required></lightning-combobox> -->
+
+                        <lightning-combobox label="Applicant Profile" value={custProfile} options={custProfileOptions}
+                           placeholder="Select an option." onchange={handleProfileChange} disabled={disableCustProfileField} required></lightning-combobox>
+                        <!--<template if:true={showPan}>
+                         <lightning-input value={panno} data-id="PAN" label="PAN " disabled={showmob}
+                         onchange={handlePanChange} min="10" maxlength="10">
+                        </lightning-input>
+                        </template>-->
+                    <!--</template>-->
+                    <template if:true={showindi}>
+                        <lightning-input label="First Name" value={inputValue} required
+                            onchange={handleInputChange1} disabled={disableFirstNameField} pattern="[a-zA-Z_ ]*">
+                        </lightning-input>
+                        <lightning-input label="Middle Name" value={middlename} onchange={hanldemiddlenameChange}
+                            disabled={disableMiddleNameField} pattern="[a-zA-Z_ ]*"></lightning-input>
+                        <lightning-input label="Last Name" value={inputValue2} required
+                            onchange={handleInputChange2} disabled={disableLastNameField} pattern="[a-zA-Z_ ]*">
+                        </lightning-input>
+                        <lightning-input data-id="PhoneNumber" type="tel" value={maskedPhoneNumber}
+                            onchange={opencodebox} label="Mobile Number" disabled={disableMobile} pattern="^[6-9]\d{9}$"
+                            message-when-pattern-mismatch="Please enter a valid phone number. The first digit of the mobile number should be 6 or above."
+                            minlength="10" maxlength="10" message-when-range-overflow="Please enter 10 digits"
+                            message-when-range-underflow="Please enter 10 digits" required></lightning-input>
+                        <template if:true={showExternalOnlineFields}>
+                            <lightning-input type="tel" label="Alternate Mobile Number" value={alternateMobile}
+                                onchange={handleAlternateMobileChange} minlength="10" maxlength="10" disabled={disableAlternateMobileField}></lightning-input>
+                        </template>
+                        <template if:true={showLead}>
+                            <div style="display: inline-block;color: green; font-style: italic;">
+                                {leadinwords}
+                            </div>
+                        </template>
+                        <template if:true={mobVerified}>
+                            <div class="verification-status">
+                                <lightning-icon icon-name="utility:success" size="small" variant="success"
+                                    alternative-text="Verified"></lightning-icon>
+                                <span class="verified-text">This lead is verified</span>
+                            </div>
+                        </template>
+                        <div if:false={hideNextButton} class="slds-align_absolute-center button-container">
+                            <button class="slds-button slds-button_brand save-button" onclick={handleDedupe}>Next</button>
+                        </div>
+                    </template>
+                    <template if:true={shownonindi}>
+                        <template if:true={shownext}>
+                            <template if:true={dsa}>
+                                <!--<c-search-lookup label="Area Manager" show-label="true" selected-id={arm}
+                                    selected-name={armName} placeholder="Search Area Manager" filter-criteria='TeamMemberRole=Sales;User.Position_Title__c=Area Manager'
+                                    object-name="AccountTeamMember" search-fields="['User.Name', 'User.Employee_Id__c']"
+                                    return-fields="['UserId', 'User.Name', 'User.Employee_Id__c']"
+                                    disabled={disableDsaField} onlookupselected={handleSelectedAr}
+                                    onlookupdeselected={handleunselectAr}></c-search-lookup>-->
+                            </template>
+                        </template>
+                        
+                        <lightning-input label="Business Entity Name" value={entityname} required
+                            onchange={handleIbusinessnameChange} disabled={disableEntityNameField}></lightning-input>
+                        <lightning-input label="Contact Person Name" value={contactName} required
+                            onchange={handleContactNameChange} disabled={disableContactNameField} pattern="[a-zA-Z_ ]*"></lightning-input>
+                        <lightning-input data-id="PhoneNumber" type="tel" value={maskedPhoneNumber}
+                            onchange={opencodebox} label="Mobile Number" disabled={disableMobile} pattern="^[6-9]\d{9}$"
+                            message-when-pattern-mismatch="Please enter a valid phone number. The first digit of the mobile number should be 6 or above."
+                            minlength="10" maxlength="10" message-when-range-overflow="Please enter 10 digits"
+                            message-when-range-underflow="Please enter 10 digits" required></lightning-input>
+                        <template if:true={showExternalOnlineFields}>
+                            <lightning-input type="tel" label="Alternate Mobile Number" value={alternateMobile}
+                                onchange={handleAlternateMobileChange} minlength="10" maxlength="10" disabled={disableAlternateMobileField}></lightning-input>
+                        </template>
+                        <template if:true={showLead}>
+                            <div style="display: inline-block;color: green; font-style: italic;">
+                                {leadinwords}
+                            </div>
+                        </template>
+                        <template if:true={mobVerified}>
+                            <div class="verification-status">
+                                <lightning-icon icon-name="utility:success" size="small" variant="success"
+                                    alternative-text="Verified"></lightning-icon>
+                                <span class="verified-text">This lead is verified</span>
+                            </div>
+                        </template>
+                        <div if:false={hideNextButton} class="slds-align_absolute-center button-container">
+                            <button class="slds-button slds-button_brand save-button" onclick={handleDedupe}>Next</button>
+                        </div>
+                    </template>
+                    
+                    <template if:true={shownext}>
+                        <template if:true={dsa}>
+                            <!--<c-search-lookup label="Area Manager" show-label="true" selected-id={arm}
+                                selected-name={armName} placeholder="Search area manager" filter-criteria='TeamMemberRole=Sales;User.Position_Title__c=Area Manager'
+                                object-name="AccountTeamMember" search-fields="['User.Name', 'User.Employee_Id__c']"
+                                return-fields="['UserId', 'User.Name', 'User.Employee_Id__c']"
+                                disabled={disableDsaField} onlookupselected={handleSelectedAr}
+                                onlookupdeselected={handleunselectAr}></c-search-lookup>-->
+                        </template>
+
+                        <template if:true={showpincode}>
+                            <template if:true={BL}>
+                                <c-search-lookup label="Pincode" show-label="true" required="true" selected-id={pinno}
+                                    selected-name={pincodename} placeholder="Search pincode"
+                                    object-name="Pincode_Master__c"
+                                    return-fields="['Id','Name','Town_and_Post_Office__c','Is_Pincode_Servicable__c']"
+                                    disabled={pincodeDisabled} onlookupselected={handleSelectedRow}
+                                    onlookupdeselected={handlepincodelookupdeselected} product={selectedProductType}>
+                                </c-search-lookup>
+                            </template>
+                        </template>
+
+                         <template if:true={BL}>
+                          <template if:false={servicable}>
+                            <div class="verification-status">
+                                <span style="color: red;font-style: italic">This pincode is not serviceable but you can continue the journey.</span>
+                            </div>
+                        </template>
+                         </template>
+                        <lightning-input if:true={showSource} label="Source" value={leadSource} disabled="true">
+                        </lightning-input>
+                         <div class="slds-align_absolute-center button-container">
+                            <button class="slds-button slds-button_brand save-button" onclick={handleSaverecord}>Continue</button>
+                        </div>
+                    </template>
+
+                   <!-- <template if:true={shownext}>
+                        <div class="slds-align_absolute-center button-container">
+                            <button class="slds-button slds-button_brand save-button" onclick={handleSaverecord}>Continue</button>
+                        </div>
+                    </template>-->
+
+                    <div if:false={shownext}>
+                        <div class="homepage-link slds-align_absolute-center" style="margin-top:8%">
+                            <lightning-icon icon-name="standard:home" size="medium" alternative-text="Close Lead Icon"
+                                class="close-lead-icon" style="fill: #dc387e; cursor: pointer;"
+                                onclick={redirectorclose}>
+                            </lightning-icon>
+                        </div>
+                        <div class="slds-align_absolute-center">
+                            <p onclick={redirectorclose}>Home</p>
+                        </div>
+                    </div>
+                </template>
+
+                <template if:true={fillsecondinformation}>
+                    <div class="highlight-required">
+                        <template if:true={showdob}>
+                            <lightning-input type="date" date-style="short" label="Date of Birth"
+                                value={dateOfBirth} disabled={disableDobField} onchange={handleDateChange}
+                                onblur={handleDobBlurChange} required="true">
+                            </lightning-input>
+                        </template>
+                        <template if:false={showdob}>
+                            <lightning-input type="date" date-style="short" label="Date of Incorporation" disabled={disableDoiField}
+                                value={dateofInc} onchange={handleDateofIncChange} onblur={handleIncBlur}
+                                required="true">
+                            </lightning-input>
+                        </template>
+                        <lightning-input type="tel" label="Loan Amount" value={loanamt} onblur={handleLoanAmountBlur}
+                            onchange={handleLoanAmountChange} disabled={disableLoanAmtField} required="true">
+                        </lightning-input>
+                        <template if:true={checklAmt}>
+                            <div style="display: inline-block; color: green; font-style: italic;">
+                                {loanamtinwords}
+                            </div>
+                        </template>
+                        <template if:true={showExternalOnlineFields}>
+                            <template if:true={showBusinessVintage}>
+                                <lightning-input type="number" name="bvintage" value={bvintage} label="Business Vintage"
+                                    onchange={handleVintageChange} disabled={disableBvintageField}></lightning-input>
+                            </template>
+                            <lightning-input value={panno} data-id="PAN" label="PAN"
+                                onchange={handlePanChange} min="10" maxlength="10" disabled={disablePanField}></lightning-input>
+                            <template if:true={showindi}>
+                                <lightning-combobox name="gender" label="Gender" value={leadGender} options={genderOptions}
+                                    onchange={handleGenderChange} disabled={disableGenderField}></lightning-combobox>
+                            </template>
+                            <template if:true={shownonindi}>
+                                <lightning-combobox name="officeownership" label="Office Ownership" value={offownerval}
+                                    options={offowneroptions} onchange={handlewnership} disabled={disableOffOwnerField}></lightning-combobox>
+                            </template>
+                            <lightning-combobox name="turnover" label="Turnover Yearly" value={turnover}
+                                options={turnoverValues} placeholder="Select an option." disabled={disableTurnoverField}
+                                onchange={handleTurnover}></lightning-combobox>
+                        </template>
+                        <!-- <lightning-combobox 
+                            label="Business Industry" 
+                            value={bindustval} 
+                            options={bindustryvalues}
+                            onchange={handlebInudstry}
+                            disabled={showmob}
+                            required>
+                        </lightning-combobox> -->
+
+                        <!-- 
+                        <c-searchable-combobox required="true" label="Business Industry" options={bindustryvalues}
+                            value={bindustval} onchange={handlebInudstry}></c-searchable-combobox> -->
+
+                        <!--lightning-combobox name="bvintage" label="Business Vintage (In Years)" value={bvintage}
+                            options={bvintagevalues} disabled={showmob} required onchange={handleVintageChange}>
+                        </lightning-combobox-->
+                    <template if:true={showBusinessDetails}>
+                    <!--<lightning-input name="bvintage" value={bvintage} label="Business Vintage (In Years)" disabled={showmob}
+                        onchange={handleVintageChange} required>
+                    </lightning-input>-->
+                    </template> 
+                    </div>
+                    <!--<lightning-input value={panno} data-id="PAN" label="PAN " disabled={showmob}
+                        onchange={handlePanChange} min="10" maxlength="10">
+                    </lightning-input>-->
+                           
+                        <c-search-lookup label="Residence/Business Pincode" show-label="true" required="true" selected-id={pinno}
+                                    selected-name={pincodename} placeholder="Search pincode"
+                                    object-name="Pincode_Master__c"
+                                    return-fields="['Id','Name','Town_and_Post_Office__c','Is_Pincode_Servicable__c','City__r.Name','State__c']"
+                                    disabled={disablePincodeField} onlookupselected={handleSelectedRow}
+                                    onlookupdeselected={handlepincodelookupdeselected} product={selectedProductType}>
+                    </c-search-lookup>
+                            
+                        <template if:false={servicable}>
+                            <div class="verification-status">
+                                <span style="color: red;font-style: italic">This pincode is not serviceable but you can continue the journey.</span>
+                            </div>
+                        </template>
+                    <template if:true={showExternalOnlineFields}>
+                        <lightning-input label="City" value={cityValue} onchange={handleCityChange} disabled={disableCityField}></lightning-input>
+                        <lightning-input label="State" value={stateValue} onchange={handleStateChange} disabled={disableStateField}></lightning-input>
+                    </template>
+                    <lightning-input value={emailno} data-id="Email" label="Email Address"
+                        pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}"
+                        message-when-pattern-mismatch="Please enter a valid email" onchange={handleEmailChange}
+                        onblur={handleemailBlur} disabled={disableEmailField} required>
+                    </lightning-input>
+                    <!--<lightning-combobox if:false={shownonindi} name="gender" label="Gender" value={leadGender} options={genderOptions}
+                        onchange={handleGenderChange} disabled={showmob}>
+                    </lightning-combobox>-->
+                    <!--<lightning-combobox name="officeownership" label="Office Ownership" value={offownerval}
+                        options={offowneroptions} onchange={handlewnership} disabled={showmob}>
+                    </lightning-combobox>-->
+                    <template if:true={showBusinessDetails}>
+                        <lightning-combobox name="Businesstype" label={inputLabel} value={btpevalue} options={businessTypeOptions} placeholder="Select an option."
+                                onchange={handlebtypeval} required={shownonindi} disabled={disableBusinessTypeField}>
+                        </lightning-combobox>
+                    </template>
+                    <!--<template if:true={showBusinessDetails}>
+                    <lightning-input name="turnover" label="Business Turnover (Yearly)" value={turnover}
+                        disabled={showmob} onchange={handleTurnover}>
+                    </lightning-input>
+                    </template>-->
+                   <!-- <div class="dropdown-container">
+                        <template for:each={picklistOptions} for:item="opt">
+                            <div key={opt.value} class="picklist-div" data-id={opt.value}>
+                                {opt.label}
+                            </div>
+                        </template>
+                    <lightning-combobox name="purposeofloan" label="Purpose of Loan" value={purposeOfLoan} options={picklistOptions}
+                        disabled={showmob} onchange={handlePurposeofloan} required>
+                    </lightning-combobox>
+                    </div>-->
+                    <c-searchable-combobox label="Purpose of Loan" required="true" options={purposeOfLoanValue}
+                        onchange={handlePurposeofloan} value={purposeOfLoan} is-disabled={disablePurposeOfLoanField}></c-searchable-combobox>
+                      <!-- <div class="form-scroll slds-scrollable_y"> -->
+                        <template if:true={visibilerecord}>
+                            <div class="combowrapper">
+                                
+                            <c-searchable-combobox class="cbc" if:false={showSource} data-id="Channel" label="Channel"
+                                value={selectedchannelTypeValue} options={channelvaluesRo}
+                                onchange={handleChannelPicklistChange} required is-disabled={disableChannelField}>
+                            </c-searchable-combobox>
+                            </div>
+                        </template>
+                        <template if:false={visibilerecord}>   
+                            <template if:true={dsa}>
+                                <div class="combowrapper"> 
+                                    
+                                <lightning-combobox if:false={showSource}  data-id="Channel" label="Channel "
+                                    value={selectedchannelTypeValue} options={channelValuesGroup2}
+                                    onchange={handleChannelPicklistChange} disabled={disableChannel} required>
+                                </lightning-combobox>
+                                </div>
+                            </template>
+                            <template if:true={salesexecutive}>
+                                <div class="combowrapper"> 
+                                    
+                                <lightning-combobox if:false={showSource}  data-id="Channel" label="Channel "
+                                    value={selectedchannelTypeValue} options={channelValuesGroup1}
+                                    onchange={handleChannelPicklistChange} disabled={disableChannel} required>
+                                </lightning-combobox>
+                                </div>
+                            </template>
+                            <template if:true={telesales}>
+                                <div class="combowrapper"> 
+                                    
+                                <lightning-combobox if:false={showSource}  data-id="Channel" label="Channel "
+                                    value={selectedchannelTypeValue} options={channelvaluesRo}
+                                    onchange={handleChannelPicklistChange} disabled={disableChannel} required>
+                                </lightning-combobox>
+                                </div>
+                            </template>
+                            
+                        </template>
+                       <!--</div> -->
+                        <template if:false={hideNameAndCode}>
+                        <template if:true={dsa}>
+                                <template if:true={isHLUser}>
+                                <c-search-lookup label="DSA" show-label="true" selected-id={dsaId}
+                                    selected-name={dsaname} placeholder="Search DSA" object-name="Account"
+                                    search-fields="['Name', 'Vendor_Code__c']"
+                                    return-fields="['Id', 'Name', 'Vendor_Code__c']"
+                                    filter-criteria="RecordType.Name=Partner;Account.Vertical1__c INCLUDES ('HL')" disabled={disableDsaField}
+                                    onlookupselected={handleSelectDsaUser}
+                                    onlookupdeselected={handleDeleteDsaUser} required></c-search-lookup>
+                                    </template>
+                                  <template if:false={isHLUser}>
+                             <c-search-lookup label="DSA" show-label="true" selected-id={dsaId}
+                                    selected-name={dsaname} placeholder="Search DSA" object-name="Account"
+                                    search-fields="['Name', 'Vendor_Code__c']"
+                                    return-fields="['Id', 'Name', 'Vendor_Code__c']"
+                                    filter-criteria="RecordType.Name=Partner;Account.Vertical1__c INCLUDES ('AHL')" disabled={disableDsaField}
+                                    onlookupselected={handleSelectDsaUser}
+                                    onlookupdeselected={handleDeleteDsaUser} required></c-search-lookup>
+                                    </template>
+                         </template>
+                            <template if:true={showChannelInputs}>
+                            <lightning-input label={nameLabel} value={nameValue}
+                            onchange={handleCodeNameInputChange} pattern="[a-zA-Z_ ]*" data-name="Channel_Name__c" disabled={disableNameField} required></lightning-input>
+                            <lightning-input label={codeLabel} value={codeValue} data-name="Channel_Code__c"
+                            onchange={handleCodeNameInputChange} disabled={disableCodeField} required></lightning-input>
+                        </template>
+                         </template>
+                        <template if:true={showCampaignCode}>
+                        <lightning-combobox name="campaignCode" label="Campaign Code" value={campValue} options={campaignCodeValues}
+                        disabled={disableCampaignCodeField} onchange={handleCampaignCode} required>
+                        </lightning-combobox>
+                        </template>
+                        <template if:true={showDsaConnectorSection}>
+                            <template if:true={showdsaName}>
+                                <template if:true={isHlUser}>
+                                     <c-search-lookup label="DSA" show-label="true" selected-id={dsaId}
+                                    selected-name={dsaname} placeholder="Search DSA" object-name="Account"
+                                    search-fields="['Name', 'Vendor_Code__c']"
+                                    return-fields="['Id', 'Name', 'Vendor_Code__c']"
+                                    filter-criteria="RecordType.Name=Partner;Partner_Type__c=DSA;Account.Vertical1__c INCLUDES ('HL')"
+                                    disabled={disableDsaField} onlookupselected={handleSelectDsaUser}
+                                    onlookupdeselected={handleDeleteDsaUser} required></c-search-lookup>
+                                </template>
+                                <template if:false={isHlUser}>
+                                <c-search-lookup label="DSA" show-label="true" selected-id={dsaId}
+                                    selected-name={dsaname} placeholder="Search DSA" object-name="Account"
+                                    search-fields="['Name', 'Vendor_Code__c']"
+                                    return-fields="['Id', 'Name', 'Vendor_Code__c']"
+                                    filter-criteria="RecordType.Name=Partner;Partner_Type__c=DSA;Account.Vertical1__c INCLUDES ('AHL')"
+                                    disabled={disableDsaField} onlookupselected={handleSelectDsaUser}
+                                    onlookupdeselected={handleDeleteDsaUser} required></c-search-lookup>
+                                    </template>
+                            </template>
+
+                            <!-- <c-search-lookup label="Area Manager" show-label="true" selected-id={arm}
+                                selected-name={armName} placeholder="Search Area Manager"
+                                filter-criteria='TeamMemberRole=Sales;User.Position_Title__c=Area Manager'
+                                object-name="AccountTeamMember" search-fields="['User.Name', 'User.Employee_Id__c']"
+                                return-fields="['UserId', 'User.Name', 'User.Employee_Id__c']"
+                                disabled={disableDsaField} onlookupselected={handleSelectedAr}
+                                onlookupdeselected={handleunselectAr} required="true"></c-search-lookup> -->
+                            <template if:true={showConnectorName}>
+                                <template if:true={isHlUser}>
+                                <c-search-lookup label="Connector" show-label="true" selected-id={dsaId}
+                                    selected-name={dsaname} placeholder="Search Connector"
+                                    filter-criteria="RecordType.Name=Partner;Partner_Type__c=Connector;Account.Vertical1__c INCLUDES ('HL')"
+                                    object-name="Account" search-fields="['Name', 'Vendor_Code__c']"
+                                    return-fields="['Id', 'Name', 'Vendor_Code__c']" disabled={disableDsaField}
+                                    onlookupselected={handleSelectDsaUser} onlookupdeselected={handleDeleteDsaUser}
+                                    required="true"></c-search-lookup>
+
+                                    </template>
+                                    <template if:false={isHlUser}>
+                                <c-search-lookup label="Connector" show-label="true" selected-id={dsaId}
+                                    selected-name={dsaname} placeholder="Search Connector"
+                                    filter-criteria="RecordType.Name=Partner;Partner_Type__c=Connector;Account.Vertical1__c INCLUDES ('AHL')"
+                                    object-name="Account" search-fields="['Name', 'Vendor_Code__c']"
+                                    return-fields="['Id', 'Name', 'Vendor_Code__c']" disabled={disableDsaField}
+                                    onlookupselected={handleSelectDsaUser} onlookupdeselected={handleDeleteDsaUser}
+                                    required="true"></c-search-lookup>
+
+                                    </template>
+                            </template>
+                    </template>
+                    <div if:true={showelig} class="slds-align_absolute-center button-container">
+                        <button class="slds-button slds-button_brand previous-button" onclick={hideCancelrecord}>Previous</button>
+                        <template if:true={shownext}>
+                        
+                            <button class="slds-button slds-button_brand save-button" onclick={handleconversion}>Convert to Loan</button>
+                        
+                        </template>
+                        
+                    </div>
+                    <div if:false={showelig} class="slds-align_absolute-center button-container"
+                        style="padding-top: 1rem;">
+                        <button class="slds-button slds-button_brand previous-button" onclick={hideCancelrecord}>Previous</button>
+                        <button class="slds-button slds-button_brand disabled-button" disabled>{checkEligibilityButton}</button>
+                    </div>
+                </template>
+
+                <template if:true={fillfourthinformation}>
+                    <!-- <template if:false={addDocuments}> -->
+                    <!-- <div if:false={docUploaded} class="slds-box slds-box_x-small slds-theme_default slds-align_absolute-center empty-message-box">
+                        <p class="empty-message-text">
+                            No documents added yet. To add a document, kindly click on the add document button below.
+                        </p>
+                    </div> -->
+                    <template if:true={visibilerecord}>
+                        <div style="text-align: center;" class="slds-m-bottom_medium">
+                            <b>Documents</b>
+                        </div>
+                        <c-document-details-screen record-id={recordId} process-name="Lead"></c-document-details-screen>
+                    </template>
+                    <template if:false={visibilerecord}>
+                        <div style="text-align: center;" class="slds-m-bottom_medium">
+                            <b>Documents</b>
+                        </div>
+                        <c-document-details-screen record-id={newLeadId} process-name="Lead">
+                        </c-document-details-screen>
+                    </template>
+
+                    <div if:false={closed} class="slds-align_absolute-center button-container">
+                        <c-upload-view-delete-document show-add-btn="true" show-add-big-btn="true"
+                            doc-link-recod-id={leadId} doc-required-for="Lead" show-retake="true" process-object="Lead">
+                        </c-upload-view-delete-document>
+                    </div>
+                    <div class="slds-align_absolute-center button-container">
+                        <button class="slds-button slds-button_brand previous-button" onclick={hideCancelrecord}>Previous</button>
+                        <button if:false={reqimagesUploaded} class="slds-button slds-button_brand disabled-button">{buttonval}</button>
+                        <button if:true={reqimagesUploaded} class="slds-button slds-button_brand save-button" onclick={handleSaverecord}>{buttonval}</button>
+                    </div>
+                    <!-- </template> -->
+                </template>
+
+                <template if:true={fillthirdinformation}>
+                    <div if:false={converted}>
+                        <!--<div if:true={qualified} class="message">
+                            This lead is qualified. Please continue.
+                        </div>-->
+                        <div if:true={qualified}>
+                            <template if:true={dsa}>
+                                <c-record-assignment record-id={recordId} process-name="Assign Lead"></c-record-assignment>
+                            </template>
+                             <div if:true={showLoanAmtMessage} style="text-align: center; margin: 0px 0px 15px 0px; color: red;">
+                                Note:The loan amount is less than 5 lakhs.
+                            </div>
+                            <c-sales-otp-consent lead-id={recordId} parent-screen="Lead Screen" onsendstatus={handleStatusChange} isdisable={telesales}></c-sales-otp-consent>
+                        </div>
+                        <div if:false={qualified} class="message">
+                            This lead is not qualified.
+                        </div>
+                    </div>
+                    <div if:true={converted} class="message">
+                        This lead is converted into Loan.
+                    </div>
+                    <div if:true={qualified} class="slds-align_absolute-center button-container">
+                        <button style="margin-top: 50px;" class="slds-button slds-button_brand previous-button" onclick={hideCancelrecord}>Previous</button>
+                        <button lwc:if={showCreateLoanButton} style="margin-top: 50px;" class="slds-button slds-button_brand disabled-button" disabled>Continue</button>
+                        <button lwc:else style="margin-top: 50px;" class="slds-button slds-button_brand save-button" onclick={handleSaverecord} disabled={showCreateLoanButton} >Continue</button>
+                        
+                    </div>
+                    <div if:false={qualified} class="slds-align_absolute-center button-container">
+                        <button class="slds-button slds-button_brand previous-button" onclick={hideCancelrecord}>Previous</button>
+                    </div>
+                </template>
+                <template if:true={fillfifthinformation}>
+                    <div class="message">
+                        This lead is not eligible.
+                    </div>
+                    <div class="slds-align_absolute-center button-container">
+                        <button class="slds-button slds-button_brand previous-button" onclick={hideCancelrecord}>Previous</button>
+                    </div>
+                </template>
+                <template if:true={fillseventhInformations}>
+                    <div class="message">
+                        {closedReason}
+                    </div>
+                </template>
+                <div if:true={shownext}>
+                    <div if:true={canClose}>
+                        <lightning-layout multiple-rows>
+                            <!-- First Row with Icons side by side -->
+                            <lightning-layout-item size="3" class="slds-align_absolute-center">
+                                <lightning-icon icon-name="standard:home" size="medium" alternative-text="home"
+                                    class="close-lead-icon" style="fill: #dc387e; cursor: pointer;"
+                                    onclick={redirectorclose}>
+                                </lightning-icon>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="2" class="slds-align_absolute-center">
+                                <!-- This item is intentionally left blank for spacing -->
+                            </lightning-layout-item>
+                            <lightning-layout-item size="2" class="slds-align_absolute-center">
+                                <template if:false={responsive}>
+                                    <template if:false={disableLeadTypeField}>
+                                        <lightning-icon icon-name="utility:dislike"
+                                            style="cursor: pointer;" size="large" alternative-text="dislike" class="my-icon"
+                                            onclick={handleresponsive}></lightning-icon>
+                                    </template>
+                                    <template if:true={disableLeadTypeField}>
+                                        <lightning-icon icon-name="utility:dislike"
+                                            style="cursor: not-allowed; opacity: 0.4;" size="large" alternative-text="dislike" class="my-icon">
+                                        </lightning-icon>
+                                    </template>
+                                </template>
+                                <template if:true={showHot}>
+                                    <template if:false={disableLeadTypeField}>
+                                        <lightning-icon icon-name="utility:like" style="cursor: pointer;"
+                                            size="large" alternative-text="like" class="my-icon2" onclick={handlehotwarm}>
+                                        </lightning-icon>
+                                    </template>
+                                    <template if:true={disableLeadTypeField}>
+                                        <lightning-icon icon-name="utility:like" style="cursor: not-allowed; opacity: 0.4;"
+                                            size="large" alternative-text="like" class="my-icon2">
+                                        </lightning-icon>
+                                    </template>
+                                </template>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="2" class="slds-align_absolute-center">
+                                <!-- This item is intentionally left blank for spacing -->
+                            </lightning-layout-item>
+                            <lightning-layout-item size="3" class="slds-align_absolute-center">
+                                <template if:false={disableLeadTypeField}>
+                                    <lightning-icon icon-name="action:close" size="x-small"
+                                        alternative-text="Close Lead Icon" class="close-lead-icon"
+                                        style="fill: #dc387e; cursor: pointer;" onclick={closelead}></lightning-icon>
+                                </template>
+                                <template if:true={disableLeadTypeField}>
+                                    <lightning-icon icon-name="action:close" size="x-small"
+                                        alternative-text="Close Lead Icon" class="close-lead-icon"
+                                        style="fill: #dc387e; cursor: not-allowed; opacity: 0.4;">
+                                    </lightning-icon>
+                                </template>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                        <lightning-layout multiple-rows>
+                            <!-- Second Row with Text Labels below each Icon -->
+                            <lightning-layout-item size="3"  class="slds-align_absolute-center ">
+                                <p onclick={redirectorclose}>Home</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="2" class="slds-align_absolute-center">
+                                <!-- This item is intentionally left blank for spacing -->
+                            </lightning-layout-item>
+                            <lightning-layout-item size="2" class="slds-align_absolute-center">
+                                <p if:false={responsive}>Cold</p>
+                                <p if:true={showHot}>Hot</p>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="2" class="slds-align_absolute-center">
+                                <!-- This item is intentionally left blank for spacing -->
+                            </lightning-layout-item>
+                            <lightning-layout-item size="3" class="slds-align_absolute-center">
+                                <template if:false={disableLeadTypeField}>
+                                    <p onclick={closelead}>Discard Lead</p>
+                                </template>
+                                <template if:true={disableLeadTypeField}>
+                                    <p style="cursor: not-allowed; opacity: 0.4;">Discard Lead</p>
+                                </template>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                    <div if:false={canClose} style="margin-top: 10px;">
+                        <div class="homepage-link slds-align_absolute-center">
+                            <lightning-icon icon-name="standard:home" size="medium" alternative-text="Close Lead Icon"
+                                class="close-lead-icon" style="fill: #dc387e; cursor: pointer;"
+                                onclick={redirectorclose}>
+                            </lightning-icon>
+                        </div>
+                        <div class="slds-align_absolute-center">
+                            <p onclick={redirectorclose}>Home</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <footer class="footer-section">
+            </footer>
+        </template>
+    </div>
+    <template if:true={callTopUpCmp}>
+        <c-sales-loan-login-top-up-flow-cmp record-id={recordId} from-lead="true" onpassleaddetails={handleStampLeadDetails} onresetproduct={handleResetProduct} onresultfromflexi={handleReceiveResultFlexi}></c-sales-loan-login-top-up-flow-cmp>
+    </template>
+    </div>
+</template>

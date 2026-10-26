@@ -1,0 +1,62 @@
+<template>
+    <span class="styleContainer"></span>
+    <div class="bsa-page">
+        <!-- ____GenAI: Generated code starts here - lightning-accordion /
+             lightning-accordion-section replaced with a hand-built accordion.
+             The base component renders its header inside its own fully
+             encapsulated shadow root in this org - neither SLDS custom-property
+             styling hooks nor external CSS overrides could repaint it (verified
+             by deploying twice and hard-refreshing, zero visual change both
+             times). Plain divs driven by tracked state have no such boundary
+             to cross, matching the pattern already used successfully in
+             losPersonalDiscussion for its own accordion header.____ -->
+        <div class="custom-pd-accordion">
+            <template if:false={userHavePsFcuSamplerPermissionSet}>
+            <div class="custom-pd-section">
+                <div class="custom-pd-header" onclick={togglePhysicalPd}>
+                    <lightning-icon icon-name={physicalPdIcon} size="x-small" class="custom-pd-icon"></lightning-icon>
+                    <span class="custom-pd-title">Physical PD</span>
+                </div>
+                <template if:true={physicalPdOpen}>
+                <div class="custom-pd-body">
+                    <c-manual-pd-cmp record-id={recordId} onhandlechange={handleRefresh} disabled-cmp={hideButton}></c-manual-pd-cmp>
+                </div>
+                </template>
+            </div>
+            </template>
+
+            <template if:false={userHavePsFcuSamplerPermissionSet}>
+            <div class="custom-pd-section">
+                <div class="custom-pd-header" onclick={toggleVideoPd}>
+                    <lightning-icon icon-name={videoPdIcon} size="x-small" class="custom-pd-icon"></lightning-icon>
+                    <span class="custom-pd-title">Video PD</span>
+                </div>
+                <template if:true={videoPdOpen}>
+                <div class="custom-pd-body">
+                    <c-video-p-d-cmp record-id={recordId} is-tele-pd="false" onhandlechange={handleRefresh} disabled-cmp={hideButton}></c-video-p-d-cmp>
+                </div>
+                </template>
+            </div>
+            </template>
+
+            <template if:false={userHavePsFcuSamplerPermissionSet}>
+            <div class="custom-pd-section">
+                <div class="custom-pd-header" onclick={toggleTelePd}>
+                    <lightning-icon icon-name={telePdIcon} size="x-small" class="custom-pd-icon"></lightning-icon>
+                    <span class="custom-pd-title">Tele PD</span>
+                </div>
+                <template if:true={telePdOpen}>
+                <div class="custom-pd-body">
+                    <c-video-p-d-cmp record-id={recordId} is-tele-pd="true" onhandlechange={handleRefresh} disabled-cmp={hideButton}></c-video-p-d-cmp>
+                </div>
+                </template>
+            </div>
+            </template>
+
+            <template if:false={userHavePsFcuSamplerPermissionSet}>
+            <c-credit-f-i-initiation-cmp section-header="Vendor PD" is-vendor-p-d="true" record-id={recordId} generic-initiate=true onclose={modalClose} disabled-cmp={hideButton}></c-credit-f-i-initiation-cmp>
+            </template>
+        </div>
+        <!-- ____GenAI: Generated code ends here____ -->
+    </div>
+</template>

@@ -1,0 +1,61 @@
+@import 'c/cssLibrary';
+
+:host {
+    display: block;
+    background-color: #12172b;
+    color: #ffffff;
+}
+
+/* Shared by the Sampling Queue and Initiated FCU tabs. */
+.slds-p-around_small,
+.slds-p-left_small,
+.slds-modal__content,
+.slds-scrollable_x,
+lightning-layout[style] {
+    background-color: #12172b !important;
+    color: #ffffff !important;
+}
+
+.slds-modal__content .slds-table,
+.slds-modal__content .slds-table tbody td {
+    background-color: #12172b !important;
+    color: #ffffff !important;
+    border-color: #2a2f45 !important;
+}
+
+p[slot="title"],
+h5[slot="title"] {
+    color: #ffffff !important;
+}
+
+
+
+.hidden-input {
+    display: none; /* Hide the file input element */
+}
+
+.DisableButton {
+    font-size: 11px;
+    width: 145px;
+    background-color: lightgrey;
+    color: black;
+    border-color: #113451;
+    font-weight: 500;
+    margin-left: 10px;
+}
+
+.cancel-button{
+    text-wrap-mode: nowrap;
+}
+.fcu-table .slds-form-element__label, span.slds-file-selector__text.slds-medium-show{
+    display: none;
+}
+.fcu-table span.slds-file-selector__button.slds-button.slds-button_neutral{
+    font-size: 0px;
+}
+.fcu-table svg.slds-button__icon.slds-button__icon_left{
+    margin: 0px;
+}
+.fcu-table lightning-primitive-file-droppable-zone.slds-file-selector__dropzone{
+    border: none;
+}

@@ -1,0 +1,65 @@
+@import "c/cssLibrary";
+
+/* =========================================
+   EXISTING LEAD DETAILS MODAL
+   ========================================= */
+
+.slds-modal__container {
+    border-radius: 8px !important;
+    overflow: hidden !important;
+}
+
+/* HEADER - BLUE */
+.slds-modal__container .header-section {
+    background: #2456c8 !important;
+    border-bottom: 1px solid #2456c8 !important;
+    color: #ffffff !important;
+}
+
+/* Header title */
+.slds-modal__container .header-section .header-title {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+/* BODY */
+.slds-modal__container .slds-modal__content {
+    background: #16283f !important;
+    color: #ffffff !important;
+}
+
+/* All message text white */
+.slds-modal__container .dialog-message {
+    color: #ffffff !important;
+}
+
+/* Footer - SAME BLUE AS HEADER */
+.slds-modal__container .footer-section {
+    background: #2456c8 !important;
+    border-top: 1px solid #2456c8 !important;
+    padding: 12px !important;
+}
+
+/* CLOSE BUTTON - RED */
+.slds-modal__container .footer-section .cancel-button {
+    background: #e02424 !important;
+    border-color: #e02424 !important;
+    color: #ffffff !important;
+
+    font-weight: 600 !important;
+    min-width: 168px;
+    border-radius: 4px;
+}
+
+/* CLOSE HOVER */
+.slds-modal__container .footer-section .cancel-button:hover,
+.slds-modal__container .footer-section .cancel-button:focus {
+    background: #c81f1f !important;
+    border-color: #c81f1f !important;
+    color: #ffffff !important;
+}
+
+/* OPEN LEAD / CONTINUE BUTTON */
+.slds-modal__container .footer-section .continue-button {
+    color: #ffffff !important;
+}

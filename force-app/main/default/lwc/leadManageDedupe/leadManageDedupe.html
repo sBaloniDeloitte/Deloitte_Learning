@@ -1,0 +1,142 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-04-2024
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+
+    <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            
+            <header class="slds-modal__header header-section">
+                <div class="slds-text-align_center">
+                    <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">Existing lead details</h2>
+                </div>
+            </header>
+            
+            <div class="slds-modal__content slds-p-around_medium" id="popup-body">
+                <template if:true={teleSales}>
+                    <template if:true={userMatched}>
+                        <p class="dialog-message" style="font-size: 12px;">{dialogMessage} <br/>
+                            <span if:true={userMatched} style="color:hsl(81, 45%, 54%);cursor: pointer;font: size 12px;" onclick={navigateToActiveLead}>{lead}</span>
+                            <span if:true={userMatched} style="font-size: 12px;">{message}</span>
+                        </p>
+                    </template>
+                   
+                    <template if:false={userMatched}>
+                        <p class="dialog-message" style="font-size: 12px;">{dialogMessageNonDuplicateUser}
+                            <span if:true={userMatched}>{messageNonDuplicateUser}</span>
+                            <span if:true={userMatched} style="color: hsl(81, 45%, 54%);cursor: pointer;font-size: 12px" onclick={navigateToActiveLead}>{lead}</span>
+                            <span if:true={userMatched} style="font-size: 12px">{line}</span>
+                        </p>
+                    </template>
+                </template>
+            </div>
+
+            <footer class="footer-section">
+                <template if:false ={showButtons}><!--change by Kunal Bisht for SFHL-980-->
+                    <div class="slds-align_absolute-center button-container">
+                        <button class="slds-button slds-button_brand cancel-button" onclick={handleYes}>Close</button>
+                        <template if:true={userMatched}>
+                            <button class="slds-button slds-button_brand continue-button" onclick={navigateToActiveLead}>Open Lead</button>
+                        </template>
+                    </div>
+                </template>
+                <template if:true ={showButtons}><!--change by Kunal Bisht for SFHL-980-->
+                    <div class="slds-align_absolute-center button-container">
+                        <!-- <button class="slds-button slds-button_brand cancel-button" onclick={abandonLead}>Abandon Lead</button> -->
+                        <button class="slds-button slds-button_brand continue-button" onclick={sendApproval} style="text-wrap: auto;">Send For City Head Approval</button>
+                        <button class="slds-button slds-button_brand continue-button" onclick={navigateToActiveLead}>Open Lead</button>
+                    </div>
+                </template>
+            </footer>
+        </div>
+    </section>
+  
+    <!-- <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+        <template if:false={small}>
+            <div class="slds-modal__container" style="min-width:50rem">
+                <div class="slds-modal__header" style="background-color: #5ab5e3; color: white; font-weight: 500;">
+                    <h2 class="slds-text-heading_medium slds-hyphenate" style="font-size: 15px; margin: 0;">Existing lead found</h2>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <template if:true={teleSales}>
+                        <template if:true={userMatched}>
+                            <p class="dialog-message"  style="font-size: 12px;">{dialogMessage} <br/>
+                                <span if:true={userMatched} style="color:hsl(81, 45%, 54%);cursor: pointer;font: size 12px;" onclick={navigateToActiveLead}>{lead}</span>
+                                <span if:true={userMatched} style="font-size: 12px;">{message}</span>
+                                
+                            </p>
+
+                            <footer class="slds-m-top_small slds-p-bottom_small custom-footer" style="margin: 0;">
+                                
+                                    <div  class="slds-align_absolute-center">
+                                       
+                                        <button type="button" class="slds-button capsule-buttonCancel previous-button" onclick={handleYes} style="font-size: 0.8rem;margin: botton 5px;">Close</button>
+                                        <button type="button" onclick={navigateToActiveLead} class="slds-button capsule-buttonSave previous-button" style="font-size:0.8rem;margin: botton 5px;">Open Lead</button>
+                                    </div>
+                            </footer>
+                        </template>
+                       
+                        <template if:false={userMatched}>
+                            <p class="dialog-message"  style="font-size: 12px;">{dialogMessageNonDuplicateUser}
+                                <span if:true={userMatched}>{messageNonDuplicateUser}</span>
+                                <span if:true={userMatched} style="color: hsl(81, 45%, 54%);cursor: pointer;font-size: 12px" onclick={navigateToActiveLead}>{lead}</span>
+                                <span if:true={userMatched} style="font-size: 12px">{line}</span>
+                            </p>
+                            <footer class="slds-m-top_small slds-p-bottom_small custom-footer" style="margin: 0;">
+                                    
+                                <div class="slds-align_absolute-center">
+                                    <button type="button" class="slds-button capsule-buttonCancel previous-button" onclick={handleYes} style="font-size: 0.8rem;margin: botton 5px;">Close</button>
+                                </div>
+                           
+                            </footer>
+                        </template>
+                    </template>
+                </div>
+            </div>
+        </template>
+        <template if:true={small}>
+            <div class="slds-modal__container" style="min-width: 80%;">
+                <div class="slds-modal__header" style="background-color: #5ab5e3; color: white; font-weight: 500;">
+                    <h2 class="slds-text-heading_medium slds-hyphenate" style="font-size: 15px; margin: 0;">Existing lead found</h2>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <template if:true={teleSales}>
+                        <template if:true={userMatched}>
+                            <p class="dialog-message">{dialogMessage}
+                                <span if:true={userMatched} style="color: rgb(84, 228, 103);cursor: pointer;" onclick={navigateToActiveLead}>{lead}</span>
+                                <span if:true={userMatched}>{message}</span>
+                            </p>
+                          <footer class="slds-m-top_small slds-p-bottom_small custom-footer" style="margin: 0;">
+                                        <div  class="slds-align_absolute-center">
+                                            <button type="button" class="slds-button capsule-buttonCancel previous-button" onclick={handleYes} style="font-size: 0.8rem;margin: botton 5px;">Close</button>
+                                            <button type="button" onclick={navigateToActiveLead} class="slds-button capsule-buttonSave previous-button" style="font-size:0.8rem;margin: botton 5px;">Open Lead</button>
+                                        </div>
+                            </footer>
+                        </template>
+                        <template if:false={userMatched}>
+                            <p class="dialog-message">{dialogMessageNonDuplicateUser}
+                                <span if:true={userMatched}>{messageNonDuplicateUser}</span>
+                                <span if:true={userMatched} style="color: rgb(84, 228, 103);cursor: pointer;" onclick={navigateToActiveLead}>{lead}</span>
+                                <span if:true={userMatched}>{line}</span>
+                            </p>
+                            <footer class="slds-m-top_small slds-p-bottom_small custom-footer" style="margin: 0;">
+                                    
+                                <div class="slds-align_absolute-center">
+                                    <button type="button" class="slds-button capsule-buttonCancel previous-button" onclick={handleYes} style="font-size: 0.8rem;margin: botton 5px;">Close</button>
+                                </div>
+                           
+                            </footer>
+                        </template>
+                    </template>
+                </div>
+            </div>
+        </template>
+    </section> -->
+
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    
+</template>

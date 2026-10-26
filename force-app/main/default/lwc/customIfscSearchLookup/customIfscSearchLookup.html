@@ -1,0 +1,18 @@
+<template>
+    <div class="lookup-container">
+        <lightning-input type="search" placeholder={placeholder} value={searchKey} 
+                        onchange={handleSearchKeyChange} disabled={disabled} onremove={handleRemovePill}></lightning-input>
+
+        <template if:true={showRecords}>
+            <div class="floating-dropdown">
+                <ul class="slds-listbox slds-listbox_vertical custom-width">
+                    <template for:each={records} for:item="record">
+                        <li key={record.Id} class="slds-listbox__item custom-item" onclick={handleSelect} data-id={record.Id}>
+                            <span class="slds-truncate">{record.IFSC__c}</span>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </template>
+    </div>
+</template>

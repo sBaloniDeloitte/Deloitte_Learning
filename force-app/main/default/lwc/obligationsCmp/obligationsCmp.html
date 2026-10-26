@@ -1,0 +1,703 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-20-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </template>
+    <div class="obligation-div">
+        <br>
+             <template if:false={isOneView}>
+                <div class="">
+                    <div class="slds-grid slds-wrap slds-m-horizontal_small">
+                        <div class="width-13">
+                            <div class="filter-drop">
+                            <lightning-combobox value={applicantValue} options={options}
+                            onchange={handleApplicantChange} class="validate" label="Select Applicant"></lightning-combobox>
+                            </div>
+                        </div>
+                        <template if:false={isHLRelated}>
+                            <div class="width-13">
+                                <div class="filter-drop">
+                                <lightning-combobox value={loanType} options={loanTypeOptions}
+                                onchange={handleLoanTypeChange} class="validate loan-type-combobox" label="Select Loan Type" ></lightning-combobox>
+                                </div>
+                            </div>
+                        </template>
+                        <template if:true={isHLRelated}>
+                            <div class="width-13">
+                                <div class="filter-drop">
+                                    <div class="custom-combobox">
+                                        <label class="slds-form-element__label">Select Loan Type</label>
+                                        <input 
+                                            type="text"
+                                            class="search-input"
+                                            placeholder="Select Loan Type"
+                                            value={loanType}
+                                            onfocus={openList}
+                                            onblur={closeList}
+                                            oninput={handleSearch}
+                                        />
+
+                                        <template if:true={showDropdown}>
+                                            <div class="dropdown-list">
+                                                <template for:each={loanTypeOptionsFiltered} for:item="opt">
+                                                    <div
+                                                        key={opt.value}
+                                                        class="dropdown-item"
+                                                        data-value={opt.value}
+                                                        onmousedown={selectOption}
+                                                    >
+                                                        {opt.label}
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </template>
+
+                                    </div>
+
+                                </div>
+                            </div>
+                        </template>
+                        <div class="width-13">
+                            <div class="filter-drop">
+                            <lightning-combobox value={securityType} options={securityTypeOptions}
+                            onchange={handleSecurityTypeChange} class="validate" label="Select Security Type"></lightning-combobox>
+                            </div>
+                        </div>
+                        <div class="width-13">
+                            <div class="filter-drop">
+                            <lightning-combobox value={applicantType} options={applicantTypeOptions}
+                            onchange={handleApplicantTypeChange} class="validate" label="Select Applicant Type"></lightning-combobox>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-12">
+                        </div>
+                        
+                        
+                    </div>
+                    <div class="slds-grid slds-wrap slds-m-horizontal_small">
+                        <div class="slds-col slds-size_1-of-12">
+                            <div class="filter-drop" style="">
+                                <button class="save-button previous-style-btn slds-button slds-button_brand" onclick={handlefilterClick}>Filter</button>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-12">
+                            <div class="filter-drop" style="margin-left: 80px">
+                                <button class="cancel-button start-app-style-btn slds-button slds-button_brand" onclick={handleResetClick}>Reset</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-wrap slds-m-horizontal_small">
+                        <div class="slds-col slds-size_3-of-12">
+                            <div class="filter-drop">
+                            <lightning-input class="" type="checkbox" disabled={isDisabled} label="Select All" onchange={handleSelectALLChange} ></lightning-input>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </template>
+       
+        <br>
+        <template if:false={isNoObligationRecordsFound}>
+        <div class="slds-scrollable" style="overflow: auto;">
+            <div style="margin-bottom: 40px;">
+            <table
+                class="sortable doc-table-css slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right">
+                
+                <thead style="position: sticky;top: 0;z-index: 1;">
+                    <tr class="slds-line-height_reset">
+                        <template if:false={isHLRelated}>
+                            <!--<template if:false={isOneView}>-->
+                            <th style="text-align: center;  color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; border-color: black;min-width: 100px;"
+                                scope="col" colspan="1">
+                                Select
+                            </th>
+                            <!--</template>-->
+                        </template>
+                        <th style="text-align: center; color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; border-color: black;min-width: 50px;"
+                            scope="col" colspan="1">
+                            Sr. No.
+                        </th>
+                        <th style="text-align: center; color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; border-color: black;min-width: 100px;"
+                            scope="col" colspan="1">
+                            Customer Name
+                        </th>
+                        <th style="text-align: center; color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; border-color: black;min-width: 100px;"
+                            scope="col" colspan="1">
+                            Customer Type
+                        </th>
+                        <th style="text-align: center;  color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; border-color: black;min-width: 100px;"
+                            scope="col" colspan="1">
+                            Start Date
+                             <lightning-button-icon icon-name="utility:arrowup" variant="bare"
+                                                onclick={sortByStartDateAsc} alternative-text="Sort Ascending">
+                                            </lightning-button-icon>
+                                            <lightning-button-icon icon-name="utility:arrowdown" variant="bare"
+                                                onclick={sortByStartDateDesc} alternative-text="Sort Descending">
+                                            </lightning-button-icon>
+                        </th>
+                        <!--<th style="text-align: center; background-color: #87CEEB;color:#181818;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; color: white; border-color: black;min-width: 200px;"
+                            scope="col" colspan="1">
+                            Financier
+                        </th>-->
+                        <th style="text-align: center;  color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; border-color: black;min-width: 100px;"
+                            scope="col" colspan="1">
+                            Loan Type
+                        </th>
+                        <th style="text-align: center;  color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; border-color: black;min-width: 100px;"
+                            scope="col" colspan="1">
+                            Loan Amount
+                            <lightning-button-icon icon-name="utility:arrowup" variant="bare"
+                                                onclick={sortByLoanAmountAsc} alternative-text="Sort Ascending">
+                                            </lightning-button-icon>
+                                            <lightning-button-icon icon-name="utility:arrowdown" variant="bare"
+                                                onclick={sortByLoanAmountDesc} alternative-text="Sort Descending">
+                                            </lightning-button-icon>
+                        </th>
+                        <th style="text-align: center;  color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; border-color: black;min-width: 100px;"
+                            scope="col" colspan="1">
+                            Outstanding Balance
+                        </th>
+                        <th style="text-align: center;  color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; border-color: black;min-width: 100px;"
+                            scope="col" colspan="1">
+                            Imputed EMI
+                        </th>
+                        <!--<th style="text-align: center; background-color: #87CEEB;color:#181818;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; color: white; border-color: black"
+                            scope="col" colspan="1">
+                            Tenure
+                        </th>
+                        <th style="text-align: center; background-color: #87CEEB;color:#181818;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; color: white; border-color: black"
+                            scope="col" colspan="1">
+                            Participant Status
+                        </th>-->
+                        <th style="text-align: center;  color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; border-color: black;min-width: 100px;"
+                            scope="col" colspan="1">
+                            Security Type
+                        </th>
+                        <th style="text-align: center;  color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; border-color: black;min-width: 50px;"
+                            scope="col" colspan="1">
+                            Banking
+                        </th>
+                        <!--
+                        <th style="text-align: center; background-color: #87CEEB;color:#181818;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; border-color: black;min-width: 200px;"
+                            scope="col" colspan="1">
+                            Repayment Bank
+                        </th>-->
+                        <template if:false={isHLRelated}>
+                         <th style="text-align: center;  color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; border-color: black;min-width: 100px;"
+                            scope="col" colspan="1">
+                            EMI Bounce
+                        </th>
+                        <th style="text-align: center; color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; border-color: black;min-width: 100px;"
+                            scope="col" colspan="1">
+                            Balance Tenure
+                        </th> 
+                        </template>
+                        <template if:true={isHLRelated}>
+                            <!--<template if:false={isOneView}>-->
+                            <th style="text-align: center; color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; border-color: black;min-width: 50px;"
+                                scope="col" colspan="1">
+                                Consider for FOIR
+                            </th>
+                        </template>
+                        <!--</template>-->
+                        <th style="text-align: center; color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; border-color: black;min-width: 50px;"
+                            scope="col" colspan="1">
+                            Remarks
+                        </th>
+                        <template if:true={isHLRelated}>
+                        <template for:each={monthDateHeaders} for:item="mh">
+                        <th key={mh.apiName} style="text-align: center; color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:5px 7px; border-color: black;min-width: 100px;">
+                            <!-- READ ONLY MODE -->
+                            <template if:false={mh.isEditing}>
+                                <div class="header-container">
+                                    <span class="header-text">{mh.dateValue}</span>
+
+                                    <!-- Pen icon to enable edit mode -->
+                                    <lightning-button-icon
+                                        icon-name="utility:edit"
+                                        alternative-text="Edit"
+                                        variant="bare"
+                                        onclick={handleEditHeader}
+                                        data-api={mh.apiName}
+                                        class="edit-icon">
+                                    </lightning-button-icon>
+                                </div>
+                            </template>
+                            <!-- EDIT MODE -->
+                            <template if:true={mh.isEditing}>
+                                <div class="header-container">
+                                    <lightning-input
+                                        type="text"
+                                        variant="label-hidden"
+                                        value={mh.dateValue}
+                                        data-api={mh.apiName}
+                                        onchange={handleHeaderInput}
+                                        class="header-input">
+                                    </lightning-input>
+                                    <!-- Save icon -->
+                                    <lightning-button-icon
+                                        icon-name="utility:save"
+                                        alternative-text="Save"
+                                        variant="bare"
+                                        onclick={handleSaveHeader}
+                                        data-api={mh.apiName}
+                                        class="save-icon">
+                                    </lightning-button-icon>
+                                </div>
+                            </template>
+                        </th>
+                            </template>
+                        </template>
+                        <!--<th style="text-align: center; background-color: #87CEEB;color:#181818;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; border-color: black;min-width: 200px;"
+                            scope="col" colspan="1">
+                            Re-classification Reason
+                        </th>-->
+                        <th style="text-align: center;  color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; border-color: black;min-width: 20px;"
+                            scope="col" colspan="1">
+                            Actions
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={filteredList} for:item="record">
+                        <tr key={record.srNo}>
+                            <template if:false={isHLRelated}>
+                                <td style="border-color: black">
+                                    <template if:false={isOneView}>
+                                        <template if:true={record.isObligation}>
+                                            <lightning-input class = "comboBoxSelect" type="checkbox" label="" name="isObligation"  data-id={record.intDetRecordId} id={record.intDetRecordId}
+                                            onchange={handleChildExistingChange} checked={record.isObligation} disabled={isDisabled}></lightning-input>
+                                        </template>
+                                        <template if:false={record.isObligation}>
+                                            <lightning-input class = "comboBoxSelect" type="checkbox" label="" name="isObligation"  data-id={record.intDetRecordId} id={record.intDetRecordId}
+                                        onchange={handleChildExistingChange} checked={record.isObligation} disabled={isDisabled}></lightning-input>
+                                        </template>
+                                    </template>
+                                    <template if:true={isOneView}>
+                                        <lightning-input class = "comboBoxSelect" type="checkbox" label="" name="isObligation"  data-id={record.intDetRecordId} id={record.intDetRecordId}
+                                        onchange={handleChildExistingChange} checked={record.isObligation} disabled></lightning-input>
+                                    </template>
+                                </td>
+                            </template>
+                            <td style="border-color: black">{record.srNo}</td>
+                            <td style="border-color: black">{record.customerName}</td>
+                            <td style="border-color: black">{record.customerType} <template if:true={isHLRelated}>- {record.ownership}</template></td>
+                            <td style="border-color: black">{record.startDate}</td>
+                            <!--<td style="border-color: black">{record.financer}</td>-->
+                            <td style="border-color: black">{record.loanType}</td>
+                            <td style="border-color: black">{record.loanAmount}</td>
+                            <td style="border-color: black">{record.outstandingBalance}</td>
+                            
+                            <td style="border-color: black">
+                                <template if:false={isOneView}>
+                                    <template if:false={record.isEMIUpdated}>
+                                        <lightning-input type="number" variant="label-hidden" label="" data-id={record.intDetRecordId} id={record.intDetRecordId} disabled={isDisabled} name="emi" value={record.emi} onblur={handleBlurEMI}></lightning-input>
+                                    </template>
+                                    <template if:true={record.isEMIUpdated}>
+                                        <div style="color: green;font-weight: 600;">
+                                            <lightning-input type="number" variant="label-hidden" label="" data-id={record.intDetRecordId} id={record.intDetRecordId} disabled={isDisabled} name="emi" value={record.emi} onblur={handleBlurEMI}></lightning-input>
+                                        </div>
+                                    </template>
+                                </template>
+                                <template if:true={isOneView}>
+                                    <template if:false={record.isEMIUpdated}>
+                                        <!-- {record.outstandingBalance} -->
+                                        {record.emi}
+                                    </template>
+                                    <template if:true={record.isEMIUpdated}>
+                                        <div style="color: green;font-weight: 600;">
+                                            <!-- {record.outstandingBalance} -->
+                                            {record.emi}
+                                        </div>
+                                    </template>
+                                </template>
+                            </td>
+                            <!--<td style="border-color: black">{record.tenure}</td>
+                            <td style="border-color: black">{record.participantStatus}</td>-->
+                            <td style="border-color: black">
+                                <template if:false={isOneView}>
+                                    <template if:false={record.isSecurityUpdated}>
+                                        <lightning-combobox data-id={record.intDetRecordId} id={record.intDetRecordId} name="securityType" value={record.securityType} options={securityTypeOp} onchange={handleStatusChangeExistingSecurity}  disabled={isDisabled} variant="label-hidden"></lightning-combobox>
+                                    </template>
+                                    <template if:true={record.isSecurityUpdated}>
+                                        <div style="color: green;font-weight: 600;">
+                                        <lightning-combobox data-id={record.intDetRecordId} id={record.intDetRecordId} name="securityType" value={record.securityType} options={securityTypeOp} onchange={handleStatusChangeExistingSecurity}  disabled={isDisabled} variant="label-hidden"></lightning-combobox>
+                                    </div>
+                                    </template>
+                                    
+                                </template>
+                                <template if:true={isOneView}>
+                                    <template if:false={record.isSecurityUpdated}>
+                                        {record.securityType}
+                                    </template>
+                                    <template if:true={record.isSecurityUpdated}>
+                                        <div style="color: green;font-weight: 600;">
+                                        {record.securityType}
+                                    </div>
+                                    </template>
+                                    
+                                </template>
+                            </td>
+                            <td style="border-color: black">
+                                <template if:true={record.isObligation}>
+                                    <lightning-input class = "" type="checkbox" label="" name="isBanking"  data-id={record.intDetRecordId} id={record.intDetRecordId}
+                                    onchange={handleChildExistingChange} checked={record.isBanking} disabled={isDisabled}></lightning-input>
+                                </template>
+                                <template if:false={record.isObligation}>
+                                    <lightning-input class = "" type="checkbox" label="" name="isBanking"  data-id={record.intDetRecordId} id={record.intDetRecordId}
+                                    onchange={handleChildExistingChange} checked={record.isBanking} disabled="true"></lightning-input>
+                                </template>
+                                <!--<template if:true={record.isBanking}>
+                                    
+                                </template>
+                                <template if:false={record.isBanking}>
+                                    <lightning-input class = "" type="checkbox" label="" name="isBanking"  data-id={record.intDetRecordId} id={record.intDetRecordId}
+                                onchange={handleChildExistingChange} checked={record.isBanking} disabled="true"></lightning-input>
+                                </template>-->
+                            </td>
+                            
+                            <!--<td style="border-color: black">{record.repaymentBank}</td>-->
+                            <template if:false={isHLRelated}>
+                            <td style="border-color: black">{record.emiBounce}</td>
+                            <td style="border-color: black">{record.balanceTenure}</td>
+                            </template>
+                            <template if:true={isHLRelated}>
+                                <td style="border-color: black">
+                                    <template if:false={isOneView}>
+                                        <template if:true={record.isObligation}>
+                                            <lightning-input class = "comboBoxSelect" type="checkbox" label="" name="isObligation"  data-id={record.intDetRecordId} id={record.intDetRecordId}
+                                            onchange={handleChildExistingChange} checked={record.isObligation} disabled={isDisabled}></lightning-input>
+                                        </template>
+                                        <template if:false={record.isObligation}>
+                                            <lightning-input class = "comboBoxSelect" type="checkbox" label="" name="isObligation"  data-id={record.intDetRecordId} id={record.intDetRecordId}
+                                        onchange={handleChildExistingChange} checked={record.isObligation} disabled={isDisabled}></lightning-input>
+                                        </template>
+                                    </template>
+                                    <template if:true={isOneView}>
+                                        <lightning-input class = "comboBoxSelect" type="checkbox" label="" name="isObligation"  data-id={record.intDetRecordId} id={record.intDetRecordId}
+                                        onchange={handleChildExistingChange} checked={record.isObligation} disabled></lightning-input>
+                                    </template>
+                                </td>
+                            </template>
+                            <td style="border-color: black">
+                                <template if:false={isOneView}>
+                                    <div class="slds-grid slds-align-center slds-p-around_x-small">
+                                        <div class="slds-col slds-grow">
+                                            <template if:false={isHLRelated}>
+                                                <lightning-input type="text" label="Enter some text" name="remarks"
+                                                    data-id={record.intDetRecordId} variant="label-hidden" value={record.remarks} onblur={handleInputFocus} disabled={isDisabled}> 
+                                                </lightning-input>
+                                            </template>
+                                            <template if:true={isHLRelated}>
+                                                <lightning-combobox data-id={record.intDetRecordId} id={record.intDetRecordId} data-recordtype="existing" name="remarks" value={record.remarks} options={remarksOptions} onchange={handleChangeRemarks} disabled={isDisabled} variant="label-hidden"></lightning-combobox>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </template>
+                                <template if:true={isOneView}>
+                                    {record.remarks}
+                                </template>
+                            </td>
+                            <template if:true={isHLRelated}>
+                            <template for:each={record.monthValues} for:item="mval" >
+                            <td key={mval.key} style="border-color: black; text-align: right;">
+                                <lightning-input
+                                    type="text"
+                                    variant="label-hidden"
+                                    value={mval.value}
+                                    data-api={mval.apiName}
+                                    data-record={record.intDetRecordId}
+                                    onchange={handleMonthValueChange}
+                                    onblur={handleMonthValueInput}
+                                    disabled={isDisabled}
+                                ></lightning-input>
+                            </td>
+                                </template>
+                        </template>
+                            <!--
+                            <td style="border-color: black">
+                                <template if:false={isOneView}>
+
+                                
+                                <lightning-combobox name="reClasificationReason" label="Re-classification Reason" value={record.reClasificationReason}
+                                placeholder="Select Re-classification Reason" options={statusOptions}
+                                onchange={handleStatusChangeExisting} variant="label-hidden"  data-id={record.intDetRecordId} ></lightning-combobox>
+                            </template>
+                            <template if:true={isOneView}>
+                                {record.reClasificationReason}
+                            </template>
+                            </td>-->
+                            <td style="border-color: black">
+                                <template if:true={record.isRemovable}>
+                                    <div class="slds-col slds-p-left_x-small">
+                                        <lightning-icon icon-name="utility:delete" alternative-text="Delete" title="Delete Document" disabled={isDisabled}
+                                            class="icon-action delete-icon" style="padding: 3%;" data-id={record.intDetRecordId} onclick={handleDeleteDocOblig}>
+                                        </lightning-icon>
+                                    </div>                                        
+                                </template>
+                            </td>
+                        </tr>
+                    </template>
+                    <template if:true={isNewRow}>
+                        <template for:each={addNewList} for:item="record">
+                            <tr key={record.srNo}>
+                                <template if:false={isHLRelated}>
+                                    <td style="border-color: black">
+                                        <template if:true={record.isObligation}>
+                                            <lightning-input class = "comboBoxSelect" type="checkbox" label="" name="isObligation"  data-id={record.srNo} id={record.srNo}
+                                            onchange={handleChildChange} checked={record.isObligation}></lightning-input>
+                                        </template>
+                                        <template if:false={record.isObligation}>
+                                            <lightning-input class = "comboBoxSelect" type="checkbox" label="" name="isObligation"  data-id={record.srNo} id={record.srNo}
+                                        onchange={handleChildChange} checked={record.isObligation}></lightning-input>
+                                        </template>
+                                    </td>
+                                </template>
+                                <td style="border-color: black">{record.srNo}</td>
+                                
+                                <td style="border-color: black">
+                                    <lightning-combobox data-id={record.srNo} name="customerName" value={record.customerName} options={customerName} onchange={handleInputChange}  label="Select Applicant" variant="label-hidden" required></lightning-combobox>
+                                    <!--<lightning-input type="text" variant="label-hidden" label="" data-id={record.srNo} name="customerName" value={record.customerName} onchange={handleInputChange}></lightning-input>-->
+                                </td>
+                                <td style="border-color: black">
+                                   <!-- <lightning-combobox data-id={record.srNo} name="customerType" value={record.customerType} options={customerType} onchange={handleInputChange}  label="Select Applicant" variant="label-hidden"></lightning-combobox>-->
+                                    
+                                </td>
+                                <td style="border-color: black">
+                                    <lightning-input type="date" data-id={record.srNo} name="startDate" max={maxDate} value={record.startDate} variant="label-hidden" onchange={handleInputChange} dropdown-alignment="auto" required></lightning-input>
+                                   
+                                </td>
+                                <!--
+                                <td style="border-color: black">
+                                    <lightning-combobox data-id={record.srNo} name="financer" value={record.financer} options={financer} onchange={handleInputChange}  variant="label-hidden"></lightning-combobox>
+                                </td>-->
+                                <td style="border-color: black">
+                                    
+                                    <lightning-combobox data-id={record.srNo} name="loanType" value={record.loanType} options={loanTypeOp} onchange={handleInputChange}  variant="label-hidden" required></lightning-combobox>
+                                </td>
+                                <td style="border-color: black">
+                                    <lightning-input type="number" variant="label-hidden" label="" data-id={record.srNo} name="loanAmount" value={record.loanAmount} onchange={handleInputChange} required></lightning-input>
+                                </td>
+                                <td style="border-color: black">
+                                    <lightning-input type="number" variant="label-hidden" label="" data-id={record.srNo} name="outstandingBalance" value={record.outstandingBalance} onchange={handleInputChange} required></lightning-input>
+                                </td>
+                                <td style="border-color: black">
+                                    <lightning-input type="number" variant="label-hidden" label="" data-id={record.srNo} name="emi" value={record.emi} onchange={handleInputChange} required></lightning-input>
+                                </td>
+                                <!--<td style="border-color: black">{record.tenure}</td>
+                                <td style="border-color: black">{record.participantStatus}</td>-->
+                                <td style="border-color: black">
+                                    <lightning-combobox data-id={record.srNo} name="securityType" value={record.securityType} options={securityTypeOp} onchange={handleInputChange}  variant="label-hidden" required></lightning-combobox>
+                                </td>
+                                <td style="border-color: black">
+                                    <template if:true={record.isBanking}>
+                                        <lightning-input class = "" type="checkbox" label="" name="File"  data-id={record.srNo} id={record.srNo}
+                                        onchange={handleChildChange} checked={record.isBanking} disabled="true"></lightning-input>
+                                    </template>
+                                    <template if:false={record.isBanking}>
+                                        <lightning-input class = "" type="checkbox" label="" name="File"  data-id={record.srNo} id={record.srNo}
+                                    onchange={handleChildChange} checked={record.isBanking} disabled="true"></lightning-input>
+                                    </template>
+                                </td>
+                                <!--
+                                <td style="border-color: black">
+                                    <lightning-input type="text" variant="label-hidden" label="" data-id={record.srNo} name="repaymentBank" value={record.repaymentBank} onchange={handleInputChange} required></lightning-input>
+                                   
+                                </td>-->
+                                <td style="border-color: black">
+                                    <lightning-input type="number" variant="label-hidden" label="" data-id={record.srNo} name="emiBounce" value={record.emiBounce} onchange={handleInputChange} required></lightning-input>
+                                </td>
+                                <td style="border-color: black">
+                                    <lightning-input type="number" variant="label-hidden" label="" data-id={record.srNo} name="balanceTenure" value={record.balanceTenure} onchange={handleInputChange} required></lightning-input>
+                                </td>
+                                <template if:true={isHLRelated}>
+                                    <td style="border-color: black">
+                                        <template if:true={record.isObligation}>
+                                            <lightning-input class = "comboBoxSelect" type="checkbox" label="" name="isObligation"  data-id={record.srNo} id={record.srNo}
+                                            onchange={handleChildChange} checked={record.isObligation}></lightning-input>
+                                        </template>
+                                        <template if:false={record.isObligation}>
+                                            <lightning-input class = "comboBoxSelect" type="checkbox" label="" name="isObligation"  data-id={record.srNo} id={record.srNo}
+                                            onchange={handleChildChange} checked={record.isObligation}></lightning-input>
+                                        </template>
+                                    </td>
+                                </template>
+                                <td style="border-color: black; text-align:left;">
+                                    <div class="slds-grid slds-align-center slds-p-around_x-small">
+                                        <div class="slds-col slds-grow">
+                                            <template if:false={isHLRelated}>
+                                                <lightning-input type="text" label="Enter some text"
+                                                    data-id={record.srNo} variant="label-hidden" disabled={isDisabled} value={record.remarks} onchange={handleInputChange} name="remarks">
+                                                </lightning-input>
+                                            </template>
+                                            <template if:true={isHLRelated}>
+                                                <lightning-combobox data-id={record.srNo} disabled={isDisabled} id={record.srNo} data-recordtype="new" name="remarks" value={record.remarks} options={remarksOptions} onchange={handleChangeRemarks} variant="label-hidden"></lightning-combobox>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </td>
+                                <!--
+                                <td style="border-color: black"><lightning-combobox name="reClasificationReason" label="Re-classification Reason" value={record.reClasificationReason}
+                                    placeholder="Select Re-classification Reason" options={statusOptions}
+                                    onchange={handleInputChange} variant="label-hidden" data-id={record.srNo}></lightning-combobox></td>-->
+
+                                <td style="border-color: black; text-align:center;">
+                                    <div class="slds-col slds-p-left_x-small">
+                                        <lightning-icon icon-name="utility:delete" alternative-text="Delete" title="Delete Document" disabled={isDisabled}
+                                            class="icon-action delete-icon" style="padding: 3%;" data-id={record.srNo} onclick={handleDeleteDoc}>
+                                        </lightning-icon>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </template>
+                    <tr style="font-weight: 500;">
+                        <template if:false={isHLRelated}>
+                            <template if:false={isOneView}>
+                                <td colspan="6" style="border-color: black">Total</td>
+                                </template>
+                                <template if:true={isOneView}>
+                                    <td colspan="6" style="border-color: black">Total</td>
+                                </template>
+                            
+                            <td style="border-color: black">{totalData.totalLoanAmount}</td>
+                            <td style="border-color: black">{totalData.totalOutstandingBalance}</td>
+                            <td style="border-color: black">{totalData.totalEmi}</td>
+                            <td style="border-color: black"></td>
+                            <td style="border-color: black"></td>
+                            <td style="border-color: black"></td>
+                            <td style="border-color: black"></td>
+                            <!--<td style="border-color: black"></td>
+                            <td style="border-color: black"></td>-->
+                        </template>
+                        <template if:true={isHLRelated}>
+                            <template if:false={isOneView}>
+                                <td colspan="5" style="border-color: black">Total</td>
+                                </template>
+                                <template if:true={isOneView}>
+                                    <td colspan="5" style="border-color: black">Total</td>
+                                </template>
+                            
+                            <td style="border-color: black">{totalData.totalLoanAmount}</td>
+                            <td style="border-color: black">{totalData.totalOutstandingBalance}</td>
+                            <td style="border-color: black">{totalData.totalEmi}</td>
+                            <td style="border-color: black"></td>
+                            <td style="border-color: black"></td>
+                            <td style="border-color: black"></td>
+                            <td style="border-color: black"></td>
+                            <td style="border-color: black"></td>
+                            <!--<td style="border-color: black"></td>
+                            <td style="border-color: black"></td>-->
+                        </template>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        </div>
+        </template>
+        <template if:true={isNoObligationRecordsFound}>
+            <div style="text-align: center; padding: 10px; border: solid 1px #000000; margin-top: 10px;">
+                <p>No considered obligation records found.</p>
+            </div>
+        </template>
+        <template if:false={isSmall}>
+            <template if:false={isOneView}>
+                <template if:false={isDisabled}>
+                
+                <div style="padding-top: 10px;float: right;">
+                    <button class="save-button previous-style-btn slds-button slds-button_brand slds-m-left_small" onclick={handleAddRwClick}>Add Row</button>
+                    <button class="save-button start-app-style-btn slds-button slds-button_brand slds-m-left_small" onclick={handleSaveClick}>Save Obligations</button>
+                </div>
+                </template>
+            </template>
+        </template>
+        <template if:true={isSmall}>
+            <template if:false={isOneView}>
+                <template if:false={isDisabled}>
+                <div style="padding-top: 10px;float: right;">
+                    <button class="save-button previous-style-btn slds-button slds-button_brand slds-m-left_small" style="margin-right:10px" onclick={handleAddRwClick}>Add Row</button>
+                    <button class="save-button start-app-style-btn slds-button slds-button_brand slds-m-left_small" style="margin-top:5px" onclick={handleSaveClick}>Save Obligations</button>
+                </div>
+                 </template>
+            </template>
+        </template>    
+    
+    <template if:false={isNoObligationRecordsFound}>
+        <div class="responsive-obligation-container">
+            <div class="table-scroll-container">
+                <table class="slds-table slds-table_cell-buffer slds-no-row-hover 
+                            slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right 
+                            obligation-table">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="header-cell" style="text-align: center;  color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px;" scope="col">Sr. No.</th>
+                            <th class="header-cell" style="text-align: center;  color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px;" scope="col">Total Number</th>
+                            <th class="header-cell" style="text-align: center;  color:#ffffff;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px;" scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th class="body-cell">Total Monthly Obligation</th>
+                            <td class="body-cell">{totalData.totalNumberMonthlyObligation}</td>
+                            <td class="body-cell">{totalData.totalMonthlyObligation}</td>
+                        </tr>
+                        <tr>
+                            <th class="body-cell">Total Monthly Obligation for Banking Surrogate Method</th>
+                            <td class="body-cell">{totalData.totalNumberMonthlyObligationForBanking}</td>
+                            <td class="body-cell">{totalData.totalMonthlyObligationForBanking}</td>
+                        </tr>
+                        <tr>
+                            <th class="body-cell">Total Annual Obligation</th>
+                            <td class="body-cell">{totalData.totalNumberAnnualObligation}</td>
+                            <td class="body-cell">{totalData.totalAnnualObligation}</td>
+                        </tr>
+                        <tr>
+                            <th class="body-cell">Total Unsecured Exposure</th>
+                            <td class="body-cell">{totalData.totalNumberUnsecuredObligation}</td>
+                            <td class="body-cell">{totalData.totalUnsecuredObligation}</td>
+                        </tr>
+                        <tr>
+                            <th class="body-cell">Total Secured Exposure</th>
+                            <td class="body-cell">{totalData.totalNumberSecuredObligation}</td>
+                            <td class="body-cell">{totalData.totalSecuredObligation}</td>
+                        </tr>
+                        <tr>
+                            <th class="body-cell">Credit Card max out (In percentage)</th>
+                            <td class="body-cell"></td>
+                            <td class="body-cell">{totalData.creditCardMax}</td>
+                        </tr>
+                        <tr>
+                            <th class="body-cell">Credit Card Exposure</th>
+                            <td class="body-cell">{totalData.totalNumberOfcreditCardMax}</td>
+                            <td class="body-cell">{totalData.creditCardExposure}</td>
+                        </tr>
+                        <tr>
+                            <th class="body-cell">DTO (In percentage)</th>
+                            <td class="body-cell"></td>
+                            <td class="body-cell">{totalData.DTO}</td>
+                        </tr>
+                        <tr>
+                            <th class="body-cell">Unsecured ETO (In percentage)</th>
+                            <td class="body-cell"></td>
+                            <td class="body-cell">{totalData.ETO}</td>
+                        </tr>
+                        <tr>
+                            <th class="body-cell">Overall ETO (In percentage)</th>
+                            <td class="body-cell"></td>
+                            <td class="body-cell">{totalData.overallETO}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </template>
+    </div>
+
+</template>

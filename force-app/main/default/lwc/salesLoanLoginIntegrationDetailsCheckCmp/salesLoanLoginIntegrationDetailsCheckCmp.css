@@ -1,0 +1,202 @@
+@import "c/cssLibrary";
+
+/* Same dark palette as creditFIInitiationCmp.css so the KYC section (Other Integrations accordion) matches the Field Investigation accordion theme */
+:host {
+    display: block;
+    color: #ffffff;
+    --kyc-page-bg: #12172b;
+    --kyc-panel-bg: #1c2238;
+    --kyc-field-bg: #16283f;
+    --kyc-accent: #1467eb;
+    --kyc-border: #2a2f45;
+    --kyc-muted: #8a99b3;
+    /* Base component styling hooks — darken the lightning-card + nested accordion (Abhilash Saini section) so no white areas remain */
+    --slds-c-card-color-background: var(--kyc-panel-bg);
+    --slds-c-card-color-border: var(--kyc-border);
+    --slds-c-card-shadow: none;
+    --sds-c-card-shadow: none;
+    --slds-c-accordion-color-background: var(--kyc-page-bg);
+    --slds-c-accordion-section-color-background: var(--kyc-panel-bg);
+    --slds-c-accordion-summary-color-background: var(--kyc-panel-bg);
+    --slds-c-accordion-summary-heading-color: #ffffff;
+    --slds-c-accordion-summary-text-color: #ffffff;
+    --slds-c-accordion-color-border: var(--kyc-border);
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+    --slds-c-spinner-color-background: var(--kyc-panel-bg);
+}
+
+lightning-card,
+.slds-card {
+    color: #ffffff;
+}
+
+/* Labels like "PAN validation status :" / "KYC API's validation status :" have no class — target by position */
+lightning-card div {
+    color: #ffffff;
+}
+
+.no-applicant-text {
+    color: #ffffff;
+}
+
+.slds-form-element__control {
+    border: none !important;
+    border-bottom: 1px solid var(--kyc-border) !important;
+    padding-bottom: 2px; 
+}
+
+.table-class{
+    width: 98%;
+}
+
+.tdBorderHeader{
+    color: #ffffff;
+    height:20px;
+    border: 1px solid var(--kyc-border);
+    padding-left: 1%;
+}
+
+.reload-icon{
+    cursor: pointer; 
+}
+
+.custom-icon {
+    --slds-c-icon-color-foreground: #ffffff;
+    --slds-c-icon-color-foreground-default: #ffffff;
+    --sds-c-icon-color-foreground: #ffffff;
+    --sds-c-icon-color-foreground-default: #ffffff;
+}
+
+.custom-icon lightning-primitive-icon {
+    fill: #ffffff !important;
+}
+
+/* Table theme matched EXACTLY to the "Field Investigation Initiation"
+   table in creditFIInitiationCmp.css (.accordion-container .slds-table /
+   .fi-table-wrapper) - dark-navy #0a1524 outer backdrop (wrapper),
+   #0e1c30 table surface for both header and body, #33455e borders on
+   every cell, 18px rounded corners on the outer cells only, left-aligned
+   bold white header text with 12px/10px padding, 13px body text, and
+   the same #16283f row-hover highlight - replacing the previous
+   #0e1626/#111d30/#1d2f45 theme (and, in the non-accordion table
+   variant, the hardcoded "border: 2px solid black" / centered-text
+   inline styles) so this table matches the other Application
+   Verification accordion tables. */
+/* .kyc-table-wrap also carries the base SLDS ".slds-box"/".slds-box_xx-small"
+   classes in the active template, which ship a default light-grey border
+   from the platform's own SLDS stylesheet - that (not lightning-card) is
+   the visible white/light border in the screenshot. Overriding it here,
+   scoped to this class combination only. */
+.kyc-table-wrap,
+.slds-box.kyc-table-wrap,
+.slds-box_xx-small.kyc-table-wrap {
+    background-color: #0a1524 !important;
+    border: none !important;
+    box-shadow: none !important;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.kyc-table-wrap .slds-table {
+    width: 100%;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border-radius: 18px;
+    background-color: #0e1c30 !important;
+    border: none !important;
+    color: #ffffff;
+}
+
+.kyc-table-wrap .slds-table th,
+.kyc-table-wrap .slds-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.kyc-table-wrap .slds-table thead tr th {
+    background-color: #0e1c30 !important;
+    background-image: none !important;
+    border-right: 1px solid #33455e !important;
+    border-bottom: 1px solid #33455e !important;
+    border-color: #33455e !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    font-size: 12.5px;
+    letter-spacing: 0.2px;
+    padding: 12px 10px !important;
+    text-align: left !important;
+    box-shadow: none !important;
+    vertical-align: middle;
+}
+
+.kyc-table-wrap .slds-table thead tr:first-child th:first-child {
+    border-top-left-radius: 18px;
+}
+
+.kyc-table-wrap .slds-table thead tr:first-child th:last-child {
+    border-top-right-radius: 18px;
+}
+
+.kyc-table-wrap .slds-table tbody tr td {
+    background-color: #0e1c30 !important;
+    border-right: 1px solid #33455e !important;
+    border-bottom: 1px solid #33455e !important;
+    border-color: #33455e !important;
+    color: #ffffff !important;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: left !important;
+    padding: 12px 10px !important;
+    vertical-align: middle;
+}
+
+.kyc-table-wrap .slds-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 18px;
+}
+
+.kyc-table-wrap .slds-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 18px;
+}
+
+.kyc-table-wrap .slds-table tbody tr:hover td {
+    background-color: #16283f !important;
+}
+
+.kyc-table-wrap .slds-table a {
+    color: #7db2ff !important;
+}
+/* =========================================================
+   Triggered APIs / KYC Section - Custom Scrollbar
+   ========================================================= */
+
+.kyc-table-wrap {
+    scrollbar-width: thin;
+    scrollbar-color: #2a3f5f #0A1524;
+}
+
+/* Chrome / Edge / Windows */
+.kyc-table-wrap::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.kyc-table-wrap::-webkit-scrollbar-track {
+    background: #0A1524 !important;
+    border-radius: 6px;
+}
+
+.kyc-table-wrap::-webkit-scrollbar-thumb {
+    background: #2a3f5f !important;
+    border-radius: 6px;
+    border: 2px solid #0A1524;
+}
+
+.kyc-table-wrap::-webkit-scrollbar-thumb:hover {
+    background: #3b5578 !important;
+}
+
+/* Scrollbar corner */
+.kyc-table-wrap::-webkit-scrollbar-corner {
+    background: #0A1524 !important;
+}

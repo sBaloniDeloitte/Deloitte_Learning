@@ -1,0 +1,110 @@
+<template>
+    <lightning-card title="Floor-wise Estimation Details">
+        <div class="slds-p-around_small">
+
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+
+                <thead>
+                    <tr>
+                        <th>Floor</th>
+                        <th>Estimation as per Customer (sqft)</th>
+                        <th>Vetted Estimation Permissible (sqft)</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <!-- Dynamic Floor Rows -->
+                    <template for:each={rows} for:item="row">
+                        <tr key={row.Id}>
+
+                            <td>
+                                <lightning-combobox
+                                    value={row.Floor__c}
+                                    options={floorOptions}
+                                    data-id={row.Id}
+                                    data-field="Floor__c"
+                                    onchange={handleChange}>
+                                </lightning-combobox>
+                            </td>
+
+                            <td>
+                                <lightning-input
+                                    type="text"
+                                    value={row.Estimation_as_per_Customer_sqft__c}
+                                    data-id={row.Id}
+                                    data-field="Estimation_as_per_Customer_sqft__c"
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </td>
+
+                            <td>
+                                <lightning-input
+                                    type="text"
+                                    value={row.Vetted_Estimation_Permissible_sqft__c}
+                                    data-id={row.Id}
+                                    data-field="Vetted_Estimation_Permissible_sqft__c"
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </td>
+
+                            <td>
+                                <lightning-button-icon
+                                    icon-name="utility:delete"
+                                    data-id={row.Id}
+                                    onclick={handleDelete}>
+                                </lightning-button-icon>
+                            </td>
+
+                        </tr>
+                    </template>
+
+                    <!-- TOTAL BUA -->
+                    <tr class="slds-theme_shade">
+                        <td><b>Total BUA</b></td>
+                        <td><lightning-input type="text" value={totalBUACustomer} disabled></lightning-input></td>
+                        <td><lightning-input type="text" value={totalBUAVetted} disabled></lightning-input></td>
+                        <td></td>
+                    </tr>
+
+                    <!-- VCR -->
+                    <tr class="slds-theme_shade">
+                        <td><b>Vetted Construction Rates (sqft)</b></td>
+                        <td>
+                            <lightning-input
+                                type="text"
+                                value={vettedConstructionRateCustomer}
+                                data-field="customer"
+                                onchange={handleRateChange}>
+                            </lightning-input>
+                        </td>
+                        <td>
+                            <lightning-input
+                                type="text"
+                                value={vettedConstructionRateVetted}
+                                data-field="vetted"
+                                onchange={handleRateChange}>
+                            </lightning-input>
+                        </td>
+                        <td></td>
+                    </tr>
+
+                    <!-- TOTAL ESTIMATE -->
+                    <tr class="slds-theme_shade">
+                        <td><b>Total Vetted Estimate Amount (Rs.)</b></td>
+                        <td><lightning-input type="text" value={totalEstimateCustomer} disabled></lightning-input></td>
+                        <td><lightning-input type="text" value={totalEstimateVetted} disabled></lightning-input></td>
+                        <td></td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <div class="slds-m-top_medium">
+                <lightning-button label="Add Row" onclick={handleAddRow} disabled={isAddDisabled}></lightning-button>
+            </div>
+
+        </div>
+    </lightning-card>
+</template>

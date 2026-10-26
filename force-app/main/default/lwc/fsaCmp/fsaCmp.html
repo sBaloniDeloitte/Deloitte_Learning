@@ -1,0 +1,517 @@
+<template>
+    <span class="styleContainer"></span>
+    <div class="slds-grid slds-gutters fsa">
+        <div class="slds-col slds-size_3-of-12">
+
+        </div>
+        <div class="slds-col slds-size_6-of-12" style="border: 1px solid;padding: 25px 15px;">
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col slds-size_3-of-12">
+
+                </div>
+                <div class="slds-col slds-size_6-of-12">
+                    
+                     <template if:false={hideButton}>
+                    <div class="filter-drop">
+                        <lightning-combobox value={applicantValue} options={options} onchange={handleApplicantChange}
+                            class="validate" label="Select Applicant" placeholder="Select Applicant"
+                            variant="label-inline" disabled={isFieldDisable}></lightning-combobox>
+                    </div>
+                    </template>
+                </div>
+                <div class="slds-col slds-size_3-of-12">
+
+                </div>
+            </div>
+
+            <template if:true={spinner}>
+                <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+            </template>
+            <template if:false={spinner}>
+                <div style="border: 1px solid gray;">
+                    <lightning-tabset onclick={handleStopPropogation}>
+                        <lightning-tab label="CY">
+
+
+                            <lightning-record-edit-form data-id="form1" object-api-name="Income_Expense_Obligation__c"
+                                record-id={fsaCY.Id} record-type-id={fsaRecordTypeId} onsuccess={handleSuccess}
+                                onsubmit={handleSubmit}>
+                                <div class="currYearId">
+                                    <div class="sactionDiv">
+                                        <p class="sactionHeader">Balance Sheet Details (In lacs)</p>
+                                        <lightning-layout multiple-rows>
+                                            <template if:false={isConsolidated}>
+                                                <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                    <lightning-input-field data-id='CY' field-name='Type_of_financials__c'
+                                                        variant="label-stacked" onfocus={handleStopPropogation} required="true">
+                                                    </lightning-input-field>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                    <lightning-input-field field-name='ITR_Filling_date__c' data-id="itrFilingDatePy"
+                                                        variant="label-stacked" onfocus={handleStopPropogation} onblur={handleBlur} max={maxDate} class="itr-filling-date-field" required="true">
+                                                    </lightning-input-field>
+                                                </lightning-layout-item>
+                                            </template>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-combobox value={yearCY} name="yearCY" options={yearOptions}
+                                                    onchange={handleYearChange} disabled class="validate" label="Year" onfocus={handleStopPropogation}>
+                                                </lightning-combobox>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field data-id='CY' field-name='Capital_In_Lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} onfocus={handleStopPropogation} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Reserves_and_Surplus_In_lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} onfocus={handleStopPropogation} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Quasi_Loan__c'
+                                                    variant="label-stacked" disabled={isConsolidated} onfocus={handleStopPropogation} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field
+                                                    field-name='TotalExistingBorrowingsExclODCC_In_lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} onfocus={handleStopPropogation} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='CC_OD_Outstanding__c'
+                                                    variant="label-stacked" disabled={isConsolidated} onfocus={handleStopPropogation} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Total_Creditors_In_lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} onfocus={handleStopPropogation} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Other_Current_Liabilities_In_lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} onfocus={handleStopPropogation} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Total_Debtors_In_lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} onfocus={handleStopPropogation} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Closing_Stock_In_lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} onfocus={handleStopPropogation} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Bank_Cash_Balance__c'
+                                                    variant="label-stacked" disabled={isConsolidated} onfocus={handleStopPropogation} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Balance_Sheet_Total_In_lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} onfocus={handleStopPropogation} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Non_operating_income__c'
+                                                    variant="label-stacked" disabled>
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Non_operating_expense__c'
+                                                    variant="label-stacked" disabled>
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <!-- Saction Balance Sheet Details-->
+                                        </lightning-layout>
+                                    </div>
+                                    <div class="sactionDiv">
+                                        <p class="sactionHeader"> P&L Details (In lacs)</p>
+                                        <lightning-layout multiple-rows>
+
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Sales_Turnover_In_lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Other_one_time_income__c'
+                                                    variant="label-stacked" disabled={isConsolidated} onfocus={handleStopPropogation} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Gross_profit__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Net_Profit_In_lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} onfocus={handleStopPropogation} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Depreciation__c'
+                                                    variant="label-stacked" disabled={isConsolidated} onfocus={handleStopPropogation} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Interest_paid_on_loans__c'
+                                                    variant="label-stacked" disabled={isConsolidated} onfocus={handleStopPropogation} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field
+                                                    field-name='Interest_or_salary_to_directors_partners__c'
+                                                    variant="label-stacked" disabled={isConsolidated} onfocus={handleStopPropogation} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field
+                                                    field-name='Salary_paid_to_directors__c'
+                                                    variant="label-stacked" disabled={isConsolidated} onfocus={handleStopPropogation} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                        </lightning-layout>
+                                    </div>
+                                    <!-- P&L Details-->
+                                    <!--
+                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                <lightning-input-field field-name='OD_limit__c'  variant="label-stacked"></lightning-input-field>
+                            </lightning-layout-item>-->
+                            <template if:false={isConsolidated}>
+                                    <div class="sactionDiv">
+                                        <p class="sactionHeader">CA Details</p>
+                                        <lightning-layout multiple-rows>
+                                            
+                                                <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                    <lightning-input-field field-name='CA_Name__c'
+                                                        variant="label-stacked"></lightning-input-field>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                    <lightning-input-field field-name='CA_Number__c'
+                                                        variant="label-stacked" onfocus={handleStopPropogation}></lightning-input-field>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                    <lightning-input-field
+                                                        field-name='Change_in_CA_firm_in_last_2_years__c'
+                                                        variant="label-stacked" onfocus={handleStopPropogation}></lightning-input-field>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                    <lightning-input-field field-name='CA_Result__c'
+                                                        variant="label-stacked" onfocus={handleStopPropogation}></lightning-input-field>
+                                                </lightning-layout-item>
+                                            
+
+                                            
+                                        </lightning-layout>
+                                    </div>
+                                </template>
+                                    <!-- CA Details-->
+                                    <div class="sactionDiv">
+                                        <p class="sactionHeader">Output</p>
+                                        <lightning-layout multiple-rows>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Growth_in_Sales_In__c'
+                                                    variant="label-stacked" onfocus={handleStopPropogation} disabled></lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Profit_Growth_over_the_last_year__c'
+                                                    variant="label-stacked" onfocus={handleStopPropogation} disabled></lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Net_Profit_Margin_Ratio_in__c'
+                                                    variant="label-stacked" onfocus={handleStopPropogation} disabled></lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='EBIDTA__c' variant="label-stacked"
+                                                    disabled></lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='EBIDTA_in__c' variant="label-stacked"
+                                                    disabled></lightning-input-field>
+                                            </lightning-layout-item>
+
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Stock_turnover_In_days__c'
+                                                    variant="label-stacked" disabled></lightning-input-field>
+                                            </lightning-layout-item>
+                                            <!--
+                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                <lightning-input-field field-name='Cash_Conversion_Cycle_In_days__c'  variant="label-stacked" disabled></lightning-input-field>
+                            </lightning-layout-item>-->
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Debtor_turnover_In_days__c'
+                                                    variant="label-stacked" disabled></lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Creditor_turnover_In_days__c'
+                                                    variant="label-stacked" disabled></lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Current_Ratio__c'
+                                                    variant="label-stacked" disabled></lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field
+                                                    field-name='Total_existing_borrowing_to_sales_In__c'
+                                                    variant="label-stacked" disabled></lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Net_working_capital__c'
+                                                    variant="label-stacked" disabled></lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Total_Net_Worth_in_lacs__c'
+                                                    variant="label-stacked" disabled></lightning-input-field>
+                                            </lightning-layout-item>
+                                        </lightning-layout>
+                                    </div>
+                                    <template if:false={isConsolidated}>
+                                        <div class="sactionDiv">
+                                            <p class="sactionHeader">Upload FSA Document</p>
+                                            <div class="slds-grid slds-gutters" style="padding: 15px;">
+                                                <div class="slds-col slds-size_4-of-4 slds-align_absolute-center">
+                                                    <template if:false={documentDetails}>
+                                                        <button onclick={openCamera} style="background-color: var(--accent); width: 120px; font-weight: bold; height: 38px; color: #ffffff;" disabled={isDisabledFSA}>Upload</button>
+                                                    </template>
+                                                    <template if:true={documentDetails}>
+                                                        <button onclick={handleView} style="background-color: var(--accent-hover); width: 120px; font-weight: bold; height: 38px; color: #ffffff;">Preview</button>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                    <lightning-layout multiple-rows>
+                                        <template if:false={isConsolidated}>
+                                            <lightning-layout-item size="12"
+                                                class="slds-p-around_x-small rec-edit-button"
+                                                style="text-align: center;">
+
+                                                <button class="save-button slds-button slds-button_brand"
+                                                    type="submit" disabled={isDisabledFSA}>Save</button>
+                                            </lightning-layout-item>
+                                        </template>
+
+                                    </lightning-layout>
+                                </div>
+                            </lightning-record-edit-form>
+
+                            <!--
+                        <div class="slds-p-around_x-small" style="text-align: center;">
+                            <button class="cancel-button slds-button slds-button_brand" onclick={handleCancelClick}>Cancel</button>
+                            <button class="save-button slds-button slds-button_brand" onclick={handleSaveClick}>Save</button>
+                            
+                        </div>
+                        -->
+                        </lightning-tab>
+                        <lightning-tab label="PY" value="PY" onactive={handleActive}>
+
+                            <lightning-record-edit-form id="form2" object-api-name="Income_Expense_Obligation__c"
+                                record-id={fsaPY.Id} record-type-id={fsaRecordTypeId} onsuccess={handleSuccessPY}
+                                onsubmit={handleSubmitPY}>
+                                <div class="preYearId">
+
+                                    <div class="sactionDiv">
+                                        <p class="sactionHeader">Balance Sheet Details (In lacs)</p>
+                                        <lightning-layout multiple-rows>
+                                            <template if:false={isConsolidated}>
+                                                <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                    <lightning-input-field data-id='PY' field-name='Type_of_financials__c'
+                                                        variant="label-stacked" onfocus={handleStopPropogation} required="true">
+                                                    </lightning-input-field>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                    <lightning-input-field field-name='ITR_Filling_date__c' data-id="itrFilingDatePy"
+                                                        variant="label-stacked" onfocus={handleStopPropogation} onblur={handleBlur} max={maxDate} class="itr-filling-date-field" required="true">
+                                                    </lightning-input-field>
+                                                </lightning-layout-item>
+                                            </template>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-combobox value={yearPY} name="yearPY" options={yearOptions}
+                                                    onchange={handleYearChange} disabled class="validate" label="Year">
+                                                </lightning-combobox>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field data-id='PY' field-name='Capital_In_Lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Reserves_and_Surplus_In_lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Quasi_Loan__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field
+                                                    field-name='TotalExistingBorrowingsExclODCC_In_lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='CC_OD_Outstanding__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Total_Creditors_In_lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Other_Current_Liabilities_In_lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Total_Debtors_In_lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Closing_Stock_In_lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Bank_Cash_Balance__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Balance_Sheet_Total_In_lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Non_operating_income__c'
+                                                    variant="label-stacked" disabled>
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Non_operating_expense__c'
+                                                    variant="label-stacked" disabled>
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <!-- Saction Balance Sheet Details-->
+                                        </lightning-layout>
+                                    </div>
+                                    <div class="sactionDiv">
+                                        <p class="sactionHeader"> P&L Details (In lacs)</p>
+                                        <lightning-layout multiple-rows>
+
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Sales_Turnover_In_lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Other_one_time_income__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Gross_profit__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Net_Profit_In_lacs__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Depreciation__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field field-name='Interest_paid_on_loans__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field
+                                                    field-name='Interest_or_salary_to_directors_partners__c'
+                                                    variant="label-stacked" disabled={isConsolidated} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                            <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                                <lightning-input-field
+                                                    field-name='Salary_paid_to_directors__c'
+                                                    variant="label-stacked" disabled={isConsolidated} onfocus={handleStopPropogation} required="true">
+                                                </lightning-input-field>
+                                            </lightning-layout-item>
+                                        </lightning-layout>
+                                    </div>
+                                    <template if:false={isConsolidated}>
+                                        <div class="sactionDiv">
+                                            <p class="sactionHeader">Upload FSA Document</p>
+                                            <div class="slds-grid slds-gutters" style="padding: 15px;">
+                                                <div class="slds-col slds-size_4-of-4 slds-align_absolute-center">
+                                                    <template if:false={documentDetails}>
+                                                        <button onclick={openCamera} style="background-color: var(--accent); width: 120px; font-weight: bold; height: 38px; color: #ffffff;" disabled={isDisabledFSA}>Upload</button>
+                                                    </template>
+                                                    <template if:true={documentDetails}>
+                                                        <button onclick={handleView} style="background-color: var(--accent-hover); width: 120px; font-weight: bold; height: 38px; color: #ffffff;">Preview</button>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                    <lightning-layout multiple-rows>
+                                        <template if:false={isConsolidated}>
+                                            <lightning-layout-item size="12"
+                                                class="slds-p-around_x-small rec-edit-button"
+                                                style="text-align: center;">
+                                                <button class="save-button slds-button slds-button_brand"
+                                                    type="submit" disabled={isDisabledFSA}>Save</button>
+                                            </lightning-layout-item>
+                                        </template>
+                                    </lightning-layout>
+
+                                </div>
+                            </lightning-record-edit-form>
+
+                        </lightning-tab>
+                        <!-- <lightning-tab label="Eligibility History" onactive={handleActive}>
+                            <lightning-layout multiple-rows>
+                            </lightning-layout>
+                        </lightning-tab> -->
+
+                    </lightning-tabset>
+                </div>
+            </template>
+        </div>
+        <div class="slds-col slds-size_3-of-12">
+
+        </div>
+
+    </div>
+    
+    <template if:true={showImage}>
+        <c-popup-screen 
+            show-preview-cmp="true"
+            image-url={imageURL}
+            pdf-url={pdfURL}
+            width-percentage="80"
+            header-title="FSA Document"
+            show-close-btn=true
+            show-save-btn=false
+            save-btn-text="Retake"
+            process-name="Reupload File"
+            onhandleclose={handleClose}
+            onhandleretake={reUploadFile}
+        ></c-popup-screen>
+    </template>
+</template>

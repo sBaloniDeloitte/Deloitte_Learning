@@ -1,0 +1,31 @@
+<template>
+    <div class="container">
+        <h2>AML Check</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Applicant Name</th>
+                    <th>API Status</th>
+                    <th>AML Status Code</th>
+                    <th>View Report</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Shivanjali Gaikwad</td>
+                    <td>Completed</td>
+                    <td>No Match Found</td>
+                    <td>
+                        <lightning-icon 
+                            icon-name="utility:preview" 
+                            size="small" 
+                            alternative-text="View"
+                            title="View Report"
+                            class="view-icon">
+                        </lightning-icon>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</template>

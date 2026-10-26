@@ -1,0 +1,490 @@
+<template>
+    <template if:true={isloading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </template>
+
+   
+    <template for:each={financeResponse} for:item="iter" if:true={isDataExist}>
+        <div key={iter} class="slds-p-around_medium slds-m-around_medium" style="border: 3px solid black; border-radius: 10px; box-shadow: 0 2px 6px rgba(0,0,0,0.1); background-color: #f4f6f9;">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right" aria-label="Example table of Opportunities with vertical borders">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                       
+                        <th class="" scope="col" style="text-align: center; color: black; font-weight: 500; padding: 10px">
+                                <div class="sticky-column slds-truncate" title="Close Date">{iter.loanNumber}</div>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right" aria-label="Example table of Opportunities with vertical borders">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                       
+                        <th class="" scope="col" style="text-align: center;  color:black; font-weight: 500; padding: 10px">
+                                <div class="sticky-column slds-truncate" title="Close Date">Financial Details</div>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            
+            
+            <lightning-tabset key={iter} class="tabStickChild" variant="scoped">
+                
+                <lightning-tab style="overflow:auto" label="Finance Details" data-id="Finance Details" class="tabStickChild" onactive={handleSubTabClick}>
+                   
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right" aria-label="Example table of Opportunities with vertical borders">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col" style="text-align: center; color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Application Number</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center; color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Type</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center; color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">CCY</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center; color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Branch</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center; color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Amount</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center; color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Asset Value</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center; color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Repayment Method</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center; color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Start Date</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center; color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">No. Of Terms</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center;  color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Stage</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center; color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Status</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="slds-line-height_reset">
+                                <td data-label="Close Date">
+                                    <div class="slds-truncate" title="4/14/2015">{iter.financeSchedule.applicationNo}</div>
+                                </td>
+                                <td data-label="Close Date">
+                                    <div class="slds-truncate" title="4/14/2015">{iter.financeSchedule.finType}</div>
+                                </td>
+                                <td data-label="Close Date">
+                                    <div class="slds-truncate" title="4/14/2015">{iter.financeSchedule.finCcy}</div>
+                                </td>
+                                <td data-label="Close Date">
+                                    <div class="slds-truncate" title="4/14/2015">{iter.financeSchedule.finBranch}</div>
+                                </td>
+                                <td data-label="Close Date">
+                                    <div class="slds-truncate" title="4/14/2015">{iter.financeSchedule.finAmount}</div>
+                                </td>
+                                <td data-label="Close Date">
+                                    <div class="slds-truncate" title="4/14/2015">{iter.financeSchedule.finAssetValue}</div>
+                                </td>
+     
+                                <td data-label="Close Date">
+                                    <div class="slds-truncate" title="4/14/2015">{iter.financeSchedule.finRepayMethod}</div>
+                                </td>
+                                <td data-label="Close Date">
+                                    <div class="slds-truncate" title="4/14/2015">{iter.financeSchedule.finStartDate}</div>
+                                </td>
+                                <td data-label="Close Date">
+                                    <div class="slds-truncate" title="4/14/2015">{iter.financeSchedule.numberOfTerms}</div>
+                                </td>
+                                <td data-label="Close Date">
+                                    <div class="slds-truncate" title="4/14/2015">{iter.financeSchedule.stage}</div>
+                                </td>
+                                <td data-label="Close Date">
+                                    <div class="slds-truncate" title="4/14/2015">{iter.financeSchedule.status}</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </lightning-tab>
+                <lightning-tab style="overflow:auto" label="Repay Instructions" data-id="Repay Instructions" class="tabStickChild" onactive={handleSubTabClick}>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right" aria-label="Example table of Opportunities with vertical borders">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col" style="text-align: center;  color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Date</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center;  color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Amount</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Schedule Methos</div>
+                                </th>    
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={iter.repayList} for:item="item">
+                                <tr key={item} class="slds-line-height_reset">
+                                    <td data-label="Close Date">
+                                        <div class="slds-truncate" title="4/14/2015">{item.repayDate}</div>
+                                    </td>
+                                    <td data-label="Close Date">
+                                        <div class="slds-truncate" title="4/14/2015">{item.repayAmount}</div>
+                                    </td>
+                                    <td data-label="Close Date">
+                                        <div class="slds-truncate" title="4/14/2015">{item.repaySchdMethod}</div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </lightning-tab>
+                <lightning-tab style="overflow:auto" label="Schedule" data-id="Schedule" class="tabStickChild" onactive={handleSubTabClick}>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right" aria-label="Example table of Opportunities with vertical borders">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col" style="text-align: center;  color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Schedule Date</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center;  color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Amount</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">PFT Paid</div>
+                                </th>   
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Limit Available</div>
+                                </th> 
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Due Date</div>
+                                </th>    
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={iter.scheduleList} for:item="item">
+                                <tr key={item} class="slds-line-height_reset">
+                                    <td data-label="Close Date">
+                                        <div class="slds-truncate" title="4/14/2015">{item.schDate}</div>
+                                    </td>
+                                    <td data-label="Close Date">
+                                        <div class="slds-truncate" title="4/14/2015">{item.pftAmount}</div>
+                                    </td>
+                                    <td data-label="Close Date">
+                                        <div class="slds-truncate" title="4/14/2015">{item.schdPftPaid}</div>
+                                    </td>
+                                    <td data-label="Close Date">
+                                        <div class="slds-truncate" title="4/14/2015">{item.availableLimit}</div>
+                                    </td>
+                                    <td data-label="Close Date">
+                                        <div class="slds-truncate" title="4/14/2015">{item.dueDate}</div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </lightning-tab>
+                <lightning-tab style="overflow:auto" label="Overdue" data-id="Overdue" class="tabStickChild" onactive={handleSubTabClick}>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right" aria-label="Example table of Opportunities with vertical borders">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col" style="text-align: center;  color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">OD Penalty</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center;  color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Grace Days</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Charge Type</div>
+                                </th>   
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Charge Calculation On</div>
+                                </th> 
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Charge Amount</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Maximum Waiver Percentage</div>
+                                </th>       
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- <template for:each={iter.overdueDetails} for:item="item"> -->
+                                <tr class="slds-line-height_reset">
+                                    <td data-label="Close Date">
+                                        <div class="slds-truncate" title="4/14/2015">{iter.overdueDetails.applyODPenalty}</div>
+                                    </td>
+                                    <td data-label="Close Date">
+                                        <div class="slds-truncate" title="4/14/2015">{iter.overdueDetails.odGraceDays}</div>
+                                    </td>
+                                    <td data-label="Close Date">
+                                        <div class="slds-truncate" title="4/14/2015">{iter.overdueDetails.odChargeType}</div>
+                                    </td>
+                                    <td data-label="Close Date">
+                                        <div class="slds-truncate" title="4/14/2015">{iter.overdueDetails.odChargeCalOn}</div>
+                                    </td>
+                                    <td data-label="Close Date">
+                                        <div class="slds-truncate" title="4/14/2015">{iter.overdueDetails.odChargeAmtOrPerc}</div>
+                                    </td>
+                                    <td data-label="Close Date">
+                                        <div class="slds-truncate" title="4/14/2015">{iter.overdueDetails.odMaxWaiverPerc}</div>
+                                    </td>
+                                </tr>
+                            <!-- </template> -->
+                        </tbody>
+                    </table>
+                </lightning-tab>
+                <lightning-tab style="overflow:auto" label="Summary" data-id="Summary" class="tabStickChild" onactive={handleSubTabClick}>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right" aria-label="Example table of Opportunities with vertical borders">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col" style="text-align: center;  color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Effective rate of return</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center;  color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Maturity Date</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Total Profit</div>
+                                </th>   
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Number of terms</div>
+                                </th> 
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Loan tenor</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">First Disbursement Date</div>
+                                </th> 
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Last Disbursement Date</div>
+                                </th>   
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Future Installment</div>
+                                </th> 
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Outstanding Total</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Outstanding Profit</div>
+                                </th> 
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Outstanding Due</div>
+                                </th> 
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Overdue Charges</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Overdue Total Included charges</div>
+                                </th>             
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="slds-line-height_reset">
+                                <td data-label="Effective rate of return">
+                                    <div class="slds-truncate" title="Effective rate of return">{iter.summaryDetails.effectiveRateOfReturn}</div>
+                                </td>
+                                <td data-label="Maturity Date">
+                                    <div class="slds-truncate" title="Maturity Date">{iter.summaryDetails.maturityDate}</div>
+                                </td>
+                                <td data-label="Total Profit">
+                                    <div class="slds-truncate" title="Total Profit">{iter.summaryDetails.totalProfit}</div>
+                                </td>
+                                <td data-label="Number of Terms">
+                                    <div class="slds-truncate" title="Number of Terms">{iter.summaryDetails.numberOfTerms}</div>
+                                </td>
+                                <td data-label="Loan Tenor">
+                                    <div class="slds-truncate" title="Loan Tenor">{iter.summaryDetails.loanTenor}</div>
+                                </td>
+                                <td data-label="First Disbursement Date">
+                                    <div class="slds-truncate" title="First Disbursement Date">{iter.summaryDetails.firstDisbDate}</div>
+                                </td>
+                                <td data-label="Last Disbursement Date">
+                                    <div class="slds-truncate" title="Last Disbursement Date">{iter.summaryDetails.lastDisbDate}</div>
+                                </td>
+                                <td data-label="Future Installment">
+                                    <div class="slds-truncate" title="Future Installment">{iter.summaryDetails.futureInst}</div>
+                                </td>
+                                <td data-label="Outstanding Total">
+                                    <div class="slds-truncate" title="Outstanding Total">{iter.summaryDetails.outstandingTotal}</div>
+                                </td>
+                                <td data-label="Outstanding Profit">
+                                    <div class="slds-truncate" title="Outstanding Profit">{iter.summaryDetails.outstandingPft}</div>
+                                </td>
+                                <td data-label="Outstanding Due">
+                                    <div class="slds-truncate" title="Outstanding Due">{iter.summaryDetails.outstandingPri}</div>
+                                </td>
+                                <td data-label="Overdue Charges">
+                                    <div class="slds-truncate" title="Overdue Charges">{iter.summaryDetails.overDueChargesVal}</div>
+                                </td>
+                                <td data-label="Overdue Total Included charges">
+                                    <div class="slds-truncate" title="Overdue Total Included charges">{iter.summaryDetails.overdueTotalIncludeCharges}</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </lightning-tab>
+                <lightning-tab style="overflow:auto" label="Disbursements" data-id="Disbursements" class="tabStickChild" onactive={handleSubTabClick}>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right" aria-label="Example table of Opportunities with vertical borders">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col" style="text-align: center;  color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Party</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center;  color: black; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Type</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Date</div>
+                                </th>   
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Amount</div>
+                                </th> 
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Bank Code</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Bank Name</div>
+                                </th> 
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Account Number</div>
+                                </th>   
+                                <th class="" scope="col" style="text-align: center;  color: whblackite; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Cheque Number</div>
+                                </th>       
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={iter.disbursementList} for:item="item">
+                                <tr key={item.chequeNo} class="slds-line-height_reset">
+                                    <td><div class="slds-truncate" title={item.disbParty}>{item.disbParty}</div></td>
+                                    <td><div class="slds-truncate" title={item.disbType}>{item.disbType}</div></td>
+                                    <td><div class="slds-truncate" title={item.disbDate}>{item.disbDate}</div></td>
+                                    <td><div class="slds-truncate" title={item.disbAmount}>{item.disbAmount}</div></td>
+                                    <td><div class="slds-truncate" title={item.bankCode}>{item.bankCode}</div></td>
+                                    <td><div class="slds-truncate" title={item.branchBankName}>{item.branchBankName}</div></td>
+                                    <td><div class="slds-truncate" title={item.accountNo}>{item.accountNo}</div></td>
+                                    <td><div class="slds-truncate" title={item.chequeNo}>{item.chequeNo}</div></td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </lightning-tab>
+            </lightning-tabset>  
+            <table  key={iter}  class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right" aria-label="Example table of Opportunities with vertical borders">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                       
+                        <th class="" scope="col" style="text-align: center;  color: black; font-weight: 500; padding: 10px">
+                                <div class="sticky-column slds-truncate" title="Close Date">Mandate Details</div>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            <table  key={iter}  class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right" aria-label="Example table of Opportunities with vertical borders">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col" style="text-align: center; color: Black; font-weight: 500; padding: 10px">
+                            <div class="sticky-column slds-truncate" title="Close Date">Application Number</div>
+                        </th>
+                        <th class="" scope="col" style="text-align: center;  color: Black; font-weight: 500; padding: 10px">
+                            <div class="sticky-column slds-truncate" title="Close Date">Type</div>
+                        </th>
+                        <th class="" scope="col" style="text-align: center;  color: Black; font-weight: 500; padding: 10px">
+                            <div class="sticky-column slds-truncate" title="Close Date">CCY</div>
+                        </th>
+                        <th class="" scope="col" style="text-align: center; color: Black; font-weight: 500; padding: 10px">
+                            <div class="sticky-column slds-truncate" title="Close Date">Branch</div>
+                        </th>
+                        <th class="" scope="col" style="text-align: center; color: Black; font-weight: 500; padding: 10px">
+                            <div class="sticky-column slds-truncate" title="Close Date">Amount</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr class="slds-line-height_reset">
+                        <td data-label="Close Date">
+                            <div class="slds-truncate" title="4/14/2015">{iter.mandateDetails.cif}</div>
+                        </td>
+                        <td data-label="Close Date">
+                            <div class="slds-truncate" title="4/14/2015">{iter.mandateDetails.finReference}</div>
+                        </td>
+                        <td data-label="Close Date">
+                            <div class="slds-truncate" title="4/14/2015">{iter.mandateDetails.mandateID}</div>
+                        </td>
+                        <td data-label="Close Date">
+                            <div class="slds-truncate" title="4/14/2015">{iter.mandateDetails.mandateRef}</div>
+                        </td>
+                        <td data-label="Close Date">
+                            <div class="slds-truncate" title="4/14/2015">{iter.mandateDetails.mandateType}</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table> 
+            <table key={iter} class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right" aria-label="Co-Applicant Header">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col" style="text-align: center; color: black; font-weight: 500; padding: 10px">
+                            <div class="sticky-column slds-truncate" title="Co-Applicants">Co-Applicants</div>
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            
+            <table key={iter} class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right" aria-label="Co-Applicant Table">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th style="text-align: center; color: Black; font-weight: 500; padding: 10px">CIF</th>
+                        <th style="text-align: center; color: Black; font-weight: 500; padding: 10px">Name</th>
+                        <th style="text-align: center; color: Black; font-weight: 500; padding: 10px">Include Repay</th>
+                        <th style="text-align: center; color: Black; font-weight: 500; padding: 10px">Authority Signatory</th>
+                        <th style="text-align: center; color: Black; font-weight: 500; padding: 10px">Sequence</th>
+                        <th style="text-align: center; color: Black; font-weight: 500; padding: 10px">Category</th>
+                        <th style="text-align: center; color: Black; font-weight: 500; padding: 10px">Include Income</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={iter.coappList} for:item="coapp">
+                        <tr key={coapp.cif} class="slds-line-height_reset">
+                            <td data-label="CIF">
+                                <div class="slds-truncate" title={coapp.cif}>{coapp.cif}</div>
+                            </td>
+                            <td data-label="Name">
+                                <div class="slds-truncate" title={coapp.shortName}>{coapp.shortName}</div>
+                            </td>
+                            <td data-label="Include Repay">
+                                <div class="slds-truncate" title={coapp.includeRepay}>{coapp.includeRepay}</div>
+                            </td>
+                            <td data-label="Authority Signatory">
+                                <div class="slds-truncate" title={coapp.authoritySignatory}>{coapp.authoritySignatory}</div>
+                            </td>
+                            <td data-label="Sequence">
+                                <div class="slds-truncate" title={coapp.sequence}>{coapp.sequence}</div>
+                            </td>
+                           
+                            <td data-label="Category">
+                                <div class="slds-truncate" title={coapp.catOfcoApplicant}>{coapp.catOfcoApplicant}</div>
+                            </td>
+                            <td data-label="Include Income">
+                                <div class="slds-truncate" title={coapp.includeIncome}>{coapp.includeIncome}</div>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            
+            
+            
+            <br/>
+            
+       
+        </div>
+      
+    </template>
+
+    <template if:false={isDataExist}>
+        <div class="errorClass">{errorForData}</div>
+    </template>
+</template>

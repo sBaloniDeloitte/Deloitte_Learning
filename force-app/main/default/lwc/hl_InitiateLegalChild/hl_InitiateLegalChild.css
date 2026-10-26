@@ -1,0 +1,482 @@
+@import "c/cssLibrary";
+
+/* ==========================================================
+   "LEGAL RECORDS" TABLE (this component's own copy)
+   Matched EXACTLY to the Hunter Check accordion's table
+   (hunterAccordionCmp.css ".fi-table-wrapper .slds-table") - dark-navy
+   #0a1524 outer backdrop (wrapper), #0e1c30 table surface for both
+   header and body, #33455e borders on every cell, 18px rounded corners
+   on the outer cells only, left-aligned bold white header text, 13px
+   body text, and the same #16283f row-hover highlight. Also overrides
+   the white default shipped by the ".slds-box"/".slds-theme_default"
+   SLDS utility classes previously on the wrapper div (now removed from
+   the markup in favor of this dedicated class).
+========================================== */
+.legal-child-table-container {
+    background-color: #0a1524 !important;
+    padding: 1rem 1.5rem;
+    border-radius: 18px;
+    box-shadow: none !important;
+}
+
+.legal-child-table-container .slds-form-element__legend,
+.legal-child-table-container .slds-form-element__label {
+    color: #ffffff !important;
+}
+
+.legal-child-table-container .slds-table {
+    width: 100%;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border-radius: 18px;
+    background-color: #0e1c30 !important;
+    border: 1px solid #33455e !important;
+    color: #ffffff !important;
+}
+
+.legal-child-table-container .slds-table th,
+.legal-child-table-container .slds-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.legal-child-table-container .slds-table thead th {
+    background-color: #0e1c30 !important;
+    background-image: none !important;
+    border-right: 1px solid #33455e !important;
+    border-bottom: 1px solid #33455e !important;
+    border-color: #33455e !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    font-size: 12.5px;
+    letter-spacing: 0.2px;
+    padding: 12px 10px !important;
+    text-align: left !important;
+    box-shadow: none !important;
+    vertical-align: middle;
+}
+
+.legal-child-table-container .slds-table thead tr:first-child th:first-child {
+    border-top-left-radius: 18px;
+}
+
+.legal-child-table-container .slds-table thead tr:first-child th:last-child {
+    border-top-right-radius: 18px;
+}
+
+.legal-child-table-container .slds-table tbody td {
+    background-color: #0e1c30 !important;
+    border-right: 1px solid #33455e !important;
+    border-bottom: 1px solid #33455e !important;
+    border-color: #33455e !important;
+    color: #ffffff !important;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: left !important;
+    padding: 12px 10px !important;
+    vertical-align: middle;
+}
+
+.legal-child-table-container .slds-table tbody td,
+.legal-child-table-container .slds-table tbody td div,
+.legal-child-table-container .slds-table tbody td span,
+.legal-child-table-container .slds-table tbody td .slds-truncate {
+    color: #ffffff !important;
+}
+
+.legal-child-table-container .slds-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 18px;
+}
+
+.legal-child-table-container .slds-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 18px;
+}
+
+.legal-child-table-container .slds-table tbody tr:hover td {
+    background-color: #16283f !important;
+}
+
+.legal-child-table-container .slds-table a {
+    color: #7db2ff !important;
+    text-decoration: none;
+}
+
+.legal-child-table-container .slds-table a:hover {
+    color: #ffffff !important;
+    text-decoration: underline;
+}
+
+/* ==========================================================
+   CANCEL BUTTON
+   Matched to the "Close" button on the parent "Initiate Legal" modal
+   (hl_InitiateLegalValuation.css ".wave-button") - same dark-navy fill
+   with purple border, so both buttons share one visual language.
+   Position/layout is untouched - only color/border/font-weight change.
+========================================== */
+.cancel-button {
+    background-color: #16283f !important;
+    border: 1px solid #7c3aed !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.cancel-button:hover {
+    background-color: #1f3550 !important;
+}
+
+/* ==========================================================
+   "CONFIRM CANCELLATION" POPUP
+   Matched to the Hunter Check accordion's "Initiate Hunter"
+   confirmation box (fcuHunterInitiate.css) - accent-blue header,
+   dark-navy content/footer, rounded 8px corners, dark backdrop,
+   and the same Yes/No button pair theme.
+========================================== */
+.slds-modal__header {
+    background-color: #1467eb !important;
+    color: #ffffff !important;
+    border-bottom: 1px solid #2a2f45;
+}
+
+.slds-modal__header h2,
+.slds-modal__header .slds-text-heading_medium {
+    color: #ffffff !important;
+}
+
+.slds-modal__content p {
+    color: #ffffff !important;
+}
+
+.slds-modal__footer {
+    background-color: #12172b !important;
+    border-top: 1px solid #2a2f45 !important;
+}
+
+.slds-modal__container {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.slds-backdrop_open {
+    background: rgba(10, 15, 30, 0.78);
+}
+
+/* Positive CTA (Yes) - #7c3aed fill, no border, 8px radius. */
+.initiate-button {
+    background-color: #7c3aed !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.initiate-button:hover {
+    background-color: #6d28d9 !important;
+}
+
+/* Negative CTA (No) - #16283f fill, 1px solid #7c3aed border, 8px radius. */
+.wave-button {
+    background-color: #16283f !important;
+    border: 1px solid #7c3aed !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.wave-button:hover {
+    background-color: #1f3550 !important;
+}
+
+/* ==========================================================
+   "TITLE SEARCH PERIOD" STEP
+   This is the only remaining element still carrying the
+   ".slds-modal__content" SLDS class (the same class that caused the
+   Step 2/"Related Collateral" white-bar bug, fixed by removing the
+   class there). Here the class is scoped and overridden instead of
+   removed, matching the popup's dark-navy page background (#12172b)
+   and white label/legend text.
+========================================== */
+.slds-modal__content {
+    background-color: #12172b !important;
+    color: #ffffff !important;
+}
+
+.slds-modal__content .slds-form-element__legend,
+.slds-modal__content .slds-form-element__label {
+    color: #ffffff !important;
+}
+
+/* ==========================================================
+   COMBOBOX DROPDOWN (Step 1/2/3 selects)
+   Options panel background matched to the popup's own dark-navy page
+   background (#12172b) with white option text, matched to the pattern
+   used in documentProcessingScreen.css.
+========================================================== */
+lightning-combobox {
+    /* The listbox/options panel renders inside lightning-combobox's own
+       shadow DOM, so ancestor class selectors cannot reach it - only
+       inherited CSS custom properties cross that boundary. The dedicated
+       --slds-c-combobox-option-* hooks are not consistently honored by
+       the base component for the RESTING (non-hover) option background,
+       so the underlying SLDS2 global neutral-base surface tokens (which
+       the listbox's own internal CSS reads for its default background)
+       are overridden directly instead. */
+    --slds-g-color-neutral-base-100: #12172b;
+    --slds-g-color-neutral-base-95: #12172b;
+    /* Same shadow-piercing issue for the option LABEL text - the base
+       component draws it using the global "on-light-surface" neutral
+       text ramp, not the --slds-c-combobox-option-text-color hook. */
+    --slds-g-color-neutral-base-10: #ffffff;
+    --slds-c-combobox-listbox-color-background: #12172b;
+    --sds-c-combobox-listbox-color-background: #12172b;
+    --slds-c-combobox-option-color-background: #12172b;
+    --sds-c-combobox-option-color-background: #12172b;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #1c2238;
+    --slds-c-combobox-option-color-background-focus: #1c2238;
+}
+
+lightning-combobox .slds-dropdown,
+lightning-combobox .slds-listbox,
+lightning-combobox .slds-listbox_vertical {
+    background-color: #12172b !important;
+    border: 1px solid #2a2f45 !important;
+}
+
+lightning-combobox .slds-listbox__option,
+lightning-combobox .slds-listbox__item {
+    background-color: #12172b !important;
+    color: #ffffff !important;
+}
+
+lightning-combobox .slds-listbox__option:hover,
+lightning-combobox .slds-listbox__option:focus,
+lightning-combobox .slds-listbox__option_term.slds-has-focus,
+lightning-combobox .slds-listbox__option.slds-has-focus {
+    background-color: #1c2238 !important;
+    color: #ffffff !important;
+}
+
+lightning-combobox .slds-listbox__option .slds-media__body,
+lightning-combobox .slds-listbox__option .slds-truncate {
+    color: #ffffff !important;
+}
+
+lightning-combobox .slds-listbox__option[aria-checked="true"] {
+    background-color: #1c2238 !important;
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.connector-line {
+    flex-grow: 1;
+    height: 4px;
+    background-color: lightgray;
+    margin: 0 10px;
+}
+
+.progress-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex-grow: 1;
+}
+
+/* Dark-navy background matched to the "Initiate Legal" modal's own
+   theme (hl_InitiateLegalValuation.css "--legal-page-bg": #12172b),
+   overriding the white default shipped by the ".slds-box"/
+   ".slds-theme_default" SLDS utility classes on this element. */
+.progress-container.slds-box.slds-theme_default {
+    background-color: #12172b !important;
+    border-color: #2a2f45 !important;
+    box-shadow: none !important;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 30px 0;
+    gap: 0; /* No unnecessary gap */
+    background-color: #12172b !important;
+    border: 1px solid #2a2f45 !important;
+    box-shadow: none !important;
+}
+
+.progress-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    background-color: white; /* Ensures icon stays on top */
+    padding: 5px;
+}
+
+.progress-line {
+    position: absolute;
+    width: 50px; /* Adjust line length as needed */
+    height: 4px;
+    background-color: #ccc;
+    top: 50%;
+    left: 50%;
+    transform: translateX(50%); /* Ensures line is exactly between two icons */
+    z-index: 1;
+}
+
+.stage-label {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    color: #ffffff;
+}
+
+.progress-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+
+/* Wrapper to hold icon and line */
+.icon-line-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+/* Full-width black line */
+
+
+/* Icons should appear on top of the line */
+.icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    padding: 5px;
+    z-index: 2;
+    border-radius: 50%;
+}
+
+/* Stage Name Below Icon */
+.stage-name {
+    margin-top: 5px;
+    font-weight: 500;
+    color: #ffffff;
+    text-align: center;
+    font-size: 11px;
+}
+
+.progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 180%;
+    position: relative;
+}
+
+.progress-bar-mobile {
+    display: flex;
+    justify-content: space-between;
+    max-width: 100%;
+    position: relative;
+}
+
+/* Step wrapper */
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: auto;
+    flex: 1;
+}
+
+
+.progress-step:first-child .connector {
+    display: none;
+}
+.progress-step:last-child .connector {
+    display: none;
+}
+
+/* Ensure the icon appears above the line */
+.icon-wrapper {
+    z-index: 1;
+    padding: 4px;
+    position: relative;
+}
+.connector{
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    width: 200%;
+    height: 2px;
+    background-color: #33455e;
+    transform: translateX(-50%);
+    z-index: 0;
+}
+
+/* Colors matched to the "Lead Journey" stepper (processJourneyCmp) -
+   same palette (dark navy pending circle, purple gradient for the
+   completed state, #33455e connector) but laid out horizontally
+   instead of vertically, matching the requested layout. */
+.icon-wrapper-completed {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-image: linear-gradient(135deg, #a78bfa, #7c3aed);
+    border: 2px solid #7c3aed;
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.25);
+}
+
+/* Plain-text checkmark (not lightning-icon) - guaranteed visible
+   regardless of base-component shadow-DOM styling-hook limitations. */
+.check-mark-text {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.icon-wrapper-pending {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #0f1c33;
+    border: 2px solid #33455e;
+}
+
+/* Step sequence number shown inside a pending (not-yet-completed) circle -
+   same treatment as the "Lead Journey" stepper's numbered markers. */
+.step-number-text {
+    color: #8a99b3;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+}

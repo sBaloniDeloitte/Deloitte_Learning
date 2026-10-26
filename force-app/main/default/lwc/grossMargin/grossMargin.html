@@ -1,0 +1,164 @@
+<template>
+  <div class="card">
+
+    <!-- HEADER -->
+    <div class="card-header">
+      <div>
+        <div class="card-title">Gross Margin Assessment</div>
+        <div class="card-subtitle">
+          Derived from operating revenue and cost of goods sold
+        </div>
+      </div>
+      <div>
+        <button class="btn" onclick={openMonthModal}>+ Add Month</button>
+      </div>
+    </div>
+
+    <!-- ================= REVENUE ================= -->
+    <div class="section-label">Revenue</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>Particulars</th>
+            <template for:each={details.months} for:item="m" for:index="i">
+              <th key={m.id}>
+                <input
+                  class="month-input"
+                  value={m.label}
+                  data-index={i}
+                  onchange={handleMonthLabelChange}
+                />
+              </th>
+            </template>
+            <th>Avg / Month</th>
+          </tr>
+        </thead>
+
+        <tbody>
+          <tr>
+            <td class="fixed-label">Net Sales / Turnover</td>
+            <template for:each={details.revenue.netSales} for:item="v" for:index="i">
+              <td key={v}>
+                <input
+                  type="number"
+                  min="0"
+                  value={v}
+                  data-section="revenue"
+                  data-field="netSales"
+                  data-index={i}
+                  onchange={handleValueChange}
+                />
+              </td>
+            </template>
+            <td class="total-value">{avgNetSales}</td>
+          </tr>
+
+          <tr>
+            <td class="fixed-label">Other Operating Income</td>
+            <template for:each={details.revenue.otherIncome} for:item="v" for:index="i">
+              <td key={v}>
+                <input
+                  type="number"
+                  min="0"
+                  value={v}
+                  data-section="revenue"
+                  data-field="otherIncome"
+                  data-index={i}
+                  onchange={handleValueChange}
+                />
+              </td>
+            </template>
+            <td class="total-value">{avgOtherIncome}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ================= COGS ================= -->
+    <div class="section-label">Cost of Goods Sold (COGS)</div>
+    <div class="table-wrap">
+      <table>
+        <tbody>
+          <template for:each={cogsRows} for:item="row">
+            <tr key={row.key}>
+              <td class="fixed-label">{row.label}</td>
+              <template for:each={row.values} for:item="v" for:index="i">
+                <td key={v}>
+                  <input
+                    type="number"
+                    min="0"
+                    value={v}
+                    data-section="cogs"
+                    data-field={row.field}
+                    data-index={i}
+                    onchange={handleValueChange}
+                  />
+                </td>
+              </template>
+              <td class="total-value">{row.avg}</td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ================= GROSS PROFIT ================= -->
+    <div class="section-label">Gross Profit</div>
+    <div class="table-wrap">
+      <table>
+        <tbody>
+          <tr class="total-row">
+            <td class="total-label">Gross Profit</td>
+            <template for:each={grossProfitPerMonth} for:item="v" for:index="i">
+              <td key={v} class="total-value">{v}</td>
+            </template>
+            <td class="total-value">{avgGrossProfit}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ================= GROSS MARGIN ================= -->
+    <div class="section-label">Gross Margin (%)</div>
+    <div class="table-wrap">
+      <table>
+        <tbody>
+          <tr class="total-row">
+            <td class="total-label">Gross Margin %</td>
+
+            <template for:each={grossMarginView} for:item="item" for:index="i">
+              <td key={item.value} class={item.cssClass}>
+                {item.value}%
+              </td>
+            </template>
+
+            <td class={avgGrossMarginView.cssClass}>
+              {avgGrossMarginView.value}%
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+  </div>
+
+  <!-- ================= MONTH MODAL ================= -->
+  <template if:true={details.isMonthModalOpen}>
+    <div class="modal-backdrop">
+      <div class="modal">
+        <div class="modal-header">Add Month</div>
+        <input
+          type="text"
+          value={details.monthDraft}
+          onchange={handleMonthDraftChange}
+          placeholder="Feb 2025"
+        />
+        <div class="modal-actions">
+          <button class="btn" onclick={closeMonthModal}>Cancel</button>
+          <button class="btn" onclick={confirmAddMonth}>Add</button>
+        </div>
+      </div>
+    </div>
+  </template>
+</template>

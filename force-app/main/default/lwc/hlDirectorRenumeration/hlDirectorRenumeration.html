@@ -1,0 +1,166 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-18-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+  <template if:true={isLoading}>
+    <lightning-spinner alternative-text="Loading" variant="brand" size="medium"></lightning-spinner>
+  </template>
+<template if:true={showcomp}>
+  <div class="slds-grid slds-wrap slds-scrollable_x" style="padding-left:2%">
+    <table class="slds-table" style="max-width:57%">
+      <thead>
+        <tr style="height: 1.2rem;"> <!-- Compact header height -->
+          <th scope="col"
+              style="width: 25%; text-align: center; background-color: #5bb6e3; color: black; border: 1px solid black; padding: 0.5rem;">
+            Month
+          </th>
+          <template for:each={directorNames} for:item="directorName">
+            <th key={directorName}
+                style="text-align: center; background-color: #5bb6e3; color: black; border: 1px solid black; padding: 0.5rem; width: 34%;">
+              {directorName}
+            </th>
+          </template>
+        </tr>
+      </thead>
+
+      <tbody>
+        <template for:each={rows} for:item="row">
+          <tr key={row.month} style="height: 1rem;">
+            <td style="border: 1px solid black; padding:0.5rem; text-align: center;">
+              <div style="display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                <lightning-input
+                  value={row.monthName}
+                  onchange={handleInputChangeMonthName}
+                  data-id={row.month}
+                  disabled={row.monthDisabled}
+                  type="text"
+                  class="custom-input">
+                </lightning-input>
+                <template if:false={row.monthDisabled}>
+                  <div style="display: flex; align-items: center; height: 1.75rem; cursor: pointer; margin-right: 10px; flex-wrap: wrap; align-content: flex-end; ">
+                    <lightning-icon icon-name="utility:save" title="SAVE" 
+                                    size="xx-small"
+                                    data-id={row.month} 
+                                    onclick={handleSaveMonthName} 
+                                    style="cursor: pointer; margin-right: 10px;">
+                    </lightning-icon>
+                  </div>
+                </template>
+              </div>
+            </td>
+            <template for:each={row.directorSalaries} for:item="directorSalary">
+              <td key={directorSalary.directorName}
+                  style="border: 1px solid black; padding:0.5rem; text-align: center;"> <!-- horizontal padding -->
+                <div class="input-wrapper">
+                  <lightning-input
+                    data-id={directorSalary.directorName}
+                    data-childid={directorSalary.monthRecordId}
+                    data-prvalue={directorSalary.salary}
+                    value={directorSalary.salary}
+                    onchange={handleInputChange}
+                    data-month={row.month}
+                    type="text"
+                    class="custom-input">
+                  </lightning-input>
+                </div>
+              </td>
+            </template>
+          </tr>
+        </template>
+
+
+        <template if:true={showTotal}>
+          <tr key={totalRowKey} style="height: 1rem;">
+            <td style="text-align: center; background-color: #5bb6e3; color: black; font-weight: bold; border: 1px solid black; padding: 0.5rem;">
+              Total
+            </td>
+            <template for:each={totals} for:item="total">
+              <td key={total.directorName}
+                  style="font-weight: bold; background-color: #5bb6e3; border: 1px solid black; padding: 0.5rem;">
+                {total.totalSalary}
+              </td>
+            </template>
+          </tr>
+        </template>
+        <template if:true={showAverage}>
+          <tr key={totalRowKey} style="height: 1rem;">
+            <td colspan="1" style="text-align: center; background-color: #5bb6e3; color: black; font-weight: bold; border: 1px solid black; padding: 0.5rem;">
+              Average 
+            </td>
+              <!--td colspan={columnCount}
+                  style="font-weight: bold; background-color: #5bb6e3; border: 1px solid black; padding: 0.5rem;">
+                {averageAmount}
+              </td-->
+            <template for:each={averages} for:item="average">
+              <td key={average.directorName}
+                  style="font-weight: bold; background-color: #5bb6e3; border: 1px solid black; padding: 0.5rem;">
+                {average.totalSalary}
+              </td>
+            </template>
+          </tr>
+        </template>
+        <template if:true={showEligibility}>
+          <tr style="height: 1rem;">
+            <td style="text-align: center; background-color: #5bb6e3; color: black; font-weight: bold; border: 1px solid black; padding: 0.5rem;">
+              Considered for eligibility
+            </td>
+            <template for:each={eligibilityData} for:item="director">
+              <td key={director.Name}
+                  style="background-color: #5bb6e3; border: 1px solid black; padding: 0.5rem;">
+                <lightning-input
+                  data-id={director.Name}
+                  data-recordid={director.Id}
+                  data-amount={director.AmountConsideredForEligibilityPurpos}
+                  value={director.AmountConsideredForEligibilityPurpos}
+                  onchange={handleInputChangeAmount}
+                  type="text"
+                  class="custom-input">
+                </lightning-input>
+              </td>
+            </template>
+          </tr>
+        </template>
+        <tr style="height: 1rem;">
+            <td
+                style="text-align: center; background-color: #5bb6e3; color: black;
+                      font-weight: bold; border: 1px solid black; padding: 0.5rem;">
+                Additional FOIR
+            </td>
+            <template for:each={totals} for:item="director">
+                <td key={director.parentId}
+                    style="background-color: #5bb6e3; border: 1px solid black; padding: 0.5rem;">
+
+                    <lightning-input
+                        type="number"
+                        variant="label-hidden"
+                        value={director.additonalFoir}
+                        data-parentid={director.parentId}
+                        onblur={handleAdditonalFoirChange}>
+                    </lightning-input>
+
+                </td>
+            </template>
+          </tr>
+
+
+
+      </tbody>
+    </table>
+  </div>
+      <div style="margin-top: 0.75rem; margin-left: 1rem; display: flex; gap: 0.75rem;">
+      <button class="slds-button slds-button_brand" style="background-color: #9bbf56;"
+              onclick={addRow}>
+        Add Month
+      </button>
+      <button  class="slds-button slds-button_brand" style="background-color: #dc387e;"
+              onclick={handleDeleteRow}>
+        Delete Last Added Row
+      </button>
+    </div>
+</template>
+
+</template>

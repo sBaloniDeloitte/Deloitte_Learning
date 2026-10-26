@@ -1,0 +1,85 @@
+@import 'c/cssLibrary';
+
+/* Table theme matched EXACTLY to the "Field Investigation Initiation"
+   table in creditFIInitiationCmp.css (.accordion-container .slds-table /
+   .fi-table-wrapper) - dark-navy #0a1524 outer backdrop, #0e1c30 table
+   surface for both header and body, #33455e borders on every cell, 18px
+   rounded corners on the outer cells only, left-aligned bold white
+   header text with 12px/10px padding, 13px body text, and the same
+   #16283f row-hover highlight. Replaces the previous plain black-bordered
+   (#000) table with a flat skyblue header. */
+.fi-table-wrapper {
+    background-color: #0a1524 !important;
+    padding: 1rem 1.5rem;
+    border-radius: 18px;
+    overflow-x: auto;
+}
+
+.slds-table_custom-bordered {
+    border-collapse: separate !important;
+    border-spacing: 0;
+    width: 100%;
+    border-radius: 18px;
+    border: 1px solid #33455e !important;
+    background-color: #0e1c30 !important;
+    color: #ffffff;
+}
+
+.slds-table_custom-bordered th,
+.slds-table_custom-bordered td {
+    border: 1px solid #33455e !important;
+    padding: 12px 10px;
+    text-align: left;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: #0e1c30 !important;
+    color: #ffffff !important;
+    vertical-align: middle;
+}
+
+.slds-table_custom-bordered thead tr th {
+    background-color: #0e1c30 !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    font-size: 12.5px;
+    letter-spacing: 0.2px;
+    box-shadow: none !important;
+}
+
+.slds-table_custom-bordered thead tr:first-child th:first-child {
+    border-top-left-radius: 18px;
+}
+
+.slds-table_custom-bordered thead tr:first-child th:last-child {
+    border-top-right-radius: 18px;
+}
+
+.slds-table_custom-bordered tbody td {
+    font-size: 13px;
+    font-weight: normal;
+}
+
+.slds-table_custom-bordered tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 18px;
+}
+
+.slds-table_custom-bordered tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 18px;
+}
+
+.slds-table_custom-bordered tbody tr:hover td {
+    background-color: #16283f !important;
+}
+
+/* In-cell form controls (Valuation number input, Considered Valuation
+   checkbox) must use the SAME #33455e border as the table cells -
+   matches the fix already applied to the Initiation table's
+   lightning-input tokens in creditFIInitiationCmp.css. */
+.fi-table-wrapper lightning-input {
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-checkbox-color-background: #0e1c30;
+    --slds-c-checkbox-color-border: #33455e;
+}

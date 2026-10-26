@@ -1,0 +1,34 @@
+<!--_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________-->
+<template>
+    <div class="hunter-section-title">Application Verifications</div>
+    <div class="fi-table-wrapper">
+        <template lwc:if={hasVerifications}>
+            <table class="slds-table">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th scope="col">Name</th>
+                        <th scope="col">Applicant</th>
+                        <th scope="col">Hunter Decision</th>
+                        <th scope="col">Hunter Match</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={verifications} for:item="rec">
+                        <tr key={rec.Id}>
+                            <td>
+                                <a href={rec.Id} data-record-id={rec.Id}>{rec.name}</a>
+                            </td>
+                            <td>{rec.applicantName}</td>
+                            <td>{rec.hunterDecision}</td>
+                            <td>{rec.hunterMatch}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </template>
+        <template lwc:else>
+            <div class="hunter-empty-state">No Hunter Verification records found.</div>
+        </template>
+    </div>
+</template>
+<!--__________________________GenAI: Generated code ends here______________________________-->

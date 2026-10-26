@@ -1,0 +1,108 @@
+<template>
+    <div>
+        <c-sales-login-product-details-cmp record-id={recordId} is-one-view={isOneView} enable-disabled={enableDisabled}>
+        </c-sales-login-product-details-cmp>
+    </div>
+    
+<lightning-accordion active-section-name={ativeSections} allow-multiple-sections-open>
+    <lightning-accordion-section name="Eligibility" label="Eligibility" style=" font-weight: 700;">
+<div>
+        <button class="save-button slds-button slds-button_brand" onclick={hanldeRefresh}>Refresh</button>
+    </div>
+    <div if:true={products} class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Sub Product</th>
+                    <th>Recommended Loan Amount</th>
+                    <th>Recommended Tenure</th>
+                    <th>Recommended ROI (%)</th>
+                    <th>EMI Amount</th>
+                    <th>Monthly Obligation</th>
+                    <th>Monthly Income</th>
+                    <th>Exposure</th>
+                    <th>Valuation</th>
+                    <th>Total Cost of Property</th>
+                    <th>FOIR (%)</th>
+                    <th>Combined FOIR (%)</th>
+                    <th>LTV (%)</th>
+                    <th>Combined LTV (%)</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={products} for:item="prod" for:index="index">
+                    <tr key={prod.Id}>
+                        <td>{prod.prodName}</td>
+                        <td>{prod.subProdName}</td>
+                        <td><lightning-input type="number" data-index={index} value={prod.sanctionedLoanAmount} onblur={handleInputChange} data-id="Sanctioned_Loan_Amount__c" disabled={disabledAll}></lightning-input></td>
+                        <td><lightning-input type="number" data-index={index} value={prod.sanctionedTenor} onblur={handleInputChange} data-id="Sanctioned_Tenor__c" disabled={disabledAll}></lightning-input></td>
+                        <td><lightning-input type="number" data-index={index} value={prod.sanctionedROI} onblur={handleInputChange} step="0.01" data-id="Sanctioned_ROI__c" disabled={disabledAll}></lightning-input></td>
+                        <!--<td><lightning-input type="number" data-index={index} value={prod.emiAmount} onblur={handleInputChange} data-id="EMI_Amount__c" disabled={disabledAll}></lightning-input></td>-->
+                        <td>{prod.emiAmount}</td>
+                        <td>{prod.monthlyObligation}</td>
+                        <td>{prod.monthlyGrossIncome}</td>
+                        <td>{prod.exposure }</td>
+                        <td>{prod.valuation}</td>
+                        <td>{prod.costOfProperty}</td>
+                        <td>{prod.foir}</td>
+                        <td>{prod.cFoir}</td>
+                        <td>{prod.ltv}</td>
+                        <td>{prod.cLtv}</td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+        <!--<lightning-button label="Save" onclick={handleSave} variant="brand"></lightning-button>-->
+                
+    </div>
+    <div if:true={noProducts} class="message" style=" font-weight: 700; color :white">
+            No products found.
+    </div>
+    </lightning-accordion-section>
+    <template if:true={isResanction}>
+    <lightning-accordion-section name="Negotiated Details" label="Negotiated Details" style=" font-weight: 700;">
+<div>
+        <button class="save-button slds-button slds-button_brand" onclick={hanldeRefresh}>Refresh</button>
+    </div>
+    <div if:true={negoProducts} class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Sub Product</th>
+                    <th>Sanctioned Loan Amount</th>
+                    <th>Sanctioned Tenure</th>
+                    <th>Sanctioned ROI (%)</th>
+                    <th>Negotiated Loan Amount</th>
+                    <th>Negotiated Tenure</th>
+                    <th>Negotiated ROI (%)</th>
+                    
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={negoProducts} for:item="prod" for:index="index">
+                    <tr key={prod.Id}>
+                        <td>{prod.Product__r.Name}</td>
+                        <td>{prod.Name}</td>
+                        <td>{prod.Sanctioned_Loan_Amount__c}</td>
+                        <td>{prod.Sanctioned_Tenor__c}</td>
+                        <td>{prod.Sanctioned_ROI__c}</td>
+                        <td>{prod.Negotiated_Loan_Amount__c}</td>
+                        <td>{prod.Negotiated_Tenure__c}</td>
+                        <td>{prod.Negotiated_ROI__c}</td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+        <!--<lightning-button label="Save" onclick={handleSave} variant="brand"></lightning-button>-->
+                
+    </div>
+    
+    </lightning-accordion-section>
+    </template>
+    </lightning-accordion>
+
+   
+</template>

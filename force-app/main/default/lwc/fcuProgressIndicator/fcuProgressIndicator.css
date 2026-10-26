@@ -1,0 +1,16 @@
+.line {
+    width: 90%;
+    height: 2px;
+    background-color: #113451;
+    position: relative;
+    top: -25%;
+    left: 50%;
+}
+.linemobile {
+    width: 80%;
+    height: 2px;
+    background-color: #113451;
+    position: relative;
+    top: -25%;
+    left: 50%;
+}

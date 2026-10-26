@@ -1,0 +1,227 @@
+@import 'c/cssLibrary';
+
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+/* Dark theme overrides for loanProductDetails (colors only, no structural/functional change)
+   Matches the salesLoginApplicantInformationCmp dark theme so both components render consistently. */
+:host {
+    color: #ffffff;
+    /* Accordion (outer container + section header/summary) — component hooks */
+    --slds-c-accordion-color-background: #12172b;
+    --slds-c-accordion-section-color-background: #1c2238;
+    --slds-c-accordion-summary-color: #ffffff;
+    --slds-c-accordion-summary-color-background: #1c2238;
+    --slds-c-accordion-summary-color-background-hover: #232a45;
+    --slds-c-accordion-summary-heading-color: #ffffff;
+    --slds-c-accordion-summary-heading-color-hover: #ffffff;
+    --slds-c-accordion-color-border: #2a2f45;
+    --slds-c-accordion-summary-text-color: #ffffff;
+
+    /* Form field labels — component hooks */
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+
+    /* Input / Combobox / Textarea fields — component hooks */
+    --slds-c-input-color-background: #1c2238;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #2a2f45;
+    --slds-c-input-shadow-focus: 0 0 0 1px #1467eb;
+    --slds-c-textarea-color-background: #1c2238;
+    --slds-c-textarea-text-color: #ffffff;
+    --slds-c-textarea-color-border: #2a2f45;
+    --slds-c-checkbox-color-background: #1c2238;
+    --slds-c-checkbox-color-border: #2a2f45;
+
+    /* Combobox (picklist) — has its own hook set, separate from lightning-input */
+    --slds-c-combobox-input-color-background: #1c2238;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #2a2f45;
+    --slds-c-combobox-color-background: #1c2238;
+    --slds-c-combobox-text-color: #ffffff;
+    --slds-c-combobox-option-color-background: #1c2238;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #232a45;
+    --slds-c-combobox-option-color-background-selected: #232a45;
+    --slds-c-combobox-listbox-color-background: #1c2238;
+    --slds-c-icon-color-foreground: #ffffff;
+    --slds-c-icon-color-foreground-default: #ffffff;
+
+    /* SLDS 2 GLOBAL styling hooks — these are the foundational surface/text/
+       border tokens that component-level hooks fall back to. Setting them
+       here covers orgs/components where the specific --slds-c-* component
+       hook above isn't consumed, since the component still inherits from
+       the underlying global token. */
+    --slds-g-color-surface-1: #12172b;
+    --slds-g-color-surface-2: #1c2238;
+    --slds-g-color-surface-3: #232a45;
+    --slds-g-color-border-base-1: #2a2f45;
+    --slds-g-color-border-1: #2a2f45;
+    --slds-g-color-border-2: #2a2f45;
+    --slds-g-color-on-surface-1: #ffffff;
+    --slds-g-color-on-surface-2: #ffffff;
+    --slds-g-color-neutral-base-100: #1c2238;
+    --slds-g-color-neutral-base-95: #232a45;
+}
+
+/* PSL / CRE / Cost of Property accordion sections — requested gradient
+   background. Scoped via the "name" attribute on the lightning-accordion-section
+   host element itself (a plain reflected HTML attribute, not shadow-piercing),
+   so only these three named sections are affected, not other accordions in
+   this component (e.g. the per-product outer section, PEP section). */
+lightning-accordion-section[name="PSL"],
+lightning-accordion-section[name="CRE"],
+lightning-accordion-section[name="COST"] {
+    --slds-c-accordion-color-background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+    --slds-c-accordion-summary-color-background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+    --slds-c-accordion-summary-color-background-hover: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+    --slds-g-color-surface-2: #004db3;
+}
+
+/* Fallback overrides for nested base components — reasserted directly on the
+   element tag so the custom properties are guaranteed to inherit into that
+   element's own shadow tree, in case :host-level cascade is intercepted by
+   an intermediate wrapper. Colors only — no structural/functional change. */
+lightning-accordion,
+lightning-accordion-section {
+    --slds-c-accordion-color-background: #12172b;
+    --slds-c-accordion-summary-color-background: #1c2238;
+    --slds-c-accordion-summary-heading-color: #ffffff;
+    --slds-c-accordion-summary-text-color: #ffffff;
+    --slds-g-color-surface-1: #12172b;
+    --slds-g-color-surface-2: #1c2238;
+    --slds-g-color-on-surface-1: #ffffff;
+}
+
+lightning-input,
+lightning-combobox,
+lightning-textarea {
+    --slds-c-input-color-background: #1c2238;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-label-color: #ffffff;
+    --slds-g-color-surface-2: #1c2238;
+    --slds-g-color-on-surface-1: #ffffff;
+}
+
+lightning-combobox {
+    --slds-c-combobox-input-color-background: #1c2238;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #2a2f45;
+    --slds-c-combobox-color-background: #1c2238;
+    --slds-c-combobox-text-color: #ffffff;
+    --slds-c-combobox-option-color-background: #1c2238;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: #1c2238;
+    --slds-c-icon-color-foreground: #ffffff;
+}
+
+/* Direct global-class overrides as a last-resort safety net. These target
+   the standard SLDS markup class names that lightning-accordion /
+   lightning-input render internally. They are inert (no-op, zero risk) in
+   orgs where those elements are fully shadow-encapsulated, and take effect
+   wherever the runtime exposes that markup to page-level styling. */
+.slds-accordion__summary,
+.slds-accordion__summary-action,
+.slds-accordion__summary-heading {
+    background-color: #1c2238 !important;
+    color: #ffffff !important;
+}
+
+.slds-accordion__content {
+    background-color: #12172b !important;
+}
+
+.slds-input,
+.slds-textarea,
+.slds-combobox__input {
+    background-color: #1c2238 !important;
+    color: #ffffff !important;
+    border-color: #2a2f45 !important;
+}
+
+.slds-combobox__input-value,
+.slds-listbox__option,
+.slds-listbox_vertical .slds-listbox__item,
+.slds-dropdown,
+.slds-dropdown__list {
+    background-color: #1c2238 !important;
+    color: #ffffff !important;
+}
+
+.slds-combobox__input::placeholder,
+.slds-input::placeholder,
+.slds-textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Selected-value icon (dropdown caret / clear button) contrast */
+.slds-input__icon,
+.slds-combobox__input-entity-icon {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+.bsa-page {
+    background-color: #12172b !important;
+    border-radius: 8px;
+}
+
+.product-value {
+    padding: 0.5rem;
+    background-color: #1c2238 !important;
+    border: 1px solid #2a2f45 !important;
+    color: #ffffff !important;
+    border-radius: 0.25rem;
+    min-height: 2rem;
+    display: flex;
+    align-items: center;
+}
+
+.slds-form-element {
+    margin-bottom: 1rem;
+}
+
+.slds-form-element__label {
+    margin-bottom: 0.25rem;
+    color: #ffffff !important;
+}
+
+.slds-card__body {
+    padding: 1rem;
+    background-color: #12172b !important;
+}
+
+.slds-accordion-section {
+    border: 1px solid #2a2f45 !important;
+    margin-bottom: 0.5rem;
+}
+
+.slds-grid.slds-gutters {
+    margin: 0 -0.5rem;
+}
+
+.slds-grid.slds-gutters .slds-col {
+    padding: 0 0.5rem;
+}
+
+/* ==========================================================================
+   Standard CTA button color convention (matches salesLoginApplicantInformationCmp)
+   Positive CTAs (Save, Next, Submit, etc.)   -> Green  #4CAF50
+   Negative CTAs (Back, Cancel, Close, etc.)  -> Red    #DB2929
+   Other buttons                              -> Blue   #1467EB
+   ========================================================================== */
+.btn-positive {
+    background-color: #4CAF50 !important;
+    border-color: #4CAF50 !important;
+    color: #ffffff !important;
+}
+
+.btn-negative {
+    background-color: #DB2929 !important;
+    border-color: #DB2929 !important;
+    color: #ffffff !important;
+}
+
+.btn-other {
+    background-color: #1467EB !important;
+    border-color: #1467EB !important;
+    color: #ffffff !important;
+}

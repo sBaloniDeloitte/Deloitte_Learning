@@ -1,0 +1,28 @@
+<template>
+	<article class="slds-card" style="border: none; box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.1);">
+		<!-- Header section -->
+		<div class="slds-grid card-bg">
+			<div class="stack-bg">
+				<header class="slds-media slds-media_center">
+					<div class="slds-grid">
+						<div class="slds-media__figure">
+							<span class="slds-icon_container">
+								<!-- Profile Picture -->
+								<img class="profile-picture" src={userPhotoUrl} alt="Profile Picture" loading="lazy" />
+							</span>
+						</div>
+						<div class="slds-media__body user-name">
+							Hello, <span>{name}{formattedNames}</span>
+							<div class="slds-text-title_caps slds-p-top_xx-small">
+								<span style="color: #9bbf56; text-transform: uppercase;"><b>{dayTimeMessage.dayTimeMsg} &nbsp;</b></span> Have a great day ahead.
+							</div>
+							<div class="slds-text-title_caps slds-p-top_xx-small">
+								Today is {formattedDates.date}.
+							</div>
+						</div>
+					</div>
+				</header>
+			</div>
+		</div>
+	</article>
+</template>

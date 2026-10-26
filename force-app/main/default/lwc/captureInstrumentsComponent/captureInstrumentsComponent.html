@@ -1,0 +1,560 @@
+<template>
+    <lightning-card>
+    <span class="styleContainer"></span>
+    <div class="table-card">
+        <h2 class="section-title">Repayment Bank Account Details</h2>
+        <div class="table-container">
+            <table cellpadding="0" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 1px solid black;" class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right custom-table repayment-table">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th style="width: 6%; text-align: center;">
+                            <div class="slds-truncate" title="Charge Name">A/C Holder Name</div>
+                        </th>
+                        <th style="width: 6%; text-align: center;">
+                            <div class="slds-truncate" title="Bank Name">Bank Name</div>
+                        </th>
+                        <th style="width: 6%; text-align: center;">
+                            <div class="slds-truncate" title="A/C Number">A/C Number</div>
+                        </th>
+                        <th style="width: 6%; text-align: center;">
+                            <div class="slds-truncate" title="A/C Type">A/C Type</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={repaymentAccounts} for:item="row">
+                        <tr key={row.id}>
+                            <td style="text-align: left; padding: 3px; width: 10%;border: 1px solid black;">{row.accountHolderName} ({row.applicanttype})</td>
+                            <td style="text-align: center; padding: 3px; width: 10%;border: 1px solid black;">{row.bankName}</td>
+                            <td style="text-align: center; padding: 3px; width: 10%;border: 1px solid black;">{row.accountNumber}</td>
+                            <td style="text-align: center; padding: 3px; width: 10%;border: 1px solid black;">{row.accountType}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <br/>
+    <template if:true={instrumentCreated}>
+        <div class="table-card">
+            <h2 class="section-title">Created Instrument Details</h2>
+            <div class="table-container">
+                <table cellpadding="0" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 1px solid black;" class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right custom-table instrument-table">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th style="width: 12%; text-align: center;color: black;border: 1px solid black;">
+                                <div class="slds-truncate" title="Instrument No.">Instrument No.</div>
+                            </th>
+                            <th style="width: 12%; text-align: center;;">
+                                <div class="slds-truncate" title="Instrument No.">Purpose</div>
+                            </th>
+                            <th style="width: 12%; text-align: center;">
+                                <div class="slds-truncate" title="Date">Date</div>
+                            </th>
+                            <th style="width: 12%; text-align: center;">
+                                <div class="slds-truncate" title="Amount">Amount</div>
+                            </th>
+                            <th style="width: 20%; text-align: center;">
+                                <div class="slds-truncate" title="Bank Name">Bank Name</div>
+                            </th>
+                            <th style="text-align: center;">
+                                <div class="slds-truncate" title="Bank Name">A/C Holder's Name</div>
+                            </th>
+                            <template lwc:if={isEditableUser}> 
+                                <th style="width: 6%; text-align: center;">
+                                    <div class="slds-truncate" title="Action">Action</div>
+                                </th>
+                            </template>
+                            <th style="width: 5%; text-align: center;">
+                                <div class="slds-truncate" title="Bank Name">Upload</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={createdInstruments} for:item="instrument">
+                            <tr key={instrument.id}>
+                                <td style="text-align: center; padding: 3px; border: 1px solid black;">
+                                    
+                                    <!-- <template if:true={showEditableInstNo}>
+                                        <template if:true={instrument.isEditing}>
+                                            <lightning-input type="number"
+                                                data-id={instrument.id}
+                                                variant="label-hidden"
+                                                value={instrument.instrumentnumber}
+                                                onchange={handleInstrumentNumberChange}>
+                                            </lightning-input>
+                                        </template>
+                                        <template if:false={instrument.isEditing}>
+                                            {instrument.instrumentnumber}
+                                        </template>
+                                    </template>
+                                    <template if:false={showEditableInstNo}> -->
+                                        {instrument.instrumentnumber}
+                                    <!-- </template> -->
+                                </td>
+                                
+                                <!-- Editable Purpose Field -->
+                                <td style="text-align: center; padding: 3px; border: 1px solid black;">
+                                    <template if:true={instrument.isPurposeEditing}>
+                                        <lightning-combobox
+                                            name="purpose"
+                                            variant="label-hidden"
+                                            data-id={instrument.id}
+                                            options={purposeOptions}
+                                            value={instrument.purpose}
+                                            onchange={handlePurposeChange}
+                                            data-field="purpose"
+                                        ></lightning-combobox>
+                                    </template>
+                                    <template if:false={instrument.isPurposeEditing}>
+                                        {instrument.purpose}
+                                    </template>
+                                </td>
+
+                                <!-- Editable Purpose Field -->
+                                <td style="text-align: center; padding: 3px; border: 1px solid black;">
+                                    <template if:true={instrument.isDateEditing}>
+                                        <lightning-input type="text"
+                                            data-id={instrument.id}
+                                            variant="label-hidden"
+                                            value={instrument.instrumentdate}
+                                            onchange={handleInstrumentDateChange}
+                                            onclick={handleInstrumentDateChange}>
+                                        </lightning-input>
+                                    </template>
+                                    <template if:false={instrument.isDateEditing}>
+                                        {instrument.instrumentdate}
+                                    </template>
+                                </td>
+                    
+                                <td style="text-align: center; padding: 3px; border: 1px solid black;">
+                                    <template if:false={instrument.isInstrumentAmountThere}>
+                                    <lightning-formatted-number 
+                                        value={instrument.instrumentamount}
+                                        format-style="decimal"
+                                        minimum-fraction-digits="0">
+                                    </lightning-formatted-number>
+                                    </template>
+                                    <template if:true={instrument.isInstrumentAmountThere}>
+                                     {instrument.instrumentamount}
+                               
+                                       
+                                    </template>
+
+                                </td>
+                                <td style="text-align: center; padding: 3px; border: 1px solid black;">{instrument.bankName}</td>
+                                <td style="text-align: center; padding: 3px; border: 1px solid black;">{instrument.customername}</td>
+                                <template lwc:if={isEditableUser}>
+                                    <!-- Edit/Save Button -->
+                                    <td style="text-align: center; padding: 3px; border: 1px solid black;">
+                                        <template if:true={instrument.isEditing}>
+                                            <lightning-button-icon 
+                                                icon-name="utility:save"
+                                                alternative-text="Save"
+                                                class="slds-m-left_x-medium"
+                                                variant="bare"
+                                                size="medium"
+                                                onclick={handleSaveInstrument}
+                                                data-id={instrument.id}>
+                                            </lightning-button-icon>
+                                        </template>
+                                        <template if:false={instrument.isEditing}>
+                                            <lightning-button-icon 
+                                                icon-name="utility:edit"
+                                                alternative-text="Edit"
+                                                class="slds-m-left_x-medium"
+                                                variant="bare"
+                                                size="medium"
+                                                onclick={handleEditInstrument}
+                                                data-id={instrument.id}>
+                                            </lightning-button-icon>
+                                        </template>
+                        
+                                        &nbsp;&nbsp;&nbsp;
+                        
+                                        <!-- Delete Button -->
+                                        <lightning-button-icon 
+                                            icon-name="utility:delete"
+                                            alternative-text="Delete"
+                                            class="slds-m-left_x-medium delete-icon"
+                                            variant="bare"
+                                            size="medium"
+                                            onclick={handleDeleteInstrument}
+                                            data-id={instrument.id}>
+                                        </lightning-button-icon>
+                                    </td>
+                                </template>
+
+                                <!-- Upload Button -->
+                                <td style="text-align: center; padding: 3px; border: 1px solid black;">
+                                    <template lwc:if={isEditableUser}>
+                                        <template lwc:if={instrument.showUpload}>
+                                            <lightning-button-icon size="small"
+                                                icon-name="action:upload" variant="bare" title="Upload Document"
+                                                onclick={openCamera}
+                                                class="slds-m-left_x-medium upload-icon" data-id={instrument.id}>
+                                            </lightning-button-icon>
+                                        </template>
+                                    </template>
+
+                                    <template lwc:if={instrument.showView}>
+                                        <lightning-button-icon size="small"
+                                            icon-name="action:preview" variant="bare" title="View Document"
+                                            onclick={viewInstrument}
+                                            class="slds-m-left_x-medium" data-id={instrument.id} data-filetype={instrument.fileType} 
+                                            data-contentdocid={instrument.contentDoclId} data-docdetailid={instrument.docDetailId}>
+                                        </lightning-button-icon>
+                                    </template>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                    
+                </table>
+            </div>
+        </div>
+        <input type="file" accept="image/*,.pdf" capture="environment" onchange={handleUpload} class="hidden-input"/>
+        <input type="file" accept="image/*,.pdf" capture="environment" onchange={handleReUpload} class="hidden-input-all"/>
+    </template>
+
+    <template lwc:if={isEditableUser}> 
+        <template lwc:if={isVisible}>
+            <div class="slds-m-around_medium">
+                <lightning-card>
+                    <div class="slds-p-around_medium">
+                        <div class="slds-section slds-is-open">
+                            <div class="instrument-header">
+                                <lightning-icon
+                                    icon-name="utility:chevrondown"
+                                    size="x-small"
+                                    class="section-icon">
+                                </lightning-icon>
+                                <span>Instrument Details</span>
+                            </div>
+                            <div class="instrument-container">
+                                <div class="slds-grid slds-gutters slds-wrap instrument-form">
+                                    <!-- Instrument Purpose -->
+                                    <div class="slds-col slds-size_1-of-3">
+                                        <lightning-combobox 
+                                            class="removeborder" 
+                                            style="width:100%;"
+                                            name="purpose" 
+                                            label="Purpose" 
+                                            value={instrument.purpose}
+                                            options={purposeOptions} 
+                                            onchange={handleInputChange}
+                                            data-field="purpose" required>
+                                        </lightning-combobox>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-3">
+                                        <lightning-combobox
+                                            class="removeborder" 
+                                            style="width:100%;" 
+                                            name="customerName" 
+                                            label="Customer Name" 
+                                            value={selectedApplicantId}
+                                            options={applicants} 
+                                            onchange={handleApplicantChange}
+                                            required
+                                            > 
+                                        </lightning-combobox> <!--Sanwar (remove disable)-->
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-3">
+                                        <lightning-input
+                                            class="hideInput"
+                                            variant="bare" 
+                                            type="text" 
+                                            label="Customer Type" 
+                                            value={selectedApplicantType} 
+                                            disabled>
+                                        </lightning-input>
+                                    </div>
+                                    <!-- Bank Name (Greyed Out) -->
+                                <div class="slds-col slds-size_1-of-3">
+                                    <lightning-input
+                                        class="hideInput"
+                                        variant="bare" 
+                                        type="text" 
+                                        label="Bank Name" 
+                                        value={selectedBankDetail.bankName} 
+                                        disabled>
+                                    </lightning-input>
+                                </div>
+                                <!-- Branch Name (Greyed Out) -->
+                                <div class="slds-col slds-size_1-of-3">
+                                    <lightning-input
+                                        class="hideInput"
+                                        variant="bare" 
+                                        type="text" 
+                                        label="Branch Name" 
+                                        value={selectedBankDetail.branchName} 
+                                        disabled>
+                                    </lightning-input>
+                                </div>
+                                <!-- Bank Account Number (Greyed Out) -->
+                                <div class="slds-col slds-size_1-of-3">
+                                    <lightning-input
+                                        class="hideInput"
+                                        variant="bare" 
+                                        type="text" 
+                                        label="Bank Account Number" 
+                                        value={selectedBankDetail.accountNumber} 
+                                        disabled>
+                                    </lightning-input>
+                                </div>
+                                <!-- Bank Account Type (Greyed Out) -->
+                                <div class="slds-col slds-size_1-of-3">
+                                    <lightning-input
+                                        class="hideInput"
+                                        variant="bare" 
+                                        type="text" 
+                                        label="Bank Account Type" 
+                                        value={selectedBankDetail.accountType} 
+                                        disabled>
+                                    </lightning-input>
+                                </div>
+                                <!-- Branch Location (Greyed Out) -->
+                                <div class="slds-col slds-size_1-of-3">
+                                    <lightning-input
+                                        class="hideInput"
+                                        variant="bare" 
+                                        type="text" 
+                                        label="Branch Location" 
+                                        value={selectedBankDetail.branchLocation} 
+                                        disabled>
+                                    </lightning-input>
+                                </div>
+                                <!-- IFS Code (Greyed Out) -->
+                                <div class="slds-col slds-size_1-of-3">
+                                    <lightning-input
+                                        class="hideInput"
+                                        variant="bare" 
+                                        type="text" 
+                                        label="IFSC Code" 
+                                        value={selectedBankDetail.ifsc} 
+                                        disabled>
+                                    </lightning-input>
+                                </div>
+                                <!-- MICR Code (Greyed Out) -->
+                                <div class="slds-col slds-size_1-of-3">
+                                    <lightning-input
+                                        class="hideInput"
+                                        variant="bare" 
+                                        type="text" 
+                                        label="MICR Code" 
+                                        value={selectedBankDetail.micr} 
+                                        disabled>
+                                    </lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-3">
+                                    <lightning-input
+                                        class="hideInput"
+                                        variant="bare" 
+                                        label="Starting Instrument Number"
+                                        type="text" 
+                                        value={instrument.startingInstrumentNumber} 
+                                        onchange={handleInputChange} 
+                                        data-field="startingInstrumentNumber"
+                                        required="true">
+                                    </lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-3">
+                                    <lightning-input
+                                        class="hideInput"
+                                        variant="bare" 
+                                        label="Ending Instrument Number"
+                                        type="text" 
+                                        value={instrument.endingInstrumentNumber} 
+                                        onchange={handleInputChange} 
+                                        data-field="endingInstrumentNumber"
+                                        required="true">
+                                    </lightning-input>
+                                </div>
+                                </div>
+                                <!-- Create Instrument Button -->
+                                <div class="slds-m-top_medium slds-text-align_right">
+                                    <template if:true={showCreateBankAccBtn}>
+                                        <button class="slds-button slds-button_brand save-button" onclick={createBankaccnt}>Create Bank Account</button>
+                                    </template>
+                                    <button class="slds-button slds-button_brand create-instrument-button" onclick={createInstrument}>Create Instrument</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </lightning-card>
+
+                <template if:true={showBankModal}>
+                    <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+                        <div class={cssContainer}>
+                            <header class="slds-modal__header header-section">
+                                <div class="slds-text-align_center">
+                                    <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">Bank Details</h2>
+                                </div>
+                            </header>
+                            <div class="slds-modal__content slds-p-around_medium" id="confirm-body">
+                                <div class="slds-m-around_medium">
+                                    <div class="table-container">
+                                        <table cellpadding="0" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 1px solid black;" class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right custom-table">
+                                            <thead>
+                                                <tr class="slds-line-height_reset">
+                                                    <th style="width: 5%; text-align: center;color: black;border: 1px solid black;">
+                                                        <div class="slds-truncate" title="Select">Select</div>
+                                                    </th>
+                                                    <th style="width: 6%; text-align: center;color: black;border: 1px solid black;">
+                                                        <div class="slds-truncate" title="Bank Name">Bank Name</div>
+                                                    </th>
+                                                    <th style="width: 6%; text-align: center;color: black;border: 1px solid black;">
+                                                        <div class="slds-truncate" title="IFSC">IFSC</div>
+                                                    </th>
+                                                    <th style="width: 6%; text-align: center;color: black;border: 1px solid black;">
+                                                        <div class="slds-truncate" title="Account Number">Account Number</div>
+                                                    </th>
+                                                    <th style="width: 6%; text-align: center;color: black;border: 1px solid black;">
+                                                        <div class="slds-truncate" title="Account Type">Account Type</div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <template for:each={bankDetails} for:item="bank">
+                                                    <tr key={bank.id}>
+                                                        <td style="text-align: center; padding: 3px;border: 1px solid black;">
+                                                            <lightning-input type="radio" name="bankSelection" 
+                                                                            value={bank.id} data-id={bank.id}
+                                                                            onchange={handleBankSelection}>
+                                                            </lightning-input>
+                                                        </td>
+                                                        <td style="text-align: left; padding: 3px;padding-bottom:3px; width: 10%;border: 1px solid black;">{bank.bankName}</td>
+                                                        <td style="text-align: left; padding: 3px;padding-bottom:3px; width: 10%;border: 1px solid black;">{bank.ifsc}</td>
+                                                        <td style="text-align: left; padding: 3px;padding-bottom:3px; width: 10%;border: 1px solid black;">{bank.accountNumber}</td>
+                                                        <td style="text-align: left; padding: 3px;padding-bottom:3px; width: 10%;border: 1px solid black;">{bank.accountType}</td>
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            <footer class="footer-section">
+                                <div class="slds-align_right button-container">
+                                    <button class="slds-button slds-button_brand previous-button" onclick={closeBankModal}>Skip</button>
+                                </div>
+                            </footer>
+                        </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+                </template>
+
+                <template if:true={showInstrumentScheduleModal}>
+                    <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+                        <div class={cssContainer}>
+                            <header class="slds-modal__header header-section">
+                                <div class="slds-text-align_center">
+                                    <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">Instrument Schedule</h2>
+                                </div>
+                            </header>
+                            <div class="slds-modal__content slds-p-around_medium" id="instScheduleModel">
+                                <div class="slds-m-around_medium">
+                                    <div class="table-container">
+                                        <table cellpadding="0" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 1px solid black;" class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right custom-table">
+                                            <thead>
+                                                <tr class="slds-line-height_reset">
+                                                    <th style="width: 5%; text-align: center;color: black;border: 1px solid black;">
+                                                        <div class="slds-truncate" title="Select">Select</div>
+                                                    </th>
+                                                    <th style="text-align: center;color: black;border: 1px solid black;">
+                                                        <div class="slds-truncate" title="Instrument Date">Instrument Date</div>
+                                                    </th>
+                                                    <th style="text-align: right;color: black;border: 1px solid black;">
+                                                        <div class="slds-truncate" title="Instrument Amount">Instrument Amount</div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <template for:each={instrumentSchedule} for:item="inst">
+                                                    <tr key={inst.schDateFormatted}>
+                                                        <td style="text-align: center; padding: 3px;border: 1px solid black;">
+                                                            <lightning-input type="radio" name="instSelection" 
+                                                                            value={inst.totalAmount} data-id={inst.schDateFormatted}
+                                                                            onchange={handleScheduleSelection}>
+                                                            </lightning-input>
+                                                        </td>
+                                                        <td style="text-align: center; padding: 3px;padding-bottom:3px; width: 10%;border: 1px solid black;">{inst.schDateFormatted}</td>
+                                                        <td style="text-align: right; padding: 3px;padding-bottom:3px; width: 10%;border: 1px solid black;">{inst.totalAmount}</td>
+                                                    </tr>
+                                                </template>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                            <footer class="footer-section">
+                                <div class="slds-align_right button-container">
+                                </div>
+                            </footer>
+                        </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+                </template>
+
+                <template if:true={openBankAccountModal}>
+                    <c-add-bank-account-cmp record-id={recordId} is-modal-open={openBankAccountModal} onclosemodal={closeBankAccount} selected-applicant={selectedApplicant} onsavedbankrecord={populateBankDet}></c-add-bank-account-cmp>
+                </template>
+            </div>
+        </template>
+    </template>
+
+    <template lwc:if={showPreview}>
+        <lightning-card  variant="Narrow" style="width: 80%;">
+            <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open" style="width: 70%;left: 13%;top: 4%;">
+                <div class="slds-modal__container width-80">
+                    <template if:true={isLoading}>
+                        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+                    </template>
+                    
+                    <header class="slds-modal__header header-section">
+                        <div class="slds-text-align_center">
+                            <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">Preview</h2>
+                        </div>
+                    </header>
+                    
+                    <div class="slds-modal__content" id="popup-body">
+                        <div style="text-align: center; min-height: 65vh;">
+                            <template lwc:if={showImage}>
+                                <img src={imageUrl} title="" style="max-width: 80%; height: auto;" />
+                            </template>
+                            <template lwc:elseif={showPdf}>
+                                <iframe src={pdfUrl} style="width: 80%; min-height: inherit; border: none;"></iframe>
+                            </template>
+                            <template lwc:else>
+                                <div style="text-align: center; font-size: 20px; margin-top: 30vh; height: inherit;">No preview available for this document!</div>
+                            </template>
+                        </div>
+                    </div>
+                    
+                    <footer class="footer-section ">
+                        <div class="slds-align_absolute-center button-container">
+                            <div>
+                                <button class="slds-button slds-button_brand cancel-button slds-p-around_xx-small" onclick={handleClose}>Close</button>
+                            </div>
+                            <!-- <div style="padding-left: 1%; padding-bottom: 1%;">
+                                <lightning-file-upload label=""
+                                    name="fileUploader" disabled={disabled} accept=".png,.jpeg,.jpg,.pdf,"
+                                    record-id={recordId} onuploadfinished={handleReUpload}>
+                                </lightning-file-upload>
+                            </div> -->
+                            
+                            <button class="slds-button slds-button_brand save-button slds-p-around_xx-small" onclick={reUploadFile}>Retake</button>
+                        
+                        </div>
+                    </footer>
+                </div>
+            </section>
+        </lightning-card>
+
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+
+    </template>
+</lightning-card>
+</template>

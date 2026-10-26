@@ -1,0 +1,9 @@
+<template>
+    <lightning-accordion allow-multiple-sections-open>
+        <template for:each={options} for:item="section">
+            <lightning-accordion-section key={section.label} name={section.label} label={section.label}>
+                 <c-sales_triangular-data-component record-id={recordId} applicant-id={section.value}></c-sales_triangular-data-component>
+            </lightning-accordion-section>
+        </template>
+    </lightning-accordion>
+</template>

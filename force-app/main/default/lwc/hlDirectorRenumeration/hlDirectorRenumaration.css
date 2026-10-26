@@ -1,0 +1,49 @@
+@import "c/cssLibrary";
+.custom-bordered-table {
+  border-collapse: collapse;
+  width: 100%;
+  border: 1px solid black; /* border around the whole table */
+}
+
+.custom-bordered-table th,
+.custom-bordered-table td {
+  padding: 0.25rem 0.5rem; /* reduce padding */
+  font-size: 0.85rem;       /* slightly smaller font */
+  line-height: 1.1;         /* tighter line height */
+  white-space: nowrap;      /* prevent wrapping */
+}
+
+.custom-bordered-table tbody tr {
+  height: 2rem;             /* reduce row height */
+}
+
+.lightning-input {
+  --lwc-input-height: 28px; /* reduce input height */
+  font-size: 0.85rem;
+}
+
+.slds-button_icon {
+  height: 24px;
+  width: 24px;
+  padding: 0;
+}
+button.slds-button_icon:hover {
+  background-color: #f8d7da; /* very light red bg on hover */
+  border-radius: 50%; /* round effect */
+  cursor: pointer;
+}
+.input-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  padding: 0; /* no padding inside wrapper to keep vertical alignment */
+}
+
+.custom-input {
+  --lwc-input-height: 22px;
+  width: 100%; /* use full width of padded cell */
+  font-size: 0.7rem;
+  padding: 0 !important;
+  margin: 0;
+}

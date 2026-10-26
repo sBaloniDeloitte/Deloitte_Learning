@@ -1,0 +1,50 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-16-2024
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    
+    <p style="text-align: center;">Please select the disposition from the list below:</p>
+    <lightning-combobox
+        name="disposition"
+        label="Disposition"
+        value={selectedDisposition}
+        placeholder="Select Disposition"
+        options={dispositionOptions}
+        onchange={handleDispositionChange}
+        required>
+    </lightning-combobox>
+    
+    <div if:true={showtime} class="slds-grid slds-wrap parentdiv">
+        <div class="slds-col slds-size_6-of-12 alignText">
+            <span>                            
+                <lightning-input style="padding-right: 4%;margin-top: 2%" type="date" date-style="short" label="Follow-up Date and Time" value={dateOfFollowUp} onchange={handleFollowDateChange} required></lightning-input>
+            </span>
+        </div>
+        <div class="slds-col slds-size_6-of-12 ">
+            <lightning-input style="padding-top: 2%" type="time" label=" " value={timeOfFollowUp} onchange={handleFollowTimeChange} required></lightning-input>
+        </div>
+    </div>
+    
+    <lightning-combobox if:false={showtime}
+        name="sub-disposition"
+        label="Sub-Disposition"
+        value={selectSubdisposition}
+        placeholder="Select Sub-Disposition"
+        options={subdispositionOptions}
+        onchange={handlesubDispositionChange}
+        required>
+    </lightning-combobox>
+
+    <lightning-textarea 
+        label="Remarks"
+        value={remarks}
+        placeholder="Enter Remarks"
+        onchange={handleRemarksChange}
+        required>
+    </lightning-textarea>
+
+</template>

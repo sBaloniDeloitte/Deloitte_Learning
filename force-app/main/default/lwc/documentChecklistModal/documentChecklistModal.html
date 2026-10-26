@@ -1,0 +1,124 @@
+<template>
+    <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open slds-modal_small">
+        <div class="slds-modal__container">
+            <div class="slds-modal__header">
+                <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate" tabindex="-1">Add Document CheckList</h1>
+            </div>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style="overflow-y:auto;">
+                <!--<template if:true ={showHLRelatedData}>-->
+                    <template if:true ={showAddedCollDocuments}>
+                        <div class="slds-grid slds-wrap">
+                                <div>
+                                   
+                                    <p class="modal-text" style="text-align:left; font-size:15px; font-weight:600; margin:0;">
+                                        Collateral Documents
+                                    </p>
+                                    <p class="modal-text-italic" style="text-align:left; font-size:13px; font-style:italic; margin:0;">
+                                        Note: Documents are already uploaded on the items highlighted in green.
+                                    </p>
+
+                                </div>
+                                <div class="slds-col slds-size_1-of-3"></div>
+                        </div>
+                        <!-- <div class="slds-grid slds-wrap">
+                            <div class="slds-col slds-size_2-of-3">
+                                <lightning-input type="text"
+                                    value={searchValueHL}
+                                    label="Document Name"
+                                    onchange={searchKeywordHL}
+                                    >
+                                </lightning-input>
+                            </div>
+                        </div> -->
+                        <div class="slds-grid slds-wrap slds-p-horizontal_small">
+                            <div class="slds-col slds-size_1-of-2">
+                                <div class="slds-grid slds-wrap">
+                                    <legend class="slds-form-element__legend slds-form-element__label" style="color:white">*</legend>
+                                </div>
+                                <template lwc:if={filteredOptionsHL}>
+                                    <template for:each={filteredOptionsHL} for:item="option">
+                                        <div key={option.value} class="hl-checkbox-row">
+                                        <!-- Checkbox without label -->
+                                        <lightning-input
+                                            type="checkbox"
+                                            variant="label-hidden"
+                                            value={option.value}
+                                            data-value={option.label}
+                                            aria-label={option.label}
+                                            onclick={selectDocumentNameHL}>
+                                        </lightning-input>
+
+                                        <!-- Custom green label -->
+                                        <span class="hl-label">{option.label}</span>
+                                        </div>
+                                    </template>
+                                </template>
+
+                            </div>
+                            <!-- <div class="slds-col slds-size_1-of-2"></div> -->
+                            <!-- <div class="slds-col slds-size_1-of-2">
+                                <div class="slds-grid slds-wrap">
+                                    <legend class="slds-form-element__legend slds-form-element__label">Selected Documents</legend>
+                                </div>
+                                <template lwc:if={showHLOptions}>
+                                    <template for:each={fixedOptionsHL} for:item="option">
+                                        <div key={option}>{option}</div>
+                                    </template>
+                                </template>
+                            </div> -->
+                        </div>
+                    </template>
+                <!--</template>-->
+                <!--<template if:true ={showHLRelatedData}>-->
+                    <!-- <div style="border-top: 2px solid black !important;"></div> -->
+                    <div class="slds-grid slds-wrap">
+                        <div class="slds-col slds-size_1-of-3">
+                            <p class="modal-text" style="text-align:left;font-size: 15px;font-weight:600;margin-top:2%;">Additional Documents</p>
+                        </div>
+                        <div class="slds-col slds-size_1-of-3"></div>
+                    </div>
+                <!--</template>-->
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_2-of-3">
+                        <lightning-input type="text"
+                            value={searchValue}
+                            label="Document Name"
+                            onchange={searchKeyword}
+                            >
+                        </lightning-input>
+                    </div>
+                </div>
+                <div class="slds-grid slds-wrap slds-p-horizontal_small">
+                    <div class="slds-col slds-size_1-of-2">
+                        <div class="slds-grid slds-wrap">
+                            <legend class="slds-form-element__legend slds-form-element__label modal-text">Available Documents</legend>
+                        </div>
+                        <template lwc:if={filteredOptions}>
+                            <template for:each={filteredOptions} for:item="option">
+                                <lightning-input key={option.value} data-value={option.label} type="checkbox" label={option.label} name={option.label} onclick={selectDocumentName} style="overflow-wrap:break-word"></lightning-input>
+                            </template>
+                        </template>
+                    </div>
+                    <div class="slds-col slds-size_1-of-2">
+                        <div class="slds-grid slds-wrap">
+                            <legend class="slds-form-element__legend slds-form-element__label modal-text">Selected Documents</legend>
+                        </div>
+                        <template lwc:if={showOptions}>
+                            <template for:each={fixedOptions} for:item="option">
+                                <div key={option} class="modal-text">{option}</div>
+                            </template>
+                        </template>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="slds-modal__footer">
+                <div class="slds-align_absolute-center slds-grid slds-wrap slds-grid_vertical-align-center">
+                    <button class="slds-button slds-button_brand slds-m-around_x-small save-button" style="font-size: 11px;width: 150px;background-color: #7c3aed;color: #ffffff;border: none;font-weight: 500;" onclick={addNewDocument}>Add Document</button>
+                    <button class="slds-button slds-button_neutral slds-m-around_x-small cancel-button" aria-label="Cancel and close" onclick={closeModal} style="font-size: 11px;width: 150px;background-color: #16283f;color: #ffffff;border: 1px solid #7c3aed;font-weight: 500;" >Cancel</button>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+</template>

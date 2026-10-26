@@ -1,0 +1,390 @@
+@import "c/cssLibrary";
+.button-green {
+    background-color: #1b96ff;
+    color: rgb(247, 244, 244);
+    border-color: #1b96ff;
+    font-size: 11px;
+    min-width: 140px;
+    font-weight: 500;
+    display: inline-block;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.600rem;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 0 0.75rem;
+    border-radius: 0.25rem;
+    margin-right: 0.5%;
+   
+   
+    text-decoration: none;
+ 
+}
+
+.button-red {
+    background-color: #dc387e;
+    color: white;
+    border-color: #dc387e;
+    font-size: 11px;
+    min-width: 110px;
+    font-weight: 500;
+    display: inline-block;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.600rem;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 0 0.75rem;
+    border-radius: 0.25rem;
+    margin-right: 0.5%;
+   
+   
+    text-decoration: none;
+    
+}
+.hidden-input {
+    display: none; /* Hide the file input element */
+}
+.hidden-input-finish {
+    display: none; /* Hide the file input element */
+}
+.modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.modal {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    width: 50%;
+    max-width: 600px;
+}
+.button-container {
+    display: flex !important;  /* Force Flexbox layout */
+    gap: 8px; /* Space between buttons */
+    align-items: center;
+    flex-wrap: nowrap; /* Prevent wrapping to next line */
+}
+
+.button-styled {
+    display: inline-block !important; /* Ensure buttons are inline */
+    white-space: nowrap; /* Prevent text from wrapping inside button */
+}
+.content-viewer {
+    border: 1px solid #000000;
+    margin-bottom: 5px;
+    transition: transform 0.2s ease-in-out;
+}
+
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+/* ------------------------------------------------------------------ */
+/* Dark theme: background #16283f throughout, white field labels     */
+/* ------------------------------------------------------------------ */
+
+:host {
+    display: block;
+    background-color: #16283f;
+    color: #ffffff;
+
+    /* Global label styling hooks so lightning-input / lightning-textarea /
+       lightning-combobox labels inherit white text through the shadow
+       boundary regardless of SLDS version used by the base component. */
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+    --lwc-colorTextWeak: #ffffff;
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-textarea-label-color: #ffffff;
+    --slds-c-combobox-label-text-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+}
+
+/* Modal / dialog surfaces */
+.modal {
+    background: #16283f;
+    color: #ffffff;
+}
+
+/* Root cause of the invisible field labels (Query Type / Requestor /
+   Selected queue / Remarks / Status): the label color was forced to white
+   via the --slds-c-input-label-color hook above, but the light-DOM wrapper
+   these fields sit in (.slds-modal__content) was never given the matching
+   dark background, so it fell back to the browser/SLDS default white -
+   producing white-on-white (invisible) label text. Fixing the background
+   here, scoped separately from the rest of the theme rules, resolves it. */
+.slds-modal__content {
+    background-color: #16283f;
+    color: #ffffff;
+}
+
+/* Defensive, higher-specificity reinforcement scoped to the disabled
+   "requested-by-input" fields specifically (Query Type, Query Category,
+   Requestor, Requested From, Selected queue, Remarks, Status) so label
+   visibility no longer depends solely on the :host-level custom property
+   cascading correctly for every base-component/SLDS version. */
+.requested-by-input {
+    --slds-c-input-label-color: #ffffff !important;
+    --slds-c-textarea-label-color: #ffffff !important;
+    --slds-c-combobox-label-text-color: #ffffff !important;
+    --lwc-colorTextLabel: #ffffff !important;
+    --lwc-formLabelFontColor: #ffffff !important;
+    --lwc-inputLabelFontColor: #ffffff !important;
+    margin-bottom: 1rem;
+}
+
+/* 3-fields-per-row layout for the detail view's Query Type / Query Category /
+   Requestor / Requested From / Selected queue / Remarks / Status fields.
+   Conditional fields (Category, Requested From, Status) simply flow into the
+   next grid slot when hidden, so no empty gaps are left behind. */
+.fields-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 0.5rem 1.5rem;
+}
+
+.fields-grid .requested-by-input {
+    margin-bottom: 0.5rem;
+}
+
+/* Document checklist table renders inside the same .fields-grid container
+   (so surrounding fields keep flowing in the 3-column layout above/below
+   it) but must span the full grid width rather than being squeezed into a
+   single column cell. */
+.fields-grid-full-row {
+    grid-column: 1 / -1;
+}
+
+@media (max-width: 900px) {
+    .fields-grid {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media (max-width: 640px) {
+    .fields-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.header-section,
+.footer-section {
+    background-color: #16283f;
+    color: #ffffff;
+}
+
+/* Table surfaces (Assigned Queries list + Document checklist tables) */
+.table-container,
+table.slds-table {
+    background-color: #16283f;
+    color: #ffffff;
+}
+
+table.slds-table thead th,
+table.slds-table tbody td,
+table.slds-table tfoot {
+    background-color: #16283f;
+    color: #ffffff;
+}
+
+/* Overrides for inline "skyblue" backgrounds still present in the markup
+   (non-document details table header/footer, re-assignment modal header) */
+thead[style*="skyblue"],
+tfoot[style*="skyblue"],
+header[style*="skyblue"] {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+}
+
+/* Field labels: white text for optimal contrast against the dark background */
+lightning-input,
+lightning-textarea,
+lightning-combobox,
+c-generic-multi-picklist-selector {
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-textarea-label-color: #ffffff;
+    --slds-c-combobox-label-text-color: #ffffff;
+
+    
+}
+
+.custom-field {
+    --lwc-fontSize2: 16px;
+}
+
+.slds-form-element__label {
+    color: #ffffff !important;
+}
+
+/* Upload action buttons: guard against pointer events being suppressed by
+   any inherited rule, make the clickable state visually obvious, and force
+   a stacking context above sibling elements (e.g. the empty .styleContainer
+   span injected for runtime <style> tags) so clicks are never intercepted. */
+.uploaded-view,
+.uploaded-view-disabled {
+    cursor: pointer;
+    pointer-events: auto;
+    position: relative;
+    z-index: 1;
+}
+.uploaded-view-disabled {
+    cursor: not-allowed;
+}
+
+/* Non-document ("Additional Documents") table action column: Preview and
+   Download were rendering flush against each other with no gap - wrap them
+   in a flex row with spacing between the two icon buttons. */
+.nondoc-action-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* Delete action for the non-document table: rendered as a plain
+   lightning-button-icon (not conditionally hidden behind uploadEditable,
+   matching the reference screenshot which always shows it) and forced to
+   red via the icon foreground styling hook plus an inline color fallback
+   already used by the sibling Preview/Download icons in this same table. */
+.delete-icon-btn {
+    --slds-c-icon-color-foreground: #dc3545;
+    --slds-c-icon-color-foreground-default: #dc3545;
+    --sds-c-icon-color-foreground: #dc3545;
+    --sds-c-icon-color-foreground-default: #dc3545;
+    color: #dc3545;
+}
+
+/* "Back to List" button: dark navy (#16283f) background, black label text.
+   NOTE: lightning-button's SLDS custom-property styling hooks
+   (--slds-c-button-color-background etc.) were confirmed to silently fail
+   in this component - the button kept rendering with the default white
+   background regardless of hook name/!important. Root cause: the hooks
+   only reach a native <lightning-button>'s internal shadow-DOM <button>,
+   and something in this component's cascade (likely SLDS base theme
+   applied at a higher specificity inside the shadow root) was winning
+   anyway. Fix: the markup was switched from <lightning-button> to a
+   plain <button> (matching the .button-green/.button-red pattern already
+   used elsewhere in this component), which is a normal light-DOM element
+   directly targetable with standard CSS - no hooks, no shadow boundary,
+   no silent failure. */
+.back-to-list-wrapper {
+    margin-bottom: 1rem;
+}
+
+.back-to-list-button {
+    /* Matches .pill-view-button's resolved fill color exactly (#1b96ff /
+       hover #0d8aee) so Back to List and View share the same button color. */
+    background-color: #1b96ff;
+    border: 1px solid #1b96ff;
+    color: #ffffff;
+    border-radius: 0.375rem;
+    font-weight: 700;
+    min-width: 140px;
+    height: 32px;
+    cursor: pointer;
+}
+
+.back-to-list-button:hover,
+.back-to-list-button:focus {
+    background-color: #0d8aee;
+    border-color: #0d8aee;
+    color: #ffffff;
+}
+
+/* Remarks column: lightning-textarea defaults to a white input surface,
+   and the shadow-DOM re-asserts that white background on :focus (i.e. as
+   soon as the user starts typing), overriding the base custom property
+   above it. Explicit focus-state hooks + a ::part(textarea) fallback are
+   required to keep the field on the page's dark navy background in every
+   state (default, hover, focus/typing). */
+table.slds-table lightning-textarea {
+    --slds-c-textarea-color-background: #16283f !important;
+    --slds-c-textarea-color-background-focus: #16283f !important;
+    --slds-c-textarea-text-color: #ffffff !important;
+    --slds-c-textarea-text-color-focus: #ffffff !important;
+    --slds-c-textarea-color-border: rgba(255, 255, 255, 0.4) !important;
+    --slds-c-textarea-color-border-focus: rgba(255, 255, 255, 0.4) !important;
+}
+
+table.slds-table lightning-textarea textarea,
+table.slds-table lightning-textarea::part(textarea) {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+}
+
+/* ------------------------------------------------------------------ */
+/* Table design: rounded outer border on the wrapper div (border-radius
+   on <table> itself renders unreliably with border-collapse/sticky
+   headers - the wrapper is the reliable place for the outer treatment),
+   bold centered white header text, and thin dividing borders between
+   cells - matching the reference screenshot styling. */
+/* ------------------------------------------------------------------ */
+.table-container {
+    border: 1px solid #ffffff;
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+table.slds-table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+table.slds-table thead th {
+    font-weight: 700;
+    text-align: center;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+/* Row text must match header text color exactly. This also needs to reach
+   the base components rendered inside table cells (lightning-input /
+   lightning-combobox in the Additional Documents table), whose displayed
+   value text is rendered inside their own shadow DOM and is NOT affected by
+   plain color rules on the surrounding <td> - it needs the SLDS text-color
+   hooks set explicitly, matching the white header text. */
+table.slds-table tbody td {
+    text-align: center;
+    color: #ffffff !important;
+    border: 1px solid rgba(255, 255, 255, 0.35);
+}
+
+table.slds-table tbody td lightning-input,
+table.slds-table tbody td lightning-combobox {
+    --slds-c-input-text-color: #ffffff !important;
+    --slds-c-input-color-foreground: #ffffff !important;
+    --lwc-colorTextDefault: #ffffff !important;
+}
+
+/* Pill-style action button matching the reference screenshot's solid blue
+   "Refresh" button - filled blue background, fully rounded, bold white
+   label text. */
+.pill-view-button {
+    /* Shape and footprint now match .back-to-list-button exactly (same
+       border-radius, min-width, height) - only the fill color differs. */
+    --slds-c-button-radius-border: 0.375rem;
+    --slds-c-button-brand-color-background: #1b96ff;
+    --slds-c-button-brand-color-border: #1b96ff;
+    --slds-c-button-brand-text-color: #ffffff;
+    --slds-c-button-brand-color-background-hover: #0d8aee;
+    --slds-c-button-brand-color-border-hover: #0d8aee;
+    --slds-c-button-brand-text-color-hover: #ffffff;
+    font-weight: 700;
+    min-width: 140px;
+    height: 32px;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

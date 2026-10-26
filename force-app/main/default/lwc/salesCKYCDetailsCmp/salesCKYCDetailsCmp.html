@@ -1,0 +1,109 @@
+<template>
+  <span class="styleContainer"></span>
+
+  <template if:true={isloading}>
+    <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+  </template>
+
+  <template if:true={isMnrlBlacklisted}>
+    <p style="font-size: 14px; color: red; font-weight: bold;">
+      The given Mobile Number is blacklisted by MNRL. Please Change the Mobile Number to Proceed Further.
+    </p>
+  </template>
+
+
+  <template if:false={ckycInitiated}>
+    <div style="max-width: 300px;">
+      <lightning-combobox
+        name="idType"
+        label="ID Type"
+        value={idType}
+        options={idTypeOptions}
+        onchange={handleIdTypeChange}
+        disabled={isIdTypeDisabled}>
+      </lightning-combobox>
+
+      <lightning-input
+        label="ID Number"
+        value={idNumber}
+        onchange={handleIdNumberChange}
+        disabled={idNumberDisabled}>
+      </lightning-input>
+    </div>
+        
+    <template if:true={validationError}>
+      <p style="color: red; font-weight: bold;">{validationError}</p>
+    </template>
+
+    <div style="padding-bottom: 4%;padding-top: 1%">
+      <button class="save-button slds-button slds-button_brand slds-float_left"
+        style="border:none" onclick={handleInitiateCkyc} disabled={initiateCkycButtonDisabled}>
+        Initiate CKYC
+      </button>
+    </div>
+  </template>
+
+  <!-- Modal for Initiate CKYC -->
+  <template if:true={showModal}>
+  <template if:true={isModalLoading}>
+    <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+  </template>
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open ckyc-modal">
+      <div class="slds-modal__container">
+        <header class="slds-modal__header ckyc-modal-header">
+          <h2 class="slds-text-heading_medium">Initiate CKYC</h2>
+        </header>
+        <div class="slds-modal__content slds-p-around_medium ckyc-modal-content">
+          <!--<lightning-input
+            label="Please enter OTP"
+            value={otpValue}
+            onchange={handleOtpValueChange}>
+          </lightning-input>
+
+          <lightning-input
+            label="Timer"
+            value={timerDisplay}
+            disabled={isTimerDisabled}>
+          </lightning-input>-->
+          <lightning-input
+            label="Please enter OTP"
+            value={otpValue}
+            onchange={handleOtpValueChange}
+            type="tel"
+            maxlength="6"
+            pattern="[0-9]{6}"
+            message-when-pattern-mismatch="Please enter a 6-digit numeric OTP">
+          </lightning-input>
+
+          <div style="margin-top: 10px; display: flex; align-items: center;">
+            <lightning-button-icon
+              icon-name="utility:refresh"
+              alternative-text="Resend OTP"
+              onclick={handleResendOtp}
+              disabled={isResendDisabled}
+              class="slds-m-right_x-small">
+            </lightning-button-icon>
+            <span style="font-size: 14px;">Resend OTP available in: {timerDisplay}</span>
+          </div>
+
+        </div>
+        <footer class="slds-modal__footer ckyc-modal-footer">
+          <button class="slds-button ckyc-cancel-button" onclick={closeModal}>Cancel</button>
+          <button class="save-button slds-button ckyc-submit-button" onclick={callAPI} disabled={submitDisabled}>Submit</button>
+        </footer>
+      </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+  </template>
+  <!--<template if:true={idValueChanged}>
+    <p style="font-size: 14px; color: #e13939; font-weight: bold;">
+        CKYC Search API will hit again as ID Number value has been modified.
+    </p>
+  </template>-->
+
+  <template if:true={apiAlreadyHit}>
+    <p style="font-size: 14px; color: #9bbf56; font-weight: bold;">
+        CKYC Executed successfully.
+    </p>
+  </template>
+</template>

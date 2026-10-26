@@ -1,0 +1,273 @@
+@import 'c/cssLibrary';
+
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+
+:host {
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+
+    /* ──────────── ID Type combobox dark theme ────────────
+       lightning-combobox is a native-shadow base component, so plain
+       descendant selectors (e.g. "lightning-combobox .slds-dropdown")
+       cannot pierce its shadow boundary - only exposed CSS custom
+       property styling hooks can. Same hook names used successfully
+       elsewhere in this codebase (deDuplicationScreenCmp.css,
+       applicantAddresses.css, addBankAccountCmp.css). Visual only. */
+    --slds-c-input-color-background: #1c2238;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #2a2f45;
+    --slds-c-input-placeholder-text-color: #ffffff;
+
+    --slds-c-combobox-input-color-background: #1c2238;
+    --slds-c-combobox-input-color-background-focus: #1c2238;
+    --slds-c-combobox-input-color-border: #2a2f45;
+    --slds-c-combobox-input-color-border-focus: #1467eb;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-value-text-color: #ffffff;
+    --slds-c-combobox-label-color: #ffffff;
+    --slds-c-combobox-text-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: #1c2238;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #2a2f45;
+
+    --slds-c-listbox-color-background: #1c2238;
+    --slds-c-listbox-option-color-background: #1c2238;
+    --slds-c-listbox-option-color-background-hover: #2a2f45;
+    --slds-c-listbox-option-color-background-focus: #2a2f45;
+    --slds-c-listbox-option-color-background-selected: #1467eb;
+    --slds-c-listbox-option-color-background-current: #2a2f45;
+    --slds-c-listbox-option-text-color: #ffffff;
+    --slds-c-listbox-option-text-color-hover: #ffffff;
+    --slds-c-listbox-option-text-color-focus: #ffffff;
+    --slds-c-listbox-option-text-color-selected: #ffffff;
+    --slds-c-listbox-option-text-color-current: #ffffff;
+
+    --lwc-colorTextDefault: #ffffff;
+    --lwc-colorTextWeak: #ffffff;
+    --lwc-colorTextInverse: #ffffff;
+    --lwc-colorTextInverseWeak: #ffffff;
+    --lwc-colorTextIconDefault: #ffffff;
+    --lwc-colorTextIconHover: #ffffff;
+    --lwc-colorBackgroundRowHover: #2a2f45;
+    --lwc-colorBackgroundAlt: #1c2238;
+    --lwc-colorBackground: #1c2238;
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+
+    /* Default/unfocused option rows still fell back to SLDS' global
+       "near-black" text token when no component-scoped hook applied
+       (same fix used in deDuplicationScreenCmp.css). This global GA
+       hook is what lightning-base-combobox-item's default text color
+       actually resolves to. */
+    --slds-g-color-neutral-base-10: #ffffff;
+}
+
+/* ──────────── General Styling ──────────── */
+.custom-border {
+    border: 2px solid black;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+.desktop-spacing {
+    margin-right: 0.75rem;
+}
+
+/* ──────────── Device-Specific Borders ──────────── */
+.desktop-border {
+    border-color: black;
+    padding: 1.5rem;
+}
+
+.tablet-border {
+    border-color: #607D3B;
+    padding: 1rem;
+}
+
+.mobile-border {
+    border-color: #9BBF56;
+    padding: 0.5rem;
+}
+
+/* ──────────── Utility Spacing ──────────── */
+.slds-m-bottom_small {
+    margin-bottom: 0.75rem !important;
+}
+
+/* ──────────── Save Button Styling ──────────── */
+.save-button,
+.save-button.slds-button_brand {
+    background-color: #1467eb !important;
+    border-color: #1467eb !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.save-button:hover,
+.save-button:focus,
+.save-button.slds-button_brand:hover,
+.save-button.slds-button_brand:focus {
+    background-color: #1467eb !important;
+    border-color: #1467eb !important;
+    color: #ffffff !important;
+}
+
+.save-button:disabled,
+.save-button[disabled],
+.save-button.slds-button_brand:disabled,
+.save-button.slds-button_brand[disabled] {
+   /* background-color: #D3D3D3 !important;
+    border-color: #D3D3D3 !important;
+    color: #6E6E6E !important;*/
+    cursor: not-allowed;
+    box-shadow: none !important;
+    pointer-events: none;
+}
+
+.slds-button_neutral {
+    background-color: #2a2f45 !important;
+    color: #ffffff !important;
+    border-color: #2a2f45 !important;
+}
+
+/* ──────────── Initiate CKYC modal dark theme ────────────
+   Visual only - modal markup/logic unchanged. Colors match the app's
+   existing dark navy theme (header/content/footer) and the standard
+   red=negative/green=positive action-button convention already used
+   elsewhere (confirmationScreen.css: #DB2929 / #4CAF50). */
+/* The outer overlay (.slds-modal) stretches its child container to
+   fill the full flex cross-axis height by default (align-items:
+   stretch), which is what left the huge empty navy area above/below
+   the header/footer even after the padding fix. Forcing the overlay
+   to center a shrink-wrapped, block-level container removes it. */
+.ckyc-modal {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.ckyc-modal .slds-modal__container {
+    background-color: #12172b !important;
+    /* The shared cssLibrary.css sets ".slds-modal__container { padding:
+       3% 0 !important; }" globally, which added large empty navy space
+       above the header and below the footer (3% of viewport height on
+       each side). Overridden here, scoped to this modal only, so other
+       components importing cssLibrary keep their existing spacing. */
+    padding: 0 !important;
+    width: 90%;
+    max-width: 480px;
+    display: block !important;
+    height: auto !important;
+    max-height: 90vh !important;
+    margin: 0 !important;
+    flex: 0 0 auto !important;
+}
+
+.ckyc-modal-header {
+    background-image: linear-gradient(90deg, #2563eb, #1e3a8a) !important;
+    border-bottom: 1px solid #2a2f45 !important;
+    padding: 0.75rem 1rem !important;
+}
+
+.ckyc-modal-header h2 {
+    color: #ffffff !important;
+}
+
+.ckyc-modal-content {
+    background-color: #12172b !important;
+    color: #ffffff !important;
+}
+
+.ckyc-modal-footer {
+    background-image: linear-gradient(90deg, #2563eb, #1e3a8a) !important;
+    border-top: 1px solid #2a2f45 !important;
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center;
+    gap: 16px;
+    padding: 0.75rem 1rem !important;
+}
+
+/* Cancel - pill, red (matches "Previous" convention). Buttons use
+   flex centering (not line-height) so the label sits exactly in the
+   middle of the pill regardless of font metrics. */
+.ckyc-cancel-button {
+    background-color: #DB2929 !important;
+    border: none !important;
+    color: #ffffff !important;
+    border-radius: 1.25rem !important;
+    font-weight: 600;
+    min-width: 110px;
+    height: 2.5rem;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    line-height: normal;
+}
+
+.ckyc-cancel-button:hover,
+.ckyc-cancel-button:focus {
+    background-color: #c22323 !important;
+    color: #ffffff !important;
+}
+
+/* Submit - pill, green (matches "Next" convention) */
+.ckyc-submit-button,
+.ckyc-submit-button.slds-button_brand {
+    background-color: #4CAF50 !important;
+    border: none !important;
+    color: #ffffff !important;
+    border-radius: 1.25rem !important;
+    font-weight: 600;
+    min-width: 110px;
+    height: 2.5rem;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    line-height: normal;
+}
+
+.ckyc-submit-button:hover,
+.ckyc-submit-button:focus,
+.ckyc-submit-button.slds-button_brand:hover,
+.ckyc-submit-button.slds-button_brand:focus {
+    background-color: #43a047 !important;
+    color: #ffffff !important;
+}
+
+.ckyc-submit-button:disabled,
+.ckyc-submit-button[disabled] {
+    cursor: not-allowed;
+    box-shadow: none !important;
+    opacity: 0.6;
+}
+
+/* ──────────── Mobile Responsive Styling ──────────── */
+@media only screen and (max-width: 768px) {
+    .custom-border {
+        padding: 0.5rem;
+        border-color: #9BBF56;
+    }
+
+    lightning-layout-item {
+        width: 100% !important;
+        display: block !important;
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        box-sizing: border-box;
+    }
+
+    .save-button {
+        width: 100%;
+    }
+
+    div[style*="text-align: right"] {
+        text-align: center !important;
+        margin-left: 0 !important;
+    }
+
+    .desktop-spacing {
+        margin-right: 0 !important;
+    }
+}

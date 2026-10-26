@@ -1,0 +1,586 @@
+<template>
+    <div class="slds-scrollable_x sanction-dark-theme" style="overflow: auto;">
+        <span class="styleContainer"></span>
+        <template lwc:if={showSanctionButton}>
+            <template if:false={disable}>
+                <div class="add-sanction-btn-wrapper" style="margin-left: 10px; margin-bottom: 35px;">
+                    <button class="save-button slds-button slds-button_brand slds-float_left"
+                        style="border:none;width: auto;" onclick={handleAddSanction} disabled={disableAddConditionBtn}>Add Sanction Conditions</button>
+                </div>
+            </template>
+
+        </template>
+        <div style="padding-top: 1%; padding-bottom: 3%;">
+            <table  class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right sanction-main-table">
+                <thead style=" top: 0; z-index: 2;">
+                    <tr>
+                        <th
+                            style=" text-align: center; background-color: #5bb6e3;border: 1px solid black" class="slds-size_1-of-12 slds-m-top_x-small">
+                            <lightning-input type="checkbox"
+                                checked={isAllSelected}
+                                onchange={handleSelectAllChange}>
+                            </lightning-input>
+                        </th>
+                        <th
+                            style=" text-align: center; background-color: #5bb6e3;border: 1px solid black" class="slds-size_1-of-12 slds-m-top_x-small">
+                            <div class="slds-truncate" title="Serial No.">Sr No.</div>
+                        </th>
+                        <th
+                            style="text-align: center; background-color: #5bb6e3;border: 1px solid black" class="slds-size_1-of-12 slds-m-top_x-small">
+                            <div class="slds-truncate" title="Sanction Condition">Sanction Condition</div>
+                        </th>
+                        <th
+                            style="text-align: center; background-color: #5bb6e3;border: 1px solid black" class="slds-size_1-of-12 slds-m-top_x-small">
+                            <div class="slds-truncate" title="Sanction Verification">Status</div>
+                        </th>
+                        <th
+                            style="text-align: center; background-color: #5bb6e3;border: 1px solid black" class="slds-size_1-of-12 slds-m-top_x-small">
+                            <div class="slds-truncate" title="Sanction Verification">Product</div>
+                        </th>
+                        <th
+                            style="text-align: center; background-color: #5bb6e3;border: 1px solid black" class="slds-size_1-of-12 slds-m-top_x-small">
+                            <div class="slds-truncate" title="Document Type">Document Type</div>
+                        </th>
+                        <th
+                            style="text-align: center; background-color: #5bb6e3;border: 1px solid black" class="slds-size_1-of-12 slds-m-top_x-small">
+                            <div class="slds-truncate" title="Sanction Document(s)">Fullfilment Document(s)</div>
+                        </th>
+                        <th
+                            style="text-align: center; background-color: #5bb6e3;border: 1px solid black" class="slds-size_1-of-12 slds-m-top_x-small">
+                            <div class="slds-truncate" title="Documents View and Delete">Documents View and Delete
+                            </div>
+                        </th>
+                        <th
+                            style="text-align: center; background-color: #5bb6e3;border: 1px solid black" class="slds-size_1-of-12 slds-m-top_x-small">
+                            <div class="slds-truncate" title="Delete">Add Documents</div>
+                        </th>
+                        <template if:true={isHomeLoan}>
+                            <th scope="col" style=" background-color: #5bb6e3;border: 1px solid black"
+                                class="slds-col slds-size_1-of-12 slds-m-top_x-small">Requestor Name</th>
+
+                            <th scope="col" style="background-color: #5bb6e3;border: 1px solid black"
+                                class="slds-col slds-size_1-of-12 slds-m-top_x-small">Approver Name</th>
+
+                            <th scope="col" style="background-color: #5bb6e3;border: 1px solid black"
+                                class="slds-col slds-size_1-of-12 slds-m-top_x-small">Upload Approval</th>
+                        </template>
+                        <th
+                            style="text-align: center; background-color: #5bb6e3;border: 1px solid black" class="slds-size_1-of-12 slds-m-top_x-small">
+                            <div class="slds-truncate" title="Delete">Sales Remarks</div>
+                        </th>
+                        <th
+                            style="text-align: center; background-color: #5bb6e3;border: 1px solid black" class="slds-size_1-of-12 slds-m-top_x-small">
+                            <div class="slds-truncate" title="Delete">Delete</div>
+                        </th>
+                    </tr>
+                </thead>
+                <template for:each={allSanctions} for:item="record">
+                    <tbody key={record.id}>
+                        <tr>
+                            <td class="slds-size_1-of-12" style="border: 1px solid black;width:2%">
+                                <lightning-input type="checkbox" data-docid={record.id}
+                                    checked={record.isSelected} onchange={handleCheckboxChange}>
+                                </lightning-input>
+                            </td>
+                            <td style="text-align: center; padding: 8px; border: 1px solid black;">
+                                {record.srno}</td>
+                            <td style="text-align: left; padding: 8px; border: 1px solid black;">
+                                {record.name}</td>
+                            <td style="text-align: center; border: 1px solid black;">
+                                <lightning-combobox name="recordName" label="" data-id={record.id}
+                                    value={record.Verification} options={optionsList} data-lookupid ={record.contentDocId}
+                                    onchange={handleChange} disabled={disable}
+                                    class="slds-combobox__input"></lightning-combobox>
+
+                            </td>
+                            <template if:true={isHomeLoan}>
+
+                                <td style="text-align: center; border: 1px solid black;">
+                                    <template if:false={disable}>
+                                        <c-search-lookup data-id={record.id}
+                                            placeholder="" object-name="Product2"
+                                            selected-id={record.selectedProduct} selected-name={record.selectedProductName} return-fields="['Id','Name']" search-fields="['Name']" filter-criteria={productFilter}
+                                            onlookupselected={handleSelectedProduct} onlookupdeselected={handleDeselectProduct}
+                                        ></c-search-lookup>
+                                    </template>
+                                    <template if:true={disable}>
+                                        {record.selectedProductName}
+                                    </template>
+                                </td>
+
+                            </template>
+                            <td style="text-align: center; padding: 8px; border: 1px solid black;">
+                                    {record.documentType}</td>
+                            <td style="text-align: left; padding: 8px;border: 1px solid black;">
+                                <template if:true={record.showChecklist}>
+                                    <template for:each={record.sanctionChecklist} for:item="checklistrecord">
+                                        <lightning-layout key={checklistrecord.id} horizontal-align="space-between"
+                                            vertical-align="center">
+                                            <div
+                                                style="display: flex; align-items: center; gap: 10px; margin-bottom: 10px;">
+                                                <span>{checklistrecord.srno}.</span>
+                                                <span>{checklistrecord.name}</span>
+                                            </div>
+                                        </lightning-layout>
+                                    </template>
+                                </template>
+                            </td>
+                            <td style="text-align: left; padding: 8px;border: 1px solid black;">
+                                <template if:true={record.showChecklist}>
+                                    <template for:each={record.sanctionChecklist} for:item="checklistrecord">
+                                        <lightning-layout key={checklistrecord.id} horizontal-align="space-between"
+                                            vertical-align="center">
+                                            <div
+                                                style="display: flex; align-items: center; gap: 20px; justify-content: flex-start;padding-bottom: 2%;">
+                                                <span>{checklistrecord.srno}.</span>
+
+                                                <c-upload-view-delete-document doc-detail-id={checklistrecord.id}
+                                                    content-doc-id={checklistrecord.ddw.contentId}
+                                                    show-upload={checklistrecord.ddw.showUpload}
+                                                    show-view={checklistrecord.ddw.showView}
+                                                    show-delete={checklistrecord.ddw.showDelete}
+                                                    show-retake={checklistrecord.ddw.showRetake}
+                                                    show-location={checklistrecord.ddw.showLocation}
+                                                    lattitude={checklistrecord.ddw.lattitude}
+                                                    longitude={checklistrecord.ddw.longitude}
+                                                    file-type={checklistrecord.ddw.fileType}
+                                                    doc-name={checklistrecord.ddw.docName}
+                                                    view-only-preview ={allowreUpload}
+                                                    current-user-opp-role="Sales" onrecallmethod={refreshMethod}>
+                                                </c-upload-view-delete-document>
+
+                                                <template if:false={fromSales}>
+
+                                                    <template if:false={checklistrecord.showDelete}>
+                                                        <lightning-icon data-id={checklistrecord.id}
+                                                            data-sanctionid={record.id} data-name="Main Table"
+                                                            icon-name="utility:delete"
+                                                            alternative-text="Delete Document" title="DELETE"
+                                                            size="small" onclick={handleshowgenericConfirm}
+                                                            style="cursor: pointer;">
+                                                        </lightning-icon>
+                                                    </template>
+                                                </template>
+                                            </div>
+                                        </lightning-layout>
+                                    </template>
+                                </template>
+
+                            </td>
+                            <td style="text-align: center;border: 1px solid black;">
+                                <template if:false={record.showAddDocSection}>
+                                    <template if:true={notcredit}>
+                                        <template if:false={record.addnewDoc}>
+                                            <lightning-icon data-id={record.id} data-name="Main Table"
+                                                icon-name="utility:add" alternative-text="Add Document" title="ADD"
+                                                size="small" onclick={handleAddNewDoc} style="cursor: pointer;">
+                                            </lightning-icon>
+                                        </template>
+                                    </template>
+
+                                    <template if:true={record.addnewDoc}>
+                                        <template if:true={notcredit}>
+                                            <lightning-layout style="text-align: center;">
+                                                <lightning-layout-item size="8">
+                                                    <lightning-input variant="label-hidden" data-id={record.id}
+                                                        data-name="Main Table" value={record.newDocname}
+                                                        onchange={handleAddNewDocEdit} label="New Document Name">
+                                                    </lightning-input>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="2">
+                                                    <lightning-icon data-id={record.id} data-name="Main Table"
+                                                        icon-name="utility:save"
+                                                        alternative-text="Save New Document" title="Save"
+                                                        size="small" onclick={handleSaveAddNewDoc}
+                                                        style="cursor: pointer;">
+                                                    </lightning-icon>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="2">
+                                                    <lightning-icon data-id={record.id} data-name="Main Table"
+                                                        icon-name="utility:close" alternative-text="Cancel"
+                                                        title="Cancel" size="small" onclick={handleCancelAddNewDoc}
+                                                        style="cursor: pointer;">
+                                                    </lightning-icon>
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                        </template>
+                                    </template>
+                                </template>
+                            </td>
+                            <template if:true={isHomeLoan}>
+                                <td class="slds-col slds-size_2-of-12" style="border: 1px solid black;">
+                                    <div class="slds-text-color_success slds-cell-wrap"
+                                        style="overflow:auto">
+                                        {record.requestorsName}
+                                    </div>
+                                </td>
+                                <td class="slds-col slds-size_2-of-12" style="border: 1px solid black;">
+                                    <div class="slds-text-color_success slds-cell-wrap"
+                                        style="overflow:auto">
+                                        {record.approverName}
+                                    </div>
+                                </td>
+                            </template>
+                            <td style="text-align: left; padding: 8px;border: 1px solid black;">
+                                <template lwc:if={record.documentDetailId}>
+                                    <lightning-layout
+                                        horizontal-align="space-between" vertical-align="center">
+                                        <div
+                                            style="display: flex; align-items: center; gap: 20px; justify-content: flex-start;padding-bottom: 2%;">
+                                            <c-upload-view-delete-document
+                                                doc-detail-id={record.documentDetailId}
+                                                show-upload={record.isUpload} show-view={record.isView} view-only-preview ={allowreUpload}
+                                                current-user-opp-role="Sales" is-from-homeloan={isHomeLoan}
+
+                                                ></c-upload-view-delete-document>
+                                                <!-- onrecallmethod={updateDocumentDetails} -->
+                                        </div>
+                                    </lightning-layout>
+                                </template>
+
+                            </td>
+                            <td style="text-align: left; padding: 8px;border: 1px solid black;">
+                                <lightning-textarea
+                                    name="remarks"
+                                    value={record.remarks}
+                                    data-id={record.id}
+                                    onblur={handleSaveRowValue}
+                                    style="white-space: normal; padding: 5px; min-height: 60px;"
+                                    rows="3" disabled={record.disableRemarks}>
+                                </lightning-textarea>
+                            </td>
+                            <td style="text-align: center; padding: 8px;border: 1px solid black;">
+
+                                <div class="slds-align_absolute-center">
+                                    <lightning-icon data-id={record.id} data-name="Main Table"
+                                        icon-name="utility:delete" alternative-text="Delete Document"
+                                        title="DELETE" size="small" data-sanctionid={record.conditionAddStage}
+                                        onclick={handleshowgenericConfirmSanction} style="cursor: pointer;">
+                                    </lightning-icon>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </template>
+            </table>
+            <template if:true={showApprovalButton}>
+                <div class="slds-grid slds-grid_align-end" style="padding-top:2%">
+                    <button class="save-button approve-cta slds-button slds-button_brand" onclick={handleCallApprovalProcess}>
+                        Send For Approval
+                    </button>
+                </div>
+            </template>
+        </div>
+
+        <template if:true={showApprovalProcess}>
+            <c-hl_covenant-approval-cmp is-modal-open={showApprovalProcess}
+                onclose={handleCloseApproval}
+                document-details-records={selectedIds}
+                from-sanction={showApprovalProcess} record-id={recordId}></c-hl_covenant-approval-cmp>
+        </template>
+
+        <template if:true={modalVisibility}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Meaningful description of the modal content"
+                class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container" style="min-width: 60%;">
+                    <header class="slds-modal__header" style="background-color: #5bb6e3; color:white;font-weight:500;">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                            title="Close" onclick={handleClose}>
+                            <lightning-icon icon-name="utility:close" alternative-text="close" variant="error" size="small">
+                            </lightning-icon>
+                            <span class="slds-assistive-text">Close</span>
+                        </button>
+                        <div class="slds-text-align_center">
+                            <h2 slot="title"
+                                style="color: black;font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px"
+                                class="slds-text-heading_medium slds-hyphenate">Add New Sanction Condition</h2>
+                        </div>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless " id="confirm-body"
+                        style="min-height: 30% !important;">
+                        <template if:false={newRecordVisibility}>
+                            <c-search-lookup label="Sanction conditions" show-label="true" required="true"
+                                placeholder="Search sanction condition" object-name="Deviation_Mitigant_Master__c"
+                                selected-id={selectedId} return-fields="['Id','Name']" search-fields="['Name']"
+                                onlookupselected={handleselectSanction}
+                                filter-criteria="[RecordType.Name = Sanction Conditions;]"
+                                onlookupdeselected={handleldeselectSantion}></c-search-lookup>
+
+                            <div class="slds-grid slds-gutters">
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-combobox name="documentType" label="Document Type" placeholder="Select document type"
+                                                        value={selectedDocType} options={docTypeOptions} required onchange={handleDocTypeChange}>
+                                                    </lightning-combobox>
+                                </div>
+                                <div class="slds-col slds-size_1-of-2">
+                                    <lightning-input label='Type' value={isCritical} required disabled
+                                        ></lightning-input>
+                                    <!-- <lightning-combobox name="isCritical" label="Type" placeholder="Select type" disabled
+                                                    value={isCritical} options={typeOption} required onchange={handleTypeChange}>
+                                                </lightning-combobox> -->
+                                </div>
+                            </div>
+                        </template>
+                        <template if:true={newRecordVisibility}>
+                            <lightning-input label='Sanction conditions' value={newsanction} required
+                                onchange={handleNewSanctionCondition}></lightning-input>
+                        </template>
+
+                        <template if:true={tableVisibility}>
+                            <br>
+                            <p slot="title" style="font-size:14px; font-style: italic; color: #113451;">Please select the
+                                appropriate document(s) to add for the sanction process.</p>
+                            <div class="slds-scrollable_y" style="overflow: auto;">
+                                <table class="slds-table slds-table_cell-buffer slds-no-row-hover"
+                                    style="border-collapse: collapse; border: none;">
+                                    <template for:each={allChecklist} for:item="checklistrecord">
+                                        <tr key={checklistrecord.id} style="border: none;">
+                                            <td style="width: 5%; border: none;"></td>
+                                            <td style="width: 95%; border: none;">
+                                                <label style="display: flex; align-items: center;">
+                                                    <lightning-input type="checkbox" data-id={checklistrecord.id}
+                                                        data-name={checklistrecord.id} onchange={handleChecklistselection}
+                                                        class="applicant-checkbox">
+                                                    </lightning-input>
+                                                    <span style="margin-left: 8px;">{checklistrecord.name}</span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </table>
+
+                            </div>
+                        </template>
+                        <template if:true={showMessage}>
+                            <p class="slds-text-align_center" slot="title"
+                                style="font-size:14px; font-style: italic; color: green;">This sanction condition has no
+                                documents to attach.</p>
+                        </template>
+                        <template if:true={newRecordVisibility}>
+                            <template if:true={newDocumentTable}>
+                                <div style="padding-top: 3%;">
+                                    <p slot="title" style="font-size:14px; font-style: italic; color: #113451;">Please add
+                                        document(s) required for this sanction condition.</p>
+                                    <table class="slds-table slds-table_cell-buffer slds-no-row-hover">
+                                        <template for:each={newDocTable} for:item="checklistrecord">
+                                            <tbody key={checklistrecord.srNo}>
+                                                <td style="width: 5%;">{checklistrecord.srNo}</td>
+                                                <td style="width: 90%;">
+                                                    <lightning-input variant="label-hidden" data-id={checklistrecord.srNo}
+                                                        value={checklistrecord.nameValue} onchange={handleNewDocName}>
+                                                    </lightning-input>
+                                                </td>
+                                                <td style="width: 5%;">
+                                                    <lightning-icon icon-name="utility:delete" alternative-text="Delete"
+                                                        title="Delete" size="x-small" onclick={handleAddDocDelete}
+                                                        style="cursor: pointer;"></lightning-icon>
+                                                </td>
+                                            </tbody>
+                                        </template>
+                                    </table>
+                                </div>
+                            </template>
+                        </template>
+
+                        <br>
+                        <div>
+                            <template if:true={newDocumentTable}>
+                                <button class="save-button slds-button slds-button_brand"
+                                    style="border: none"
+                                    onclick={handleAddDocument}>Add New Document</button>
+                            </template>
+                            <template if:false={showAddCustom}>
+                                <button class="save-button slds-button slds-button_brand"
+                                    style="border: none"
+                                    onclick={handleSave}>Add
+                                </button>
+                            </template>
+                        </div>
+
+                        <template if:true={createdRecordsVisibility}>
+                            <div style="padding-top: 3%;">
+                                <p slot="title" style="font-size:14px; font-style: italic; color: #113451;">New Sanction
+                                    Conditions.</p>
+                                <table
+                                    class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right">
+                                    <thead>
+                                        <tr class="slds-line-height_reset">
+                                            <th class="" scope="col" style="width: 10%; text-align: center;">
+                                                <div class="slds-truncate" title="Serial No.">Sr No.</div>
+                                            </th>
+                                            <th class="" scope="col" style="width: 40%; text-align: center;">
+                                                <div class="slds-truncate" title="Serial No.">Sanction Condition</div>
+                                            </th>
+                                            <th scope="col" style="width: 15%; text-align: center;">
+                                                <div class="slds-truncate" title="Document Type">Document Type</div>
+                                            </th>
+                                            <th class="" scope="col" style="width: 40%; text-align: center;">
+                                                <div class="slds-truncate" title="Serial No.">Sanction Document(s)</div>
+                                            </th>
+                                            <th class="" scope="col" style="width: 10%; text-align: center;">
+                                                <div class="slds-truncate" title="Serial No.">Delete</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <template for:each={createdNewDocTable} for:item="record">
+                                        <tbody key={record.id}>
+                                            <td style="width: 10%;text-align:left">{record.srNo}</td>
+                                            <td style="width: 40%;text-align:left;">{record.sanctionValue}</td>
+                                            <td style="width: 15%; text-align:left;">{record.documentType}</td>
+                                            <td style="width: 40%; white-space: pre-line;">
+
+                                                <template if:true={record.showChecklist}>
+
+                                                    <lightning-layout>
+                                                        <lightning-layout-item size="6">
+
+                                                            <template for:each={record.documentNames}
+                                                                for:item="checklistrecord">
+
+                                                                <lightning-layout key={checklistrecord.id}>
+                                                                    <lightning-layout-item size="1">
+                                                                        <lightning-input type="checkbox"
+                                                                            data-id={checklistrecord.id}
+                                                                            data-name={record.id}
+                                                                            checked={checklistrecord.selected}
+                                                                            onchange={handleselectionChangeModal}
+                                                                            class="applicant-checkbox"></lightning-input>
+                                                                    </lightning-layout-item>
+
+                                                                    <span style="margin-left: 8px;">
+                                                                {checklistrecord.name}
+                                                        </span>
+                                                                </lightning-layout>
+
+                                                            </template>
+
+                                                        </lightning-layout-item>
+                                                    </lightning-layout>
+                                                    <lightning-layout style="align-items: center;">
+
+                                                        <template if:true={record.addnewDoc}>
+                                                            <lightning-layout-item size="8">
+
+                                                                <lightning-input style="margin-top: 6%;"
+                                                                    variant="label-hidden" data-id={record.id}
+                                                                    value={record.newDocname}
+                                                                    onchange={handleAddNewDocEdit}>
+                                                                </lightning-input>
+
+                                                            </lightning-layout-item>
+                                                        </template>
+
+
+
+
+                                                        <lightning-layout-item size="1">
+
+                                                            <template if:true={record.addnewDoc}>
+                                                                <lightning-icon data-id={record.id} icon-name="utility:save"
+                                                                    alternative-text="Add Document" title="SAVE"
+                                                                    size="x-small" onclick={handleSaveAddNewDoc}
+                                                                    style="cursor: pointer;"></lightning-icon>
+                                                            </template>
+
+
+                                                            <template if:false={record.addnewDoc}>
+                                                                <lightning-icon data-id={record.id} icon-name="utility:add"
+                                                                    alternative-text="Add Document" title="ADD"
+                                                                    size="x-small" onclick={handleAddNewDoc}
+                                                                    style="cursor: pointer;"></lightning-icon>
+                                                            </template>
+                                                        </lightning-layout-item>
+
+                                                        <lightning-layout-item size="1">
+                                                            <lightning-icon data-id={record.id} icon-name="utility:delete"
+                                                                alternative-text="Delete Document" title="DELETE"
+                                                                size="x-small" onclick={handleshowgenericConfirm}
+                                                                style="cursor: pointer;"></lightning-icon>
+
+                                                        </lightning-layout-item>
+
+                                                    </lightning-layout>
+
+                                                </template>
+                                                <template if:false={record.showChecklist}>
+                                                    <lightning-layout style="align-items:center;">
+                                                        <lightning-layout-item size="8">
+                                                            <template if:true={record.addnewDoc}>
+
+
+                                                                <lightning-input variant="label-hidden" data-id={record.id}
+                                                                    value={record.newDocname}
+                                                                    onchange={handleAddNewDocEdit}>
+
+
+                                                                </lightning-input>
+
+
+                                                            </template>
+                                                        </lightning-layout-item>
+                                                        <lightning-layout-item size="2">
+                                                            <template if:true={record.addnewDoc}>
+                                                                <lightning-icon data-id={record.id} icon-name="utility:save"
+                                                                    alternative-text="Add Document" title="SAVE"
+                                                                    size="small" onclick={handleSaveAddNewDoc}
+                                                                    style="cursor: pointer;"></lightning-icon>
+                                                            </template>
+                                                        </lightning-layout-item>
+                                                        <template if:false={record.addnewDoc}>
+                                                            <lightning-icon data-id={record.id} icon-name="utility:add"
+                                                                alternative-text="Add Document" title="ADD" size="x-small"
+                                                                onclick={handleAddNewDoc} style="cursor: pointer;">
+                                                            </lightning-icon>
+                                                        </template>
+
+                                                        <lightning-layout-item size="10">
+                                                        </lightning-layout-item>
+                                                    </lightning-layout>
+                                                </template>
+                                            </td>
+                                            <td>
+                                                <div class="slds-align_absolute-left">
+                                                    <lightning-icon data-id={record.id} icon-name="utility:delete"
+                                                        alternative-text="Delete Document" title="DELETE" size="x-small"
+                                                        onclick={handleshowgenericConfirmSanction} style="cursor: pointer;">
+                                                    </lightning-icon>
+                                                </div>
+                                            </td>
+                                        </tbody>
+                                    </template>
+                                </table>
+                            </div>
+                        </template>
+
+                        <template if:true={showAddCustom}>
+                            <lightning-input label='Name' value={newsanctionName} onchange={handleNewSanctionName} required>
+                            </lightning-input>
+                            <button class="save-button slds-button slds-button_brand" style="border:none; margin-top: 7px;" onclick={handleCreateNewSanctionName}>Create</button>
+                        </template>
+                    </div>
+                    <footer class="slds-modal__footer" style="border: revert;">
+                        <div class="slds-align_absolute-center">
+                            <button class="cancel-button slds-button slds-button_brand"
+                                style="border:none" onclick={handleClose}>Cancel</button>
+                            <!-- <button class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color: #113451;color: white;border-color: #113451;font-weight: 500;" onclick={handleSave}>Create</button> -->
+                        </div>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+        </template>
+        <template if:true={showConfirmation}>
+            <c-confirmation-screen confirm-message={confirmMessage} negative-label="No" positive-label="Yes"
+                onnegativeclick={handleNo} onpositiveclick={handleDeleteNewDoc}>
+            </c-confirmation-screen>
+        </template>
+
+        <template if:true={showConfirmationSanctionDelete}>
+            <c-confirmation-screen confirm-message={confirmMessageSanction} negative-label="No" positive-label="Yes"
+                onnegativeclick={handleNo} onpositiveclick={handleDeleteNewSanction}>
+            </c-confirmation-screen>
+        </template>
+    </div>
+
+
+</template>

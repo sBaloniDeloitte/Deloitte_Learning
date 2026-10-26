@@ -1,0 +1,216 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+.loan-banner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding: 16px 20px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #060b16 0%, #0f1f3d 45%, #0b1c36 100%);
+    border: 1px solid #2f5fc4;
+    box-shadow: 0 0 0 1px rgba(59, 130, 246, 0.15), 0 8px 24px rgba(6, 12, 30, 0.55), inset 0 0 40px rgba(37, 99, 235, 0.08);
+    overflow: hidden;
+}
+
+.loan-banner::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -10%;
+    width: 60%;
+    height: 180%;
+    background: radial-gradient(circle, rgba(59, 130, 246, 0.18) 0%, rgba(59, 130, 246, 0) 70%);
+    pointer-events: none;
+}
+
+.loan-banner__top {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    row-gap: 10px;
+    gap: 12px;
+}
+
+.loan-banner__actions {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-left: auto;
+}
+
+.loan-banner__action-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 7px 14px;
+    border-radius: 6px;
+    border: 1px solid transparent;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.01em;
+    white-space: nowrap;
+    cursor: pointer;
+    transition: filter 0.15s ease, transform 0.15s ease;
+}
+
+.loan-banner__action-btn:hover {
+    filter: brightness(1.12);
+}
+
+.loan-banner__action-btn:active {
+    transform: translateY(1px);
+}
+
+.loan-banner__action-btn--reassign,
+.loan-banner__action-btn--detail,
+.loan-banner__action-btn--reject,
+.loan-banner__action-btn--query,
+.loan-banner__action-btn--pushtolms,
+.loan-banner__action-btn--sendback,
+.loan-banner__action-btn--assigncm,
+.loan-banner__action-btn--markcomplete {
+    background: #1560f2;
+    border-color: transparent;
+    color: #ffffff;
+    box-shadow: none;
+}
+
+.loan-banner__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    min-width: 34px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #a855f7 0%,#a855f7 100%);
+    box-shadow: 0 2px 8px rgba(200, 115, 231, 0.822);
+}
+
+.loan-banner__icon svg {
+    width: 18px;
+    height: 18px;
+}
+
+.loan-banner__label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #9fb8e8;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+}
+
+.loan-banner__name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.01em;
+}
+
+.loan-banner__divider {
+    position: relative;
+    z-index: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(96, 165, 250, 0.35) 0%, rgba(96, 165, 250, 0.05) 100%);
+}
+
+.loan-banner__details {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 24px;
+}
+
+.loan-banner__field {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 120px;
+}
+
+.loan-banner__field-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: #ffffff;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.loan-banner__field-value {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.loan-banner__link {
+    color: #ffffff;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.loan-banner__link:hover,
+.loan-banner__link:focus {
+    color: #ffffff;
+    opacity: 0.85;
+}
+
+.query-modal-container {
+    min-width: 60%;
+}
+
+/* Blur/dim the page behind the "Raise a Query" flow modal while it's open.
+   The .slds-backdrop element already provides the dim overlay - this only
+   adds the blur on top of it, layout/behavior otherwise unchanged. */
+.query-modal-backdrop {
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+/* Establishes a positioning context scoped to this modal's own header so
+   the close button below positions relative to the header (top-right of
+   the "Raise a Query" title bar) instead of the taller .slds-modal__container,
+   which is what was making it invisible/mispositioned. This LWC's CSS is
+   auto-scoped to its own template, so it does not affect any other
+   component's ".slds-modal__header". */
+.slds-modal__header {
+    position: relative;
+}
+
+/* "X" close button pinned to the top-right corner of the header. Uses a
+   dedicated class (not slds-modal__close) because other components in
+   this app globally hide ".slds-modal__close" via an injected stylesheet
+   to suppress the platform's native quick-action close button - reusing
+   that class here would make this icon invisible too. Calls the existing
+   handleCloseQueryModal handler already used to unmount this modal, so
+   behavior is unchanged. */
+.query-modal-close-btn {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    z-index: 11;
+    --sds-c-icon-color-foreground: #ffffff;
+    --sds-c-icon-color-foreground-default: #ffffff;
+}
+
+.query-modal-close-btn:hover,
+.query-modal-close-btn:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+}
+
+@media (max-width: 720px) {
+    .loan-banner__details {
+        gap: 16px;
+    }
+    .loan-banner__field {
+        min-width: 45%;
+    }
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

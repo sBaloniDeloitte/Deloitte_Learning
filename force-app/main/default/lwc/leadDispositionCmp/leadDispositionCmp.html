@@ -1,0 +1,33 @@
+<!--
+    @description : Static "Disposition" card - set the lead follow-up status
+                    (dark/purple theme aligned with leadManagementV2 /
+                    leadPriorityCmp / leadScoreCmp).
+    @author       : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <div class="ld-container">
+
+        <div class="ld-header">
+            <lightning-icon icon-name="utility:task" size="small" variant="inverse" class="ld-header-icon"></lightning-icon>
+            <div class="ld-header-text">
+                <div class="ld-header-title">Disposition</div>
+                <div class="ld-header-subtitle">Set the lead follow-up status</div>
+            </div>
+        </div>
+
+        <div class="ld-body">
+            <lightning-combobox
+                label="Disposition"
+                value={selectedDisposition}
+                options={dispositionOptions}
+                onchange={handleDispositionChange}
+                class="ld-combobox">
+            </lightning-combobox>
+
+            <div class="ld-footer">
+                <button class="ld-save-btn" onclick={handleSave}>Save</button>
+            </div>
+        </div>
+
+    </div>
+</template>

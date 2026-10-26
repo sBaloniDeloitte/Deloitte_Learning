@@ -1,0 +1,75 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 02-24-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <div class="slds-form-element" onfocusout={handleCloseList}>
+        <label class="slds-form-element__label">
+            <abbr if:true={required} title="required" class="slds-required"></abbr>{label}
+        </label>
+        <div class="slds-input-has-icon slds-input-has-icon_right">                
+            <lightning-icon icon-name="utility:down" size="xx-small" class="slds-icon slds-input__icon slds-input__icon_right"
+                                                    style="margin-right:-0.2rem;top:15px;"></lightning-icon>
+            <lightning-input type="text"  style="width:100%;" placeholder={placeholder} onchange={onSearch} class="cmpl-input" variant="label-hidden" onfocus={handleFocus} onblur={handleBlur}></lightning-input>
+        </div>
+        <template if:true={showDD}>
+            <div class="slds-dropdown slds-dropdown_length-10 slds-dropdown_fluid" >
+                <ul class="slds-listbox slds-listbox_vertical">
+                    <li class="slds-listbox__item slds-border_bottom">
+                        <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small">
+                            <span class="slds-media__figure slds-listbox__option-icon">    
+                                <template if:true={isSelectAll}>
+                                    <lightning-input type="checkbox" value='SelectAll' class='select-all' checked onchange={onSelect} onblur={handleCloseList}></lightning-input>
+                                </template>
+                                <template if:false={isSelectAll}>
+                                    <lightning-input type="checkbox" value='SelectAll' class='select-all' onchange={onSelect} onblur={handleCloseList}></lightning-input>
+                                </template>
+                            </span>
+                            <span class="slds-media__body">
+                                <span class="slds-truncate" title='Name' style="font-weight:bold">Select All</span>
+                            </span>
+                        </div>                                
+                    </li>
+                    <template for:each={filteredOptions} for:item="option">
+                        <!-- <template if:true={option.show}> -->
+                            <li key={option.value} class="slds-listbox__item">
+                                <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small">
+                                <span class="slds-media__figure slds-listbox__option-icon">                                        
+                                        <template if:true={option.checked}>
+                                            <lightning-input type="checkbox" value={option.label} checked onchange={onSelect} onblur={handleCloseList}></lightning-input>
+                                        </template>
+                                        <template if:false={option.checked}>
+                                            <lightning-input type="checkbox" value={option.label} onchange={onSelect} onblur={handleCloseList}></lightning-input>
+                                        </template>
+                                </span>
+                                <span class="slds-media__body">
+                                    <span class="slds-truncate" title={option.label}>{option.label}</span>
+                                </span>
+                                </div>                                
+                            </li>
+                        <!-- </template> -->
+                    </template>
+                </ul>
+            </div>
+        </template>    
+        <template if:true={showPillView}>
+            <div class="slds-m-top_x-small slds-grid">    
+                <div class="slds-listbox_selection-group">
+                    <ul class="slds-listbox slds-is-relative slds-listbox_horizontal" role="listbox">
+                        <template for:each={options} for:item="option">
+                            <template if:true={option.checked}>
+                                <li key={option.value} class="slds-listbox-item">
+                                    <lightning-pill label={option.label} name={option.label} onremove={onRemove} role="pill"></lightning-pill>
+                                </li>
+                            </template>
+                        </template>
+                    </ul>
+                </div>  
+            
+            </div>  
+        </template>  
+    </div>
+</template>

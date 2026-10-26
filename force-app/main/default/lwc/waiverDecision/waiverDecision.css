@@ -1,0 +1,155 @@
+.form-row {
+    display: flex;
+    align-items: center;
+    gap: 8rem;
+    width: 15rem;
+}
+
+.form-label {
+    flex: 0 0 25%;
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+:host {
+    color: #FFFFFF;
+    --slds-c-input-label-color: #FFFFFF;
+    --lwc-formLabelTextColor: #FFFFFF;
+    --lwc-colorTextLabel: #FFFFFF;
+}
+
+.form-input {
+    flex: 1;
+}
+
+.decision-container {
+    border: 1px solid #dcdcdc;
+    padding: 1rem;
+    border-radius: 8px;
+    background: #171728;
+}
+
+.section-header {
+    text-align: center;
+    background-color: #e3f2fd;
+    padding: 0.5rem;
+    border-radius: 5px;
+    font-weight: 600;
+}
+
+.detail-box {
+    border: 1px solid #ccc;
+    margin-top: 1rem;
+    padding: 1rem;
+    border-radius: 8px;
+    background-color: #171728;
+}
+
+lightning-button::part(button) {
+    height: 30px;
+    min-width: 100px;
+    color: #FFFFFF !important;
+}
+
+lightning-button[variant="neutral"]::part(button) {
+    background-color: #1467EB !important;
+    border-color: #1467EB !important;
+}
+
+lightning-button[variant="brand"]::part(button) {
+    background-color: #4CAF50 !important;
+    border-color: #4CAF50 !important;
+}
+
+lightning-button[variant="destructive"]::part(button) {
+    background-color: #DB2929 !important;
+    border-color: #DB2929 !important;
+}
+
+lightning-button[variant="success"]::part(button) {
+    background-color: #4CAF50 !important;
+    border-color: #4CAF50 !important;
+}
+
+.tabs {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.tab {
+    flex: 1;
+    padding: 0.5rem;
+    text-align: center;
+    border: 1px solid #0070d2;
+    border-radius: 5px;
+    background: #f4f6f9;
+    cursor: pointer;
+}
+
+.tab.active {
+    background-color: #0070d2;
+    color: white;
+}
+
+.tab-content {
+    margin-top: 1rem;
+}
+
+.lookup-container {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+}
+
+.lookup-input {
+    width: 100%;
+    padding: .5rem .75rem;
+    border: 1px solid #bfbfbf;
+    border-radius: 6px;
+    box-sizing: border-box;
+    font-size: 14px;
+}
+
+.clear-btn {
+    position: absolute;
+    right: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 2px 6px;
+}
+
+.lookup-results {
+    position: absolute;
+    z-index: 10;
+    left: 0;
+    right: 0;
+    margin-top: 6px;
+    border: 1px solid #d8d8d8;
+    border-radius: 6px;
+    background: white;
+    max-height: 240px;
+    overflow: auto;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    padding: 0;
+    list-style: none;
+}
+
+.lookup-item {
+    padding: 10px;
+    cursor: pointer;
+    border-bottom: 1px solid #f2f2f2;
+}
+
+.lookup-item:hover {
+    background: #f4f6f9;
+}
+
+.lookup-no-results {
+    padding: 10px;
+    color: #666;
+}

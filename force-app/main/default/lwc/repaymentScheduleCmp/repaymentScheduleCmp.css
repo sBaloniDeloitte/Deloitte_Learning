@@ -1,0 +1,196 @@
+/* Page Background */
+:host {
+    display: block;
+    background: #0d1b2f;
+    padding: 10px;
+}
+
+/* Card */
+lightning-card {
+    --slds-c-card-color-background: transparent;
+    border-radius: 18px;
+    box-shadow: none;
+}
+
+/* Table Container */
+.slds-scrollable_x {
+    border: 1px solid rgba(255,255,255,0.5);
+    border-radius: 18px;
+    padding: 0;
+}
+
+/* Main Table */
+.slds-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-spacing: 0;
+    table-layout: fixed;
+    background: #232f4d;
+    color: #ffffff;
+    overflow: hidden;
+}
+
+/* Header Row */
+.slds-table thead th {
+    background: #142d52;
+    color: #ffffff;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 16px 12px;
+    border-right: 1px solid rgba(255,255,255,0.8);
+    border-bottom: 1px solid rgba(255,255,255,0.8);
+    white-space: nowrap;
+}
+
+/* Header Rounded Corners */
+.slds-table thead th:first-child {
+    border-top-left-radius: 18px;
+}
+
+.slds-table thead th:last-child {
+    border-top-right-radius: 18px;
+    border-right: none;
+}
+
+/* Body Rows */
+.slds-table tbody tr {
+    background: #232f4d;
+}
+
+/* Remove Hover Effect */
+.slds-table tbody tr:hover {
+    background: #232f4d;
+}
+
+/* Table Data Cells */
+.slds-table td {
+    text-align: center;
+    vertical-align: middle;
+    padding: 14px 10px;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+    border-right: 1px solid rgba(255,255,255,0.8);
+    border-bottom: 1px solid rgba(255,255,255,0.8);
+    word-break: break-word;
+}
+
+/* Last Column */
+.slds-table td:last-child,
+.slds-table th:last-child {
+    border-right: none;
+}
+
+/* Bottom Rounded Corners */
+.slds-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 18px;
+}
+
+.slds-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 18px;
+}
+
+/* Generate/Re-Generate Button */
+/* Generate Button */
+.save-button {
+    background: linear-gradient(180deg, #7c3aed, #7c3aed);
+    border: none;
+    color: white;
+    font-weight: 600;
+    margin-bottom: 20px;
+    padding: 6px 16px;   /* reduced height and width */
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(31,111,235,.35);
+    transition: all .25s ease;
+    font-size: 13px;     /* optional: smaller text */
+}
+
+.save-button:hover {
+    background: linear-gradient(
+        180deg,
+        #3384ff,
+        #1f6feb
+    );
+    transform: translateY(-1px);
+}
+
+.save-button:disabled {
+    background: #5d6d85;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+/* Edit Button Style */
+.edit-btn {
+    background: transparent;
+    color: #ffffff;
+    border: 1.5px solid #ffffff;
+    border-radius: 25px;
+    padding: 8px 22px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.edit-btn:hover {
+    background: #ffffff;
+    color: #10284a;
+}
+
+/* Error Message */
+.slds-text-color_error {
+    color: #ff6b6b;
+    font-weight: 600;
+}
+
+/* Scrollbar */
+.slds-scrollable_x::-webkit-scrollbar {
+    height: 8px;
+}
+
+.slds-scrollable_x::-webkit-scrollbar-track {
+    background: #1b2742;
+}
+
+.slds-scrollable_x::-webkit-scrollbar-thumb {
+    background: #4f6485;
+    border-radius: 10px;
+}
+
+.slds-scrollable_x::-webkit-scrollbar-thumb:hover {
+    background: #6882ad;
+}
+
+/* Mobile */
+@media screen and (max-width: 768px) {
+    .slds-table th,
+    .slds-table td {
+        font-size: 12px;
+        padding: 10px 6px;
+    }
+
+    .save-button {
+        width: 100%;
+    }
+}
+.slds-scrollable_x {
+    border-radius: 14px;
+}
+
+.slds-table thead th:first-child {
+    border-top-left-radius: 14px;
+}
+
+.slds-table thead th:last-child {
+    border-top-right-radius: 14px;
+}
+
+.slds-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 14px;
+}
+
+.slds-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 14px;
+}

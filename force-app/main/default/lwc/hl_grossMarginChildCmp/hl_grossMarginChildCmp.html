@@ -1,0 +1,146 @@
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={spinnerRun}>
+        <section role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open"
+            style="z-index: 900003;">
+            <lightning-spinner></lightning-spinner>
+        </section>
+    </template>
+    <template if:true={loadTable}>
+        <div class="slds-grid slds-wrap slds-scrollable_x">
+            <table class="slds-table" style="max-width:57%">
+                <thead>
+                    <tr>
+                        <template if:true={screenDataResult.isHeaderAvailable}>
+                            <template for:each={screenDataResult.headerValues} for:item="iter">
+                                <th key={iter.recordId} class="col-width-10 color-theme" style="padding: 9px;">{iter}
+                                </th>
+                            </template>
+                        </template>
+                        <template if:false={screenDataResult.isHeaderAvailable}>
+                            <template for:each={screenDataResult.headerValues} for:item="iter">
+                                <th key={iter.recordId} style="padding: 9px" class="col-width-10 color-theme">{iter}
+                                </th>
+                            </template>
+                            <th key={iter.recordId} class="col-width-10 color-theme" style="padding: 9px" colspan="3">
+                                <template if:true={isAddYearsEnabled}>
+                                    <lightning-input type="number" step="1" name="newMonthValue" variant="label-hidden"
+                                        onchange={inputChanged}></lightning-input>
+                                    &nbsp;&nbsp;
+                                    <lightning-icon icon-name="utility:save" alternative-text="SAVE" title="SAVE"
+                                        size="xx-small" variant="inverse" onclick={handleSaveYearData}
+                                        style="cursor: pointer; margin-right: 5px;"></lightning-icon>
+                                    <lightning-icon icon-name="utility:undo" alternative-text="UNDO" title="UNDO"
+                                        size="xx-small" variant="inverse" onclick={resetYears}
+                                        style="cursor: pointer;"></lightning-icon>
+                                </template>
+                                <template if:false={isAddYearsEnabled}>
+                                    <lightning-icon icon-name="utility:add" size="xx-small" variant="inverse"
+                                        onclick={addyears} style="cursor: pointer;"></lightning-icon>
+                                </template>
+                            </th>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={processedParticularsData} for:item="iterPar">
+                        <tr key={iterPar.recordId}>
+                            <td class="col-width-100" style="text-align: left;">{iterPar.particularName}</td>
+                            <template if:true={iterPar.isEligibility}>
+                                <td colspan={eligibilityColspan}>
+                                    <lightning-combobox name="eligibilityPicklist" variant="label-hidden"
+                                        value={eligibilityOption} options={eligibilityOptions}
+                                        onchange={handleEligibilityChange}>
+                                    </lightning-combobox>
+                                </td>
+                            </template>
+                            <template if:false={iterPar.isEligibility}>
+
+                                <template if:true={iterPar.isAverage}>
+                                    <td colspan={yearCount} class="col-width-100" style="text-align: center;">
+                                        <lightning-input type="number" step="1" name="newMonthValue"
+                                            variant="label-hidden" onblur={handleInputValueChange}
+                                            value={averageValue} disabled=true>
+                                        </lightning-input>
+                                    </td>
+                                </template>
+                                <template if:false={iterPar.isAverage}>
+
+                                    <template for:each={iterPar.yearData} for:item="iterYear">
+                                        <td key={iterYear.recordId} class="col-width-100" style="text-align: center;">
+                                            <lightning-input type="number" step="1" name="newMonthValue"
+                                                variant="label-hidden" data-parent={iterPar.recordId}
+                                                data-id={iterYear.recordId} onblur={handleInputValueChange}
+                                                value={iterYear.yearValue}
+                                                disabled={iterYear.isDisabled}></lightning-input>
+                                        </td>
+                                    </template>
+                                </template>
+                            </template>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+         <table class="slds-table" style="max-width:500px; margin-top: 25px;">
+                <tbody>
+                    <tr>
+                        <td style="font-weight: bold;"> Additional Gross Margin-In percentage</td>
+                        <td>
+                            <lightning-input type="number" 
+                            step="1" 
+                            variant="label-hidden" 
+                            onblur={handleSustainableValueChange}
+                            name="additionalGrossMargin"
+                            value={additionalGrossMargin}></lightning-input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">Additional FOIR</td>
+                        <td>
+                            <lightning-input type="number" 
+                            step="1" 
+                            variant="label-hidden" 
+                            onblur={handleSustainableValueChange}
+                            name="additionalFOIR"
+                            value={additionalFoir}></lightning-input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;"> Is Turnover Growth Sustainable</td>
+                        <td>
+                            <lightning-input type="checkbox" 
+                            step="1" 
+                            variant="label-hidden" 
+                            onchange={handleSustainableValueChange}
+                            name="turnOverGrowthSustainable"
+                            checked={turnOverGrowth}></lightning-input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">Is Gross Profit Sustainable</td>
+                        <td>
+                            <lightning-input type="checkbox" 
+                            step="2" 
+                            variant="label-hidden" 
+                            onchange={handleSustainableValueChange}
+                            name="grossProfitSustainable"
+                            checked={grossProfit} ></lightning-input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="font-weight: bold;">Is Cash Profit Sustainable</td>
+                        <td>
+                            <lightning-input type="checkbox" 
+                            step="2" 
+                            variant="label-hidden" 
+                            onchange={handleSustainableValueChange}
+                            name="cashProfitSustainable"
+                            checked={cashProfit} 
+                            ></lightning-input>
+                        </td>
+                    </tr>
+                </tbody>
+        </table>
+    </template>
+</template>

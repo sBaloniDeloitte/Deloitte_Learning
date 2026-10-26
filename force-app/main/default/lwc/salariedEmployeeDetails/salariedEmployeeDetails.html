@@ -1,0 +1,35 @@
+<template>
+  <div class="container">
+
+    <!-- Show table when we have data -->
+    <template if:true={applicants}>
+      <table>
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Applicant Type</th>
+            <th>Qualification</th>
+            <th>Name of Organisation</th>
+            <th>Designation</th>
+          </tr>
+        </thead>
+        <tbody>
+          <template for:each={applicants} for:item="app">
+            <tr key={app.Id}>
+              <td>{app.Name}</td>
+              <td>{app.Applicant_Type__c}</td>
+              <td>{app.Qualification__c}</td>
+              <td>{app.employerName}</td>
+              <td>{app.Designation__c}</td>
+            </tr>
+          </template>
+        </tbody>
+      </table>
+    </template>
+
+    <!-- Fallback when no rows -->
+    <template if:true={error}>
+      <p>No matching applicants</p>
+    </template>
+  </div>
+</template>

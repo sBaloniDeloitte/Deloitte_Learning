@@ -1,0 +1,260 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import "c/cssLibrary";
+
+/* ----------------- Dark Theme (matches incomeAssessmentMainCmp / sanctionConditionConvenantsCmp) ----------------- */
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-placeholder-text-color: #8a99b3;
+    --slds-c-input-label-color: #ffffff;
+
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-positive: #1467eb;
+    --dt-negative: #db2929;
+}
+
+.slds-table_cell-buffer tr>th:first-child, .slds-table_cell-buffer tr>td:first-child, .slds-table--cell-buffer tr>th:first-child, .slds-table--cell-buffer tr>td:first-child{
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+table, th, td {
+    border: 1px solid var(--dt-border) !important;
+    background-color: var(--dt-panel-bg);
+    color: #ffffff;
+}
+
+/* Section header row (Earnings / Deductions) + table headers */
+.color-theme {
+    text-align: center;
+    font-weight: 500;
+    background-color: var(--dt-header-bg) !important;
+    color: #ffffff !important;
+    border-color: var(--dt-border) !important;
+}
+
+/* Totals row (Net Earnings Per Month / Total Bonus / Total Incentive) - was #5bb6e3 */
+.no-hover,
+.no-hover:hover {
+  background-color: var(--dt-header-bg) !important;
+  color: #ffffff !important;
+  border-color: var(--dt-border) !important;
+  cursor: default;
+}
+
+/* Subtotal row (Gross Earnings/Deductions Per Month, Average Bonus/Incentive) - was #ddd */
+.no-hover-child,
+.no-hover-child:hover {
+  background-color: var(--dt-input-bg) !important;
+  color: #ffffff !important;
+  border-color: var(--dt-border) !important;
+  cursor: default;
+}
+
+/* Rental/Net Income summary table label cells - was inline #5bb6e3 */
+.cs-label-cell {
+    background-color: var(--dt-header-bg) !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    border-color: var(--dt-border) !important;
+}
+
+/* Confirmation modal - was inline #5bb6e3 */
+.cs-modal-header {
+    background-color: var(--dt-panel-bg) !important;
+    color: #ffffff !important;
+    border-bottom: 1px solid var(--dt-border);
+}
+
+.cs-modal-header h2 {
+    color: #ffffff !important;
+}
+
+.slds-modal__content {
+    background-color: var(--dt-bg) !important;
+    color: #ffffff !important;
+}
+
+.cs-modal-footer {
+    background-color: var(--dt-panel-bg) !important;
+}
+
+/* ----------------- Inputs / Textarea (fixes white background on disabled fields & textarea) ----------------- */
+lightning-input::part(input),
+lightning-combobox::part(input) {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+lightning-input[disabled]::part(input) {
+    background-color: var(--dt-panel-bg) !important;
+    color: #8a99b3 !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #8a99b3 !important;
+}
+
+lightning-textarea::part(textarea) {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+lightning-textarea label {
+    color: #ffffff !important;
+}
+
+.slds-table thead th {
+    white-space: normal;
+}
+.col-width-10 {
+    width: 40px;
+}
+.col-width-100 {
+    min-width: 100px;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+:host .slds-modal__content{
+    overflow: initial;
+}
+
+/* ----------------- CTA Buttons (theme parity with incomeAssessmentMainCmp) - replaces inline pink/green ----------------- */
+.save-button,
+.save-button.slds-button_brand {
+    background-color: var(--dt-positive) !important;
+    border: 1px solid var(--dt-positive) !important;
+    color: #ffffff !important;
+    border-radius: 1.25rem !important;
+}
+
+.cancel-button,
+.cancel-button.slds-button_brand {
+    background-color: var(--dt-negative) !important;
+    border: 1px solid var(--dt-negative) !important;
+    color: #ffffff !important;
+    border-radius: 1.25rem !important;
+}
+
+/* ----------------- Row action pill buttons (matches Related Collateral Edit/Delink style) ----------------- */
+.action-btn {
+    border-radius: 999px;
+    padding: 2px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.6;
+    background-color: transparent;
+    cursor: pointer;
+}
+
+.action-btn-green {
+    color: #9944e8;
+    border: 1px solid #9944e8;
+    text-emphasis-color: white;
+}
+
+.action-btn-green:hover {
+    background-color: rgba(63, 214, 122, 0.15);
+}
+
+.action-btn-red {
+    color: #2f3436;
+    border: 1px solid #2f3436;
+    text-emphasis-color: white;
+}
+
+.action-btn-red:hover {
+    background-color: rgba(255, 92, 92, 0.15);
+}
+/*__________________________GenAI: Generated code ends here______________________________*/
+.add-month-btn {
+    background: linear-gradient(135deg, #105bf1, #105bf1) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    font-size: 14px;
+    min-width: 120px;
+    height: 36px;
+    padding: 0 20px;
+    box-shadow: 0 2px 6px rgba(124, 58, 237, 0.35);
+    transition: all 0.2s ease;
+}
+
+.add-month-btn:hover {
+    background: linear-gradient(135deg, rgb(101, rgb(80, 133, 247)8), #5069f7) !important;
+    transform: translateY(-1px);
+}
+
+.add-month-btn:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.25);
+}
+
+/* ----------------- Save / Undo buttons (shape matches Add Month button) ----------------- */
+.save-btn-pill {
+    background: linear-gradient(135deg, #7c3aed, #7c3aed) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    font-size: 12px;
+    min-width: 70px;
+    height: 28px;
+    padding: 0 14px;
+    box-shadow: 0 2px 6px rgba(124, 58, 237, 0.35);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.save-btn-pill:hover {
+    background: linear-gradient(135deg, #6d2fd6, #6d2fd6) !important;
+    transform: translateY(-1px);
+}
+
+.save-btn-pill:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.25);
+}
+
+.undo-btn-pill {
+    background: linear-gradient(135deg, #000000, #000000) !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    font-size: 12px;
+    min-width: 70px;
+    height: 28px;
+    padding: 0 14px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.45);
+    transition: all 0.2s ease;
+    cursor: pointer;
+}
+
+.undo-btn-pill:hover {
+    background: linear-gradient(135deg, #1a1a1a, #1a1a1a) !important;
+    transform: translateY(-1px);
+}
+
+.undo-btn-pill:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(0, 0, 0, 0.3);
+}

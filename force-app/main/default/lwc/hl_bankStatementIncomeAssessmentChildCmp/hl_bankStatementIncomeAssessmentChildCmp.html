@@ -1,0 +1,70 @@
+<!-- <template>
+    <template if:true={spinnerRun}>
+        <section role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open"
+            style="z-index: 900003;">
+            <lightning-spinner></lightning-spinner>
+        </section>
+    </template>
+    <template if:true={loadTable}>
+        <div class="slds-grid slds-wrap slds-scrollable_x">
+            <table class="slds-table" style="max-width:57%">
+                <thead>
+                    <tr>
+                        <th class="tdBorderHeader slds-cell-wrap">Average Bank Balance</th>
+                        <th><lightning-input type="number" variant="label-hidden" value={averageBankBalance} data-name={fieldAPIName} onfocusout={handleBankBalanceChange}></lightning-input></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+        <div style="padding-top:2%">
+            <c-income-eligibility-calculator record-id={loanId} table-name="Banking"></c-income-eligibility-calculator>
+        </div>
+    </template>
+</template> -->
+
+
+<template>
+    <template if:true={spinnerRun}>
+        <section role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open" style="z-index: 900003;">
+            <lightning-spinner></lightning-spinner>
+        </section>
+    </template>
+
+    <template if:true={loadTable}>
+        <div class="slds-grid slds-wrap slds-scrollable_x bsc-scroll-wrapper">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered bsc-table" style="max-width:57%">
+                <thead>
+                    <tr>
+                        <th class="slds-cell-wrap tdBorderHeader">Label</th>
+                        <th class="slds-cell-wrap tdBorderHeader">Value</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={bankingData} for:item="item">
+                        <tr key={item.fieldAPIName}>
+                            <td>{item.fieldLabel}</td>
+                            <td>
+                                <lightning-input 
+                                    type="number"
+                                    variant="label-hidden"
+                                    step="0.01"
+                                    value={item.fieldValue}
+                                    data-name={item.fieldAPIName}
+                                    data-recordid={item.incomerecordId}
+                                    onfocusout={handleBankBalanceChange}>
+                                </lightning-input>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+
+        <div style="padding-top:2%">
+            <c-income-eligibility-calculator 
+                record-id={loanId} 
+                table-name="Banking">
+            </c-income-eligibility-calculator>
+        </div>
+    </template>
+</template>

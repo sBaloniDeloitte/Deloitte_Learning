@@ -1,0 +1,304 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import "c/cssLibrary";
+
+/* ----------------- Dark Theme Palette -----------------
+   Matches the modal colour scheme / gradient header-footer used on
+   homeQuickAction so this Query Module pop-up looks consistent with the
+   rest of the flow. */
+:host {
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-text: #ffffff;
+    --dt-text-muted: #cfd8e6;
+    --dt-placeholder: #8a99b3;
+    --dt-accordion: #1589ee;
+    --dt-positive: #1467eb;
+    --dt-negative: #db2929;
+    --dt-purple: #8d29db;
+    --dt-gradient: linear-gradient(135deg, rgb(0, 77, 179) 0%, rgb(0, 48, 135) 55%, rgb(0, 26, 94) 100%);
+
+    /* lightning-textarea styling hooks - ::part(textarea) alone isn't
+       enough on every base component version, these are the real SLDS 2
+       hooks the Remarks field needs so it isn't left white. */
+    --slds-c-textarea-color-background: var(--dt-input-bg);
+    --slds-c-textarea-text-color: var(--dt-text);
+    --slds-c-textarea-color-border: var(--dt-border);
+    --slds-c-textarea-radius-border: 6px;
+    --slds-c-textarea-label-color: var(--dt-text-muted);
+}
+
+lightning-combobox,
+lightning-input,
+.custom-listbox-container {
+    width: 100%;
+    margin-bottom: 1rem;
+    position: relative; /* Ensure relative positioning for dropdown */
+}
+
+lightning-textarea {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+@media (max-width: 768px) {
+    lightning-combobox,
+    lightning-input {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+    lightning-textarea {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (min-width: 769px) {
+    lightning-combobox,
+    lightning-input {
+        max-width: 100%;
+        margin: 0 auto 1rem;
+    }
+    lightning-textarea {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+}
+
+/* Custom dropdown styles */
+.custom-listbox {
+    position: absolute;
+    width: 100%;
+    background: var(--dt-input-bg);
+    border: 1px solid var(--dt-border);
+    border-radius: 4px;
+    max-height: 200px;
+    overflow-y: auto;
+    z-index: 10; /* Ensure it appears above other elements */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.35);
+}
+
+/* Styling list items */
+.custom-listbox .slds-listbox__item {
+    padding: 10px;
+    cursor: pointer;
+    color: var(--dt-text);
+}
+
+.custom-listbox .slds-listbox__item:hover {
+    background-color: var(--dt-panel-bg);
+}
+
+/* ----------------- Buttons ----------------- */
+/* Right-hand / positive flowing CTA (Assign Query / save-button) - solid purple fill, glow */
+.button-green,
+.save-button {
+    background-color: #a855f7 !important;
+    border-color: #a855f7 !important;
+    color: #ffffff !important;
+    font-size: 11px;
+    min-width: 140px;
+    font-weight: 700;
+    display: inline-block;
+    line-height: 1.600rem;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 0 0.75rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.5) !important;
+}
+
+/* Left-hand / secondary flowing CTA (Re-assign Query, Cancel) - dark navy outline with purple border/text */
+.button-red,
+.close-button {
+    background-color: #16283f !important;
+    border: 1px solid #a855f7 !important;
+    color: #eeecf0 !important;
+    font-size: 11px;
+    min-width: 110px;
+    font-weight: 700;
+    display: inline-block;
+    line-height: 1.600rem;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 0 0.75rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    box-shadow: none !important;
+}
+
+.slds-m-around_xx-small {
+    margin: 4px;
+}
+
+.table-container {
+    display: flex;
+    justify-content: center; /* Centers horizontally */
+    align-items: center; /* Centers vertically (if needed) */
+    width: 100%;
+    margin-top: 1rem; /* Optional: Adds spacing from elements above */
+}
+
+.slds-table {
+    max-width: 100%;
+    width: 100%;
+    text-align: center;
+    background-color: var(--dt-panel-bg);
+    color: var(--dt-text);
+}
+
+.slds-table thead th {
+    color: var(--dt-text);
+    background-color: var(--dt-header-bg);
+}
+
+/* ----------------- Modal Container / Content ----------------- */
+.slds-modal__content {
+    background-color: var(--dt-bg);
+    color: var(--dt-text);
+}
+
+.slds-modal__header {
+    background-image: var(--dt-gradient);
+}
+
+.footer-section {
+    background-image: var(--dt-gradient);
+}
+
+/* Higher-specificity override (base class + :not() dummy) to beat the
+   shared cssLibrary's ".slds-modal__container { padding: 3% 0 !important; }"
+   rule regardless of stylesheet ordering after @import resolution. */
+.slds-modal__container:not(.__unused__) {
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+}
+
+.slds-modal__content {
+    background-color: var(--dt-bg);
+    color: var(--dt-text);
+}
+
+/* ----------------- Header / Footer ----------------- */
+.header-section,
+.slds-modal__header {
+    background-image: var(--dt-gradient) !important;
+    color: var(--dt-text) !important;
+    text-align: center;
+    font-weight: bold;
+    border-bottom: 1px solid var(--dt-border);
+}
+
+.footer-section {
+    background-image: var(--dt-gradient) !important;
+    position: sticky;
+    bottom: 0;
+    text-align: center;
+    border-top: 1px solid var(--dt-border);
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+}
+
+.slds-modal__header .slds-modal__close {
+    position: absolute;
+    top: -2.5rem;
+    right: 0;
+    margin-left: 0;
+    bottom: 0;
+    display: none;
+}
+
+.slds-modal {
+    margin-left: 15%;
+    max-width: 65%;
+    width: 65%;
+}
+
+.editable-field {
+    display: inline-block;
+    min-width: 100px;
+    border-bottom: 1px solid var(--dt-border);
+    padding: 2px;
+    cursor: text;
+    outline: none;
+    color: var(--dt-text);
+}
+
+lightning-textarea::part(textarea),
+lightning-input::part(input),
+lightning-combobox::part(input) {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    color: var(--dt-text) !important;
+}
+
+/* Remarks field (standalone, non-document flow): every ::part()/custom-hook
+   attempt at overriding the base lightning-textarea's internal shadow DOM
+   styling failed to hold across all states (typing, empty/blur, clearing
+   text) even after confirmed deployment - the base component's own internal
+   stylesheet keeps re-asserting a light background for state transitions
+   that aren't reliably reachable from outside its shadow root. Replaced
+   with a plain native <textarea> (see queryModuleChildCmp.html) which has
+   no shadow DOM boundary, so these plain CSS rules apply unconditionally in
+   every state without needing to fight the base component's internals. */
+.remarks-field-container .slds-form-element__label {
+    color: var(--dt-text-muted);
+}
+
+.remarks-field-container textarea.remarks-native-textarea {
+    width: 100%;
+    min-height: 80px;
+    background-color: var(--dt-input-bg) !important;
+    color: var(--dt-text) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    padding: 0.5rem 0.75rem;
+    font-family: inherit;
+    font-size: inherit;
+    box-sizing: border-box;
+}
+
+.remarks-field-container textarea.remarks-native-textarea:focus,
+.remarks-field-container textarea.remarks-native-textarea:active,
+.remarks-field-container textarea.remarks-native-textarea:hover {
+    background-color: var(--dt-input-bg) !important;
+    color: var(--dt-text) !important;
+    border-color: var(--dt-border) !important;
+    outline: none;
+    box-shadow: 0 0 0 1px var(--dt-border);
+}
+
+/* Empty + required (error) state: keep the dark background, only the
+   border/label swap to the negative color as the validation cue. */
+.remarks-field-container.slds-has-error textarea.remarks-native-textarea {
+    background-color: var(--dt-input-bg) !important;
+    color: var(--dt-text) !important;
+    border-color: var(--dt-negative) !important;
+}
+
+.remarks-field-container.slds-has-error .slds-form-element__label {
+    color: var(--dt-negative);
+}
+
+.remarks-field-container .slds-form-element__help {
+    color: var(--dt-negative);
+    font-size: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+.slds-form-element__label {
+    color: var(--dt-text-muted) !important;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

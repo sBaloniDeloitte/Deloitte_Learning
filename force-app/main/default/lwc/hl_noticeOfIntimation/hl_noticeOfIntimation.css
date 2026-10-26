@@ -1,0 +1,128 @@
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+	--slds-c-combobox-listbox-color-background: #16283f;
+	--slds-c-combobox-option-text-color: #ffffff;
+	--slds-c-combobox-option-color-background-hover: #1f3550;
+}
+
+/* Card wrapper */
+.navy-card {
+    background: #09172b;
+    border: 1px solid #33455e;
+    border-radius: 8px;
+    overflow: hidden;
+    margin-top: 12px;
+}
+
+/* Table */
+.slds-table {
+    background: #09172b !important;
+    border: none !important;
+    color: #ffffff;
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+/* Header */
+.slds-table thead th {
+    background: #1b304d !important;
+    color: #ffffff !important;
+
+    font-weight: 600;
+    font-size: 15px;
+
+    text-align: left;
+
+    padding: 6px 12px;;
+
+    border-right: 1px solid #ffffff;
+    border-bottom: 1px solid #ffffff;
+}
+
+/* Body */
+.slds-table tbody td {
+    background: #1b304d !important;
+    color: #ffffff !important;
+
+    padding: 12px;
+
+    border-right: 1px solid #ffffff;
+    border-bottom: 1px solid #ffffff;
+}
+
+/* Remove right outer border */
+.slds-table th:last-child,
+.slds-table td:last-child {
+    border-right: none !important;
+}
+
+/* Remove bottom outer border */
+.slds-table tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+/* Hover effect like Aadhaar table */
+.slds-table tbody tr:hover td {
+    border-top: 1.5px solid #ffffff !important;
+    border-bottom: 1px solid #ffffff !important;
+}
+
+/* NOI Number link */
+.slds-table a {
+    color: #4db8ff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.slds-table a:hover {
+    color: #7ecbff;
+    text-decoration: underline;
+}
+
+/* Button */
+.save-button {
+    background-color: #4CAF50 !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.initiate-button {
+	background-color: #1467EB !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+lightning-card {
+    --slds-c-card-color-background: #09172b;
+    --slds-c-card-color-border: #33455e;
+}
+
+.slds-section {
+    background: #09172b !important;
+}
+
+.slds-accordion__content {
+    background: #09172b !important;
+    color: white !important;
+}
+
+.section-seperator {
+    background: #16283f !important;
+    color: #ffffff !important;
+
+    border: 1px solid #33455e;
+    border-radius: 8px;
+}
+
+lightning-input,
+lightning-combobox {
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+}

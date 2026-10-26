@@ -1,0 +1,635 @@
+.instruction-box {
+    padding-top: 4%;
+    padding: 5px;
+    text-align: center;
+    font-weight: bold;
+    color: Black;
+    font-size: large;
+    background-color: #ddd;
+    margin: 0px 10px 10px 10px;
+}
+
+.instruction-box-nav {
+    margin-bottom: -41px;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    margin-left: 1%;
+    width: 98%;
+    padding-bottom: 3%;
+    margin-bottom: 2%;
+}
+
+.instruction-box-kyc {
+    margin-bottom: 20px;
+    padding: 10px;
+    text-align: center;
+    background-image: radial-gradient(circle, #ffffff, #fbfcfd, #f6fafa, #f2f7f6, #f0f4f0);
+    border-radius: 10px; /* Optional: Add border radius for rounded corners */
+    box-shadow: 0 11px 12px rgba(0, 0, 0, 0.5);
+}
+
+.instruction-box-action {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    text-align: center;
+}
+
+.instruction-box-currentadd {
+    padding-top: 4%;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: black;
+    font-size: large;
+}
+
+.save-button {
+    padding: 0px 8px;
+    border: none;
+    display: inline-block;
+    text-align: center;
+    color: white; 
+    /* font-size: 16px;  */
+    background-color: #9bbf56;
+    align-content: center;
+    cursor: pointer; 
+    transition: background-color 0.3s ease;   
+    width: 140px;
+    /* border-color: black; */
+}
+
+.previous-button {
+    padding: 0px 8px;
+    border: none;
+    display: inline-block;
+    text-align: center;
+    color: white; 
+    /* font-size: 16px;  */
+    background-color: #dc387e;
+    align-content: center;
+    cursor: pointer; 
+    transition: background-color 0.3s ease;   
+    width: 140px;
+    /* border-color: black; */
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff; /* Set the background color to white */
+}
+
+.lgc-highlight {
+    background-color: rgb(255 255 0);
+}
+
+.uploaded-view {
+    margin-bottom: 0.5rem; /* Add space below the preview icon */
+}
+
+.reuploadCurrentAddressProof {
+    margin-top: 0.5rem; /* Optional: Add space above the re-upload button */
+}
+
+/* Hover state */
+/* .capsule-button:hover {
+    background-color: #1d781a;
+    background-image: radial-gradient(circle, #b8d7b8, #b3ddd4, #c3dee5, #d8e0e8, #e4e4e4);
+    box-shadow: 0 0px 0px rgba(0, 0, 0, 0.4);
+} */
+
+.loan-amount-words {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #333; /* Adjust color as needed */
+    margin-right: 11rem;
+    width: 15rem;
+    font-weight: bold;
+}
+
+.content-container {
+    width: 100%;
+    /* max-width: 600px; */
+    margin: 0 auto;
+}
+
+.search-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.progress-bar-container {
+    margin-bottom: 20px;
+}
+
+.verified-text {
+    color: green;
+}
+
+.input-container {
+    /* display: flex; */
+    flex-direction: column;
+    align-items: center;
+    /* border-color: white; */
+    margin: 10px 10px 0px 10px;
+}
+
+.input-container.slds-input {
+    opacity: 1 !important;
+}
+
+.pan-input,
+.file-upload {
+    margin-bottom: 15px;
+}
+
+.or-divider {
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+/* .button-container {
+    width: 100%;
+    text-align: right;
+} */
+
+
+.somespace{
+    margin-top: 14px;
+}
+
+.andcontainers{
+    text-align: left;
+    font-weight: bold;
+    margin-top: 5%;
+    margin-bottom: 14px;
+}
+
+.verification-container.error {
+    color: red; /* or any color you prefer for error */
+}
+
+.error-icon {
+    margin-left: 16rem; /* Adjust the margin as needed for spacing between input and icon */
+    cursor: pointer; /* Add a pointer cursor to indicate it's clickable */
+}
+
+.reload-icon{
+    cursor: pointer; 
+    padding-top: 5px;
+}
+
+.resetIcon{
+    margin-top: 10px;
+    padding-top: 10px;
+}
+
+.inputSize{
+    width: 93%;
+    font-size: large;
+}
+
+/* Media query for smaller screens, e.g., mobile devices */
+@media (max-width: 600px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 10px;
+        background-color: rgb(245, 245, 245); /* Set the background color to white */
+    }
+
+    .content-container {
+        width: 100%;
+        /* max-width: 600px; */
+    }
+
+    .progress-bar-container {
+        margin-bottom: 20px;
+    }
+
+    
+
+    .instruction-box {
+        padding-top: 4%;
+        /* margin-bottom: 20px; */
+        padding: 10px;
+        /* border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9; */
+        text-align: center;
+        /* background-color: #74ab76; */
+        /* background-image: radial-gradient(circle, #ffffff, #fbfcfd, #f6fafa, #f2f7f6, #f0f4f0); */
+        /* background-image: radial-gradient(circle, #ffffff, #fdfbfd, #fcf7fa, #fdf2f5, #fdeeee8c); */
+        /* border-radius: 10px; Optional: Add border radius for rounded corners */
+        /* box-shadow: 0 11px 12px rgba(0, 0, 0, 0.5); */
+        font-weight: bold;
+        color: #9bbf56;
+        font-size: large;
+    }
+
+    .instruction-box-kyc {
+        margin-bottom: 20px;
+        padding: 15px;
+        /* border: 1px solid #ddd;
+        border-radius: 5px;
+        background-color: #f9f9f9; */
+        text-align: center;
+        /* background-color: #d5ecd4; */
+        background-image: radial-gradient(circle, #ffffff, #fbfcfd, #f6fafa, #f2f7f6, #f0f4f0);
+        border-radius: 10px; /* Optional: Add border radius for rounded corners */
+        box-shadow: 0 11px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .input-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 10px;
+        box-shadow: 0 11px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .pan-input,
+    .file-upload {
+        margin-bottom: 15px;
+    }
+
+    .or-divider {
+        margin: 10px 0;
+        font-weight: bold;
+    }
+    /* .button-container {
+        width: 100%;
+        text-align: right;
+    } */
+
+    /* .andcontainer{
+        text-align: center;
+        font-weight: bold;
+        margin-top: 14px;
+        margin-bottom: 14px;
+    } */
+
+    .somespace{
+        margin-top: 14px;
+    }
+
+    .reload-icon{
+        cursor: pointer; 
+        padding-top: 5px;
+    }
+
+    .resetIcon{
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+
+    .inputSize{
+        width: 16rem;
+    }
+
+    .loan-amount-words {
+        margin-top: 5px;
+        font-size: 12px;
+        color: #333; /* Adjust color as needed */
+        margin-right: 1rem;
+        width: 15rem;
+        font-weight: bold;
+    }
+
+    /* .button-container-crif {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    } */
+
+    .button-container {
+        display: flex;
+        justify-content: flex-end; /* Push buttons to the extreme right */
+        gap: 10px; /* Adds spacing between buttons */
+        padding: 10px 20px; /* Adjusts padding for better alignment */
+        width: 100%; /* Ensures full-width alignment */
+    }
+
+    .search-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .spinner {
+        border: 4px solid rgba(0, 0, 0, 0.1);
+        border-left-color: #7986cb;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    /* :host(.green-progress-bar) .slds-progress-bar__value {
+        background-color: #4CAF50;
+    } */
+}
+
+:host .slds-progress-bar__value {
+    background-color: #4CAF50;
+    background: green;
+    /* color: green; */
+}
+
+.THIS .slds-progress-bar__value{
+    background: green;
+}
+.width{
+    background-color: #4CAF50;
+}
+
+.monthly-Income-Words{
+    /* margin-right: 39%; */
+    font-weight: bold;
+    color: rgb(0, 0, 0);
+}
+
+.save-and-next-button{
+    /* font-style: italic; */
+    font-weight: normal;
+}
+
+.heading{
+    font-weight: bold;
+    color: rgb(94, 94, 94);
+}
+
+.navClass.slds-progress-bar__value{
+    color: #9bbf56;
+}
+
+.custom-nav {
+    --lwc-progressBarColorBackgroundFill: #9bbf56;
+}
+
+.span.slds-progress-bar__value{
+    background: #9bbf56;
+}
+
+.spinner-medium::after {
+    position: absolute;
+    content: attr(data-text);
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    top: calc(50% + 2em);
+}
+.editable-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px; /* Adds space between label and input */
+}
+.editable-container-combo {
+    display: flex;
+    flex-direction: column;
+    gap: 1px; /* Adds space between label and input */
+}
+.editable-label {
+    font-size: 12px;
+    color: #666;
+    font-weight: bold;
+    margin-bottom: 4px; /* Adds space between label and the input field */
+}
+
+.editable-field {
+    display: inline-block;
+    min-width: 100px;
+    border-bottom: 1px solid black;
+    padding: 4px;
+    cursor: text;
+    outline: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.editable-field[contenteditable="true"]:focus {
+    border-bottom: 2px solid blue;
+}
+
+/* .lookup-field {
+    display: inline-block;
+    margin-right: 20px;
+    font-size: 14px;
+    vertical-align: middle;
+}
+.inline-picklist {
+    display: inline-flex;
+    align-items: center;
+    font-size: 14px;
+    margin-right: 20px;
+}
+
+.inline-picklist strong {
+    margin-right: 8px;
+}
+
+.picklist-dropdown {
+    width: auto;
+    min-width: 150px;
+    display: inline-block;
+} */
+
+
+.custom-field-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 10px;
+}
+
+.custom-label {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.custom-combobox, .custom-lookup {
+    width: 100%;
+    min-width: 150px;
+    display: block;
+    border-radius: 4px;
+}
+/* Custom styling for the label and line */
+.custom-field-container {
+    position: relative;
+}
+
+.custom-label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+/* .selected-value {
+    display: inline-block;
+    border-bottom: 1px solid #0070d2; 
+    padding: 2px 5px;
+    cursor: pointer;
+    color: #0070d2;
+} */
+
+.editable-field {
+    width: 100%;
+    border-bottom: 2px solid black;
+    padding: 5px;
+    cursor: pointer;
+    min-height: 20px;
+}
+
+/* .editable-field {
+    width: 100%;
+    border-bottom: 2px solid black;
+    padding: 5px;
+    cursor: pointer;
+    min-height: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+} */
+/* 
+.dropdown-icon {
+    font-size: 14px;
+    color: gray;
+    padding-left: 5px;
+}
+.editable-field {
+    width: 100%;
+    border-bottom: 2px solid black;
+    padding: 5px 10px;
+    cursor: pointer;
+    min-height: 20px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.selected-value {
+    flex-grow: 1;
+    color: black;
+}
+
+.editable-field {
+    width: 100%;
+    border-bottom: 2px solid black;
+    padding: 5px 10px;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+}
+
+.selected-value {
+    flex-grow: 1;
+    color: black;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Ensures only a black underline appears */
+.editable-field {
+    width: 100%;
+    border-bottom: 2px solid black; /* Black underline */
+    padding: 5px 10px;
+    cursor: pointer;
+    /* display: flex; */
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    user-select: none; /* Prevents selection highlight */
+    background: transparent; /* Ensure no background */
+    flex-grow: 1;
+    color: black;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+} 
+
+/* Prevents any default blue focus border */
+.editable-field:focus,
+.editable-field:active {
+    outline: none !important;
+    border: none !important;
+}
+/* Ensures only a black underline appears */
+
+.custom-combobox lightning-base-combobox {
+    width: auto !important; /* Makes the combobox a single line */
+    min-width: 150px; /* Adjust width as needed */
+}
+
+.custom-combobox lightning-base-combobox div.slds-combobox {
+    display: inline-flex; /* Keeps it in a single line */
+}
+
+.custom-combobox lightning-base-combobox div.slds-combobox_container {
+    width: auto !important;
+}
+
+.custom-combobox lightning-base-combobox div.slds-dropdown {
+    display: block !important; /* Forces the dropdown to be visible on click */
+}
+.selected-value {
+    flex-grow: 1;
+    color: black;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.custom-input {
+    border: none;
+    border-bottom: 2px solid black; /* Salesforce Blue */
+    border-radius: 0;
+    outline: none;
+    padding: 4px 0;
+    width: 100%;
+}
+
+.custom-input:focus {
+    border-bottom: 2px solid black; /* Darker blue for focus */
+    box-shadow: none;
+}
+lightning-input::part(input) {
+    border: none !important;  /* Remove all borders */
+    border-bottom: 2px solid #ccc !important;  /* Keep only the bottom border */
+    border-radius: 0 !important;  /* Remove rounded corners */
+    background: transparent !important;  /* Transparent background */
+    box-shadow: none !important;  /* Remove shadows */
+    outline: none !important;  /* Remove default focus outline */
+    padding: 5px 0 !important; /* Adjust padding for better alignment */
+}
+
+/* Change border color on focus */
+lightning-input::part(input):focus {
+    border-bottom: 2px solid #0070d2 !important; /* Blue bottom border on focus */
+}
+
+/*New */
+
+.slds-form-element__control {
+    border: none !important;
+    border-bottom: 1px solid black !important;
+    padding-bottom: 2px; /* Adjust spacing */
+}

@@ -1,0 +1,131 @@
+<!-- _______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________ -->
+<template>
+    
+    <div class={cssMain}>
+        
+        <template lwc:if={showHeaderFooter}>
+            <header class="slds-modal__header header-section">
+                <div class="header-badge-row">
+                    <span class="header-icon-badge">
+                        <lightning-icon icon-name="utility:company" size="x-small" variant="inverse"></lightning-icon>
+                    </span>
+                </div>
+                <div class="slds-text-align_center">
+                    <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">{headerText}</h2>
+                    <p class="header-subtitle">Choose the sourcing branch for this lead.</p>
+                </div>
+            </header>
+        </template>
+        
+        <div class="slds-modal__content slds-p-around_medium body-section">
+
+            <template lwc:if={showConfigError}>
+                <div class="slds-grid slds-grid_vertical-align-center info-row">
+                    <lightning-icon
+                        icon-name="utility:warning"
+                        alternative-text="Warning"
+                        size="small"
+                        variant="warning"
+                        class="slds-m-right_small info-icon">
+                    </lightning-icon>
+                    <span class="slds-text-body_regular info-text">
+                        This component is not configured. Set the "Process Name" property to "Assign Lead" in the page property panel.
+                    </span>
+                </div>
+            </template>
+
+            <template lwc:if={showLeadSection}>
+
+                <div if:true={currentAssignedUser} class="assigned-text">
+                    Lead is currently assigned to <b>{currentAssignedUser}</b>
+                </div>
+                <template if:false={currentAssignedUser}>
+                         <div class="slds-grid slds-grid_vertical-align-center info-row">
+                           <lightning-icon 
+                           icon-name="utility:info" 
+                           alternative-text="Info" 
+                           size="small" 
+                           class="slds-m-right_small info-icon">
+                           </lightning-icon>
+                           <span class="slds-text-body_regular info-text">
+                           Lead assignment is required before converting the lead. Please select a branch and corresponding user to assign.
+                           </span>
+                         </div>
+                </template>
+                
+                <!--<div if:true={nearestBranchName}>
+                    <div style="text-align: center; margin: 15px 0px; font-weight: 500;">
+                        {nearestBranchName}
+                    </div>
+                </div>-->
+
+                <div class="slds-align_absolute-center">
+                    <div class="branch-lookup-wrapper">
+                        <c-search-lookup
+                            label="Branch"
+                            show-label="true"
+                            required="true"
+                            selected-id={selectedId}
+                            selected-name={selectedName}
+                            placeholder="Select branch"
+                            object-name="Account"
+                            return-fields="['Id','Name','Branch_Code__c']"
+                            filter-criteria={branchQueryFilter}
+                            disabled={searchDisabled}
+                            onlookupselected={handleBranchSelected}
+                            onlookupdeselected={handleBranchDeselected}
+                        ></c-search-lookup>
+                    </div>
+                </div>
+
+                <template lwc:if={selectedId}>
+                    <div class="branch-details-card">
+                        <div class="branch-details-row">
+                            <span class="branch-details-label">Branch:</span>
+                            <span class="branch-details-value">{selectedName}</span>
+                        </div>
+                        <template lwc:if={selectedBranchCode}>
+                            <div class="branch-details-row">
+                                <span class="branch-details-label">Branch Code:</span>
+                                <span class="branch-details-value">{selectedBranchCode}</span>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+            </template>
+
+            <template lwc:if={showUserList}>
+                <div if:true={selectedId}>
+                    <div class="user-table-wrapper">
+                        <c-show-record-table record-id={selectedId} 
+                            process-name="Branch Users" 
+                            filter={filterCriteria} 
+                            show-header-footer="false"
+                            theme="dark"
+                            ontableselectedid={handleTableSelected}
+                        ></c-show-record-table>
+                    </div>
+                </div>
+                
+            </template>
+
+            <div if:true={showAssignBtn} class="slds-align_absolute-center button-container">
+                <button class="slds-button slds-button_brand save-button" onclick={assignRecord}>{assignBtnTitle} →</button>
+            </div>
+
+        </div>
+
+        <template lwc:if={showHeaderFooter}>
+            <footer class="footer-section">
+            </footer>
+        </template>
+    </div>
+
+    <template lwc:if={isLoading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+        </lightning-spinner>
+    </template>
+
+</template>
+<!-- __________________________GenAI: Generated code ends here______________________________ -->

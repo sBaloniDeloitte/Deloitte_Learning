@@ -1,0 +1,1539 @@
+<template>
+    <span class="styleContainer"></span>
+    <div class="bsa-page">
+        <!--
+        <div class="slds-card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        <span class="slds-text-heading_small">Product Details</span>
+                    </h2>
+                </div>
+            </header>
+        </div>
+        -->
+
+        <div class="slds-card__body slds-card__body_inner">
+            <!-- Loading Spinner -->
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading product details..." size="medium"></lightning-spinner>
+            </template>
+
+            <!-- Error Message -->
+            <template if:true={hasError}>
+                <div class="slds-notify slds-notify_alert slds-alert_error" role="alert">
+                    <span class="slds-assistive-text">Error</span>
+                    <h2>Error loading product details: {errorMessage}</h2>
+                </div>
+            </template>
+
+            <!-- Product Details Accordions -->
+            <template if:false={isLoading}>
+                <template if:false={hasError}>
+                    <template if:false={isHlUserRelated}>
+                        <lightning-accordion class="example-accordion" active-section-name={activeSections}
+                            onsectiontoggle={handleToggleSection} allow-multiple-sections-open>
+
+                            <lightning-accordion-section name="PSL" label="PSL">
+                                <div class="slds-grid slds-wrap slds-gutters">
+                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label slds-text-body_small">
+                                            <strong>Loan Product</strong>
+                                        </label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {pslData.loanProduct}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label slds-text-body_small">
+                                            <strong>Sub Product</strong>
+                                        </label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {pslData.subProduct}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label slds-text-body_small">
+                                            <strong>Repayment Variant</strong>
+                                        </label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {pslData.repaymentVariant}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label slds-text-body_small">
+                                            <strong>Scheme</strong>
+                                        </label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {pslData.scheme}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label slds-text-body_small">
+                                            <strong>Sub Variant</strong>
+                                        </label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {pslData.subVariant}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label slds-text-body_small">
+                                            <strong>Customer Type</strong>
+                                        </label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {pslData.applicantType}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label"><strong>Loan Amount</strong></label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {pslData.loanAmount}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <template if:true={isIndividual}>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                            <div class="slds-form-element">
+                                                <label class="slds-form-element__label"><strong>Property Pincode</strong></label>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-text-body_regular product-value">
+                                                        {pslData.propertyPincode}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                            <div class="slds-form-element">
+                                                <label class="slds-form-element__label"><strong>Location of Property</strong></label>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-text-body_regular product-value">
+                                                        {pslData.addressType}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                            <lightning-input type="number" name="totalDocumentIncome"
+                                                label="Total Document Income" formatter="currency" currency-code="INR"
+                                                value={pslData.totalDocumentIncome} onblur={handleFieldChange}>
+                                            </lightning-input>
+                                        </div>
+
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                            <div class="slds-form-element">
+                                                <label class="slds-form-element__label"><strong>Annual Household Income</strong></label>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-text-body_regular product-value">
+                                                        {pslData.annualHouseholdIncome}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                    <template if:false={isIndividual}>
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                            <div class="slds-form-element">
+                                                <label class="slds-form-element__label"><strong>Applicant Name</strong></label>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-text-body_regular product-value">
+                                                        {pslData.applicantName}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                            <div class="slds-form-element">
+                                                <label class="slds-form-element__label"><strong>GSTIN</strong></label>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-text-body_regular product-value">
+                                                        {pslData.gstin}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                            <div class="slds-form-element">
+                                                <label class="slds-form-element__label"><strong>Udhyam Registration number</strong></label>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-text-body_regular product-value">
+                                                        {pslData.udyamRegNo}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                            <div class="slds-form-element">
+                                                <label class="slds-form-element__label"><strong>Nature of Business</strong></label>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-text-body_regular product-value">
+                                                        {pslData.natureOfBusiness}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                            <div class="slds-form-element">
+                                                <label class="slds-form-element__label"><strong>Sector/Constitution</strong></label>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-text-body_regular product-value">
+                                                        {pslData.sector}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                            <div class="slds-form-element">
+                                                <label class="slds-form-element__label"><strong>MSME classification</strong></label>
+                                                <div class="slds-form-element__control">
+                                                    <div class="slds-text-body_regular product-value">
+                                                        {pslData.msmeCategory}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                        <lightning-textarea name="endUseOfFund" label="End Use of Fund"
+                                            value={pslData.endUseOfFund} onblur={handleFieldChange}>
+                                        </lightning-textarea>
+                                    </div>
+
+
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                        <lightning-combobox name="loanEligibleForPSL" label="Loan Eligible for PSL"
+                                            options={yesNoOptions} value={pslData.loanEligibleForPSL}
+                                            onchange={handleFieldChange} required>
+                                        </lightning-combobox>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                        <lightning-input type="text" name="pslCode" label="PSL Code" value={pslData.pslCode}
+                                            onblur={handleFieldChange}>
+                                        </lightning-input>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                        <lightning-textarea name="pslDescription" label="PSL Description"
+                                            value={pslData.pslDescription} rows="2" onblur={handleFieldChange}>
+                                        </lightning-textarea>
+                                    </div>
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                                    <lightning-combobox
+                                                        name="ftrValue"
+                                                        label="FTR"
+                                                        options={yesNoOptions}
+                                                        value={pslData.ftrValue}
+                                                        onchange={handleFieldChange}>
+                                                    </lightning-combobox>
+                                    </div>
+
+                                    <div class="slds-grid slds-wrap slds-grid_vertical-align-center">
+                                        <div class="slds-col slds-size_auto slds-p-right_x-small">
+                                            <lightning-input type="checkbox" label="Udaan" label-inline
+                                                checked={pslData.uddan} disabled>
+                                            </lightning-input>
+                                        </div>
+
+                                        <div class="slds-col slds-size_auto">
+                                            <lightning-input type="checkbox" label="Aarohi" label-inline
+                                                checked={pslData.aarohi} disabled>
+                                            </lightning-input>
+                                        </div>
+                                        <div class="slds-col slds-size_auto">
+                                            <lightning-input type="checkbox" name="loanToSeniorOfficial"
+                                                label="Loan to senior official" label-inline
+                                                checked={pslData.loanToSeniorOfficial} onchange={handleFieldChange}>
+                                            </lightning-input>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </lightning-accordion-section>
+
+                            <lightning-accordion-section name="CRE" label="CRE">
+                                <div class="slds-grid slds-wrap slds-gutters">
+                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label slds-text-body_small">
+                                            <strong>Loan Product</strong>
+                                        </label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {creData.loanProduct}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label slds-text-body_small">
+                                            <strong>Sub Product</strong>
+                                        </label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {creData.subProduct}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label slds-text-body_small">
+                                            <strong>Repayment Variant</strong>
+                                        </label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {creData.repaymentVariant}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label slds-text-body_small">
+                                            <strong>Scheme</strong>
+                                        </label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {creData.scheme}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label"><strong>Property Type</strong></label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {creData.propertyType}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label"><strong>Loan Amount</strong></label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {creData.loanAmount}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                        <lightning-combobox name="creTagging" label="CRE Tagging" options={yesNoOptions}
+                                            value={creData.creTagging} onchange={handleFieldChange}>
+                                        </lightning-combobox>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                        <lightning-input type="number" name="resUnits"
+                                            label="No. of dwelling units already owned(excluding proposed property)"
+                                            value={creData.resUnits} onblur={handleFieldChange}>
+                                        </lightning-input>
+                                    </div>
+
+
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                        <lightning-textarea name="intendedUseLoan" label="Intended Use of Loan"
+                                            value={creData.intendedUseLoan} onblur={handleFieldChange}>
+                                        </lightning-textarea>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                        <lightning-textarea name="endUseProperty"
+                                            label="End Use of Property Being Purchased" value={creData.endUseProperty}
+                                            rows="2" onchange={handleFieldChange}>
+                                        </lightning-textarea>
+                                    </div>
+                                </div>
+                            </lightning-accordion-section>
+
+                            <lightning-accordion-section name="COST" label="Cost of Property">
+                                <div class="slds-grid slds-wrap slds-gutters">
+
+                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label"><strong>Cost of Plot</strong></label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {costOfPlotDisplay}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label"><strong>Improvement Cost</strong></label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {improvementCostDisplay}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label"><strong>Agreement Value</strong></label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {agreementValueDisplay}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label"><strong>Society Charges / Insurance</strong></label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {societyChargesInsuranceDisplay}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label"><strong>Electricty Board / Municiple Charges</strong></label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {electricityMunicipalChargesDisplay}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label"><strong>Architects / Contractors Estimate</strong></label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {architectsContractorsEstimateDisplay}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label"><strong>Amenities as permitted by Policy</strong></label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {amenitiesAsPerPolicyDisplay}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label"><strong>Others</strong></label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {othersDisplay}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                        <div class="slds-form-element">
+                                            <label class="slds-form-element__label"><strong>Total Property Cost (Sum of all)</strong></label>
+                                            <div class="slds-form-element__control">
+                                                <div class="slds-text-body_regular product-value">
+                                                    {totalPropertyCostDisplay}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                   
+
+                                </div>
+                            </lightning-accordion-section>
+                        </lightning-accordion>
+                    </template>
+                    <template if:true={isHlUserRelated}>
+                        <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
+
+                            <template for:each={productList} for:item="prod">
+                                <lightning-accordion-section key={prod.productId} name={prod.productId} label={prod.labelName}>
+                                    <template if:false={psvSalesSubStage}>
+                                        <lightning-accordion class="example-accordion" allow-multiple-sections-open>
+
+                                        <!-- PSL Accordion Section -->
+                                        <lightning-accordion-section name="PSL" label="PSL">
+
+                                            <div class="slds-grid slds-wrap slds-gutters">
+
+                                                <!-- Loan Product -->
+                                                <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label slds-text-body_small">
+                                                            <strong>Loan Product</strong>
+                                                        </label>
+                                                        <div class="slds-form-element__control">
+                                                            <div class="slds-text-body_regular product-value">
+                                                                {prod.loanProduct}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Sub Product -->
+                                                <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label slds-text-body_small">
+                                                            <strong>Sub Product</strong>
+                                                        </label>
+                                                        <div class="slds-form-element__control">
+                                                            <div class="slds-text-body_regular product-value">
+                                                                {prod.subProduct}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Repayment Variant -->
+                                                <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label slds-text-body_small">
+                                                            <strong>Repayment Variant</strong>
+                                                        </label>
+                                                        <div class="slds-form-element__control">
+                                                            <div class="slds-text-body_regular product-value">
+                                                                {prod.repaymentVariant}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Scheme -->
+                                                <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label slds-text-body_small">
+                                                            <strong>Scheme</strong>
+                                                        </label>
+                                                        <div class="slds-form-element__control">
+                                                            <div class="slds-text-body_regular product-value">
+                                                                {prod.scheme}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Sub Variant -->
+                                                <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label slds-text-body_small">
+                                                            <strong>Sub Variant</strong>
+                                                        </label>
+                                                        <div class="slds-form-element__control">
+                                                            <div class="slds-text-body_regular product-value">
+                                                                {prod.subVariant}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Applicant Type -->
+                                                <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label slds-text-body_small">
+                                                            <strong>Customer Type</strong>
+                                                        </label>
+                                                        <div class="slds-form-element__control">
+                                                            <div class="slds-text-body_regular product-value">
+                                                                {prod.applicantType}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Loan Amount -->
+                                                <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label"><strong>Loan Amount</strong></label>
+                                                        <div class="slds-form-element__control">
+                                                            <div class="slds-text-body_regular product-value">
+                                                                {prod.loanAmount}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Property Pincode -->
+                                                <template if:true={isIndividual}>
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label"><strong>Property Pincode</strong></label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-text-body_regular product-value">
+                                                                    {prod.propertyPincode}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Location of Property -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label"><strong>Location of Property</strong></label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-text-body_regular product-value">
+                                                                    {prod.addressType}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Total Document Income -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                                        <lightning-input type="number" name="totalDocumentIncome"
+                                                            label="Total Document Income" formatter="currency" currency-code="INR"
+                                                            value={prod.totalDocumentIncome} onblur={handleFieldChange}>
+                                                        </lightning-input>
+                                                    </div>
+
+                                                    <!-- Annual Household Income -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label"><strong>Annual Household Income</strong></label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-text-body_regular product-value">
+                                                                    {prod.annualHouseholdIncome}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </template>
+
+                                                <template if:false={isIndividual}>
+                                                    <!-- Applicant name -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label"><strong>Applicant Name</strong></label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-text-body_regular product-value">
+                                                                    {prod.applicantName}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- GSTIN -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label"><strong>GSTIN</strong></label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-text-body_regular product-value">
+                                                                    {prod.gstin}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Udyam Registration number -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label"><strong>Udyam Registration number</strong></label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-text-body_regular product-value">
+                                                                    {prod.udyamRegNo}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Nature of business -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label"><strong>Nature of Business</strong></label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-text-body_regular product-value">
+                                                                    {prod.natureOfBusiness}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Sector/Constitution -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label"><strong>Sector/Constitution</strong></label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-text-body_regular product-value">
+                                                                    {prod.sector}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- MSME classification -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label"><strong>MSME classification</strong></label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-text-body_regular product-value">
+                                                                    {prod.msmeCategory}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </template>
+
+                                                <!-- End Use of Fund -->
+                                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                                    <lightning-textarea name="endUseOfFund" label="End Use of Fund"
+                                                        value={prod.endUseOfFund} onblur={handleFieldChange}>
+                                                    </lightning-textarea>
+                                                </div>
+
+                                                <!-- Loan Eligible for PSL -->
+                                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                                    <lightning-combobox name="loanEligibleForPSL" label="Loan Eligible for PSL"
+                                                        options={yesNoOptions} value={prod.loanEligibleForPSL}
+                                                        onchange={handleFieldChange} required>
+                                                    </lightning-combobox>
+                                                </div>
+
+                                                <!-- PSL Code -->
+                                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                                    <lightning-input type="text" name="pslCode" label="PSL Code" 
+                                                        value={prod.pslCode}
+                                                        onblur={handleFieldChange}>
+                                                    </lightning-input>
+                                                </div>
+
+                                                <!-- PSL Description -->
+                                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                                    <lightning-textarea name="pslDescription" label="PSL Description"
+                                                        value={prod.pslDescription} rows="2" 
+                                                        onblur={handleFieldChange}>
+                                                    </lightning-textarea>
+                                                </div>
+
+                                                <!-- FTR -->
+                                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                                    <lightning-combobox
+                                                        name="ftrValue"
+                                                        label="FTR"
+                                                        options={yesNoOptions}
+                                                        value={prod.ftrValue}
+                                                        onchange={handleFieldChange}>
+                                                    </lightning-combobox>
+                                                </div>
+                                                
+
+                                                <!-- Udaan / Aarohi / Senior Loan checkboxes -->
+                                                <div class="slds-grid slds-wrap slds-grid_vertical-align-center">
+
+                                                    <!-- Udaan -->
+                                                    <div class="slds-col slds-size_auto slds-p-right_x-small">
+                                                        <lightning-input type="checkbox" label="Udaan" label-inline
+                                                            checked={prod.uddan} disabled>
+                                                        </lightning-input>
+                                                    </div>
+
+                                                    <!-- Aarohi -->
+                                                    <div class="slds-col slds-size_auto">
+                                                        <lightning-input type="checkbox" label="Aarohi" label-inline
+                                                            checked={prod.aarohi} disabled>
+                                                        </lightning-input>
+                                                    </div>
+
+                                                    <!-- Loan to Senior Official -->
+                                                    <div class="slds-col slds-size_auto">
+                                                        <lightning-input type="checkbox" name="loanToSeniorOfficial"
+                                                            label="Loan to senior official" label-inline
+                                                            checked={prod.loanToSeniorOfficial} 
+                                                            onchange={handleFieldChange}>
+                                                        </lightning-input>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </lightning-accordion-section>
+                                        <template if:false={prod.isFlexiLoan}>
+                                            <lightning-accordion-section name="CRE" label="CRE">
+                                                <div class="slds-grid slds-wrap slds-gutters">
+
+                                                    <!-- Loan Product -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label slds-text-body_small"><strong>Loan Product</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.loanProduct}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Sub Product -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label slds-text-body_small"><strong>Sub Product</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.subProduct}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Repayment Variant -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label slds-text-body_small"><strong>Repayment Variant</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.repaymentVariant}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Scheme -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label slds-text-body_small"><strong>Scheme</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.scheme}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Property Type -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Property Type</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.propertyType}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Loan Amount -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Loan Amount</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.loanAmount}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- CRE Tagging -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <lightning-combobox
+                                                            name="creTagging"
+                                                            label="CRE Tagging"
+                                                            options={yesNoOptions}
+                                                            value={prod.creTagging}
+                                                            data-pid={prod.Id}
+                                                            onchange={handleFieldChange}>
+                                                        </lightning-combobox>
+                                                    </div>
+
+                                                    <!-- No. of dwelling units -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <lightning-input
+                                                            type="number"
+                                                            name="resUnits"
+                                                            label="No. of dwelling units already owned (excluding proposed property)"
+                                                            value={prod.resUnits}
+                                                            data-pid={prod.Id}
+                                                            onblur={handleFieldChange}>
+                                                        </lightning-input>
+                                                    </div>
+
+                                                    <!-- Intended use of loan -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                                        <lightning-textarea
+                                                            name="intendedUseLoan"
+                                                            label="Intended Use of Loan"
+                                                            value={prod.intendedUseLoan}
+                                                            data-pid={prod.Id}
+                                                            onblur={handleFieldChange}>
+                                                        </lightning-textarea>
+                                                    </div>
+
+                                                    <!-- End Use of Property -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                                        <lightning-textarea
+                                                            name="endUseProperty"
+                                                            label="End Use of Property Being Purchased"
+                                                            value={prod.endUseProperty}
+                                                            rows="2"
+                                                            data-pid={prod.Id}
+                                                            onchange={handleFieldChange}>
+                                                        </lightning-textarea>
+                                                    </div>
+
+                                                </div>
+                                            </lightning-accordion-section>
+                                            <lightning-accordion-section name="COST" label="Cost of Property">
+                                                <div class="slds-grid slds-wrap slds-gutters">
+
+                                                    <!-- Cost of Plot -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Cost of Plot</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.costOfPlotDisplay}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Improvement Cost -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Improvement Cost</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.improvementCostDisplay}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Agreement Value -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Agreement Value</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.agreementValueDisplay}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Society Charges / Insurance -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Society Charges / Insurance</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.societyChargesInsuranceDisplay}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Electricity / Municipal Charges -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Electricity Board / Municipal Charges</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.electricityMunicipalChargesDisplay}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Architect / Contractor Estimate -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Architects / Contractors Estimate</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.architectsContractorsEstimateDisplay}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Amenities as permitted -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Amenities as permitted by Policy</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.amenitiesAsPerPolicyDisplay}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Others -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Others</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.othersDisplay}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Total Property Cost -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Total Property Cost (Sum of all)</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.totalPropertyCostDisplay}
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Document Value</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.documentValue}
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
+                                            </lightning-accordion-section>
+                                        </template>
+                                        
+
+                                        </lightning-accordion>
+                                    </template>
+                                     <template if:true={psvSalesSubStage}>
+                                        <lightning-accordion class="example-accordion" allow-multiple-sections-open>
+
+                                        <!-- PSL Accordion Section -->
+                                        <lightning-accordion-section name="PSL" label="PSL">
+
+                                            <div class="slds-grid slds-wrap slds-gutters">
+
+                                                <!-- Loan Product -->
+                                                <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label slds-text-body_small">
+                                                            <strong>Loan Product</strong>
+                                                        </label>
+                                                        <div class="slds-form-element__control">
+                                                            <div class="slds-text-body_regular product-value">
+                                                                {prod.loanProduct}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Sub Product -->
+                                                <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label slds-text-body_small">
+                                                            <strong>Sub Product</strong>
+                                                        </label>
+                                                        <div class="slds-form-element__control">
+                                                            <div class="slds-text-body_regular product-value">
+                                                                {prod.subProduct}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Repayment Variant -->
+                                                <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label slds-text-body_small">
+                                                            <strong>Repayment Variant</strong>
+                                                        </label>
+                                                        <div class="slds-form-element__control">
+                                                            <div class="slds-text-body_regular product-value">
+                                                                {prod.repaymentVariant}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Scheme -->
+                                                <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label slds-text-body_small">
+                                                            <strong>Scheme</strong>
+                                                        </label>
+                                                        <div class="slds-form-element__control">
+                                                            <div class="slds-text-body_regular product-value">
+                                                                {prod.scheme}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Sub Variant -->
+                                                <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label slds-text-body_small">
+                                                            <strong>Sub Variant</strong>
+                                                        </label>
+                                                        <div class="slds-form-element__control">
+                                                            <div class="slds-text-body_regular product-value">
+                                                                {prod.subVariant}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Applicant Type -->
+                                                <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label slds-text-body_small">
+                                                            <strong>Customer Type</strong>
+                                                        </label>
+                                                        <div class="slds-form-element__control">
+                                                            <div class="slds-text-body_regular product-value">
+                                                                {prod.applicantType}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Loan Amount -->
+                                                <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label"><strong>Loan Amount</strong></label>
+                                                        <div class="slds-form-element__control">
+                                                            <div class="slds-text-body_regular product-value">
+                                                                {prod.loanAmount}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                                <!-- Property Pincode -->
+                                                <template if:true={isIndividual}>
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label"><strong>Property Pincode</strong></label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-text-body_regular product-value">
+                                                                    {prod.propertyPincode}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Location of Property -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label"><strong>Location of Property</strong></label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-text-body_regular product-value">
+                                                                    {prod.addressType}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Total Document Income -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                                        <lightning-input type="number" name="totalDocumentIncome"
+                                                            label="Total Document Income" formatter="currency" currency-code="INR"
+                                                            value={prod.totalDocumentIncome} onblur={handleFieldChange} disabled>
+                                                        </lightning-input>
+                                                    </div>
+
+                                                    <!-- Annual Household Income -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label"><strong>Annual Household Income</strong></label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-text-body_regular product-value">
+                                                                    {prod.annualHouseholdIncome}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </template>
+
+                                                <template if:false={isIndividual}>
+                                                    <!-- Applicant name -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label"><strong>Applicant Name</strong></label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-text-body_regular product-value">
+                                                                    {prod.applicantName}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- GSTIN -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label"><strong>GSTIN</strong></label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-text-body_regular product-value">
+                                                                    {prod.gstin}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Udyam Registration number -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label"><strong>Udyam Registration number</strong></label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-text-body_regular product-value">
+                                                                    {prod.udyamRegNo}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Nature of business -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label"><strong>Nature of Business</strong></label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-text-body_regular product-value">
+                                                                    {prod.natureOfBusiness}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Sector/Constitution -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label"><strong>Sector/Constitution</strong></label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-text-body_regular product-value">
+                                                                    {prod.sector}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- MSME classification -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <div class="slds-form-element">
+                                                            <label class="slds-form-element__label"><strong>MSME classification</strong></label>
+                                                            <div class="slds-form-element__control">
+                                                                <div class="slds-text-body_regular product-value">
+                                                                    {prod.msmeCategory}
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </template>
+
+                                                <!-- End Use of Fund -->
+                                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                                    <lightning-textarea name="endUseOfFund" label="End Use of Fund"
+                                                        value={prod.endUseOfFund} onblur={handleFieldChange} disabled>
+                                                    </lightning-textarea>
+                                                </div>
+
+                                                <!-- Loan Eligible for PSL -->
+                                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                                    <lightning-combobox name="loanEligibleForPSL" label="Loan Eligible for PSL"
+                                                        options={yesNoOptions} value={prod.loanEligibleForPSL}
+                                                        onchange={handleFieldChange} disabled>
+                                                    </lightning-combobox>
+                                                </div>
+
+                                                <!-- PSL Code -->
+                                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                                    <lightning-input type="text" name="pslCode" label="PSL Code" 
+                                                        value={prod.pslCode}
+                                                        disabled>
+                                                    </lightning-input>
+                                                </div>
+
+                                                <!-- PSL Description -->
+                                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                                    <lightning-textarea name="pslDescription" label="PSL Description"
+                                                        value={prod.pslDescription} rows="2" 
+                                                        disabled>
+                                                    </lightning-textarea>
+                                                </div>
+
+                                                <!-- FTR -->
+                                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                                    <lightning-combobox
+                                                        name="ftrValue"
+                                                        label="FTR"
+                                                        options={yesNoOptions}
+                                                        value={prod.ftrValue}
+                                                        onchange={handleFieldChange} disabled>
+                                                    </lightning-combobox>
+                                                </div>
+
+                                                <!-- Udaan / Aarohi / Senior Loan checkboxes -->
+                                                <div class="slds-grid slds-wrap slds-grid_vertical-align-center">
+
+                                                    <!-- Udaan -->
+                                                    <div class="slds-col slds-size_auto slds-p-right_x-small">
+                                                        <lightning-input type="checkbox" label="Udaan" label-inline
+                                                            checked={prod.uddan} disabled>
+                                                        </lightning-input>
+                                                    </div>
+
+                                                    <!-- Aarohi -->
+                                                    <div class="slds-col slds-size_auto">
+                                                        <lightning-input type="checkbox" label="Aarohi" label-inline
+                                                            checked={prod.aarohi} disabled>
+                                                        </lightning-input>
+                                                    </div>
+
+                                                    <!-- Loan to Senior Official -->
+                                                    <div class="slds-col slds-size_auto">
+                                                        <lightning-input type="checkbox" name="loanToSeniorOfficial"
+                                                            label="Loan to senior official" label-inline
+                                                            checked={prod.loanToSeniorOfficial} 
+                                                           disabled>
+                                                        </lightning-input>
+                                                    </div>
+
+                                                </div>
+                                            </div>
+
+                                        </lightning-accordion-section>
+                                        <template if:false={prod.isFlexiLoan}>
+                                            <lightning-accordion-section name="CRE" label="CRE">
+                                                <div class="slds-grid slds-wrap slds-gutters">
+
+                                                    <!-- Loan Product -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label slds-text-body_small"><strong>Loan Product</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.loanProduct}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Sub Product -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label slds-text-body_small"><strong>Sub Product</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.subProduct}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Repayment Variant -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label slds-text-body_small"><strong>Repayment Variant</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.repaymentVariant}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Scheme -->
+                                                    <div class="slds-col slds-size_1-of-2 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label slds-text-body_small"><strong>Scheme</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.scheme}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Property Type -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Property Type</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.propertyType}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Loan Amount -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Loan Amount</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.loanAmount}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- CRE Tagging -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <lightning-combobox
+                                                            name="creTagging"
+                                                            label="CRE Tagging"
+                                                            options={yesNoOptions}
+                                                            value={prod.creTagging}
+                                                            data-pid={prod.Id}
+                                                        disabled>
+                                                        </lightning-combobox>
+                                                    </div>
+
+                                                    <!-- No. of dwelling units -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <lightning-input
+                                                            type="number"
+                                                            name="resUnits"
+                                                            label="No. of dwelling units already owned (excluding proposed property)"
+                                                            value={prod.resUnits}
+                                                            data-pid={prod.Id}
+                                                            disabled>
+                                                        </lightning-input>
+                                                    </div>
+
+                                                    <!-- Intended use of loan -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                                        <lightning-textarea
+                                                            name="intendedUseLoan"
+                                                            label="Intended Use of Loan"
+                                                            value={prod.intendedUseLoan}
+                                                            data-pid={prod.Id}
+                                                            disabled>
+                                                        </lightning-textarea>
+                                                    </div>
+
+                                                    <!-- End Use of Property -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-3">
+                                                        <lightning-textarea
+                                                            name="endUseProperty"
+                                                            label="End Use of Property Being Purchased"
+                                                            value={prod.endUseProperty}
+                                                            rows="2"
+                                                            data-pid={prod.Id}
+                                                            disabled>
+                                                        </lightning-textarea>
+                                                    </div>
+
+                                                </div>
+                                            </lightning-accordion-section>
+                                            <lightning-accordion-section name="COST" label="Cost of Property">
+                                                <div class="slds-grid slds-wrap slds-gutters">
+
+                                                    <!-- Cost of Plot -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Cost of Plot</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.costOfPlotDisplay}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Improvement Cost -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Improvement Cost</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.improvementCostDisplay}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Agreement Value -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Agreement Value</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.agreementValueDisplay}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Society Charges / Insurance -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Society Charges / Insurance</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.societyChargesInsuranceDisplay}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Electricity / Municipal Charges -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Electricity Board / Municipal Charges</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.electricityMunicipalChargesDisplay}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Architect / Contractor Estimate -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Architects / Contractors Estimate</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.architectsContractorsEstimateDisplay}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Amenities as permitted -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Amenities as permitted by Policy</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.amenitiesAsPerPolicyDisplay}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Others -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Others</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.othersDisplay}
+                                                        </div>
+                                                    </div>
+
+                                                    <!-- Total Property Cost -->
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Total Property Cost (Sum of all)</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.totalPropertyCostDisplay}
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3">
+                                                        <label class="slds-form-element__label"><strong>Document Value</strong></label>
+                                                        <div class="slds-text-body_regular product-value">
+                                                            {prod.documentValue}
+                                                        </div>
+                                                    </div>
+
+
+
+                                                </div>
+                                            </lightning-accordion-section>
+                                        </template>
+                                        </lightning-accordion>
+                                    </template>
+                                    
+
+                                </lightning-accordion-section>
+                            </template>
+
+                            <template if:true={isHlUserRelated}>
+                                <lightning-accordion-section label="PEP *" name="PEP" style=" font-weight: 700;">
+                                    
+                                    <div style="margin: 10px 0px;overflow: inherit;justify-content: center;display: flex;">
+                                        <div style="width: 50%;">
+                                            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                                            <!-- color: white; -->
+                                                            Applicant
+                                                        </th>
+                                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                                            Select PEP</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <template for:each={appdataPEP} for:item="row">
+                                                        <tr key={row.recId}>
+                                                            <td style="border:1px solid black">{row.appName}</td>
+                                                            <td style="border:1px solid black">
+                                                                <lightning-combobox data-id={row.recId} options={optionsPEP} value={row.selectedValue}
+                                                                    onchange={handleChangePEP} variant="label-hidden"
+                                                                    disabled={isDisabledLoanApproval}></lightning-combobox>
+                                                            </td>
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </lightning-accordion-section>
+                            </template>
+                            
+                        </lightning-accordion>
+                    </template>
+                </template>
+            </template>
+        </div>
+    </div>
+
+
+</template>

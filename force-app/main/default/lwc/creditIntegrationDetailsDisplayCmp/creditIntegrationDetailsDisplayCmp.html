@@ -1,0 +1,343 @@
+<template>
+    <template if:true={showDoctorFields}>
+        <template if:false={hasdoctorList}>
+            <div class="slds-box slds-align_absolute-center" style="font-size: 13px;">
+                No Records Found.
+            </div>
+        </template>
+    </template>
+    <template if:true={showCAFields}>
+        <template if:false={hascaList}>
+            <div class="slds-box slds-align_absolute-center" style="font-size: 13px;">
+                No Records Found.
+            </div>
+        </template>
+    </template>
+    <template if:true={showLegalEntityFields}>
+        <template if:false={haslieList}>
+            <div class="slds-box slds-align_absolute-center" style="font-size: 13px;">
+                No Records Found.
+            </div>
+        </template>
+    </template>
+    <template if:true={showUdhyamFields}>
+        <template if:false={hasudhyamList}>
+            <div class="slds-box slds-align_absolute-center" style="font-size: 13px;">
+                No Records Found.
+            </div>
+        </template>
+    </template>
+    <div class="slds-scrollable_x fi-table-wrapper" style="overflow: auto;min-height: 150px;">
+        <table class="slds-table">
+            <thead>
+                <tr>
+                    <template if:true={hasdoctorList}>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Applicant Name</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Doctor ID</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Doctor Name</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Registered Address</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Category</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Date of Registration</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Qualification</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Additional Qualifications</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Additional Address</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Medical Council</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Unique Registration No.</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Removed Status</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Restored Status</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Restored On</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Blacklist Status</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Suspensions</th>
+                    </template>
+                    <template if:true={hascaList}>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Applicant Name</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Registered Name</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Registered Address</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Gender</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Qualification Year</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">COP Status</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Qualification Year as Fellow Member</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Membership Status</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Mobile Number</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">EMail ID</th>
+                    </template>
+                    <template if:true={haslieList}>
+                        <th style="background-color: skyblue;border-color: black;color: black;width:6%;">Applicant Name</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;width:6%;">LEI Number</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;width:6%;">Entity Name</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;width:6%;">Validation Score</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;width:6%;">Renewal Date</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;width:6%;">Form Of Entity</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;width:6%;">Expiration Date</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;width:6%;">Entity Address</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;width:6%;">Authority Name</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;width:11%;">Direct Parent Relationship</th>
+                        
+                        <th style="background-color: skyblue;border-color: black;color: black;width:6%;">Date of Registration</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;width:6%;">Registration Status</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;width:6%;">Entity Status</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;width:6%;">Expiration Reason</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;width:11%;">Ultimate Parent Relationship</th>
+                    </template>
+                    <template if:true={hasudhyamList}>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Applicant Name</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Udhyam Registration Number</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Date of Registration</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Registered Name</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Nature of Business</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Registered Constitution</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Registered Owner</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Registered PAN</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Previous ITR Status</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Type of ITR</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">GSTIN Status</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Date of Incorporation</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Date of Commencement</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Total Employees</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Written Day Value</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Total Turnover</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Export Turnover</th>
+                        <th style="background-color: skyblue;border-color: black;color: black;">Industry</th>
+                    </template>
+                </tr>
+            </thead>
+            <tbody>
+                <template if:true={showDoctorFields}>
+                    <template if:true={doctorList}>
+                        <template for:each={doctorList} for:item="doctor">
+                            <tr key={doctor.result.doctorId}>
+                                <td style=" border-color: black">{doctor.applicantName}</td>
+                                <td style=" border-color: black">{doctor.result.doctorId}</td>
+                                <td style=" border-color: black">{doctor.result.name}</td>
+                                <td style=" border-color: black">{doctor.result.address}</td>
+                                <td style=" border-color: black">{doctor.result.category}</td>
+                                <td style=" border-color: black">{doctor.result.dateOfRegistration}</td>
+                                <td style=" border-color: black">{doctor.result.qualification.qualification} - {doctor.result.qualification.qualificationYear} - {doctor.result.qualification.university} - {doctor.result.qualification.college}</td>
+                                <td style=" border-color: black">
+                                    <button class="slds-button slds-button_brand initiate-button" data-id={doctor.result.doctorId} onclick={openQualificationsPopup}>View</button>
+                                    <!-- <lightning-button
+                                        if:true={doctor.result.additionalQualifications}
+                                        label="View"
+                                        variant="brand-outline"
+                                        
+                                        onclick={openQualificationsPopup}>
+                                    </lightning-button> -->
+                                </td>
+                                <td style=" border-color: black">{doctor.result.additionalAddresses}</td>
+                                <td style=" border-color: black">{doctor.result.stateMedicalCouncil}</td>
+                                <td style=" border-color: black">{doctor.result.uniquePermanentRegistrationNumber}</td>
+                                <td style=" border-color: black">{doctor.result.removedStatus}</td>
+                                <td style=" border-color: black">{doctor.result.restoredStatus}</td>
+                                <td style=" border-color: black">{doctor.result.restoredOn}</td>
+                                <td style=" border-color: black">{doctor.result.isBlacklistedDoctor}</td>
+                                <td style=" border-color: black">
+                                    <button class="slds-button slds-button_brand initiate-button" data-id={doctor.result.doctorId} onclick={openSuspensionsPopup}>View</button>
+                                </td>
+                            </tr>
+                        </template>
+                    </template>
+                </template>
+                <template if:true={showCAFields}>
+                    <template if:true={caList}>
+                        <template for:each={caList} for:item="ca">
+                            <tr key={ca.result.doctorId}>
+                                <td style=" border-color: black">{ca.applicantName}</td>
+                                <td style=" border-color: black">{ca.result.name}</td>
+                                <td style=" border-color: black">{ca.result.address}</td>
+                                <td style=" border-color: black">{ca.result.gender}</td>
+                                <td style=" border-color: black">{ca.result.Qualification} - {ca.result.AssociateYear}</td>
+                                <td style=" border-color: black">{ca.result.COPStatus}</td>
+                                <td style=" border-color: black">{ca.result.FellowYear}</td>
+                                <td style=" border-color: black">{ca.result.memberStatus}</td>
+                                <td style=" border-color: black">{ca.result.mobileNo}</td>
+                                <td style=" border-color: black">{ca.result.email}</td>
+                            </tr>
+                        </template>
+                    </template>
+                </template>
+                <template if:true={showLegalEntityFields}>
+                    <template if:true={leiList}>
+                        <template for:each={leiList} for:item="legal">
+                            <tr key={legal.statusCode}>
+                                <td style=" border-color: black">{legal.applicantName}</td>
+                                <td style=" border-color: black">{legal.result.entityRecordDetail.registeredEntityDetails.lei}</td>
+                                <td style=" border-color: black">{legal.result.entityRecordDetail.registeredEntityDetails.legalName}</td>
+                                <td style=" border-color: black">{legal.result.entityRecordDetail.entityIdentifiers.leiValidationSource}</td>
+                                <td style=" border-color: black">{legal.result.entityRecordDetail.entityIdentifiers.leiNextRenewalDate}</td>
+                                <td style=" border-color: black">{legal.result.entityRecordDetail.entityIdentifiers.legalForm}</td>
+                                <td style=" border-color: black">{legal.result.entityRecordDetail.entityIdentifiers.entityExpirationDate}</td>
+                                <td style=" border-color: black">{legal.result.entityRecordDetail.legalRegisteredEntityAddress.registeredFirstAddressLine}, {legal.result.entityRecordDetail.legalRegisteredEntityAddress.city}, {legal.result.entityRecordDetail.legalRegisteredEntityAddress.region}, {legal.result.entityRecordDetail.legalRegisteredEntityAddress.region}, {legal.result.entityRecordDetail.legalRegisteredEntityAddress.region}, {legal.result.entityRecordDetail.legalRegisteredEntityAddress.additionalAddressLine}</td>
+                                <td style=" border-color: black">{legal.result.entityRecordDetail.entityIdentifiers.registrationAuthorityNameType}</td>
+                                <td style=" border-color: black"><b>Entity Name -</b> {legal.result.leiRelationshipRecordDetails.directParentRelationshipRecordDetails.legalEntityName} <br>
+                                    <b>Entity Code -</b> {legal.result.leiRelationshipRecordDetails.directParentRelationshipRecordDetails.leiCode} <br>
+                                    <b>Relationship Type -</b> {legal.result.leiRelationshipRecordDetails.directParentRelationshipRecordDetails.relationshipType} <br>
+                                    <b>Percentage Shareholding- </b>{legal.result.leiRelationshipRecordDetails.directParentRelationshipRecordDetails.percentShareholding}</td>
+                                
+                                <td style=" border-color: black">{legal.result.entityRecordDetail.entityIdentifiers.leiRegistrationDate}</td>
+                                <td style=" border-color: black">{legal.result.entityRecordDetail.entityIdentifiers.leiRegistrationStatus}</td>
+                                <td style=" border-color: black">{legal.result.entityRecordDetail.entityIdentifiers.entityStatus}</td>
+                                <td style=" border-color: black">{legal.result.entityRecordDetail.entityIdentifiers.entityExpirationReason}</td>
+                                <td style=" border-color: black"><b>Entity Name -</b>{legal.result.leiRelationshipRecordDetails.ultimateParentRelationshipRecordDetails.legalEntityName} <br>
+                                    <b>Entity Code -</b> {legal.result.leiRelationshipRecordDetails.ultimateParentRelationshipRecordDetails.leiCode} <br>
+                                    <b>Relationship Type -</b> {legal.result.leiRelationshipRecordDetails.ultimateParentRelationshipRecordDetails.relationshipType} <br>
+                                    <b>Percentage Shareholding -</b> {legal.result.leiRelationshipRecordDetails.ultimateParentRelationshipRecordDetails.percentShareholding}</td>
+                            </tr>
+                        </template>
+                    </template>
+                </template>
+                <template if:true={showUdhyamFields}>
+                    <template if:true={udhyamList}>
+                        <template for:each={udhyamList} for:item="udhyam">
+                            <tr key={udhyam}>
+                                <td style=" border-color: black">{udhyam.applicantName}</td>
+                                <td style=" border-color: black">{udhyam.result.udyamRegistrationNo}</td>
+                                <td style=" border-color: black">{udhyam.result.dateOfRegistration}</td>
+                                <td style=" border-color: black">{udhyam.result.profile.name}</td>
+                                <td style=" border-color: black">{udhyam.result.profile.majorActivity}</td>
+                                <td style=" border-color: black">{udhyam.result.profile.organizationType}</td>
+                                <td style=" border-color: black">{udhyam.result.profile.ownerName}</td>
+                                <td style=" border-color: black">{udhyam.result.profile.pan}</td>
+                                <td style=" border-color: black">{udhyam.result.profile.previousITRStatus}</td>
+                                <td style=" border-color: black">{udhyam.result.profile.itrType}</td>
+                                <td style=" border-color: black">{udhyam.result.profile.gstnStatus}</td>
+                                <td style=" border-color: black">{udhyam.result.profile.dateOfIncorporation}</td>
+                                <td style=" border-color: black">{udhyam.result.profile.dateOfCommencement}</td>
+                                <td style=" border-color: black">{udhyam.result.employmentDetails.total}</td>
+                                <td style=" border-color: black">{udhyam.result.financials.details.wdvPme}</td>
+                                <td style=" border-color: black">{udhyam.result.financials.details.totalTurnover}</td>
+                                <td style=" border-color: black">{udhyam.result.financials.details.exportTurnover}</td>
+                                <td style=" border-color: black">
+                                    <button class="slds-button slds-button_brand initiate-button" data-id={udhyam.result.udyamRegistrationNo} onclick={openIndustriesPopup}>View</button>
+                                </td>
+                            </tr>
+                        </template>
+                    </template>
+                </template>
+            </tbody>
+        </table>
+    </div>
+   
+
+    <template if:true={showQualifications}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                    title="Close" onclick={closePopup}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                        size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <header class="slds-modal__header header-section">
+                    <div class="slds-text-align_center">
+                        <h2 class="slds-text-heading_medium">Additional Qualifications</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <table class="slds-table slds-table_bordered">
+                        <thead>
+                            <tr>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Sr No.</th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Qualification</th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Year</th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">University</th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">College</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={qualifications} for:item="q">
+                                <tr key={q.qualification}>
+                                    <td style=" border-color: black">{q.srno}</td>
+                                    <td style=" border-color: black">{q.qualification}</td>
+                                    <td style=" border-color: black">{q.qualificationYear}</td>
+                                    <td style=" border-color: black">{q.university}</td>
+                                    <td style=" border-color: black">{q.college}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={showSuspensios}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                    title="Close" onclick={closePopup}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                        size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <header class="slds-modal__header header-section">
+                    <div class="slds-text-align_center">
+                        <h2 class="slds-text-heading_medium">Suspensions</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <table class="slds-table slds-table_bordered">
+                        <thead>
+                            <tr>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Sr No.</th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Suspension Date</th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Restoration Date</th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Remarks</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={suspensions} for:item="q">
+                                <tr key={q.suspensions}>
+                                    <td style=" border-color: black">{q.srno}</td>
+                                    <td style=" border-color: black">{q.suspensionDate}</td>
+                                    <td style=" border-color: black">{q.restorationDate}</td>
+                                    <td style=" border-color: black">{q.remarks}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    
+    <template if:true={showIndustry}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                    title="Close" onclick={closePopup}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                        size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <header class="slds-modal__header header-section">
+                    <div class="slds-text-align_center">
+                        <h2 class="slds-text-heading_medium">Industries</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <table class="slds-table slds-table_bordered">
+                        <thead>
+                            <tr>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Sr No.</th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Industry</th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Sub Sector</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={industries} for:item="q">
+                                <tr key={q.industries}>
+                                    <td style=" border-color: black">{q.srno}</td>
+                                    <td style=" border-color: black">{q.industry}</td>
+                                    <td style=" border-color: black">{q.subSector}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

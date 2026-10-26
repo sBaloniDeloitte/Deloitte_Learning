@@ -1,0 +1,10 @@
+<template>
+    <lightning-card if:true={imageUrl}>
+        <header class="slds-modal__header" style="padding-top:0">
+            <h2 id="modal-heading" class="slds-text-heading_medium">Applicant Photo</h2>
+        </header>
+        <div style="text-align: center;margin:2%">
+            <img src={imageUrl} alt="Applicant Photo" style="width:25%"/>
+        </div>
+    </lightning-card>
+</template>

@@ -1,0 +1,36 @@
+<!--
+  @description       : Standalone AI Summary panel for newCamsScreen sections.
+                        Static, AI-styled overview cards -- does not read from
+                        or depend on newCamsScreen in any way.
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @last modified on  : 09-17-2026
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <div class="ai-summary-container">
+        <div class="ai-summary-header">
+            <span class="ai-header-icon-wrap">
+                <lightning-icon icon-name="utility:einstein" size="small" variant="inverse" class="ai-header-icon"></lightning-icon>
+            </span>
+            <div class="ai-summary-title">
+                <h2 class="ai-title-text">CAMS AI Section Summary</h2>
+                <p class="ai-subtitle-text">AI generated overview of every section in the loan file</p>
+            </div>
+        </div>
+
+        <div class="ai-summary-grid">
+            <template for:each={sectionSummaries} for:item="section">
+                <div key={section.name} class="ai-summary-card" style={section.borderStyle}>
+                    <div class="card-header">
+                        <span class="card-icon-wrap" style={section.iconBgStyle}>
+                            <lightning-icon icon-name={section.icon} size="x-small" variant="inverse" class="card-icon"></lightning-icon>
+                        </span>
+                        <h3 class="card-title">{section.name}</h3>
+                        <span class="ai-badge">AI</span>
+                    </div>
+                    <p class="card-summary">{section.summary}</p>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

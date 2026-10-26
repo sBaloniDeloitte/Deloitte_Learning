@@ -1,0 +1,117 @@
+<!-- _______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________ -->
+<template>
+    <template if:true={showClosereason}>
+        <c-popup-screen-V2 record-id={leadId} 
+            show-lead-closure-cmp="true"
+            header-title="Lead Closure Remarks"
+            process-name="Lead Closure"
+            show-close-btn=true
+            close-btn-text="Cancel"
+            show-save-btn="true"
+            onhandleclose={handleClose}
+        ></c-popup-screen-V2>
+    </template>
+
+    <template if:true={showConfirmation}>
+        <c-confirmation-screen 
+            confirm-message={confirmMessage} 
+            positive-label="Continue" 
+            negative-label="Close" 
+            onnegativeclick={handleNo} 
+            onpositiveclick={handleYes}
+        ></c-confirmation-screen>
+    </template>   
+
+    <template if:true={showDisposition}>
+        <c-popup-screen-V2 record-id={leadId} 
+            show-dialer-disposition-cmp="true"
+            header-title="Save Disposition"
+            show-close-btn=true
+            close-btn-text="Cancel"
+            call-count={count}
+            show-save-btn=true
+            process-name="Save Dialer Disposition"
+            onhandleclose={handleClose}
+        ></c-popup-screen-V2>
+    </template>
+    
+    <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </template>
+
+    <!-- Header for Remarks -->
+    <div class="border-field dialer-card">
+
+        <!-- Header Section -->
+        <header class="slds-modal__header header-section">
+            <div class="header-badge-row">
+                <span class="header-icon-badge">
+                    <lightning-icon icon-name="utility:call" size="x-small" variant="inverse"></lightning-icon>
+                </span>
+            </div>
+            <div class="slds-text-align_center">
+                <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">Dialer Information</h2>
+                <p class="header-subtitle">Track call attempts and disposition history for this lead.</p>
+            </div>
+        </header>
+    
+        <!-- Call Count and Increment Button Section -->
+        <div class="slds-modal__content slds-p-around_medium">
+
+            <lightning-layout horizontal-align="space-between" vertical-align="center" multiple-rows>
+                <lightning-layout-item size="3"></lightning-layout-item>
+                <lightning-layout-item size="1"></lightning-layout-item>
+                <lightning-layout-item size="3">
+                    <!-- <lightning-input class="call-count-input" label="Call Count" value={count} type="number" ></lightning-input> -->
+                    <div class="call-count-wrapper">
+                        <label class="call-count-label">Call Count</label>
+                        <div class="call-count-display">
+                            {count}
+                        </div>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="2" class="btn-col">
+                    <div class="increment-btn-wrapper">
+                    <lightning-button-icon class="increment-btn" icon-name="utility:add" variant="bare" size="medium"
+                        onclick={handleIncrement} title="Increment Count" alternative-text="Increment">
+                    </lightning-button-icon>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="3"></lightning-layout-item>
+            </lightning-layout>
+
+            <p if:true={showlastdisposition} class="last-disposition-text">
+                Latest Disposition: <b>{lastDisposition}</b>
+            </p>
+        
+            <h2 class="section-subheading">Disposition History</h2>
+
+            <div class="cssContainer-child-no-padding">
+                <table class="slds-table dark-table">
+                    <tbody>
+                        <template lwc:if={hasRemarks}>
+                            <template for:each={notes} for:item="field">
+                                <tr key={field.id}>
+                                    <td scope="col" style="text-align: left;">
+                                        <b class="note-key">{field.key}</b>
+                                        <span class="note-value">{field.value}</span>
+                                    </td>
+                                </tr>
+                            </template>
+                        </template>
+                        <template lwc:else>
+                            <tr>
+                                <td class="no-records-cell">No records found!</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer class="footer-section">
+        </footer>
+    </div>
+    
+</template>
+<!-- __________________________GenAI: Generated code ends here______________________________ -->

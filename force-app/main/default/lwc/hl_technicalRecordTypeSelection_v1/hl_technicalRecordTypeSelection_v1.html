@@ -1,0 +1,396 @@
+<template>
+   <template lwc:if={checkSpin}>
+      <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+   </template>
+    <template if:true={showFlow}>
+        <lightning-flow
+            flow-api-name="Initiate_Another_Technical_Evaluation"
+            flow-input-variables={inputVariables}
+            onstatuschange={handleFlowStatusChange}>
+        </lightning-flow>
+    </template>
+
+    <template lwc:if={genericInitiate}>
+        <!-- <div class="slds-m-vertical_small slds-m-left_large slds-m-left_large" style="margin-left:75px;">
+            <lightning-layout>
+                <lightning-layout-item size="2">
+                    <template lwc:if={progressStep.step1}>
+                        <div class="slds-align_absolute-center">
+                            <lightning-icon icon-name="utility:success" size="small" variant="success" alternative-text="incomplete"></lightning-icon>
+                        </div>
+                    </template>
+                    <template lwc:else>
+                        <div class="slds-align_absolute-center">
+                            <lightning-icon icon-name="utility:error" size="small" variant="error" alternative-text="incomplete"></lightning-icon>
+                        </div>
+                    </template>
+                    <div style="width: 90%;height: 2px;background-color: #113451;position:relative;top: -25%;left: 55%;"></div>
+                    <div class="slds-text-align_center">
+                        <p style="color: #113451; font-weight: 500; margin-top: 5px;">Select Technical Evaluation</p>
+                    </div>
+                </lightning-layout-item>
+                <lightning-layout-item size="2">
+                <template lwc:if={progressStep.step2}>
+                    <div class="slds-align_absolute-center">
+                        <lightning-icon icon-name="utility:success" size="small" variant="success" alternative-text="incomplete"></lightning-icon>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <div class="slds-align_absolute-center">
+                        <lightning-icon icon-name="utility:error" size="small" variant="error" alternative-text="incomplete"></lightning-icon>
+                    </div>
+                </template>
+                <div style="width: 90%;height: 2px;background-color: #113451;position:relative;top: -25%;left: 55%;"></div>
+                <div class="slds-text-align_center">
+                    <p style="color: #113451; font-weight: 500; margin-top: 5px;">Select Related Collateral</p>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="2">
+                <template lwc:if={progressStep.step3}>
+                    <div class="slds-align_absolute-center">
+                        <lightning-icon icon-name="utility:success" size="small" variant="success" alternative-text="incomplete"></lightning-icon>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <div class="slds-align_absolute-center">
+                        <lightning-icon icon-name="utility:error" size="small" variant="error" alternative-text="incomplete"></lightning-icon>
+                    </div>
+                </template>
+                <div style="width: 90%;height: 2px;background-color: #113451;position:relative;top: -25%;left: 55%;"></div>
+                <div class="slds-text-align_center">
+                    <p style="color: #113451; font-weight: 500; margin-top: 5px;">Select Assignee</p>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="2">
+                <template lwc:if={progressStep.step4}>
+                    <div class="slds-align_absolute-center">
+                        <lightning-icon icon-name="utility:success" size="small" variant="success" alternative-text="incomplete"></lightning-icon>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <div class="slds-align_absolute-center">
+                        <lightning-icon icon-name="utility:error" size="small" variant="error" alternative-text="incomplete"></lightning-icon>
+                    </div>
+                </template>
+                <div style="width: 90%;height: 2px;background-color: #113451;position:relative;top: -25%;left: 55%;"></div>
+                <div class="slds-text-align_center">
+                    <p style="color: #113451; font-weight: 500; margin-top: 5px;">Upload Documents</p>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="2">
+                <template lwc:if={progressStep.step5}>
+                    <div class="slds-align_absolute-center">
+                        <lightning-icon icon-name="utility:success" size="small" variant="success" alternative-text="incomplete"></lightning-icon>
+                    </div>
+                </template>
+                <template lwc:else>
+                    <div class="slds-align_absolute-center">
+                        <lightning-icon icon-name="utility:error" size="small" variant="error" alternative-text="incomplete"></lightning-icon>
+                    </div>
+                </template>
+                <div class="slds-text-align_center">
+                    <p style="color: #113451; font-weight: 500; margin-top: 5px;">Initiate Report</p>
+                </div>
+            </lightning-layout-item>
+            </lightning-layout>
+        </div> -->
+        <div class="slds-box slds-theme_default progress-container" style="margin-top:1%">
+            <div class={getProgressBar} style="overflow: auto;">
+                <template for:each={progressStages} for:item="stage" for:index="index">
+                    <div key={stage.key} class="progress-step">
+
+                        <!-- Connector Line -->
+                        <template if:true={stage.showLine}>
+                            <div class="connector"></div>
+                        </template>
+
+                        <!-- Stage Icon -->
+                        <template if:true={stage.completed}>
+                            <div class="icon-wrapper icon-wrapper-completed">
+                                <span class="check-mark-text" aria-label="Completed">&#10003;</span>
+                            </div>
+                        </template>
+                        <template if:false={stage.completed}>
+                            <div class="icon-wrapper icon-wrapper-pending">
+                                <span class="step-number-text">{stage.sequence}</span>
+                            </div>
+                        </template>
+
+                        <!-- Stage Name -->
+                        <div class="slds-text-align_center">
+                            <p class="stage-name">{stage.label}</p>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    
+        <template if:true={isTranch}>
+            <div class="slds-p-vertical_xx-small">
+                <!-- <template if:true={isTechManager}>
+                    <lightning-radio-group data-name="validate" name="radioGroup" label="Select Type of Evaluation" options={finaloptions} disabled
+                        value="Technical Evaluation" onchange={handleChange} message-when-value-missing="type of valuation" required type="radio">
+                    </lightning-radio-group>
+                </template>
+                <template if:false={isTechManager}> -->
+                    <lightning-radio-group data-name="validate" name="radioGroup" label="Select Type of Evaluation" options={finaloptions}
+                        value={techRecords} onchange={handleChange} message-when-value-missing="type of valuation" required type="radio">
+                    </lightning-radio-group>
+                <!-- </template> -->
+            </div> 
+        
+            <template if:true={isEvaluationSelected}>
+                <div class="slds-p-vertical_xx-small">
+                    <legend class="slds-form-element__legend slds-form-element__label"><abbr class="slds-required" title="required">* </abbr>Related Collateral</legend>
+                    <lightning-combobox data-name="validate" variant="label-hidden" class="inputfield" name="none" label="Related Collateral"
+                        value={aplicationcolatteral} placeholder="Select Collateral" options={options1}
+                        onchange={handleCollateralSelection} required>
+                    </lightning-combobox>
+                </div>
+            </template>
+            
+            <template if:true={showTechEvluation}>
+                <template lwc:if={recordAllocation}>
+                    <template if:true={showTechSelection}>
+                        <div class="slds-p-vertical_xx-small">
+                            <legend class="slds-form-element__legend slds-form-element__label"><abbr class="slds-required"></abbr>Select Technical Valuation Report</legend>
+                            <c-generic-multi-picklist-selector
+                                data-id="technicalOptions" showpills=false
+                                label=""
+                                options={technicalOptions}
+                                onselectedvalueschange={handleTechnicalSelection}>
+                            </c-generic-multi-picklist-selector>
+                        </div>
+                    </template>
+
+                    <div class="slds-p-vertical_xx-small">
+                        <legend class="slds-form-element__legend slds-form-element__label"><abbr class="slds-required" title="required">* </abbr>Select an Assignee</legend>
+                        <c-search-user-picker 
+                            options={assigneeOptions1}
+                            onselect={handleUserChange}
+                        ></c-search-user-picker>
+                    </div>
+                </template>
+
+                <template lwc:if={isUserSelected}>
+                    <div class="slds-grid slds-wrap">
+                        <legend class="slds-form-element__legend slds-form-element__label slds-m-vertical_xx-small">Upload Technical Document</legend></br>
+                    </div>
+                    <div class="slds-grid slds-wrap">
+                        <button class="slds-button slds-button_brand initiate-button" style="width: 170px;" onclick={openDocumentModal}>
+                            <lightning-icon class="slds-p-right_small" icon-name="utility:add" alternative-text="Add" title="Add" variant="inverse" size="x-small"></lightning-icon>
+                            Add New Document
+                        </button>
+                    </div>
+                </template>
+            
+                <!-- <template lwc:if={openTable}>
+                    <div class="slds-p-horizontal_medium">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right" aria-label="Example table of Opportunities with vertical borders">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="" scope="col" style="text-align: center; background-color: rgb(17, 52, 81); color: white; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Close Date">Sr. No</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center; background-color: rgb(17, 52, 81); color: white; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Stage">Description</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center; background-color: rgb(17, 52, 81); color: white; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Confidence" style="background-color: rgb(17, 52, 81); color: white; font-weight: 500;">Upload</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center; background-color: rgb(17, 52, 81); color: white; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Confidence" style="background-color: rgb(17, 52, 81); color: white; font-weight: 500;">Uploaded Files</div>
+                                </th>
+                                <th class="" scope="col" style="text-align: center; background-color: rgb(17, 52, 81); color: white; font-weight: 500; padding: 10px">
+                                    <div class="sticky-column slds-truncate" title="Contact">Delete</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={documents} for:item="document" for:index="index">
+                                <tr key={document.Id} class="slds-hint-parent">
+                                    <td data-label="Account Name">
+                                        <div class="slds-truncate" title="srno">{document.srno}</div>
+                                    </td>
+                                    <td data-label="Close Date">
+                                        <div class="slds-truncate" title="4/14/2015">{document.docName}</div>
+                                    </td>
+                                    <td data-label="Prospecting" class="uploadFileView">
+                                        <lightning-file-upload
+                                            variant="label-hidden"
+                                            name="fileUploader"
+                                            accept={acceptedFormats}
+                                            data-id={document.docId}
+                                            onuploadfinished={handleFileChange}
+                                            class="file-upload-input"
+                                            data-record-id={document.docId}
+                                            disabled={document.isUploadNeeded}
+                                            multiple>
+                                        </lightning-file-upload>
+                                    </td>
+                                    <td data-label="Prospecting">
+                                        <table class="slds-table slds-table_bordered slds-scrollable_x slds-border_right slds-border_left">
+                                        <tbody>
+                                            <template for:each={document.uploadedFiles} for:item="iterFile">
+                                                <tr style="background: #f2f2f2;border-color: white;" key={iterFile.contentDocId}>
+                                                <td style="border: none;">
+                                                    <a href="javascript:void(0);" data-id={iterFile.contentDocId} onclick={handlePreview}>{iterFile.fileName}</a>
+                                                </td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                        </table>
+                                    </td>
+                                    <td data-label="Amount">
+                                        <div class="slds-truncate">
+                                            <template if:false={document.isRequired}>
+                                            <lightning-button-icon data-index={index} data-id={document.docId} icon-name="utility:delete"  size="medium"   alternative-text="View More" class="slds-m-left_xx-small" onclick={deleteCheckList}></lightning-button-icon>
+                                            </template>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                    </div>  
+                </template> -->
+                
+                <template lwc:if={openTable}>
+                    <!-- <div class="slds-p-horizontal_medium"> -->
+                        <!-- Horizontal scroll container -->
+                        <div class="slds-scrollable_x" style="overflow-x: auto; max-width: 100%; margin-top: 15px;">
+                            <table class="slds-table" style="width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th style="background-color: #5bb6e3; color: black;">Sr. No</th>
+                                        <th style="background-color: #5bb6e3; color: black;">Description</th>
+                                        <th style="background-color: #5bb6e3; color: black;">Upload</th>
+                                        <th style="background-color: #5bb6e3; color: black;">Uploaded Files</th>
+                                        <th style="background-color: #5bb6e3; color: black;">Delete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={documents} for:item="document" for:index="index">
+                                        <tr key={document.Id} class="slds-hint-parent">
+                                            <td>{document.srno}</td>
+                                            <td>{document.docName}</td>
+                                            <td class="uploadFileView">
+                                                <lightning-file-upload
+                                                    variant="label-hidden"
+                                                    name="fileUploader"
+                                                    accept={acceptedFormats}
+                                                    data-id={document.docId}
+                                                    onuploadfinished={handleFileChange}
+                                                    class="file-upload-input"
+                                                    data-record-id={document.docId}
+                                                    disabled={document.isUploadNeeded}
+                                                    multiple>
+                                                </lightning-file-upload>
+                                            </td>
+                                            <td>
+                                                <table class="slds-table slds-table_bordered slds-scrollable_x slds-border_right slds-border_left">
+                                                    <tbody>
+                                                        <template for:each={document.uploadedFiles} for:item="iterFile">
+                                                            <tr key={iterFile.contentDocId} style="background: #f2f2f2; border-color: white;">
+                                                                <td style="border: none;">
+                                                                    <a href="javascript:void(0);" data-id={iterFile.contentDocId} onclick={handlePreview}>
+                                                                        {iterFile.fileName}
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        </template>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                            <td>
+                                                <template if:false={document.isRequired}>
+                                                    <lightning-button-icon
+                                                        data-index={index}
+                                                        data-id={document.docId}
+                                                        icon-name="utility:delete"
+                                                        size="medium"
+                                                        alternative-text="Delete"
+                                                        class="slds-m-left_xx-small"
+                                                        onclick={deleteCheckList}>
+                                                    </lightning-button-icon>
+                                                </template>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    <!-- </div> -->
+                </template>
+
+                <br>
+            </template>
+
+            <template if:true={showSqYardCheck}>
+                <div class="slds-p-vertical_xx-small">
+                    <div style="display: inline-block;">
+                        <legend class="slds-form-element__legend slds-form-element__label"><abbr class="slds-required" title="required">* </abbr>Squard Yard Details</legend>
+                    </div>
+                    
+                    <c-hl_square-yard-check record-id={recordId} aplicationcolatteral={aplicationcolatteral} onclose={closeAction}></c-hl_square-yard-check>
+                </div>
+            </template>
+                
+            <template if:true={showActionButton}>
+                <div class="slds-col slds-text-align_center">
+                    <template if:false={isOperationProfile}>
+                        <button class="slds-button slds-button_brand initiate-button" onclick={handleRecordSelection}>Initiate</button>
+                    </template>
+                    <button class="slds-button slds-button_brand wave-button" onclick={handleShowAction}>Cancel</button>
+                </div>
+            </template>
+            
+            <!-- <div class="slds-border_bottom slds-m-vertical_x-small"></div> -->
+        </template>
+
+        <template lwc:if={openAddDocModal}>
+            <c-document-checklist-modal record-id={recordId} application-coll-id={aplicationcolatteral} onclosemodal={closeDocumentModal} type="Technical Documents" ondocumentsadded={handleDocumentsAdded}></c-document-checklist-modal><!--onhandledocadded={handledoc} onreset={resetDocuments} -->
+        </template> 
+
+        <template if:true={showConfirmModal}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container" style="max-width: 250px;">
+                    <div class="slds-modal__header" style="background-color: #5bb6e3; color: black; font-weight: 500;">
+                        <h2 class="slds-text-heading_medium">Confirm Cancellation</h2>
+                    </div>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <p>Are you sure you want to cancel?</p>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <button class="slds-button slds-button_brand wave-button" onclick={closeConfirmModal}>No</button>
+                        <button class="slds-button slds-button_brand initiate-button" onclick={confirmCloseAction}>Yes</button>
+                        <!-- <lightning-button variant="neutral" label="No" onclick={closeConfirmModal}></lightning-button>
+                        <lightning-button class="slds-m-left_small" variant="brand" label="Yes" onclick={confirmCloseAction}></lightning-button> -->
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+        <template if:true={showConfirmDocModal}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container" style="max-width: 250px;">
+                    <div class="slds-modal__header" style="background-color: #5bb6e3; color: black; font-weight: 500;">
+                        <h2 class="slds-text-heading_medium">Confirm Change</h2>
+                    </div>
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <p>Are you sure you want to delete the documents before making any changes?</p>
+                    </div>
+                    <footer class="slds-modal__footer">
+                        <button class="slds-button slds-button_brand wave-button" onclick={closeConfirmDocModal}>No</button>
+                        <button class="slds-button slds-button_brand initiate-button" onclick={confirmDocDeletion}>Yes</button>
+                        <!-- <lightning-button variant="neutral" label="No" onclick={closeConfirmDocModal}></lightning-button>
+                        <lightning-button class="slds-m-left_small" variant="brand" label="Yes" onclick={confirmDocDeletion}></lightning-button> -->
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    
+    </template>
+</template>

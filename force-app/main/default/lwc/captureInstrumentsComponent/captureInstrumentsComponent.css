@@ -1,0 +1,380 @@
+@import "c/cssLibrary";
+
+/* ==========================================
+   PAGE
+========================================== */
+
+:host {
+    display: block;
+    background: #08192f;
+    min-height: 100vh;
+    color: white;
+}
+
+lightning-card {
+    --slds-c-card-color-background: #08192f;
+    background: #08192f;
+}
+
+/* ==========================================
+   TABLES
+========================================== */
+
+.table-card {
+    margin: 0 16px 16px;
+}
+
+.table-container {
+    overflow-x: auto;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.15);
+}
+
+.custom-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    background: #08192f;
+    color: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.custom-table thead th,
+table.custom-table thead tr th,
+table.slds-table.custom-table thead tr th,
+table.slds-table_bordered.custom-table thead tr th,
+table.slds-table_col-bordered.custom-table thead tr th,
+table.slds-table.slds-table_bordered.slds-table_col-bordered.custom-table thead tr th {
+    background: #0d1b2e !important;
+    background-color: #0d1b2e !important;
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 11px;
+    line-height: 14px;
+    text-transform: none;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.995) !important;
+    height: 24px;
+    padding: 4px 8px;
+    white-space: normal;
+    vertical-align: middle;
+}
+.custom-table thead tr th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.custom-table thead tr th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.custom-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+}
+
+.custom-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
+}
+
+/* Body */
+
+.custom-table tbody td {
+    background: #0d1b2e;
+    color: white !important;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid rgba(245, 242, 242, 0.927) !important;
+    height: 32px;
+    padding: 6px 8px;
+    vertical-align: middle;
+}
+
+/* Hover Effect */
+
+.custom-table tbody tr:hover td {
+    background: #16273f;
+}
+
+/* ==========================================
+   DEDICATED ROW/HEADER COLORING
+   Scoped specifically to the Repayment Bank Account Details
+   and Created Instrument Details tables so shared/global
+   .custom-table rules can never be overridden or diluted.
+========================================== */
+
+table.repayment-table.custom-table thead th,
+table.instrument-table.custom-table thead th {
+    background: #0d1b2e !important;
+    background-color: #0d1b2e !important;
+    color: #ffffff !important;
+}
+
+table.repayment-table.custom-table tbody td,
+table.instrument-table.custom-table tbody td {
+    background: #0d1b2e !important;
+    background-color: #0d1b2e !important;
+    color: #ffffff !important;
+}
+
+table.repayment-table.custom-table tbody tr:hover td,
+table.instrument-table.custom-table tbody tr:hover td {
+    background: #16273f !important;
+    background-color: #16273f !important;
+}
+
+/* ==========================================
+   SECTION TITLES
+========================================== */
+
+.section-title {
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+/* Info Text */
+
+.slds-text-body_small {
+    color: white;
+}
+
+lightning-icon {
+    --slds-c-icon-color-foreground-default: white;
+}
+
+/* Delete Icon - Red */
+
+.delete-icon {
+    --slds-c-icon-color-foreground-default: #ff4d4d;
+    --slds-c-icon-color-foreground: #ff4d4d;
+}
+
+/* Upload Icon - Light Green */
+
+.upload-icon {
+    --slds-c-icon-color-foreground-default: #8bc34a;
+    --slds-c-icon-color-foreground: #8bc34a;
+}
+
+/* ==========================================
+   ACCORDION / INSTRUMENT DETAILS SECTION
+========================================== */
+
+.instrument-wrapper {
+    margin: 12px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.08);
+}
+
+.instrument-header {
+    background: #0b4db3;
+    color: #fff;
+    height: 46px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 10px 10px 0 0;
+    gap: 8px;
+}
+
+.instrument-container {
+    background: #08090a;
+    padding: 14px 14px 8px;
+    border-top: none;
+}
+
+.instrument-description {
+    color: #95a3bb;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 0 8px 12px;
+}
+
+.instrument-form {
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 14px;
+    padding: 18px;
+    margin-top: 8px;
+    background: #071d39;
+}
+
+.instrument-form .slds-col {
+    margin-bottom: 6px;
+}
+
+/* ==========================================
+   FORM LABELS
+========================================== */
+
+.instrument-container {
+    --slds-c-input-label-text-color: #8a97ab;
+    --slds-c-combobox-label-text-color: #8a97ab;
+    --slds-c-textarea-label-text-color: #8a97ab;
+}
+
+/* Labels: dimmed by default for optional/non-required fields */
+
+.instrument-container label,
+.instrument-container .slds-form-element__label {
+    color: #8a97ab !important;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* Labels: bright white for required fields (label contains the red asterisk) */
+
+.instrument-container .slds-form-element__label:has(.slds-required) {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+.instrument-container .slds-required {
+    color: #ff465c !important;
+}
+
+/* ==========================================
+   INPUTS
+========================================== */
+
+.instrument-container .slds-input,
+.instrument-container .slds-combobox__input {
+    background: transparent !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255,255,255,.08) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    min-height: 32px;
+    height: 32px;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.instrument-container input,
+.instrument-container .slds-combobox__input {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+}
+
+.instrument-container .slds-input:focus,
+.instrument-container .slds-combobox__input:focus {
+    border-bottom: 1px solid #4da3ff !important;
+    box-shadow: none !important;
+}
+
+.instrument-container .slds-input[disabled] {
+    color: white !important;
+    opacity: 1;
+}
+
+/* Values: dimmed for optional/non-required fields, bright white for required fields */
+
+.instrument-container .slds-form-element:not(:has(.slds-required)) .slds-input,
+.instrument-container .slds-form-element:not(:has(.slds-required)) .slds-combobox__input {
+    color: #8a97ab !important;
+}
+
+.instrument-container input::placeholder {
+    color: #b6c4d8;
+}
+
+.instrument-container .slds-input__icon {
+    fill: white;
+}
+
+/* ==========================================
+   COMBOBOX
+========================================== */
+
+.removeborder {
+    --slds-c-input-shadow: none;
+    --slds-c-input-radius-border: 0;
+}
+
+.hideInput {
+    --slds-c-input-shadow: none;
+}
+
+/* ==========================================
+   BUTTONS
+========================================== */
+
+.save-button,
+.previous-button {
+    background: #8db446;
+    border: none;
+    color: white;
+    font-weight: 700;
+    border-radius: 25px;
+    padding: 8px 24px;
+}
+
+.save-button:hover,
+.previous-button:hover {
+    background: #7ca03c;
+}
+
+/* Create Instrument Button - Purple, rounded-rectangle style (matches captureMandateComponent) */
+
+.create-instrument-button {
+    background: #7c3aed;
+    border: none;
+    color: #ffffff;
+    font-weight: 700;
+    border-radius: 8px;
+    padding: 10px 28px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.25);
+}
+
+.create-instrument-button:hover,
+.create-instrument-button:focus {
+    background: #6d28d9;
+    box-shadow: 0 3px 8px rgba(0,0,0,.3);
+}
+
+.create-instrument-button:active {
+    background: #5b21b6;
+}
+
+/* ==========================================
+   MODAL
+========================================== */
+
+.header-section {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #1a3558;
+    color: white;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+}
+
+.footer-section {
+    position: sticky;
+    bottom: 0;
+    z-index: 100;
+    background: #1a3558;
+    padding: 12px;
+    border-top: 1px solid rgba(255,255,255,0.3);
+}
+
+.slds-modal__content {
+    background: #08192f;
+    color: white;
+}
+
+.header-title {
+    color: white;
+}
+
+.slds-m-around_medium {
+    background: #08192f;
+    color: white;
+}

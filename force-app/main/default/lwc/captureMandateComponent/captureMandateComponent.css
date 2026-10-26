@@ -1,0 +1,365 @@
+/*@import "c/cssLibrary";*/
+
+/* =====================================================
+   PAGE BACKGROUND
+===================================================== */
+
+:host {
+    display: block;
+    background: #08192f;
+    min-height: 100vh;
+    color: white;
+}
+
+lightning-card {
+    --slds-c-card-color-background: #08192f;
+    background: #08192f;
+}
+
+/* =====================================================
+   SECTION HEADINGS
+===================================================== */
+
+h2.slds-text-title_bold {
+    color: white;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 12px;
+}
+
+.slds-m-around_medium {
+    background: #08192f;
+    color: white;
+}
+
+/* =====================================================
+   TABLE STYLING
+   Repayment Bank Account Details
+   Created Mandate Details
+===================================================== */
+
+.table-container {
+    overflow-x: auto;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.15);
+}
+
+.custom-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    background: #101010;
+    color: white;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Header */
+
+.custom-table thead th {
+    background: #0d1b2e !important; /* Bright blue header to match reference */
+    background-color: #0d1b2e !important;
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 11px;
+    line-height: 14px;
+    text-transform: none;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.995) !important;
+    height: 24px;
+    padding: 4px 8px;
+    white-space: normal;
+    vertical-align: middle;
+}
+.custom-table thead tr th:first-child {
+    border-top-left-radius: 8px;
+}
+
+.custom-table thead tr th:last-child {
+    border-top-right-radius: 8px;
+}
+
+.custom-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+}
+
+.custom-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
+}
+
+/* Body */
+
+.custom-table tbody td {
+    background: #0d1b2e;
+    color: white !important;
+    font-size: 12px;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid rgba(245, 242, 242, 0.927) !important;
+    height: 32px;
+    padding: 6px 8px;
+    vertical-align: middle;
+}
+
+/* Hover Effect */
+
+.custom-table tbody tr:hover td {
+    background: #16273f;
+}
+
+/* =====================================================
+   INFO TEXT
+===================================================== */
+
+.slds-text-body_small {
+    color: white;
+}
+
+/* Icon Colors */
+
+lightning-icon {
+    --slds-c-icon-color-foreground-default: white;
+}
+
+/* Delete Icon - Red */
+
+.delete-icon {
+    --slds-c-icon-color-foreground-default: #ff4d4d;
+    --slds-c-icon-color-foreground: #ff4d4d;
+}
+
+/* =====================================================
+   MANDATE DETAILS SECTION
+===================================================== */
+
+/* Blue Heading Bar */
+
+.mandate-header {
+    background: #06125e;
+    color: #fff;
+    height: 46px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 10px 10px 0 0;
+    gap: 8px;
+}
+
+/* Description */
+
+.form-description {
+    color: #95a3bb;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 0 8px 12px;
+}
+
+
+/* Main Form Container */
+
+.mandate-container {
+    background: #071d39;
+    padding: 14px 14px 8px;
+    border-top: none;
+}
+
+/* Input Spacing */
+
+.mandate-form .slds-col {
+    margin-bottom: 6px;
+}
+
+/* Labels (default: dimmed for optional/non-required fields) */
+
+.mandate-container label,
+.mandate-container .slds-form-element__label {
+    color: #8a97ab !important;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+/* Labels: bright white for required fields (label contains the red asterisk) */
+
+.mandate-container .slds-form-element__label:has(.slds-required) {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* Required Mark */
+
+.mandate-container .slds-required {
+    color: #ff465c !important;
+}
+
+/* Input Fields */
+
+.mandate-container .slds-input,
+.mandate-container .slds-combobox__input {
+    background: transparent !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-bottom: 1px solid rgba(255,255,255,.08) !important;
+    min-height: 32px;
+    height: 32px;
+    font-size: 15px;
+    font-weight: 600;
+    box-shadow: none !important;
+}
+
+/* Focus */
+
+.mandate-container .slds-input:focus,
+.mandate-container .slds-combobox__input:focus {
+    border-bottom: 1px solid #4da3ff !important;
+    box-shadow: none !important;
+}
+
+/* Disabled Fields */
+
+.mandate-container .slds-input[disabled] {
+    opacity: 1;
+}
+
+/* Values: dimmed for optional/non-required fields, bright white for required fields */
+
+.mandate-container .slds-form-element:not(:has(.slds-required)) .slds-input,
+.mandate-container .slds-form-element:not(:has(.slds-required)) .slds-combobox__input {
+    color: #8a97ab !important;
+}
+
+/* Placeholder */
+
+.mandate-container input::placeholder {
+    color: #b6c4d8;
+}
+
+/* Combobox Icon */
+
+.mandate-container .slds-input__icon {
+    fill: white;
+}
+
+/* =====================================================
+   BUTTONS
+===================================================== */
+
+.save-button,
+.previous-button {
+    background: #8db446;
+    border: none;
+    color: white;
+    font-weight: 700;
+    border-radius: 25px;
+    padding: 8px 24px;
+}
+
+.save-button:hover,
+.previous-button:hover {
+    background: #7ca03c;
+}
+
+/* Create Mandate Button - Purple, rounded-rectangle style */
+
+.create-mandate-button {
+    background: #7c3aed;
+    border: none;
+    color: #ffffff;
+    font-weight: 600;
+    border-radius: 6px;
+    padding: 7px 15px;
+    box-shadow: 0 2px 6px rgba(0,0,0,.25);
+}
+
+.create-mandate-button:hover,
+.create-mandate-button:focus {
+    background: #6d28d9;
+    box-shadow: 0 3px 8px rgba(0,0,0,.3);
+}
+
+.create-mandate-button:active {
+    background: #5b21b6;
+}
+
+/* =====================================================
+   MODAL
+===================================================== */
+
+.header-section {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: #1a3558;
+    color: white;
+    border-bottom: 1px solid rgba(255,255,255,0.3);
+}
+
+.footer-section {
+    position: sticky;
+    bottom: 0;
+    z-index: 100;
+    background: #1a3558;
+    padding: 12px;
+    border-top: 1px solid rgba(255,255,255,0.3);
+}
+
+.slds-modal__content {
+    background: #08192f;
+    color: white;
+}
+
+/* =====================================================
+   COMBOBOX
+===================================================== */
+
+.removeborder {
+    --slds-c-input-shadow: none;
+    --slds-c-input-radius-border: 0;
+}
+
+/* =====================================================
+   INPUTS
+===================================================== */
+
+.hideInput {
+    --slds-c-input-shadow: none;
+}
+
+/* =====================================================
+   HEADER TITLE
+===================================================== */
+
+.header-title {
+    color: white;
+}
+.mandate-form {
+    border: 1px solid rgba(255,255,255,.08);
+    border-radius: 14px;
+    padding: 18px;
+    margin-top: 8px;
+    background: #071d39;
+}
+.mandate-wrapper {
+    margin: 12px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.08);
+    background: #071d39;
+}
+.mandate-container input,
+.mandate-container .slds-combobox__input {
+    font-size: 15px !important;
+    font-weight: 600 !important;
+}
+.mandate-container {
+    --slds-c-input-label-text-color: #8a97ab;
+    --slds-c-combobox-label-text-color: #8a97ab;
+    --slds-c-textarea-label-text-color: #8a97ab;
+}
+.mandate-container .slds-form-element__label:has(.slds-required) {
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}

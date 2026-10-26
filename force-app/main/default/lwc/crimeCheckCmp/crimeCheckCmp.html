@@ -1,0 +1,170 @@
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </template>
+    <template if:false={disabledCmp}>
+    <template if:false={userHavePsFcuSamplerPermissionSet}>
+    <template lwc:if={showCrimeCheck}>    
+    <template if:false={showInitiateButton}>
+        <button class="disabled-button slds-button slds-button_brand">Initiate Crime Check</button>
+    </template>
+    <template if:true={showInitiateButton}>
+        <button class="save-button slds-button slds-button_brand" onclick={hanldeInitaite}>Initiate Crime Check</button>
+    </template>
+    </template>
+    <button class="cancel-button slds-button slds-button_brand" onclick={hanldeRefresh}>Refresh</button>
+    </template>
+    </template>
+
+    <template if:true={applicantCrimeCheckRecords}>
+        <!-- ____GenAI: Generated code starts here - lightning-accordion /
+             lightning-accordion-section replaced with a hand-built accordion.
+             The base component renders its header inside its own fully
+             encapsulated shadow root in this org - neither SLDS custom-property
+             styling hooks nor external CSS overrides could repaint it (same
+             confirmed root cause/fix already applied to mainPdCmp). Plain
+             divs driven by tracked isOpen state have no such boundary to
+             cross, so the blue gradient header always renders.____ -->
+        <div class="custom-crime-accordion example-accordion bsa-page">
+            <template for:each={applicantCrimeCheckRecords} for:item="item">
+                <div class="custom-crime-section" key={item.applicantType}>
+                    <div class="custom-crime-header" data-name={item.applicantType} onclick={toggleSection}>
+                        <lightning-icon icon-name={item.chevronIcon} size="x-small" class="custom-crime-icon"></lightning-icon>
+                        <span class="custom-crime-title">{item.applicantType}</span>
+                    </div>
+                    <template if:true={item.isOpen}>
+                    <div class="slds-scrollable_x" style="overflow: auto;">
+                        <table class="slds-table" style=" border-color: #2a2f45">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45" scope="col" colspan="1">
+                                        Select				
+                                    </th>
+                                    <template if:true={item.isIndividual}>
+
+                                    
+                                    
+                                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45" scope="col" colspan="1">
+                                        Applicant Name				
+                                    </th>
+                                    <!--<th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45" scope="col" colspan="1">
+                                        Applicant Type						
+                                    </th>-->
+                                </template>
+                                <template if:false={item.isIndividual}>
+                                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45" scope="col" colspan="1">
+                                        Company Name				
+                                    </th>
+                                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45" scope="col" colspan="1">
+                                        Company Type				
+                                    </th>
+                                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45" scope="col" colspan="1">
+                                        Company Address				
+                                    </th>
+                                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45" scope="col" colspan="1">
+                                        GST Number				
+                                    </th>
+
+                                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45" scope="col" colspan="1">
+                                        Directors				
+                                    </th>
+
+                                </template>
+                                <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45" scope="col" colspan="1">
+                                    Status						
+                                </th>
+                                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45" scope="col" colspan="1">
+                                        Risk type						
+                                    </th>
+                                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45;;width: 40%;" scope="col" colspan="1">
+                                        Risk Summary					
+                                    </th>
+                                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45" scope="col" colspan="1">
+                                        Disposition						
+                                    </th>
+                                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45" scope="col" colspan="1">
+                                        Download Crime Check Report						
+                                    </th>
+                                    
+                                </tr>
+                            </thead>
+                            
+                            <tbody>
+                                <template for:each={item.applicantInfo} for:item="record">
+                                    <tr key={record.applicantId}>
+                                        <template if:true={record.isInitiated}>
+                                            <td style=" border-color: #2a2f45">
+                                            <lightning-input class = "comboBoxSelect" type="checkbox" label=""  
+                                            checked={record.isInitiated} disabled></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:false={record.isInitiated}>
+                                            <td style=" border-color: #2a2f45">
+                                            <lightning-input class = "comboBoxSelect" type="checkbox" label="" data-id={record.applicantId}
+                                            onchange={handleChildExistingChange}></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:true={item.isIndividual}>
+                                            <td style=" border-color: #2a2f45">{record.applicantCompName}</td>
+                                        </template>
+                                        <template if:false={item.isIndividual}>
+                                            <td style=" border-color: #2a2f45">{record.applicantCompName}</td>
+                                            <td style=" border-color: #2a2f45">{record.compType}</td>
+                                            <td style=" border-color: #2a2f45">{record.compAddress}</td>
+                                            <td style=" border-color: #2a2f45">{record.compGst}</td>
+                                            <td style=" border-color: #2a2f45">{record.compDirectors}</td>
+                                        </template>
+                                        <td style=" border-color: #2a2f45">{record.crimeCheckStatus}</td>
+                                        <template if:true={record.isCompleted}>
+                                            <template if:true={record.isHighRisk}>
+                                                <td style=" border-color: #2a2f45">
+                                                    <p style="background: red;color: white;font-weight: 500;">High Risk</p>
+                                                </td>
+                                            </template>
+                                            <template if:false={record.isHighRisk}>
+                                                <td style=" border-color: #2a2f45"><p style="background: green;color: white;font-weight: 500;">{record.riskType}</p></td>
+                                            </template>
+                                            
+                                            
+    
+                                            <td style=" border-color: #2a2f45">{record.riskSummary}</td>
+                                            <td style=" border-color: #2a2f45">
+                                                
+                                                <template if:true={record.isHighRisk}>
+                                                    <lightning-combobox label="Status"
+                                                    placeholder="Select Disposition" options={dispositionOptions} name="B" data-id={record.docId} id={record.appVerificationId} variant="label-hidden" onchange={handleChange} value={record.disposition} disabled={record.isClicked}>
+                                                </lightning-combobox>
+                                                </template>
+                                            
+                                                
+                                                <template if:false={record.isHighRisk}>
+                                                    <lightning-combobox name="progress" label="Status"
+                                                    placeholder="Select Disposition" options={dispositionOptions} variant="label-hidden" onchange={handleChange} value={record.disposition}>
+                                                </lightning-combobox>
+                                                </template>
+                                                
+                                                
+                                            </td>
+                                            <td style=" border-color: #2a2f45"><lightning-icon data-id={record.docId} data-present={record.isDocPresent} data-link={record.downloadLink} id={record.appVerificationId} icon-name="utility:preview" alternative-text="preview" title="preview" onclick={downloadCrimeReport}></lightning-icon></td>
+                                        </template>
+                                        <template if:false={record.isCompleted}>
+                                            <td style=" border-color: #2a2f45"></td>
+                                            <td style=" border-color: #2a2f45"></td>
+                                            <td style=" border-color: #2a2f45"></td>
+                                            <td style=" border-color: #2a2f45"></td>
+                                        </template>
+                                        
+                                        </tr>
+                                </template>
+                                    
+                               
+                            </tbody>
+                        </table>
+                    </div>
+                    </template>
+                </div>
+            </template>
+        </div>
+    </template>
+</template>

@@ -1,0 +1,135 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+.slds-table_cell-buffer tr>th:first-child, .slds-table_cell-buffer tr>td:first-child, .slds-table--cell-buffer tr>th:first-child, .slds-table--cell-buffer tr>td:first-child{
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+table, th, td {
+    border: 1px solid #33455e;
+}
+
+.color-theme{
+    text-align: center;
+    font-weight: 500;
+    color: white;
+}
+
+.no-hover:hover {
+  cursor: default; /* Change cursor back to default if it was changed on hover */
+  /* Reset any other hover-specific styles */
+}
+
+.no-hover-child:hover {
+  background-color: #ddd !important; /* Or whatever the default background color is */
+  cursor: default; /* Change cursor back to default if it was changed on hover */
+  /* Reset any other hover-specific styles */
+}
+
+.slds-table thead th {
+    white-space: normal;
+}
+.col-width-10 {
+    width: 10px;
+}
+.col-width-100 {
+    min-width: 100px;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+:host .slds-modal__content{
+    overflow: initial;
+}
+/* Make the table wider */
+.slds-table {
+    min-width: 800px;
+}
+
+/* Make the picklist cell wider */
+td[colspan] lightning-combobox {
+    min-width: 300px;
+}
+
+/* Allow overflow for dropdowns */
+.slds-scrollable_x {
+    overflow: visible !important;
+}
+
+/* ===== Theme restyle: buttons, modal, combobox/select (Codify) ===== */
+.btn-positive-action,
+.save-button,
+.next-button,
+.submit-button {
+    background-color: #8b5cf6 !important;
+border-color: #8b5cf6 !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+.btn-negative-action,
+.cancel-button,
+.close-button,
+.back-button {
+    background-color: #16283f;
+border-color: #8b5cf6 !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+.btn-add-action {
+    background-color: #1467eb !important;
+    border-color: #1467eb !important;
+    color: #ffffff !important;
+}
+
+.slds-modal__header,
+.cs-modal-header {
+    background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%) !important;
+    color: #ffffff !important;
+}
+.slds-modal__header h1,
+.slds-modal__header h2,
+.slds-modal__header .slds-text-heading_medium,
+.cs-modal-header h2 {
+    color: #ffffff !important;
+}
+.slds-modal__footer,
+.cs-modal-footer {
+    background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%) !important;
+}
+
+/* Combobox / select - closed state */
+.slds-select,
+.slds-combobox__input {
+    background-color: #16283f !important;
+    border: 1px solid #33455e !important;
+    color: #ffffff !important;
+    height: 2.25rem !important;
+}
+lightning-combobox::part(input),
+lightning-select::part(select) {
+    background-color: #16283f !important;
+    border: 1px solid #33455e !important;
+    color: #ffffff !important;
+}
+
+/* Combobox open dropdown listbox - dark theme */
+.slds-dropdown,
+.slds-dropdown__list,
+.slds-listbox_vertical {
+    background-color: #16283f !important;
+    border-color: #33455e !important;
+}
+.slds-listbox__option,
+.slds-listbox__item {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+}
+.slds-listbox__option:hover,
+.slds-listbox__option:focus,
+.slds-listbox__option.slds-has-focus,
+.slds-listbox__option[aria-selected="true"] {
+    background-color: #1589ee !important;
+    color: #ffffff !important;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

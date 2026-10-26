@@ -1,0 +1,899 @@
+<template>
+    <lightning-card>
+        <span class="styleContainer"></span>
+        <lightning-accordion class="example-accordion" allow-multiple-sections-open active-section-name="DisbursementDetails">
+            <lightning-accordion-section name="DisbursementDetails" label="Disbursement Details">
+                <!-- <div class="slds-m-around_medium"> -->
+                    <div class="slds-section slds-is-open">
+                        <div class="slds-grid slds-gutters slds-wrap slds-p-around_medium">
+                            <template if:true={fieldDetailsDisbursement}>
+                                <template for:each={fieldDetailsDisbursement} for:item="field">
+                                <template if:false={field.isHidden}>
+                                    <div key={field.id} class="slds-col slds-size_1-of-3 slds-p-around_x-small">   
+                                        <!-- Number -->
+                                        <template if:true={field.isNumber}>
+                                            <lightning-input 
+                                                label={field.label}
+                                                type="number"
+                                                value={field.value}
+                                                disabled={field.isDisabled}
+                                                onchange={handleInputChange}
+                                                onblur={handleOnBlur} step="0.01"
+                                                data-id={field.id} >
+                                            </lightning-input>
+                                        </template>
+
+                                        <!-- Checkbox -->
+                                        <template if:true={field.isCheckBox}>
+                                            <lightning-input 
+                                                label={field.label}
+                                                type="checkbox"
+                                                value={field.value}
+                                                disabled={field.isDisabled}
+                                                onchange={handleInputChange}
+                                                onblur={handleOnBlur}
+                                                data-id={field.id} >
+                                            </lightning-input>
+                                        </template>
+
+                                        <!-- Picklist -->
+                                        <template if:true={field.isPicklist}>
+                                            <lightning-combobox 
+                                                class="custom-combobox"
+                                                placeholder="Select Picklist"
+                                                data-id={field.id} 
+                                                data-name={field.id}  
+                                                onchange={handleInputChange}
+                                                value={field.value}
+                                                label={field.label} 
+                                                disabled={field.isDisabled}>
+                                            </lightning-combobox>
+                                        </template>
+
+                                        <!-- Date -->
+                                        <template if:true={field.isDate}>
+                                            <lightning-input 
+                                                label={field.label}
+                                                type="date"
+                                                value={field.value}
+                                                disabled={field.isDisabled}
+                                                onchange={handleInputChange}
+                                                onblur={handleOnBlur}
+                                                data-id={field.id}>
+                                            </lightning-input>
+                                        </template>
+                                    </div>
+                                </template>
+                            </template>
+                            </template>
+                            <template if:false={fieldDetailsDisbursement}>
+                                <p>No fields available for this screen.</p>
+                            </template>
+                            
+                        </div>
+                    </div>
+                <!-- </div> -->
+            </lightning-accordion-section>
+            <lightning-accordion-section name="PaymentDetails" label="Payment Details">
+                <template lwc:if={showPaymentButton}>
+                    <div class="slds-grid slds-gutters slds-wrap slds-p-around_medium">
+                        <div class="slds-m-top_medium slds-text-align_left">
+                            <button class="slds-button slds-button_brand save-button" onclick={createPayment} disabled={disablePaymentBtn}>Create Payment</button>
+                        </div>
+                    </div>
+                </template>
+                <!--Insurance/Payment table-->
+                <!-- <div class="slds-m-around_medium"> -->
+                    <div class="table-container disbursement-table-wrapper">
+                        <table cellpadding="0" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 1px solid black;" class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right custom-table disbursement-payment-table">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th >
+                                        <div class="slds-truncate" title="Mandate Type">Seq. No.</div>
+                                    </th>
+                                    <th >
+                                        <div class="slds-truncate" title="Mandate Type">Disbursement Party</div>
+                                    </th>
+                                    <th >
+                                        <div class="slds-truncate" title="Mandate Type">Disbursement Type</div>
+                                    </th>
+                                    <th >
+                                        <div class="slds-truncate" title="Mandate Type">Disbursement Date</div>
+                                    </th>
+                                    <th >
+                                        <div class="slds-truncate" title="Mandate Type">Bank</div>
+                                    </th>
+                                    <th >
+                                        <div class="slds-truncate" title="Mandate Type">Partner Bank</div>
+                                    </th>
+                                    <th >
+                                        <div class="slds-truncate" title="Mandate Type">IFSC</div>
+                                    </th>
+                                    <th >
+                                        <div class="slds-truncate" title="Mandate Type">Name</div>
+                                    </th>
+                                    <th >
+                                        <div class="slds-truncate" title="Mandate Type">Account/Cheque/DD</div>
+                                    </th>
+                                    <th >
+                                        <div class="slds-truncate" title="Mandate Type">Amount</div>
+                                    </th>
+                                    <th>
+                                        <div class="slds-truncate" title="Mandate Type">Status</div>
+                                    </th>
+                                    <!-- <th style="width: 6%; text-align: center; background-color: #5bb6e3;color: white;border: 1px solid black;">
+                                        <div class="slds-truncate" title="Mandate Type">QDP Status</div>
+                                    </th> -->
+                                    <th>
+                                        <div class="slds-truncate" title="Mandate Type">Action</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={paymentTableData} for:item="row">
+                                <tr key={row.paymentSequence}>
+                                    <td style="padding: 3px; border: 1px solid black;">
+                                        <template if:true={row.paymentSequence}>{row.paymentSequence}</template>
+                                        <template if:false={row.paymentSequence}>--</template>
+                                    </td>
+                                    <td style="padding: 3px; border: 1px solid black;">
+                                        {row.disbursementParty}
+                                    </td>
+                                    <td style="padding: 3px; border: 1px solid black;">
+                                        <template if:true={row.disbursementType}>{row.disbursementType}</template>
+                                        <template if:false={row.disbursementType}>--</template>
+                                    </td>
+                                    <td style="padding: 3px; border: 0.1px solid black;">
+                                        <template if:true={row.enableRefresh}>
+                                            <input type="date"
+                                                             value={row.disbursementDate}
+                                                             onchange ={updateOnFocusOut}
+                                                             data-recordid={row.id}
+                                                             variant="label-hidden"
+                                                            class="custom-date-input"
+                                                            ></input>
+           
+
+                                        </template>
+                                         <template if:false={row.enableRefresh}>
+                                        <template if:true={row.disbursementDateForDisplay}>{row.disbursementDateForDisplay}</template>
+                                        <template if:false={row.disbursementDateForDisplay}>--</template>
+                                        </template>
+                                    </td>
+                                    <td style="padding: 3px; border: 1px solid black;">
+                                        <template if:true={row.bank}>{row.bank}</template>
+                                        <template if:false={row.bank}>--</template>
+                                    </td>
+                                    <td style="padding: 3px; border: 1px solid black;">
+                                        <template if:true={row.partnerBank}>{row.partnerBank}</template>
+                                        <template if:false={row.partnerBank}>--</template>
+                                    </td>
+                                    <td style="padding: 3px; border: 1px solid black;">
+                                        <template if:true={row.bank}>{row.ifsc}</template>
+                                        <template if:false={row.bank}>--</template>
+                                    </td>
+                                    <td style="padding: 3px; border: 1px solid black;">
+                                        {row.name}
+                                    </td>
+                                    <td style="padding: 3px; border: 1px solid black;">
+                                        {row.accountChequeDD}
+                                    </td>
+                                    <td style="text-align: right; padding: 3px; border: 1px solid black;">
+                                        <lightning-formatted-number 
+                                            value={row.amount}
+                                            format-style="decimal"
+                                            minimum-fraction-digits="2">
+                                        </lightning-formatted-number>
+                                    </td>
+                                    <!-- <td style="padding: 3px; border: 1px solid black;">
+                                        <template if:true={row.status}>{row.status}</template>
+                                        <template if:false={row.status}>--</template>
+                                    </td> -->
+                                    <td style="padding: 3px; border: 1px solid black;">
+                                        <template if:true={row.qdpStatus}>{row.qdpStatus}</template>
+                                        <template if:false={row.qdpStatus}>--</template>
+                                    </td>
+                                    <td style="text-align: center; padding: 3px; border: 1px solid black;">
+                                        <template if:true={row.isActionsRequired}>
+                                            <lightning-button-icon 
+                                                icon-name="utility:edit"
+                                                alternative-text="Edit"
+                                                class="slds-m-left_x-medium"
+                                                variant="bare"
+                                                size="medium"
+                                                onclick={handleEdit}
+                                                data-id={row.id}>
+                                            </lightning-button-icon>
+                                            &nbsp;&nbsp;&nbsp;
+                                            <lightning-button-icon 
+                                                    icon-name="utility:delete"
+                                                    alternative-text="Delete"
+                                                    class="slds-m-left_x-medium"
+                                                    variant="bare"
+                                                    size="medium"
+                                                    onclick={handleDelete}
+                                                    data-id={row.id}>
+                                            </lightning-button-icon>                                                                                   
+                                        </template>
+                                        <template if:false={row.isActionsRequired}>
+                                            <template if:false={row.enableRefresh}>--</template></template>
+                                        
+                                        <!-- Display refresh option for VAS record -->
+                                        <template lwc:if={row.enableRefresh}>
+                                            <!-- <lightning-button-icon 
+                                                icon-name="utility:edit"
+                                                alternative-text="Edit"
+                                                class="slds-m-left_x-medium"
+                                                variant="bare"
+                                                size="medium"
+                                                onclick={handleEdit}
+                                                data-id={row.id}>
+                                            </lightning-button-icon> -->
+                                            <!-- <lightning-icon icon-name='utility:refresh' alternative-text='refresh' size='xx-small' title='refresh' data-id={row.id} onclick={refreshDisburseDate}></lightning-icon> -->
+                                        </template>  
+                                    </td>
+                                </tr>
+                            </template>
+                            <tr>
+                                <td colspan="9" style="text-align: right; font-weight: bold; padding: 5px; border: 1px solid black;">
+                                    Total Payment Amount:
+                                </td>
+                                <td style="text-align: right; font-weight: bold; padding: 5px; border: 1px solid black;">
+                                    <lightning-formatted-number 
+                                        value={totalPaymentAmount}
+                                        format-style="decimal"
+                                        minimum-fraction-digits="2">
+                                    </lightning-formatted-number>
+                                </td>
+                                <td colspan="2" style="border: 1px solid black;"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                <!-- </div> -->
+                <!-- <div class="slds-m-around_medium"> -->
+                    <template if:true={showPaymentForm}>
+                        <template if:true={fieldDetailsPayment}>
+                            <div class="slds-grid slds-gutters slds-wrap slds-p-around_medium">
+                                <!-- Display Payment Sequence at the Top -->
+                                <template for:each={fieldDetailsPayment} for:item="field">
+                                    <template if:true={field.isPaymentSequence}>
+                                        <div key={field.id} class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                                            <lightning-input 
+                                                label={field.label}
+                                                value={field.value}
+                                                disabled={field.isDisabled}>
+                                            </lightning-input>
+                                        </div>
+                                    </template>
+                                </template>
+                                <!-- Display Other Fields -->
+                                <template for:each={fieldDetailsPayment} for:item="field">
+                                    <template if:false={field.isPaymentSequence}>
+                                        <div key={field.id} class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+
+                                            <!-- Picklist -->
+                                            <template if:true={field.isPicklist}>
+
+                                                <lightning-combobox 
+                                                    class="custom-combobox"
+                                                    placeholder="Select Picklist"
+                                                    options={field.picklistOptions}
+                                                    data-id={field.id} 
+                                                    data-name={field.id}  
+                                                    onchange={handleInputChange}
+                                                    value={field.value}
+                                                    required={field.isMandatory}
+                                                    label={field.label} 
+                                                    disabled={field.isDisabled}>
+                                                </lightning-combobox>
+                                            </template>
+                        
+                                            <!-- Date -->
+                                            <template if:true={field.isDate}>
+                                                <lightning-input 
+                                                    label={field.label}
+                                                    type="date"
+                                                    value={field.value}
+                                                    disabled={field.isDisabled}
+                                                    onchange={handleInputChange}
+                                                    required={field.isMandatory}
+                                                    data-id={field.id}>
+                                                </lightning-input>
+                                            </template>
+                        
+                                            <!-- Number -->
+                                            <template if:true={field.isNumber}>
+                                                <lightning-input 
+                                                    label={field.label}
+                                                    type="number"
+                                                    value={field.value}
+                                                    disabled={field.isDisabled}
+                                                    onchange={handleInputChange}
+                                                    required={field.isMandatory} step="0.01"
+                                                    data-id={field.id}>
+                                                </lightning-input>
+                                            </template>
+                        
+                                            <!-- Textarea -->
+                                            <template if:true={field.isTextarea}>
+                                                <lightning-textarea 
+                                                    label={field.label}
+                                                    value={field.value}
+                                                    disabled={field.isDisabled}
+                                                    onchange={handleInputChange}
+                                                    required={field.isMandatory}
+                                                    data-id={field.id}
+                                                    type="textarea"
+                                                    max-length="255">
+                                                </lightning-textarea>
+                                            </lightning-textarea>
+                                            </template>
+                        
+                                            <!-- Default (Text) -->
+                                            <template if:false={field.isPicklist}>
+                                                <template if:false={field.isDate}>
+                                                    <template if:false={field.isNumber}>
+                                                        <template if:false={field.isTextarea}>
+                                                            <lightning-input 
+                                                                label={field.label}
+                                                                type="text"
+                                                                value={field.value}
+                                                                disabled={field.isDisabled}
+                                                                onchange={handleInputChange}
+                                                                required={field.isMandatory}
+                                                                data-id={field.id}>
+                                                            </lightning-input>
+                                                        </template>
+                                                    </template>
+                                                </template>
+                                            </template>
+
+                                        </div>
+                                    </template>
+                                </template>
+                            </div>
+                        </template>
+                        <template if:true={showBeneficiaryDetails}>
+                            <div class="slds-section slds-is-open">
+                                <h2 class="slds-section__title slds-theme_shade slds-p-around_x-small"><b>Beneficiary Details</b></h2>
+                                <div class="slds-grid slds-gutters slds-wrap slds-p-around_medium">
+                                    <!-- Iterate over the fields but only include visible ones -->
+                                    <template for:each={fieldDetailsBeneficiary} for:item="field">
+                                        <template if:true={field.isVisible}>  <!-- NEW: Only include fields that should be shown -->
+                                            <div key={field.id} class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                                                <!-- Dropdown for Application_Applicant__c when Customer + RTGS/NEFT/IMPS -->
+                                                <template if:true={field.isApplicationApplicant}>
+                                                    <lightning-combobox 
+                                                        label={field.label}
+                                                        options={applicantPicklistOptions}
+                                                        data-id={field.id}
+                                                        onchange={handleInputChange}
+                                                        value={field.value}
+                                                        required={field.isMandatory}
+                                                        disabled={field.isDisabled}>
+                                                    </lightning-combobox>
+                                                </template>
+                        
+                                                <!-- Open Text for Customer_Name__c when Third Party + RTGS/NEFT/IMPS -->
+                                                <template if:true={field.isCustomerNameText}>
+                                                    <lightning-input 
+                                                        label={field.label}
+                                                        type="text"
+                                                        data-id={field.id}
+                                                        onchange={handleInputChange}
+                                                        value={field.value}
+                                                        required={field.isMandatory}
+                                                        disabled={field.isDisabled}>
+                                                    </lightning-input>
+                                                </template>
+
+                                                <!-- Auto-Filled Customer Type Field -->
+                                                <template if:true={field.isCustomerType}>
+                                                    <lightning-input 
+                                                        label={field.label}
+                                                        type="text"
+                                                        data-id={field.id}
+                                                        value={field.value}
+                                                        required={field.isMandatory}
+                                                        disabled={field.isDisabled}>
+                                                    </lightning-input>
+                                                </template>
+
+                                                <!-- Auto-Filled Fields from Bank Selection -->
+                                                <template if:true={field.isAutoFilledBankDetail}>
+                                                    <lightning-input 
+                                                        label={field.label}
+                                                        type="text"
+                                                        data-id={field.id}
+                                                        value={field.value}
+                                                        disabled={field.isDisabled}
+                                                        required={field.isMandatory}
+                                                        onchange={handleInputChange}>
+                                                    </lightning-input>
+                                                </template>
+
+                                                <!-- IFSC Lookup Field -->
+                                                <template if:true={field.isIFSCSearchable}>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="ifscLookup">{field.label}</label>
+                                                        <c-search-lookup
+                                                            required={field.isMandatory}
+                                                            selected-id={selectedBankMasterId}
+                                                            selected-name={selectedIFSCCode}
+                                                            placeholder="Search IFSC"
+                                                            object-name="Bank_Branch_Master__c"
+                                                            search-fields="['IFSC__c']"
+                                                            return-fields="['Id','IFSC__c','Name','Bank_Name__c','Branch_Location__c','Branch_Name__c']"
+                                                            filter-criteria="[recordType.Name= Branch;]"
+                                                            onlookupselected={handleIFSCLookupSelected}
+                                                            onlookupdeselected={handleIFSCLookupDeselected}
+                                                        ></c-search-lookup>
+                                                    </div>
+                                                </template>                        
+                                                <!-- Default Handling for Other Fields -->
+                                                <template if:false={field.isApplicationApplicant}>
+                                                    <template if:false={field.isCustomerNameText}>
+                                                        <template if:false={field.isCustomerType}>
+                                                            <template if:false={field.isAutoFilledBankDetail}>
+                                                                <!-- Picklist -->
+                                                                <template if:true={field.isPicklist}>
+                                                                    <lightning-combobox 
+                                                                        label={field.label}
+                                                                        options={field.picklistOptions}
+                                                                        data-id={field.id}
+                                                                        onchange={handleInputChange}
+                                                                        value={field.value}
+                                                                        required={field.isMandatory}
+                                                                        disabled={field.isDisabled}>
+                                                                    </lightning-combobox>
+                                                                </template>
+                                
+                                                                <!-- Date -->
+                                                                <template if:true={field.isDate}>
+                                                                    <lightning-input 
+                                                                        label={field.label}
+                                                                        type="date"
+                                                                        data-id={field.id}
+                                                                        onchange={handleInputChange}
+                                                                        value={field.value}
+                                                                        required={field.isMandatory}
+                                                                        disabled={field.isDisabled}>
+                                                                    </lightning-input>
+                                                                </template>
+                                
+                                                                <!-- Number -->
+                                                                <template if:true={field.isNumber}>
+                                                                    <lightning-input 
+                                                                        label={field.label}
+                                                                        type="number"
+                                                                        data-id={field.id}
+                                                                        onchange={handleInputChange}
+                                                                        value={field.value}
+                                                                        required={field.isMandatory}
+                                                                        disabled={field.isDisabled}>
+                                                                    </lightning-input>
+                                                                </template>
+                                
+                                                                <!-- Textarea -->
+                                                                <template if:true={field.isTextarea}>
+                                                                    <lightning-textarea 
+                                                                        label={field.label}
+                                                                        data-id={field.id}
+                                                                        onchange={handleInputChange}
+                                                                        value={field.value}
+                                                                        required={field.isMandatory}
+                                                                        disabled={field.isDisabled}
+                                                                        type="textarea">
+                                                                    </lightning-textarea>
+                                                                </template>
+                                
+                                                                <!-- Default Text Input -->
+                                                                <template if:false={field.isLookup}>
+                                                                    <template if:false={field.isPicklist}>
+                                                                        <template if:false={field.isDate}>
+                                                                            <template if:false={field.isNumber}>
+                                                                                <template if:false={field.isTextarea}>
+                                                                                    <lightning-input 
+                                                                                        label={field.label}
+                                                                                        type="text"
+                                                                                        data-id={field.id}
+                                                                                        onchange={handleInputChange}
+                                                                                        value={field.value}
+                                                                                        required={field.isMandatory}
+                                                                                        disabled={field.isDisabled}>
+                                                                                    </lightning-input>
+                                                                                </template>
+                                                                            </template>
+                                                                        </template>
+                                                                    </template>
+                                                                </template>
+
+                                                                <!-- Lookup Field -->
+                                                                <!--<template if:true={field.isLookup}>
+                                                                    <lightning-input-field
+                                                                        label={field.label}
+                                                                        field-name={field.id}
+                                                                        value={field.value}
+                                                                        disabled={field.isDisabled}>
+                                                                    </lightning-input-field>
+                                                                </template>-->
+                                                            </template>
+                                                        </template>
+                                                    </template>
+                                                </template>
+                                            </div>
+                                        </template>
+                                    </template>
+                                    <!-- Upload Favouring Field -->
+                                    <template if:true={isFavouringUploadRequired}>
+                                        <div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                                            <div class="slds-form-element">
+                                                <label class="slds-form-element__label" for="uploadFavouring">Upload Favouring</label>
+                                                <div class="slds-form-element__control">
+                                                    <lightning-button-icon 
+                                                        icon-name="utility:upload" 
+                                                        alternative-text="Upload Favouring" 
+                                                        onclick={uploadFavouring} 
+                                                        class="slds-m-left_xx-small"
+                                                        size="large">
+                                                    </lightning-button-icon>
+                                                    &nbsp;&nbsp;&nbsp;&nbsp;
+                                                    <template if:true={showPreview}>
+                                                        <lightning-button-icon icon-name="utility:preview"
+                                                            alternative-text="Preview Available"
+                                                            onclick={handlePreview}
+                                                            class="uploaded-view"
+                                                            style="color: green;">
+                                                        </lightning-button-icon>
+                                                    </template>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                                <div class="slds-m-top_medium slds-text-align_right">
+                                    <button class="slds-button slds-button_brand save-button" onclick={savePayment}>Save</button>
+                                </div>
+                            </div>
+                        </template>
+                        <template if:true={showChequeDDDetails}>
+                            <div class="slds-section slds-is-open">
+                                <h2 class="slds-section__title slds-theme_shade slds-p-around_x-small"><b>Cheque/DD Details</b></h2>
+                                    <div class="slds-grid slds-gutters slds-wrap slds-p-around_medium">
+                                        <template for:each={fieldDetailsChequeDD} for:item="field">
+                                            <template if:true={field.isVisible}>
+                                                <div key={field.id} class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                                                    <!-- Dropdown for Application_Applicant__c when Customer + Cheque/DD -->
+                                                    <template if:true={field.isApplicationApplicant}>
+                                                        <lightning-combobox 
+                                                            label={field.label}
+                                                            options={applicantPicklistOptions}
+                                                            data-id={field.id}
+                                                            onchange={handleInputChange}
+                                                            value={field.value}
+                                                            required={field.isMandatory}
+                                                            disabled={field.isDisabled}>
+                                                        </lightning-combobox>
+                                                    </template>
+                                                    <!-- Open Text for Customer_Name__c when Third Party + Cheque/DD -->
+                                                    <template if:true={field.isFavouringNameText}>
+                                                        <lightning-input 
+                                                            label={field.label}
+                                                            type="text"
+                                                            data-id={field.id}
+                                                            onchange={handleInputChange}
+                                                            value={field.value}
+                                                            required={field.isMandatory}
+                                                            disabled={field.isDisabled}>
+                                                        </lightning-input>
+                                                    </template>
+                                                    <!-- Default Handling for Other Fields -->
+                                                    <template if:false={field.isApplicationApplicant}>
+                                                        <template if:false={field.isFavouringNameText}>
+                                                            <!-- Picklist -->
+                                                            <template if:true={field.isPicklist}>
+                                                                <lightning-combobox 
+                                                                    label={field.label}
+                                                                    options={field.picklistOptions}
+                                                                    data-id={field.id}
+                                                                    onchange={handleInputChange}
+                                                                    value={field.value}
+                                                                    required={field.isMandatory}
+                                                                    disabled={field.isDisabled}>
+                                                                </lightning-combobox>
+                                                            </template>
+                                                            <!-- Date -->
+                                                            <template if:true={field.isDate}>
+                                                                <lightning-input 
+                                                                    label={field.label}
+                                                                    type="date"
+                                                                    data-id={field.id}
+                                                                    onchange={handleInputChange}
+                                                                    value={field.value}
+                                                                    required={field.isMandatory}
+                                                                    disabled={field.isDisabled}>
+                                                                </lightning-input>
+                                                            </template>
+                            
+                                                            <!-- Number -->
+                                                            <template if:true={field.isNumber}>
+                                                                <lightning-input 
+                                                                    label={field.label}
+                                                                    type="number"
+                                                                    data-id={field.id}
+                                                                    onchange={handleInputChange}
+                                                                    value={field.value}
+                                                                    required={field.isMandatory}
+                                                                    disabled={field.isDisabled}>
+                                                                </lightning-input>
+                                                            </template>
+                                                            
+                                                            <!-- Textarea -->
+                                                            <template if:true={field.isTextarea}>
+                                                                <lightning-textarea 
+                                                                    label={field.label}
+                                                                    data-id={field.id}
+                                                                    onchange={handleInputChange}
+                                                                    value={field.value}
+                                                                    required={field.isMandatory}
+                                                                    disabled={field.isDisabled}
+                                                                    type="textarea">
+                                                                </lightning-textarea>
+                                                            </template>
+
+                                                            <!-- Default Text Input -->
+                                                            <template if:false={field.isLookup}>
+                                                            <template if:false={field.isPicklist}>
+                                                                <template if:false={field.isDate}>
+                                                                    <template if:false={field.isNumber}>
+                                                                        <template if:false={field.isTextarea}>
+                                                                            <lightning-input 
+                                                                                label={field.label}
+                                                                                type="text"
+                                                                                data-id={field.id}
+                                                                                onchange={handleInputChange}
+                                                                                value={field.value}
+                                                                                required={field.isMandatory}
+                                                                                disabled={field.isDisabled}>
+                                                                            </lightning-input>
+                                                                        </template>
+                                                                    </template>
+                                                                </template>
+                                                            </template>
+                                                            </template>
+                                                        </template>
+                                                    </template>
+                                                </div>
+                                            </template>
+                                        </template>
+                                        <!-- Upload Favouring Field -->
+                                        <template if:true={isFavouringUploadRequired}>
+                                            <div class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                                                <div class="slds-form-element">
+                                                    <label class="slds-form-element__label" for="uploadFavouring">Upload Favouring</label>
+                                                    <div class="slds-form-element__control">
+                                                        <lightning-button-icon 
+                                                            icon-name="utility:upload" 
+                                                            alternative-text="Upload Favouring" 
+                                                            onclick={uploadFavouring} 
+                                                            class="slds-m-left_xx-small"
+                                                            size="large">
+                                                        </lightning-button-icon>
+                                                        &nbsp;&nbsp;&nbsp;&nbsp;
+                                                        <template if:true={showPreview}>
+                                                            <lightning-button-icon icon-name="utility:preview"
+                                                                alternative-text="Preview Available"
+                                                                onclick={handlePreview}
+                                                                class="uploaded-view"
+                                                                style="color: green;">
+                                                            </lightning-button-icon>
+                                                        </template>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                    </div>
+                                    <div class="slds-m-top_medium slds-text-align_right">
+                                        <button class="slds-button slds-button_brand save-button" onclick={savePayment}>Save</button>
+                                    </div>
+                                </div>
+                        </template>
+                        <template if:true={showBankModal}>
+                            <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+                                <div class={cssContainer}>
+                                    <header class="slds-modal__header header-section">
+                                        <div class="slds-text-align_center">
+                                            <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">Bank Details</h2>
+                                        </div>
+                                    </header>
+                                    <div class="slds-modal__content slds-p-around_medium" id="confirm-body">
+                                        <div class="slds-m-around_medium">
+                                            <template lwc:if={showCreateBank}>
+                                                <button if:true={showCreateButton} class="slds-button slds-button_brand previous-button" style="margin-top:10px; margin-bottom:10px; margin-left: 16px; width:150px"  onclick={createBankDetail}>Create Bank Detail</button>                                                
+                                                    <template if:true={showBankDetail}>
+                                                    <div class="slds-grid slds-gutters slds-wrap slds-p-around_medium">
+                                                        <!-- Display Payment Sequence at the Top -->
+                                                        
+                                                        <template for:each={fieldDetailsBank} for:item="field">
+                                                            <!-- <template if:false={field.isPaymentSequence}> -->
+                                                                <div key={field.id} class="slds-col slds-size_1-of-3 slds-p-around_x-small">
+                                                
+                                                                    <!-- Picklist -->
+                                                                    <template if:true={field.isPicklist}>
+                                                                        <lightning-combobox 
+                                                                            class="custom-combobox"
+                                                                            placeholder="Select Picklist"
+                                                                            options={field.picklistOptions}
+                                                                            data-id={field.id} 
+                                                                            data-name={field.id}
+                                                                            onchange={handleInputChange}
+                                                                            value={field.value}
+                                                                            required={field.isMandatory}
+                                                                            label={field.label} 
+                                                                            disabled={field.isDisabled}>
+                                                                        </lightning-combobox>
+                                                                    </template>
+                                                                    
+                                                                    <template if:true={field.isCheckBox}>
+                                                                        <lightning-input 
+                                                                            label={field.label}
+                                                                            type="checkbox"
+                                                                            value={field.value}
+                                                                            disabled={field.isDisabled}
+                                                                            onchange={handleInputChange}
+                                                                            onblur={handleOnBlur}
+                                                                            data-id={field.id} >
+                                                                        </lightning-input>
+                                                                    </template>
+                                                
+                                                                    <!-- Date -->
+                                                                    <template if:true={field.isDate}>
+                                                                        <lightning-input 
+                                                                            label={field.label}
+                                                                            type="date"
+                                                                            value={field.value}
+                                                                            disabled={field.isDisabled}
+                                                                            onchange={handleInputChange}
+                                                                            required={field.isMandatory}
+                                                                            data-id={field.id}>
+                                                                        </lightning-input>
+                                                                    </template>
+                                                
+                                                                    <!-- Number -->
+                                                                    <template if:true={field.isNumber}>
+                                                                        <lightning-input 
+                                                                            label={field.label}
+                                                                            type="number"
+                                                                            value={field.value}
+                                                                            disabled={field.isDisabled}
+                                                                            onchange={handleInputChange}
+                                                                            required={field.isMandatory}
+                                                                            data-id={field.id}>
+                                                                        </lightning-input>
+                                                                    </template>
+                                                
+                                                                    <!-- Textarea -->
+                                                                    <template if:true={field.isTextarea}>
+                                                                        <lightning-textarea 
+                                                                            label={field.label}
+                                                                            value={field.value}
+                                                                            disabled={field.isDisabled}
+                                                                            onchange={handleInputChange}
+                                                                            required={field.isMandatory}
+                                                                            data-id={field.id}
+                                                                            type="textarea"
+                                                                            max-length="255">
+                                                                        </lightning-textarea>
+                                                                    </lightning-textarea>
+                                                                    </template>
+                                                
+                                                                    <!-- Default (Text) -->
+                                                                    <template if:false={field.isPicklist}>
+                                                                    <template if:false={field.isIFSCSearchable}>
+                                                                        <template if:false={field.isDate}>
+                                                                            <template if:false={field.isNumber}>
+                                                                                <template if:false={field.isTextarea}>
+                                                                                <template if:false={field.isCheckBox}>
+                                                                                    <lightning-input 
+                                                                                        label={field.label}
+                                                                                        type="text"
+                                                                                        value={field.value}
+                                                                                        disabled={field.isDisabled}
+                                                                                        onchange={handleInputChange}
+                                                                                        required={field.isMandatory}
+                                                                                        data-id={field.id}>
+                                                                                    </lightning-input>
+                                                                                </template>
+                                                                                </template>
+                                                                            </template>
+                                                                        </template>
+                                                                        </template>
+                                                                    </template>
+                                                <template if:true={field.isIFSCSearchable}>
+                                                    <div class="slds-form-element">
+                                                        <label class="slds-form-element__label" for="ifscLookup">{field.label}</label>
+                                                        <c-search-lookup
+                                                            required={field.isMandatory}
+                                                            selected-id={selectedBankMasterId}
+                                                            selected-name={selectedIFSCCode}
+                                                            placeholder="Search IFSC"
+                                                            object-name="Bank_Branch_Master__c"
+                                                            search-fields="['IFSC__c']"
+                                                            return-fields="['Id','IFSC__c','Name','Bank_Name__c','Branch_Location__c','Branch_Name__c']"
+                                                            filter-criteria="[recordType.Name= Branch;]"
+                                                            onlookupselected={handleIFSCLookupSelected}
+                                                            onlookupdeselected={handleIFSCLookupDeselected}
+                                                        ></c-search-lookup>
+                                                    </div>
+                                                </template>  
+                                                                </div>
+                                                            <!-- </template> -->
+                                                        </template>
+                                                    </div>
+                                                    </template>
+                                                    <div lwc:if={showBankDetail} class="slds-m-top_medium slds-text-align_right">
+                                                        <button class="slds-button slds-button_brand save-button" 
+                                                        style=" margin-top: -10px; margin-right: 15px; margin-bottom: 15px;" onclick={handleSave}>Save</button>
+                                                    </div>
+                                                </template>
+                                                <template lwc:else>
+                                            <div class="table-container">                                                
+                                                <table cellpadding="0" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 1px solid black;" class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right custom-table">                                                    
+                                                    <thead>
+                                                        <tr class="slds-line-height_reset">
+                                                            <th style="width: 5%; text-align: center; background-color: #5bb6e3;color: white;border: 1px solid black;">
+                                                                <div class="slds-truncate" title="Select">Select</div>
+                                                            </th>
+                                                            <th style="text-align: center; background-color: #5bb6e3;color: white;border: 1px solid black;">
+                                                                <div class="slds-truncate" title="Bank Name">Bank Name</div>
+                                                            </th>
+                                                            <th style="width: 20%; text-align: center; background-color: #5bb6e3;color: white;border: 1px solid black;">
+                                                                <div class="slds-truncate" title="IFSC">IFSC</div>
+                                                            </th>
+                                                            <th style="width: 20%; text-align: center; background-color: #5bb6e3;color: white;border: 1px solid black;">
+                                                                <div class="slds-truncate" title="Account Number">Account Number</div>
+                                                            </th>
+                                                            <th style="width: 20%; text-align: center; background-color: #5bb6e3;color: white;border: 1px solid black;">
+                                                                <div class="slds-truncate" title="Account Type">Account Type</div>
+                                                            </th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <template for:each={bankDetails} for:item="bank">
+                                                            <tr key={bank.id}>
+                                                                <td style="text-align: center; padding: 3px;border: 1px solid black;">
+                                                                    <lightning-input  type="radio" name="bankSelection" 
+                                                                                    value={bank.id} data-id={bank.id}
+                                                                                    onchange={handleBankSelection}>
+                                                                    </lightning-input>
+                                                                </td>
+                                                                <td style="text-align: center; padding: 3px;padding-bottom:3px; border: 1px solid black;">{bank.bankName}</td>
+                                                                <td style="text-align: center; padding: 3px;padding-bottom:3px; border: 1px solid black;">{bank.ifsc}</td>
+                                                                <td style="text-align: center; padding: 3px;padding-bottom:3px; border: 1px solid black;">{bank.accountNumber}</td>
+                                                                <td style="text-align: center; padding: 3px;padding-bottom:3px; border: 1px solid black;">{bank.accountType}</td>
+                                                            </tr>
+                                                        </template>
+                                                    </tbody>
+                                                </table>
+                                                </div>
+                                                </template>                                            
+                                        </div>
+                                    </div>
+                                    <footer class="footer-section"><!--Sanwar- 31-12-2025-->
+                                        <!-- <div class="slds-align_right button-container"> 
+                                            <button class="slds-button slds-button_brand previous-button" onclick={closeBankModal}>Skip</button>
+                                        </div> -->
+                                    </footer>
+                                </div>
+                            </section>
+                            <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+                        </template>
+                    </template>
+                    <input type="file" accept="image/*,.pdf" capture="environment" onchange={handleFileSelection} class="hidden-input"/>
+                <!-- </div> -->
+                
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </lightning-card>
+</template>

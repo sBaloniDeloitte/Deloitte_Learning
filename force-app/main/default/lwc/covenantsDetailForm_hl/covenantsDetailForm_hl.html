@@ -1,0 +1,685 @@
+<template>
+    <div class="slds-scrollable_x covenant-dark-theme" style="overflow: auto;">
+        <span class="styleContainer"></span>
+        
+        <template lwc:if={showNoRecords}>
+            <div style="text-align: center; padding: 10px; border: solid 1px #ddd;">
+                No records found!
+            </div>
+        </template>
+        
+        <template lwc:else>
+            <!-- Action Buttons -->
+            <template if:false={salesProfile}>
+                <div class="slds-m-bottom_small">
+                    <lightning-button
+                        label="Add Row"
+                        class="add-cta"
+                        onclick={handleAddRow}
+                        icon-name="utility:add">
+                    </lightning-button>
+                </div>
+            </template>
+
+            <!-- Main Table -->
+            <div style="padding-top: 1%; padding-bottom: 3%;">
+                <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right">
+                    <thead style="top: 0; z-index: 2;">
+                        <tr>
+                            <!-- Checkbox column for Home Loan -->
+                            <template if:true={isHomeLoan}>
+                                <th class="checkbox-col" style="text-align: center; background-color: #5bb6e3; border: 1px solid black; width: 40px;">
+                                    <lightning-input 
+                                        type="checkbox"
+                                        checked={isAllSelected}
+                                        onchange={handleSelectAllChange}>
+                                    </lightning-input>
+                                </th>
+                            </template>
+                            
+                            <!-- Edit column -->
+                            <th scope="col" style="background-color: #5bb6e3; border: 1px solid black; width: 50px;">
+                                Edit
+                            </th>
+                            
+                            <th scope="col" style="background-color: #5bb6e3; border: 1px solid black;">Category</th>
+                            <th scope="col" style="background-color: #5bb6e3; border: 1px solid black;">Covenant Type</th>
+                            
+                            <template if:true={isHomeLoan}>
+                                <th scope="col" style="background-color: #5bb6e3; border: 1px solid black;">Approval Status</th>
+                            </template>
+                            
+                            <th scope="col" style="background-color: #5bb6e3; border: 1px solid black;">Name</th>
+                            
+                            <template if:true={isHomeLoan}>
+                                <th scope="col" style="background-color: #5bb6e3; border: 1px solid black;">Product</th>
+                            </template>
+                            
+                            <th scope="col" style="background-color: #5bb6e3; border: 1px solid black;">Description</th>
+                            <th scope="col" style="background-color: #5bb6e3; border: 1px solid black;">Type</th>
+                            
+                            <template if:false={isHomeLoan}>
+                                <th scope="col" style="background-color: #5bb6e3; border: 1px solid black;">Status</th>
+                            </template>
+                            
+                            <th scope="col" style="background-color: #5bb6e3; border: 1px solid black;">Remarks</th>
+                            <th scope="col" style="background-color: #5bb6e3; border: 1px solid black;">Target Date</th>
+                            <th scope="col" style="background-color: #5bb6e3; border: 1px solid black;">Date of Receipt</th>
+                            <th scope="col" style="background-color: #5bb6e3; border: 1px solid black;">Nature of Document</th>
+                            <th scope="col" style="background-color: #5bb6e3; border: 1px solid black;">Upload/View</th>
+                            
+                            <template if:true={isHomeLoan}>
+                                <th scope="col" style="background-color: #5bb6e3; border: 1px solid black;">Requestor Name</th>
+                            </template>
+                            <template if:false={isHomeLoan}>
+                                <th scope="col" style="background-color: #5bb6e3; border: 1px solid black;">Approval Level</th>
+                            </template>
+                            
+                            <th scope="col" style="background-color: #5bb6e3; border: 1px solid black;">Approver Name</th>
+                            
+                            <template if:false={isHomeLoan}>
+                                <th scope="col" style="background-color: #5bb6e3; border: 1px solid black;">Approval Status</th>
+                            </template>
+                            
+                            <template if:true={isHomeLoan}>
+                                <th scope="col" style="background-color: #5bb6e3; border: 1px solid black;">Upload Approval</th>
+                            </template>
+                            
+                            <th scope="col" style="background-color: #5bb6e3; border: 1px solid black;">Delete</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        <!-- Existing Records -->
+                        <template for:each={detailRecord} for:item="data">
+                            <template for:each={data.documentList} for:item="record">
+                                <tr key={record.rowKey}>
+                                    <!-- Checkbox for Home Loan -->
+                                    <template if:true={isHomeLoan}>
+                                        <td class="checkbox-col" style="border: 1px solid black;">
+                                            <lightning-input 
+                                                type="checkbox" 
+                                                data-docid={record.documentDetailId}
+                                                checked={record.isSelected} 
+                                                onchange={handleCheckboxChange}>
+                                            </lightning-input>
+                                        </td>
+                                    </template>
+                                    
+                                    <!-- Edit Icon -->
+                                    <td style="border: 1px solid black; text-align: center;">
+                                        <template if:false={record.isEditing}>
+                                            <lightning-icon 
+                                                icon-name="utility:edit" 
+                                                size="x-small"
+                                                class="edit-icon"
+                                                data-docid={record.documentDetailId}
+                                                onclick={handleEditRow}
+                                                alternative-text="Edit">
+                                            </lightning-icon>
+                                        </template>
+                                        <template if:true={record.isEditing}>
+                                            <lightning-icon 
+                                                icon-name="utility:close" 
+                                                size="x-small"
+                                                class="edit-icon"
+                                                data-docid={record.documentDetailId}
+                                                onclick={handleCancelEdit}
+                                                alternative-text="Cancel Edit">
+                                            </lightning-icon>
+                                        </template>
+                                    </td>
+                                    
+                                    <!-- Category (Read-only) -->
+                                    <td style="border: 1px solid black;">
+                                        {record.covenantCategory}
+                                    </td>
+                                    
+                                    <!-- Covenant Type -->
+                                    <td style="border: 1px solid black;">
+                                        <template if:true={record.isEditing}>
+                                            <lightning-select 
+                                                name="Document_Type__c" 
+                                                variant="label-hidden"
+                                                options={covTypeHL}
+                                                value={record.covenantType}
+                                                data-docid={record.documentDetailId}
+                                                onchange={handleExistingRowChange}>
+                                            </lightning-select>
+                                        </template>
+                                        <template if:false={record.isEditing}>
+                                            {record.covenantType}
+                                        </template>
+                                    </td>
+                                    
+                                    <!-- Approval Status (Home Loan only) -->
+                                    <template if:true={isHomeLoan}>
+                                        <td style="border: 1px solid black;">
+                                            {record.covenantApprovalStatus}
+                                        </td>
+                                    </template>
+                                    
+                                    <!-- Name (Read-only) -->
+                                    <td style="border: 1px solid black;">
+                                        {record.covenantName}
+                                    </td>
+                                    
+                                    <!-- Product (Home Loan only) -->
+                                    <template if:true={isHomeLoan}>
+                                        <td style="border: 1px solid black;">
+                                            <template if:true={record.isEditing}>
+                                                <lightning-combobox 
+                                                    name="Product__c"
+                                                    variant="label-hidden"
+                                                    options={productOptions}
+                                                    value={record.productId}
+                                                    data-docid={record.documentDetailId}
+                                                    onchange={handleExistingRowChange}>
+                                                </lightning-combobox>
+                                            </template>
+                                            <template if:false={record.isEditing}>
+                                                {record.productName}
+                                            </template>
+                                        </td>
+                                    </template>
+                                    
+                                    <!-- Description -->
+                                    <td style="border: 1px solid black;">
+                                        {record.description}
+                                    </td>
+                                    
+                                    <!-- Type -->
+                                    <td style="border: 1px solid black;">
+                                        <template if:true={record.isEditing}>
+                                            <lightning-select 
+                                                name="Type__c"
+                                                variant="label-hidden"
+                                                options={typeOptions}
+                                                value={record.docType}
+                                                data-docid={record.documentDetailId}
+                                                onchange={handleExistingRowChange}>
+                                            </lightning-select>
+                                        </template>
+                                        <template if:false={record.isEditing}>
+                                            {record.docType}
+                                        </template>
+                                    </td>
+                                    
+                                    <!-- Status (Non-Home Loan only) -->
+                                    <template if:false={isHomeLoan}>
+                                        <td style="border: 1px solid black;">
+                                            <template if:true={record.isEditing}>
+                                                <lightning-combobox 
+                                                    name="Status__c"
+                                                    variant="label-hidden"
+                                                    options={statusOptions}
+                                                    value={record.status}
+                                                    data-docid={record.documentDetailId}
+                                                    onchange={handleExistingRowChange}>
+                                                </lightning-combobox>
+                                            </template>
+                                            <template if:false={record.isEditing}>
+                                                {record.status}
+                                            </template>
+                                        </td>
+                                    </template>
+                                    
+                                    <!-- Remarks -->
+                                    <td style="border: 1px solid black;">
+                                        <template if:true={record.isEditing}>
+                                            <lightning-textarea 
+                                                name="Remarks__c"
+                                                value={record.remarks}
+                                                data-docid={record.documentDetailId}
+                                                onchange={handleExistingRowChange}>
+                                            </lightning-textarea>
+                                        </template>
+                                        <template if:false={record.isEditing}>
+                                            {record.remarks}
+                                        </template>
+                                    </td>
+                                    
+                                    <!-- Target Date -->
+                                    <td style="border: 1px solid black;">
+                                        <template if:true={record.isEditing}>
+                                            <lightning-input 
+                                                type="date"
+                                                name="Target_Date__c"
+                                                value={record.targetDate}
+                                                data-docid={record.documentDetailId}
+                                                onchange={handleExistingRowChange}>
+                                            </lightning-input>
+                                        </template>
+                                        <template if:false={record.isEditing}>
+                                            {record.targetDate}
+                                        </template>
+                                    </td>
+                                    
+                                    <!-- Date of Receipt -->
+                                    <td style="border: 1px solid black;">
+                                        <template if:true={record.isEditing}>
+                                            <lightning-input 
+                                                type="date"
+                                                name="Document_Date_of_Receipt__c"
+                                                value={record.documentDateOfReceipt}
+                                                data-docid={record.documentDetailId}
+                                                onchange={handleExistingRowChange}>
+                                            </lightning-input>
+                                        </template>
+                                        <template if:false={record.isEditing}>
+                                            {record.documentDateOfReceipt}
+                                        </template>
+                                    </td>
+                                    
+                                    <!-- Nature of Document -->
+                                    <td style="border: 1px solid black;">
+                                        <template if:true={record.isEditing}>
+                                            <lightning-select 
+                                                name="Nature_of_Document__c"
+                                                variant="label-hidden"
+                                                options={nodOptions}
+                                                value={record.natureOfDocument}
+                                                data-docid={record.documentDetailId}
+                                                onchange={handleExistingRowChange}>
+                                            </lightning-select>
+                                        </template>
+                                        <template if:false={record.isEditing}>
+                                            {record.natureOfDocument}
+                                        </template>
+                                    </td>
+                                    
+                                    <!-- Upload/View -->
+                                    <td style="border: 1px solid black;">
+                                        <template lwc:if={record.documentDetailId}>
+                                            <c-upload-view-delete-document
+                                                doc-detail-id={record.documentDetailId}
+                                                show-upload={record.isUpload}
+                                                show-view={record.isView}
+                                                view-only-preview={record.isallowreUpload}
+                                                current-user-opp-role="Sales"
+                                                is-from-homeloan={isHomeLoan}
+                                                disable-file-upload={profileName}
+                                                onrecallmethod={updateDocumentDetails}>
+                                            </c-upload-view-delete-document>
+                                        </template>
+                                    </td>
+                                    
+                                    <!-- Requestor/Approval Level -->
+                                    <template if:true={isHomeLoan}>
+                                        <td style="border: 1px solid black;">{record.requestorsName}</td>
+                                    </template>
+                                    <template if:false={isHomeLoan}>
+                                        <td style="border: 1px solid black;">
+                                            <template if:true={record.isEditing}>
+                                                <lightning-select 
+                                                    name="Approval_Level__c"
+                                                    variant="label-hidden"
+                                                    options={approvalLevelOptions}
+                                                    value={record.approvalLevel}
+                                                    data-docid={record.documentDetailId}
+                                                    onchange={handleExistingRowChange}>
+                                                </lightning-select>
+                                            </template>
+                                            <template if:false={record.isEditing}>
+                                                {record.approvalLevel}
+                                            </template>
+                                        </td>
+                                    </template>
+                                    
+                                    <!-- Approver Name -->
+                                    <td style="border: 1px solid black;">
+                                        {record.approversName}
+                                    </td>
+                                    
+                                    <!-- Approval Status (Non-Home Loan) -->
+                                    <template if:false={isHomeLoan}>
+                                        <td style="border: 1px solid black;">
+                                            <template if:true={record.isEditing}>
+                                                <lightning-select 
+                                                    name="Approval_Status__c"
+                                                    variant="label-hidden"
+                                                    options={approvalStatusOptions}
+                                                    value={record.approvalStatus}
+                                                    data-docid={record.documentDetailId}
+                                                    onchange={handleExistingRowChange}>
+                                                </lightning-select>
+                                            </template>
+                                            <template if:false={record.isEditing}>
+                                                {record.approvalStatus}
+                                            </template>
+                                        </td>
+                                    </template>
+                                    
+                                    <!-- Upload Approval (Home Loan) -->
+                                    <template if:true={isHomeLoan}>
+                                        <td style="border: 1px solid black;">
+                                            <template lwc:if={record.lookupDocumentId}>
+                                                <c-upload-view-delete-document
+                                                    doc-detail-id={record.lookupDocumentId}
+                                                    show-upload={record.isLookupUpload}
+                                                    show-view={record.isLookupView}
+                                                    current-user-opp-role="Sales"
+                                                    is-from-homeloan={isHomeLoan}
+                                                    disable-approval-upload={profileName}
+                                                    onrecallmethod={updateDocumentDetails}
+                                                    view-only-preview={record.isallowreUpload}>
+                                                </c-upload-view-delete-document>
+                                            </template>
+                                        </td>
+                                    </template>
+                                    
+                                    <!-- Delete -->
+                                    <td style="border: 1px solid black; text-align: center;">
+                                        <template if:false={record.disableDelete}>
+                                            <lightning-icon 
+                                                icon-name="utility:delete" 
+                                                size="small"
+                                                class="slds-m-left_x-small delete-icon clickable"
+                                                data-docid={record.documentDetailId}
+                                                onclick={handleDeleteRecord}
+                                                alternative-text="Delete">
+                                            </lightning-icon>
+                                        </template>
+                                    </td>
+                                </tr>
+                            </template>
+                        </template>
+                        
+                        <!-- Pending New Rows -->
+                        <template for:each={pendingRows} for:item="row">
+                            <tr key={row.rowKey} class="slds-hint-parent">
+                                <!-- Empty checkbox cell for Home Loan -->
+                                <template if:true={isHomeLoan}>
+                                    <td style="border: 1px solid black;">&nbsp;</td>
+                                </template>
+                                
+                                <!-- Remove row button instead of edit -->
+                                <td style="border: 1px solid black; text-align: center;">
+                                    <lightning-icon 
+                                        icon-name="utility:close" 
+                                        size="x-small"
+                                        class="edit-icon"
+                                        data-rowkey={row.rowKey}
+                                        onclick={handleRemovePendingRow}
+                                        alternative-text="Remove Row">
+                                    </lightning-icon>
+                                </td>
+                                
+                                <!-- Category -->
+                                <td style="border: 1px solid black;">
+                                    <template if:true={isHomeLoan}>
+                                        <lightning-select 
+                                            name="Document_Category__c"
+                                            variant="label-hidden"
+                                            options={covCategoryHL}
+                                            value={row.Document_Category__c}
+                                            data-rowkey={row.rowKey}
+                                            onchange={handlePendingRowChange}>
+                                        </lightning-select>
+                                    </template>
+                                    <template if:false={isHomeLoan}>
+                                        <lightning-select 
+                                            name="Document_Category__c"
+                                            variant="label-hidden"
+                                            options={covCategory}
+                                            value={row.Document_Category__c}
+                                            data-rowkey={row.rowKey}
+                                            onchange={handlePendingRowChange}>
+                                        </lightning-select>
+                                    </template>
+                                </td>
+                                
+                                <!-- Covenant Type -->
+                                <td style="border: 1px solid black;">
+                                    <template if:true={isHomeLoan}>
+                                        <lightning-select 
+                                            name="Document_Type__c"
+                                            variant="label-hidden"
+                                            options={covTypeHL}
+                                            value={row.Document_Type__c}
+                                            data-rowkey={row.rowKey}
+                                            onchange={handlePendingRowChange}>
+                                        </lightning-select>
+                                    </template>
+                                    <template if:false={isHomeLoan}>
+                                        <lightning-select 
+                                            name="Document_Type__c"
+                                            variant="label-hidden"
+                                            options={covType}
+                                            value={row.Document_Type__c}
+                                            data-rowkey={row.rowKey}
+                                            onchange={handlePendingRowChange}>
+                                        </lightning-select>
+                                    </template>
+                                </td>
+                                
+                                <!-- Approval Status (Home Loan) -->
+                                <template if:true={isHomeLoan}>
+                                    <td style="border: 1px solid black;">
+                                        {row.Covenant_Approval_Status__c}
+                                    </td>
+                                </template>
+                                
+                                <!-- Name (Covenant selection) -->
+                                <td style="border: 1px solid black;">
+                                    <lightning-select 
+                                        name="Document_Name__c"
+                                        variant="label-hidden"
+                                        options={row.docNameOptions}
+                                        value={row.Document_Name__c}
+                                        data-rowkey={row.rowKey}
+                                        onchange={handlePendingRowChange}>
+                                    </lightning-select>
+                                </td>
+                                
+                                <!-- Product (Home Loan) -->
+                                <template if:true={isHomeLoan}>
+                                    <td style="border: 1px solid black;">
+                                        <lightning-combobox 
+                                            name="Product__c"
+                                            variant="label-hidden"
+                                            options={productOptions}
+                                            value={row.Product__c}
+                                            data-rowkey={row.rowKey}
+                                            onchange={handlePendingRowChange}>
+                                        </lightning-combobox>
+                                    </td>
+                                </template>
+                                
+                                <!-- Description -->
+                                <td style="border: 1px solid black;">
+                                    <lightning-input 
+                                        name="Description__c"
+                                        type="text"
+                                        value={row.Description__c}
+                                        data-rowkey={row.rowKey}
+                                        onchange={handlePendingRowChange} disabled>
+                                    </lightning-input>
+                                </td>
+                                
+                                <!-- Type -->
+                                <td style="border: 1px solid black;">
+                                    <lightning-select 
+                                        name="Type__c"
+                                        variant="label-hidden"
+                                        options={typeOptions}
+                                        value={row.Type__c}
+                                        data-rowkey={row.rowKey}
+                                        onchange={handlePendingRowChange}>
+                                    </lightning-select>
+                                </td>
+                                
+                                <!-- Status (Non-Home Loan) -->
+                                <template if:false={isHomeLoan}>
+                                    <td style="border: 1px solid black;">
+                                        <lightning-combobox 
+                                            name="Status__c"
+                                            variant="label-hidden"
+                                            options={statusOptions}
+                                            value={row.Status__c}
+                                            data-rowkey={row.rowKey}
+                                            onchange={handlePendingRowChange}>
+                                        </lightning-combobox>
+                                    </td>
+                                </template>
+                                
+                                <!-- Remarks -->
+                                <td style="border: 1px solid black;">
+                                    <lightning-textarea 
+                                        name="Remarks__c"
+                                        value={row.Remarks__c}
+                                        data-rowkey={row.rowKey}
+                                        onchange={handlePendingRowChange}>
+                                    </lightning-textarea>
+                                </td>
+                                
+                                <!-- Target Date -->
+                                <td style="border: 1px solid black;">
+                                    <lightning-input 
+                                        type="date"
+                                        name="Target_Date__c"
+                                        value={row.Target_Date__c}
+                                        data-rowkey={row.rowKey}
+                                        onchange={handlePendingRowChange}>
+                                    </lightning-input>
+                                </td>
+                                
+                                <!-- Date of Receipt -->
+                                <td style="border: 1px solid black;">
+                                    <lightning-input 
+                                        type="date"
+                                        name="Document_Date_of_Receipt__c"
+                                        value={row.Document_Date_of_Receipt__c}
+                                        data-rowkey={row.rowKey}
+                                        onchange={handlePendingRowChange}>
+                                    </lightning-input>
+                                </td>
+                                
+                                <!-- Nature of Document -->
+                                <td style="border: 1px solid black;">
+                                    <lightning-select 
+                                        name="Nature_of_Document__c"
+                                        variant="label-hidden"
+                                        options={nodOptions}
+                                        value={row.Nature_of_Document__c}
+                                        data-rowkey={row.rowKey}
+                                        onchange={handlePendingRowChange}>
+                                    </lightning-select>
+                                </td>
+                                
+                                <!-- Upload/View (empty for new rows) -->
+                                <td style="border: 1px solid black;">—</td>
+                                
+                                <!-- Requestor/Approval Level -->
+                                <template if:true={isHomeLoan}>
+                                    <td style="border: 1px solid black;">{userName}</td>
+                                </template>
+                                <template if:false={isHomeLoan}>
+                                    <td style="border: 1px solid black;">
+                                        <lightning-select 
+                                            name="Approval_Level__c"
+                                            variant="label-hidden"
+                                            options={approvalLevelOptions}
+                                            value={row.Approval_Level__c}
+                                            data-rowkey={row.rowKey}
+                                            onchange={handlePendingRowChange}>
+                                        </lightning-select>
+                                    </td>
+                                </template>
+                                
+                                <!-- Approver Name -->
+                                <td style="border: 1px solid black;">—</td>
+                                
+                                <!-- Approval Status (Non-Home Loan) -->
+                                <template if:false={isHomeLoan}>
+                                    <td style="border: 1px solid black;">
+                                        <lightning-select 
+                                            name="Approval_Status__c"
+                                            variant="label-hidden"
+                                            options={approvalStatusOptions}
+                                            value={row.Approval_Status__c}
+                                            data-rowkey={row.rowKey}
+                                            onchange={handlePendingRowChange}>
+                                        </lightning-select>
+                                    </td>
+                                </template>
+                                
+                                <!-- Upload Approval (Home Loan) -->
+                                <template if:true={isHomeLoan}>
+                                    <td style="border: 1px solid black;">—</td>
+                                </template>
+                                
+                                <!-- Delete (remove pending row) -->
+                                <td style="border: 1px solid black; text-align: center;">
+                                    <lightning-icon 
+                                        icon-name="utility:delete" 
+                                        size="small"
+                                        class="slds-m-left_x-small delete-icon clickable"
+                                        data-rowkey={row.rowKey}
+                                        onclick={handleRemovePendingRow}
+                                        alternative-text="Remove">
+                                    </lightning-icon>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+            
+            <!-- Save/Cancel Buttons (shown when there are unsaved changes) -->
+            <template lwc:if={showSaveButton}>
+                <div class="slds-grid slds-grid_align-end slds-m-top_medium">
+                    <lightning-button
+                        label="Cancel"
+                        onclick={handleCancelAll}
+                        class="slds-m-right_small cancel-cta">
+                    </lightning-button>
+                    <lightning-button 
+                        label="Save All" 
+                        variant="brand" 
+                        onclick={handleSaveAll}>
+                    </lightning-button>
+                </div>
+            </template>
+            
+            <!-- Approval Button -->
+            <template if:true={showApprovalButton}>
+                <div class="slds-grid slds-grid_align-end slds-m-top_medium">
+                    <lightning-button 
+                        label="Send For Approval" 
+                        variant="brand" 
+                        onclick={handleCallApprovalProcess}>
+                    </lightning-button>
+                </div>
+            </template>
+            
+            <!-- Approval Process Modal -->
+            <template if:true={showApprovalProcess}>
+                <c-hl_covenant-approval-cmp 
+                    is-modal-open={showApprovalProcess}
+                    onclose={handleCloseApproval}
+                    document-details-records={selectedDocIds}
+                    from-document={showApprovalProcess} 
+                    record-id={recordId}>
+                </c-hl_covenant-approval-cmp>
+            </template>
+        </template>
+    </div>
+
+    <!-- Loading Spinner -->
+    <template lwc:if={isLoading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+        </lightning-spinner>
+    </template>
+
+    <!-- Delete Confirmation -->
+    <template if:true={showConfirmation}>
+        <c-confirmation-screen 
+            confirm-message={confirmMessage} 
+            negative-label="No" 
+            positive-label="Yes"
+            onnegativeclick={handleNo} 
+            onpositiveclick={handleDocDelete}>
+        </c-confirmation-screen>
+    </template>
+</template>

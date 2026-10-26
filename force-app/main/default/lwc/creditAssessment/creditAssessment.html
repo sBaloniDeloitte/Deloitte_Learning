@@ -1,0 +1,296 @@
+<template>
+    <span class="styleContainer"></span>
+    <div class="bsa-page">
+        <lightning-accordion class="example-accordion" allow-multiple-sections-open
+            active-section-name={mainAccordianActiveSactions} onsectiontoggle={handleSectionToggle}>
+            <lightning-accordion-section label="Personal Details" name="Personal Details" style=" font-weight: 700;">
+                <c-personal-details record-id={recordId}></c-personal-details>
+
+            </lightning-accordion-section>
+
+            <lightning-accordion-section label="Personal Discussion Details" name="Personal Discussion Details" style=" font-weight: 700;">
+                <div class="slds-scrollable_x" style="overflow: initial;padding: 20px 0px;">
+                    <template if:true={isPdpresent}>
+                    <table
+                        class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right custom-table pd-details-table">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="pd-details-header"
+                                    scope="col" colspan="1">
+                                    Applicant Name
+                                </th>
+                                <th class="pd-details-header"
+                                    scope="col" colspan="1">
+                                    Applicant Type 
+                                </th>
+                                <th class="pd-details-header"
+                                    scope="col" colspan="1">
+                                    Personal Discussion Type
+                                </th>
+                                <th class="pd-details-header"
+                                    scope="col" colspan="1">
+                                    Status
+                                </th>
+                                <th class="pd-details-header"
+                                    scope="col" colspan="1">
+                                    Additional Notes 1
+                                </th>
+                                <th class="pd-details-header"
+                                    scope="col" colspan="1">
+                                    Additional Notes 2
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={pdLst} for:item="record">
+                                <tr key={record.Id}>
+                                    <td class="pd-details-cell">
+                                        {record.Applicant__r.Applicant_Name__c}
+                                       
+                                    </td>
+                                    <td class="pd-details-cell">
+                                        {record.Applicant__r.Applicant_Type__c}
+                                        
+                                    </td>
+                                    <td class="pd-details-cell">
+                                        {record.Personal_Discussion_Type__c} 
+                                        
+                                    </td>
+                                    <td class="pd-details-cell">
+                                        {record.Crime_Check_Status__c}
+                                        
+                                    </td>
+                                    <td class="pd-details-cell">
+                                        {record.Additional_Note__c}
+                                    </td>
+                                    <td class="pd-details-cell">
+                                        {record.Additional_Details_2__c}
+                                    </td>
+                                </tr>
+                                </template>
+                        </tbody>
+
+                    </table>
+                    </template>
+                    <template if:false={isAssestpresent}>
+                        <p>No PD found or entered for this application.</p>
+                    </template>
+                </div>
+
+            </lightning-accordion-section>
+            
+            <lightning-accordion-section label="Property Details" name="Property Details" style=" font-weight: 700;">
+                <c-property-details-cmp record-id={recordId}></c-property-details-cmp>
+
+            </lightning-accordion-section>
+
+            <lightning-accordion-section label="Technical Valuation Details" name="Technical Valuation Details"
+                style=" font-weight: 700;">
+                <c-credit-technical-valuation-cmp record-id={recordId}></c-credit-technical-valuation-cmp>
+            </lightning-accordion-section>
+
+
+
+            <lightning-accordion-section label="Obligation Details" name="Obligation Details"
+                style=" font-weight: 700;">
+                <c-obligations-cmp record-id={recordId} is-one-view=true></c-obligations-cmp>
+
+            </lightning-accordion-section>
+
+            <lightning-accordion-section label="Exposure Details" name="Exposure Details" style=" font-weight: 700;">
+                <c-banking-details-main record-id={recordId} show-button=true></c-banking-details-main>
+
+            </lightning-accordion-section>
+
+
+
+            <lightning-accordion-section if:true={showSalariedDetails} label="Salaried Employee Details"
+                name="Salaried Employee Details" style="font-weight:700;">
+                <c-salaried-employee-details record-id={recordId}></c-salaried-employee-details>
+            </lightning-accordion-section>
+
+            <lightning-accordion-section if:true={showSelfEmpDetails} label="Self-Employed Details"
+                name="Self-Employed Details" style="font-weight:700;">
+                <c-self-employed-details record-id={recordId}></c-self-employed-details>
+            </lightning-accordion-section>
+
+            <lightning-accordion-section if:true={showSalariedIncome} label="Salaried Employee Income Details"
+                name="Salaried Employee Income Details" style="font-weight:700;">
+                <c-salaried-employee-income-details record-id={recordId} enable-disabled={disableInputs}></c-salaried-employee-income-details>
+            </lightning-accordion-section>
+
+            <lightning-accordion-section if:true={showSelfEmpIncome} label="Self Employed Income Details"
+                name="Self Employed Income Details" style="font-weight:700;">
+                <c-self-employed-income-details record-id={recordId} enable-disabled={disableInputs}></c-self-employed-income-details>
+            </lightning-accordion-section>
+
+            <lightning-accordion-section label="Surplus Cash Generated by the Customer in Last 5 Years"
+                name="Surplus Cash Generated by the Customer in Last 5 Years" style=" font-weight: 700;">
+                <c-cash-surplus-cmp record-id={recordId} is-one-view=true></c-cash-surplus-cmp>
+            </lightning-accordion-section>
+            <lightning-accordion-section label="Asset or Wealth Created" name="Asset or Wealth Created"
+                style=" font-weight: 700;">
+                <div class="slds-scrollable_x" style="overflow: initial;padding: 20px 0px;">
+                    <template if:true={isAssestpresent}>
+                    <table
+                        class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right custom-table"
+                        style=" border-color: black">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th style="text-align: center; background-color: skyblue; color: black; border-color: black"
+                                    scope="col" colspan="1">
+                                    Type of Asset
+                                </th>
+                                <th style="text-align: center; background-color: skyblue; color: black; border-color: black"
+                                    scope="col" colspan="1">
+                                    Year of Purchase
+                                </th>
+                                <th style="text-align: center; background-color: skyblue; color: black; border-color: black;"
+                                    scope="col" colspan="1">
+                                    Name of the Asset Owner
+                                </th>
+                                <th style="text-align: center; background-color: skyblue; color: black; border-color: black"
+                                    scope="col" colspan="1">
+                                    Amount of Investment
+                                </th>
+                                <th style="text-align: center; background-color: skyblue; color: black; border-color: black"
+                                    scope="col" colspan="1">
+                                    Proof
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={assestsLst} for:item="record">
+                                <tr key={record.Id}>
+                                    <td style=" border-color: black">
+                                        {record.Type_of_Asset__c}
+                                       
+                                    </td>
+                                    <td style=" border-color: black">
+                                        {record.Year_of_Purchase__c}
+                                        
+                                    </td>
+                                    <td style=" border-color: black">
+                                        {record.Name_of_the_Asset_Owner__c} 
+                                        
+                                    </td>
+                                    <td style=" border-color: black">
+                                        {record.Amount_of_Investment__c}
+                                        
+                                    </td>
+                                    <td style=" border-color: black">
+                                        {record.Proof__c}
+                                    </td>
+                                </tr>
+                                </template>
+                        </tbody>
+
+                    </table>
+                    </template>
+                    <template if:false={isAssestpresent}>
+                        <p>No Assest found or entered for this application</p>
+                    </template>
+                </div>
+
+            </lightning-accordion-section>
+
+            <lightning-accordion-section label="Product Details & Eligibility" name="Product Details" style=" font-weight: 700;">
+                <c-product-table record-id={recordId} enable-disabled={disableInputs}></c-product-table>
+            </lightning-accordion-section>
+            <lightning-accordion-section label="Risk Categorization *" name="Risk Categorization" style=" font-weight: 700;">
+            
+                <div style="margin: 10px 0px;overflow: inherit;justify-content: center;display: flex;">
+                    <div style="width: 50%;">
+                        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                            <thead>
+                                <tr>
+                                    <th class="slds-text-title_caps tableCss" scope="col"
+                                        style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                        <!-- color: white; -->
+                                        Applicant
+                                    </th>
+                                    <th class="slds-text-title_caps tableCss" scope="col"
+                                        style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                        Select Categorization</th>
+            
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={appdata} for:item="row">
+                                    <tr key={row.recId}>
+                                        <td style="border:1px solid black">{row.appName}</td>
+                                        <td style="border:1px solid black">
+                                            <lightning-combobox data-id={row.recId} options={options} value={row.selectedValue}
+                                                onchange={handleChange} variant="label-hidden"
+                                                disabled={isDisabledLoanApproval}></lightning-combobox>
+                                        </td>
+            
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            
+            <!--
+                <div style=" width: 20%; padding: 10px;">
+                    <lightning-combobox label="Risk Categorization" options={options} value={selectedValue}
+                        onchange={handleChange}></lightning-combobox>
+                </div>-->
+            </lightning-accordion-section>
+
+             <lightning-accordion-section label="PEP *" name="PEP" style=" font-weight: 700;">
+            
+                <div style="margin: 10px 0px;overflow: inherit;justify-content: center;display: flex;">
+                    <div style="width: 50%;">
+                        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                            <thead>
+                                <tr>
+                                    <th class="slds-text-title_caps tableCss" scope="col"
+                                        style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                        <!-- color: white; -->
+                                        Applicant
+                                    </th>
+                                    <th class="slds-text-title_caps tableCss" scope="col"
+                                        style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                        Select PEP</th>
+            
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={appdataPEP} for:item="row">
+                                    <tr key={row.recId}>
+                                        <td style="border:1px solid black">{row.appName}</td>
+                                        <td style="border:1px solid black">
+                                            <lightning-combobox data-id={row.recId} options={optionsPEP} value={row.selectedValue}
+                                                onchange={handleChangePEP} variant="label-hidden"
+                                                disabled={isDisabledLoanApproval}></lightning-combobox>
+                                        </td>
+            
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            
+            <!--
+                <div style=" width: 20%; padding: 10px;">
+                    <lightning-combobox label="Risk Categorization" options={options} value={selectedValue}
+                        onchange={handleChange}></lightning-combobox>
+                </div>-->
+            </lightning-accordion-section>
+            <lightning-accordion-section label="Income Method *" name="Income Method" style=" font-weight: 700;">
+                <c-hl_eligibility-cmp record-id={recordId} enable-disabled={disableInputs}></c-hl_eligibility-cmp>
+            </lightning-accordion-section>
+
+            <lightning-accordion-section label="CAM Calculation Sheet" name="CAM Calculation Sheet"
+                style=" font-weight: 700;">
+                <c-document-uploader record-id={recordId} enable-disabled={isDisabledLoanApproval}></c-document-uploader>
+
+            </lightning-accordion-section>
+
+        </lightning-accordion>
+    </div>
+
+</template>

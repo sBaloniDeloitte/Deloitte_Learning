@@ -1,0 +1,50 @@
+<template>
+    <template if:true={hasData}>
+        <div class="slds-m-around_medium">
+            <template for:each={groupedDocumentData} for:item="group">
+                <div key={group.documentType} class="slds-m-bottom_large">
+                    <div class="scroll-container">
+                        <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered fixed-table">
+                            <thead>
+                                <tr>
+                                    <th colspan={headerColSpan} style="background-color: skyblue; color: black; text-align: center; font-size: 14px; border: 1px solid #000000;">
+                                        {group.documentType}
+                                    </th>
+                                </tr>
+                                <tr>
+                                    <th class="sticky-col col-1" style="background-color: skyblue; border-color: black; color: black; min-width: 220px;">
+                                        Source Type
+                                    </th>
+                                    <template for:each={tableHeaders} for:item="header">
+                                        <th key={header} class="scroll-col" style="background-color: skyblue; border-color: black; color: black; min-width: 220px;">
+                                            {header}
+                                        </th>
+                                    </template>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={group.rows} for:item="row">
+                                    <tr key={row.sourceType}>
+                                        <td class="sticky-col col-1" style="border-color: black; min-width: 120px;">
+                                            {row.sourceType}
+                                        </td>
+                                        <template for:each={row.cells} for:item="cell">
+                                            <td key={cell.label} class="scroll-col" style="border-color: black; min-width: 150px;">
+                                                {cell.value}
+                                            </td>
+                                        </template>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </template>
+    <template if:false={hasData}>
+        <div class="scroll-container slds-align_absolute-center" style="font-weight: bold; font-size: 14px;">
+            No Records Found
+        </div>
+    </template>
+</template>

@@ -1,0 +1,27 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 03-17-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:true={isloading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </template>
+    <div class="container accordian" style="border-radius: 5px; border: 1px solid; margin: 8px 5px 1px 10px;">
+        <lightning-accordion active-section-name={currentSection}>
+            <template for:each={stages} for:item="stage">
+                <lightning-accordion-section key={stage.name} tyle="background-color: white; font-weight: 700"   name={stage.name} label={stage.name} 
+                    onclick={handleAccordionClick} onfocus={handleStopPropogation} onblur={handleStopPropogation}>
+                     
+                    <template if:true={rerenderCmp}>
+                        
+                        <c-sales-loan-login-generic-screen-cmp passed-screen-name={passedScreenName} record-id={recordId} active-section={activeSection} form-identifier={formName} onkeepaccordionopen={handleKeepAccordionOpen} login-checklist={loginChecklist}></c-sales-loan-login-generic-screen-cmp>
+                    </template>
+                </lightning-accordion-section>
+            </template>
+        </lightning-accordion>
+        </div>
+   
+</template>

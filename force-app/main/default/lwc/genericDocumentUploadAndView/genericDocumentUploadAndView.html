@@ -1,0 +1,9 @@
+<template>
+    <template if:false={ready}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+    <template if:true={ready}>
+        <c-document-processing-screen record-id={recordId} process-object="Loan Application" show-summary-style="true">
+        </c-document-processing-screen>
+    </template>
+</template>

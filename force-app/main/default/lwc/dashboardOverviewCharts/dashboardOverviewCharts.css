@@ -1,0 +1,558 @@
+/* _______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________ */
+.dash-overview-container {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+}
+
+.dash-row-top {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.dash-row-bottom {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.dash-card {
+    background: linear-gradient(160deg, #10162c 0%, #080b16 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 20px;
+    padding: 24px 28px;
+}
+
+/* Height-reduction pass: only the two dash-row-top cards (Loan
+   Applications, Lead Conversion Status) get tighter vertical padding --
+   the Application Status card in dash-row-bottom is untouched, so this
+   is scoped via the descendant selector rather than editing .dash-card
+   directly. Saves 8px total (4px top + 4px bottom) per card. */
+.dash-row-top .dash-card {
+    padding: 20px 28px;
+}
+
+.dash-card-full {
+    width: 100%;
+}
+
+/* Dashboard 3 now uses the same .dash-card-header/.dash-card-heading/
+   .dash-badge structure as Dashboards 1 and 2 (title + subtitle + pill).
+   The shared header's default 18px margin-bottom is widened here so the
+   tallest column doesn't sit flush against the subtitle line above it --
+   scoped to this card only so Dashboards 1 and 2 are unaffected. */
+.dash-card-full .dash-card-header {
+    margin-bottom: 36px;
+}
+
+.dash-card-title {
+    margin: 0;
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+/* ---- Shared: card header (title/subtitle left, pill badge right) ---- */
+.dash-card-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    /* Reduced 24px -> 18px as part of the height-reduction pass (only
+       Dashboard 1 and 2 use .dash-card-header). */
+    margin-bottom: 18px;
+}
+
+.dash-card-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.dash-card-subtitle {
+    margin: 0;
+    font-size: 13px;
+    color: #dbdde1;
+}
+
+.dash-badge {
+    flex: 0 0 auto;
+    background: rgba(59, 130, 246, 0.12);
+    border: 1px solid rgba(79, 157, 255, 0.4);
+    border-radius: 8px;
+    color: #4f9dff;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    padding: 8px 14px;
+    white-space: nowrap;
+}
+
+/* ---- Shared: card footer (label left, value right) ---- */
+.dash-card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* Restored to 20px / 16px (was temporarily reduced to 16px/14px in an
+       earlier height-reduction pass) so the footer band's spacing matches
+       the reference screenshot -- the label/value now sit with the same
+       generous top gap and divider spacing shown there. */
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+.dash-footer-label {
+    font-size: 13px;
+    color: #dee0e5;
+}
+
+.dash-footer-value {
+    font-size: 16px;
+    font-weight: 700;
+    color: #4f9dff;
+}
+
+/* ---- Dashboard 1: Loan Applications staircase bars ---- */
+/* Container gap reduced (24px -> 12px) now that each row carries its own
+   connector arrow (.loan-step-connector below) -- the arrow occupies part
+   of the visual gap between bars, so the outer gap only needs to cover
+   the remaining space to match the reference screenshot's spacing. */
+.loan-steps-container {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.loan-step-row {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* Connector arrow between a bar and the next, shorter bar below it --
+   centered on the same axis as the bars regardless of their width. */
+.loan-step-connector {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 26px;
+}
+
+.connector-line {
+    stroke: rgba(79, 157, 255, 0.6);
+    stroke-width: 2;
+}
+
+.connector-head {
+    fill: none;
+    stroke: #4f9dff;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* position: relative (not flex) so the bar can be truly centered via
+   margin: 0 auto while the percent badge is pinned to the right edge
+   independently via absolute positioning -- this keeps steps 2 and 3
+   centered on the same axis as step 1's full-width bar. */
+.loan-step-line {
+    position: relative;
+    width: 100%;
+}
+
+.loan-step-bar {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 44px;
+    padding: 0 18px;
+    border-radius: 12px;
+    background: linear-gradient(90deg, #1c3f8f 0%, #4f8ff0 100%);
+    box-sizing: border-box;
+    margin: 0 auto;
+}
+
+.loan-step-number {
+    flex: 0 0 auto;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.35);
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.loan-step-label {
+    flex: 1 1 auto;
+    color: #ffffff;
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.loan-step-value {
+    flex: 0 0 auto;
+    color: #ffffff;
+    font-size: 24px;
+    font-weight: 800;
+}
+
+/* Absolutely positioned against .loan-step-line (not a flex sibling of the
+   bar) so it stays pinned to the card's right edge regardless of the
+   bar's centered width -- this keeps the bar's center axis independent
+   of the badge, satisfying both the centering and right-edge placement
+   requirements at once. The dropdown/connector arrow markup has been
+   removed entirely per design feedback. */
+.loan-step-percent-badge {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    color: #7fb0ff;
+    font-size: 13px;
+    font-weight: 700;
+    padding: 6px 10px;
+    white-space: nowrap;
+}
+
+/* ---- Dashboard 2: Lead Conversion Status donut with satellite stats ---- */
+.donut-chart-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 12px 0;
+}
+
+/* Height-reduction pass: wrapper shrunk 320px -> 280px (was already
+   enlarged from 250px to keep satellites clear of the ring). .donut-svg
+   below is scaled down proportionally (250px -> 220px) so the ring and
+   its satellites keep the same clearance ratio -- shrinking the wrapper
+   alone without scaling the ring would push the satellites back onto
+   the ring's outer edge. */
+.donut-ring-area {
+    position: relative;
+    width: 280px;
+    height: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Soft blue halo around the ring to match the glowing appearance in
+       the reference dashboard -- applied on the wrapper (not the SVG
+       circles individually) so the glow reads as one unified light
+       source rather than per-segment. */
+    filter: drop-shadow(0 0 22px rgba(79, 157, 255, 0.4));
+}
+
+/* Fixed size, scaled down with .donut-ring-area above (250px -> 220px)
+   to preserve the ring-to-satellite clearance ratio at the new, shorter
+   wrapper height. */
+.donut-svg {
+    width: 220px;
+    height: 220px;
+}
+
+.donut-segment {
+    transition: stroke-dasharray 0.3s ease;
+}
+
+.donut-center-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+}
+
+.donut-center-value {
+    /* Reduced 32px -> 28px to match the smaller ring from the height-
+       reduction pass. */
+    font-size: 28px;
+    font-weight: 800;
+    color: #ffffff;
+}
+
+.donut-center-label {
+    font-size: 12px;
+    color: #8b93a7;
+}
+
+.donut-center-pill {
+    margin-top: 3px;
+    background: rgba(79, 157, 255, 0.12);
+    border: 1px solid rgba(79, 157, 255, 0.4);
+    border-radius: 8px;
+    color: #4f9dff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+}
+
+/* Circular dark chips positioned at the corners of .donut-ring-area,
+   sized to stay fully clear of the ring's outer edge. Shrunk again
+   (64px -> 56px) with matching text scale-down as part of the height-
+   reduction pass, in proportion with the smaller 280px wrapper. */
+.satellite {
+    position: absolute;
+    width: 56px;
+    height: 56px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1px;
+    border-radius: 50%;
+    background: rgba(8, 14, 28, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.satellite-nw {
+    top: 5%;
+    left: 5%;
+}
+
+.satellite-ne {
+    top: 5%;
+    right: 5%;
+}
+
+.satellite-sw {
+    bottom: 5%;
+    left: 5%;
+}
+
+.satellite-se {
+    bottom: 5%;
+    right: 5%;
+}
+
+.satellite-value {
+    font-size: 13px;
+    font-weight: 800;
+    color: #ffffff;
+    line-height: 1;
+}
+
+.satellite-label {
+    font-size: 6px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    color: #8b93a7;
+    text-transform: uppercase;
+}
+
+.donut-legend-row {
+    list-style: none;
+    /* Reduced 20px -> 16px top margin / 16px -> 14px top padding as part
+       of the height-reduction pass. */
+    margin: 16px 0 0 0;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    flex-wrap: wrap;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 13px;
+    color: #8b93a7;
+}
+
+.legend-swatch {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    flex: 0 0 auto;
+}
+
+.legend-label {
+    flex: 0 0 auto;
+}
+
+/* ---- Dashboard 3: Application Status with Stages (bar + line, pure SVG/CSS) ---- */
+.bar-line-chart {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* Faint horizontal gridlines every 25% of the track height, plus a
+   slightly brighter baseline -- matches the reference dashboard's
+   subtle rule lines behind the bars. Was a flat light-gray background
+   (#e3e8f0 border) left over from a light-theme version of this chart;
+   replaced with a dark-theme-appropriate tiled gradient. */
+.bar-line-track {
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-around;
+    height: 220px;
+    background-image: linear-gradient(to bottom, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+    background-size: 100% 25%;
+    background-repeat: repeat-y;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.16);
+}
+
+.bar-column {
+    position: relative;
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    height: 100%;
+    max-width: 90px;
+}
+
+/* Was #1a2340 (near-black navy) -- invisible against this card's dark
+   background. Changed to white + enlarged to match the bold value
+   labels above each column in the reference dashboard. */
+.bar-value-label {
+    font-size: 20px;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 8px;
+}
+
+/* Cylindrical bar: blue gradient body with a glow, elliptical top corners
+   (via the horizontal/vertical border-radius shorthand) and a dark
+   elliptical cap (::before) to read as an open tube -- matching the
+   reference dashboard's 3D cylinder bars. Was a flat gray rectangle
+   (#7e93ab, square top corners). */
+/* Width increased 20% (46% -> 55%) per design spec -- height scaling is
+   handled in JS via MAX_HEIGHT_PERCENT so the two axes stay independent. */
+.bar-fill {
+    position: relative;
+    width: 55%;
+    min-height: 24px;
+    background: linear-gradient(180deg, #6fb3ff 0%, #2f7bea 55%, #1c5cc4 100%);
+    border-radius: 50% 50% 6px 6px / 16px 16px 6px 6px;
+    box-shadow: 0 0 18px rgba(79, 157, 255, 0.55);
+}
+
+.bar-fill::before {
+    content: '';
+    position: absolute;
+    top: -6px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 88%;
+    height: 12px;
+    background: #0a1830;
+    border-radius: 50%;
+    opacity: 0.9;
+}
+
+/* Retention-percentage pill embedded near the bottom of each bar (e.g.
+   "79.4%") -- omitted on the first bar (no prior stage to compare to). */
+.bar-percent-badge {
+    position: absolute;
+    left: 50%;
+    bottom: 14px;
+    transform: translateX(-50%);
+    background: #0a1830;
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 6px;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 8px;
+    white-space: nowrap;
+    z-index: 1;
+}
+
+.bar-axis-labels {
+    display: flex;
+    justify-content: space-around;
+}
+
+.bar-axis-item {
+    flex: 1 1 0;
+    max-width: 90px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px;
+}
+
+/* Serial number ("01", "02"...) rendered above the stage label, below
+   the column -- set to white (was missing entirely) to match the
+   reference dashboard's visibility. */
+.bar-axis-number {
+    font-size: 11px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+/* Was #5a6c8f (dim blue-gray, low contrast on the dark card background) --
+   changed to white per design feedback. */
+.bar-axis-label {
+    text-align: center;
+    font-size: 12px;
+    color: #ffffff;
+}
+
+/* Footer band below the chart: dim caption on the left, "Stage
+   progression" indicator on the right -- matches the reference
+   dashboard's bottom strip. */
+.stage-dashboard-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 20px;
+    padding-top: 16px;
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.stage-footer-caption {
+    font-size: 13px;
+    color: #eeeff1;
+}
+
+.stage-footer-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    font-weight: 700;
+    color: #4f9dff;
+}
+
+.stage-footer-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #4f9dff;
+    flex: 0 0 auto;
+}
+
+@media (max-width: 768px) {
+    .dash-row-top {
+        grid-template-columns: 1fr;
+    }
+
+    .funnel-container {
+        flex-wrap: wrap;
+    }
+
+    .donut-chart-wrapper {
+        flex-direction: column;
+    }
+}

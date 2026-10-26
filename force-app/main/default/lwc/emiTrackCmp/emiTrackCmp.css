@@ -1,0 +1,100 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import "c/cssLibrary";
+
+/* ----------------- Dark Theme (matches hl_incomeAssessmentTabsRenderingCmp /
+   hl_assessedIncomeProgramCmp / bsaSelectBankCmp / addBankAccountCmp) ----------------- */
+:host {
+    display: block;
+    background-color: #08192f;
+    color: #ffffff;
+
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #0e1c30;
+    --dt-border: #33455e;
+ --dt-positive: #8b5cf6;
+    --dt-negative: #16283f;
+
+
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+
+    --slds-c-card-color-background: #0a1524;
+}
+
+/* ____GenAI: Generated code starts here - dropdown option list (listbox)
+   fully themed with the --dt-* palette. Adds the value-text, option-text,
+   and hover-state tokens missing before, which is why the option rows were
+   still rendering with the default light theme when the dropdown opened.____ */
+lightning-combobox {
+    --slds-c-combobox-input-color-background: var(--dt-input-bg);
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: var(--dt-border);
+    --slds-c-combobox-input-value-text-color: #ffffff;
+    --slds-c-combobox-label-color: #ffffff;
+    --slds-c-combobox-text-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: var(--dt-input-bg);
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+}
+
+/* Closed combobox/select input - direct selector fallback in case the
+   --slds-c-combobox-* hooks above don't apply on this base-component
+   version. background #16283f / border #33455e / white text / 2.25rem tall,
+   matching .slds-select and .slds-combobox__input used elsewhere. */
+.slds-select,
+lightning-combobox .slds-combobox__input {
+    background-color: #16283f !important;
+    border: 1px solid #33455e !important;
+    color: #ffffff !important;
+    height: 2.25rem !important;
+}
+/* ____GenAI: Generated code ends here____ */
+
+/* ____GenAI: Generated code starts here - table restyled from the light-blue /
+   black-border look to the shared dark theme palette (flat theme-blue header,
+   panel-dark rows, --dt-border grid lines). Replaces the inline
+   background-color/border-color previously left on the template markup.____ */
+.emi-table {
+    width: auto;
+    border: 1px solid var(--dt-border);
+    background-color: var(--dt-panel-bg);
+}
+
+.emi-table thead {
+    font-weight: 700;
+}
+
+.emi-table thead tr {
+    background: var(--dt-header-bg);
+    color: #ffffff;
+    text-align: left;
+}
+
+.emi-table th {
+    text-align: center;
+    background-color: var(--dt-header-bg);
+    color: #ffffff;
+    font-weight: 700;
+    border: 1px solid var(--dt-border);
+}
+
+.emi-table tbody {
+    font-weight: 400;
+}
+
+.emi-table td {
+    border: 1px solid var(--dt-border);
+    color: #ffffff;
+    font-weight: 400;
+    background-color: var(--dt-panel-bg);
+}
+/* ____GenAI: Generated code ends here____ */
+
+p {
+    color: #ffffff;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

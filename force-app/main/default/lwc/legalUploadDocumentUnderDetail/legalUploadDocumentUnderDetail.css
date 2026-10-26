@@ -1,0 +1,8 @@
+.content-viewer {
+    border: 1px solid #000000;
+    margin-bottom: 5px;
+    transition: transform 0.2s ease-in-out;
+}
+.lightning-icon-hover {
+    cursor: pointer;
+}

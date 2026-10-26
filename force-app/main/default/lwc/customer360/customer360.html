@@ -1,0 +1,213 @@
+<template>
+
+    <div class="customer360-page">
+
+        <!-- Header -->
+        <div class="customer-header">
+
+            <div class="header-left">
+
+                <div class="customer-avatar">
+                    {initials}
+                </div>
+
+                <div class="customer-info">
+                    <div class="customer-name">
+                        {customerName}
+                    </div>
+
+                    <div class="customer-subtitle">
+                        {customerType} · {accountType}
+                    </div>
+
+                    <div class="customer-meta">
+                        <span>Household</span>
+                        <span class="separator">•</span>
+                        <span>{accountNumber}</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="header-right">
+
+                <div class="header-actions">
+                    <button class="action-btn action-btn-secondary" onclick={handleNewContact}>
+                        + New Contact
+                    </button>
+                    <button class="action-btn action-btn-primary" onclick={handleNewOpportunity}>
+                        + New Opportunity
+                    </button>
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Flat metrics row -->
+        <div class="metrics-row">
+
+            <div class="metric-item">
+                <span class="metric-label">Total exposure</span>
+                <span class="metric-value">₹41,20,000</span>
+            </div>
+
+            <div class="metric-item">
+                <span class="metric-label">Live loans</span>
+                <span class="metric-value">2 of 3</span>
+            </div>
+
+        </div>
+
+
+        <!-- Relationship strip -->
+        <div class="relationship-bar">
+
+            <template for:each={relatedContactCards} for:item="contact">
+                <div class="relationship-item" key={contact.id}>
+                    <div class="relationship-avatar">
+                        {contact.initials}
+                    </div>
+
+                    <div>
+                        <div class="relationship-name">
+                            {contact.name}
+                        </div>
+
+                        <div class="relationship-role">
+                            {contact.title}
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+        </div>
+
+
+        <!-- Navigation Tabs -->
+        <div class="main-tabs">
+
+            <button
+                class={overviewTabClass}
+                data-tab="overview"
+                onclick={handleTabChange}>
+                Overview
+            </button>
+
+            <button
+                class={loansTabClass}
+                data-tab="loans"
+                onclick={handleTabChange}>
+                Loans and servicing
+            </button>
+
+            <button
+                class={riskTabClass}
+                data-tab="risk"
+                onclick={handleTabChange}>
+                Risk and compliance
+            </button>
+
+        </div>
+
+
+        <!-- Main Content -->
+        <div class="content-area">
+
+            <template if:true={isOverview}>
+
+                <div class="overview-row slds-grid slds-wrap">
+
+                    <!-- LEFT COLUMN: Demographic + Tranche and semester -->
+
+                        <div class="slds-col slds-size_8-of-12 stacked-col">
+                            <c-customer360-demographic-cmp
+                                record-id={recordId}>
+                            </c-customer360-demographic-cmp>
+
+                            <div class="card">
+                                <c-tranche-and-semester></c-tranche-and-semester>
+                            </div>
+                        </div>
+
+                        <div class="slds-col slds-size_4-of-12 stacked-col">
+                            <div class="card">
+                                <c-loan-portfolio></c-loan-portfolio>
+                            </div>
+
+                             <div class="card">
+                                <c-lifecycle></c-lifecycle>
+                            </div>
+
+                            <div class="card">
+                                <c-related-parties></c-related-parties>
+                            </div>
+
+                            <div class="card">
+                                <c-interactions></c-interactions>
+                            </div>
+
+                            <div class="card">
+                                <c-early-warnings></c-early-warnings>
+                            </div>
+
+                            <div class="card">
+                                <c-bureau></c-bureau>
+                            </div>
+
+                            <div class="card">
+                                <c-subsidy-and-scheme></c-subsidy-and-scheme>
+                            </div>
+
+                            <div class="card">
+                                <c-collateral></c-collateral>
+                            </div>
+                        </div>
+                </div>
+
+            </template>
+
+
+            <template if:true={isLoans}>
+
+                <div class="overview-row slds-grid slds-wrap">
+                    <div class="slds-col slds-size_6-of-12 stacked-col">
+                        <c-service-requests-and-grievances></c-service-requests-and-grievances>
+                    </div>
+
+                    <div class="slds-col slds-size_6-of-12 stacked-col">
+                        <c-document-vault></c-document-vault>
+                    </div>
+                </div>
+
+            </template>
+
+
+            <template if:true={isRisk}>
+
+                <div class="overview-row slds-grid slds-wrap">
+                    <div class="slds-col slds-size_4-of-12 stacked-col">
+                        <c-kyc-and-ckyc></c-kyc-and-ckyc>
+                    </div>
+
+                    <div class="slds-col slds-size_4-of-12 stacked-col">
+                        <c-consent-register></c-consent-register>
+                    </div>
+
+                    <div class="slds-col slds-size_4-of-12 stacked-col">
+                        <c-financial-profile></c-financial-profile>
+                    </div>
+
+                    <div class="slds-col slds-size_4-of-12 stacked-col">
+                        <c-audit-trail></c-audit-trail>
+                    </div>
+                </div>
+
+            </template>
+
+        </div>
+
+    </div>
+
+</template>

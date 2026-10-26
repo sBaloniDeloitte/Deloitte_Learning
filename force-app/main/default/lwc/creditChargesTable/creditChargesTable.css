@@ -1,0 +1,130 @@
+@import "c/cssLibrary";
+
+.icon-hover:hover {
+    cursor: pointer;
+}
+
+.slds-accordion__list-item {
+    border: 1px solid #0a1524 !important;
+}
+
+.save-button {
+    background-color: #1467eb ;
+    color: white;
+}
+
+.save-button:hover{
+    color:rgb(236, 230, 230)
+}
+
+.custom-table thead th {
+    background-color: #162d4a !important;
+    color: #ffffff !important;
+
+    border: 1px solid #33455e !important;
+
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.custom-table tbody td {
+    background-color: #0f1d33 !important;
+    color: #ffffff !important;
+
+    border: 1px solid #33455e !important;
+}
+
+.custom-table tbody tr:nth-child(odd) td {
+    background-color: #0f1d33 !important;
+}
+
+.custom-table tbody tr:nth-child(even) td {
+    background-color: #152743 !important;
+}
+
+.charge-total-label {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 18px;
+}
+
+.table-container {
+    background: #09172b;
+
+    border: 1px solid #33455e;
+    border-radius: 12px;
+
+    padding: 16px;
+}
+
+.custom-table {
+    border-collapse: collapse;
+}
+
+.custom-table th,
+.custom-table td {
+    padding: 12px;
+}
+
+/*  Makes table responsive with horizontal scroll if needed */
+/*.table-container {
+    overflow-x: auto;
+    max-width: 100%;
+    position: relative; 
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    table-layout: auto; 
+}
+
+.custom-table th {
+    background-color: #5bb6e3;
+    color: white;
+    text-align: center;
+    padding: 3px;
+    font-size: 12px;
+    font-weight: bold;
+    border: 1px solid black;
+    white-space: nowrap;
+}
+
+.custom-table tr.total-row td {
+    font-weight: bold !important;  
+}
+
+.custom-table td {
+    text-align: left;
+    padding: 4px;
+    border: 1px solid black;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    vertical-align: middle; 
+}
+
+.custom-table td lightning-input {
+    width: 100%;
+    padding: 2px;
+    margin: 0;
+    text-align: left;
+    font-size: 12px;
+    height: auto;
+}
+
+.custom-table td lightning-combobox {
+    width: calc(100% - 6px); 
+    height: 32px !important; 
+    font-size: 12px !important;
+    padding: 0; 
+}
+
+.custom-table td lightning-combobox .slds-dropdown {
+    position: fixed !important; 
+    z-index: 1050 !important; 
+    max-height: 200px !important; 
+    overflow-y: auto !important; 
+    min-width: 150px !important; 
+}*/

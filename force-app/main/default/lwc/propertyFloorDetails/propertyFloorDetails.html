@@ -1,0 +1,131 @@
+<template>
+    <lightning-card title="Floor Wise Technical Details">
+        <div class="slds-p-around_small">
+
+            <table class="custom-table slds-table slds-table_cell-buffer">
+                <thead class="custom-header">
+                    <tr>
+                        <th>Floor</th>
+                        <th>Accommodation & Occupancy</th>
+                        <th>Plan BUA</th>
+                        <th>Actual BUA</th>
+                        <th>Documented Area</th>
+                        <th>Permissible Area</th>
+                        <th>Adopted Area</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <template for:each={rows} for:item="row">
+                        <tr key={row.Id}>
+
+                            <td>
+                                <lightning-combobox
+                                    value={row.Floor__c}
+                                    options={floorOptions}
+                                    data-id={row.Id}
+                                    data-field="Floor__c"
+                                    onchange={handleChange}>
+                                </lightning-combobox>
+                            </td>
+
+                            <td>
+                                <lightning-input
+                                    value={row.Accommodation_and_Occupancy__c}
+                                    data-id={row.Id}
+                                    data-field="Accommodation_and_Occupancy__c"
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </td>
+
+                            <td>
+                                <lightning-input type="text"
+                                    value={row.As_per_Plan_BUA_SFT__c}
+                                    data-id={row.Id}
+                                    data-field="As_per_Plan_BUA_SFT__c"
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </td>
+
+                            <td>
+                                <lightning-input type="text"
+                                    value={row.Actual_BUA_SFT__c}
+                                    data-id={row.Id}
+                                    data-field="Actual_BUA_SFT__c"
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </td>
+
+                            <td>
+                                <lightning-input type="text"
+                                    value={row.Documented_Area_SFT__c}
+                                    data-id={row.Id}
+                                    data-field="Documented_Area_SFT__c"
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </td>
+
+                            <td>
+                                <lightning-input type="text"
+                                    value={row.Permissible_Area_SFT__c}
+                                    data-id={row.Id}
+                                    data-field="Permissible_Area_SFT__c"
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </td>
+
+                            <td>
+                                <lightning-input type="text"
+                                    value={row.Adopted_Area_for_Valuation_SFT__c}
+                                    data-id={row.Id}
+                                    data-field="Adopted_Area_for_Valuation_SFT__c"
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </td>
+
+                            <td class="action-cell">
+                                <lightning-button-icon
+                                    icon-name="utility:delete"
+                                    alternative-text="Delete"
+                                    data-id={row.Id}
+                                    onclick={handleDelete}>
+                                </lightning-button-icon>
+                            </td>
+
+                        </tr>
+                    </template>
+
+                    <!-- TOTAL ROW -->
+                    <tr class="total-row">
+                        <td><b>Total</b></td>
+                        <td></td>
+                        <td><b>{totalPlanBUA}</b></td>
+                        <td><b>{totalActualBUA}</b></td>
+                        <td><b>{totalDocumentedArea}</b></td>
+                        <td><b>{totalPermissibleArea}</b></td>
+                        <td><b>{totalAdoptedArea}</b></td>
+                        <td></td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <div class="slds-m-top_medium">
+                <lightning-button
+                    label="Add Row"
+                    variant="neutral"
+                    class="slds-m-right_small"
+                    onclick={handleAddRow}
+                    disabled={isAddDisabled}>
+                </lightning-button>
+                  <lightning-button
+                    label="Save"
+                    variant="brand"
+                    onclick={saveAll}>
+                </lightning-button>
+            </div>
+
+        </div>
+    </lightning-card>
+</template>

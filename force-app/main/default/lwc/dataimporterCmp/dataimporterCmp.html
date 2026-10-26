@@ -1,0 +1,360 @@
+<template>
+    <lightning-card title="Data Importer" icon-name="utility:upload">
+
+        <a class="dl-anchor" style="display:none;" aria-hidden="true"></a>
+
+        <div class="slds-p-around_medium">
+
+            <!-- ══════════════════════════════════════════
+                 STEP 1 — Object + Operation
+            ══════════════════════════════════════════ -->
+            <div class="step-card">
+                <div class="step-header">
+                    <span class="step-number">1</span>
+                    <span class="step-title">Target Object &amp; Operation</span>
+                </div>
+                <div class="step-body">
+                    <div class="form-row">
+
+                        <!-- Object name with autocomplete -->
+                        <div class="form-col">
+                            <label class="field-label">Object API Name *</label>
+                            <div class="obj-input-wrap">
+                                <input
+                                    type="text"
+                                    class="slds-input"
+                                    placeholder="e.g. Account, Contact__c"
+                                    value={objectName}
+                                    oninput={handleObjectInput}
+                                    onblur={hideObjSuggestions}
+                                    autocomplete="off" />
+                                <template if:true={showObjSuggestions}>
+                                    <ul class="obj-suggestion-list">
+                                        <template for:each={objSuggestions} for:item="s">
+                                            <li key={s.value}
+                                                class="obj-suggestion-item"
+                                                onmousedown={selectObject}
+                                                data-value={s.value}>
+                                                {s.label}
+                                            </li>
+                                        </template>
+                                    </ul>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- Operation -->
+                        <div class="form-col">
+                            <label class="field-label">Operation *</label>
+                            <div class="operation-btns">
+                                <template for:each={operationOptions} for:item="op">
+                                    <button
+                                        key={op.value}
+                                        class={op.cssClass}
+                                        data-value={op.value}
+                                        onclick={selectOperation}>
+                                        {op.label}
+                                    </button>
+                                </template>
+                            </div>
+                        </div>
+
+                        <!-- External ID (upsert only) -->
+                        <template if:true={isUpsert}>
+                            <div class="form-col">
+                                <label class="field-label">External ID Field *</label>
+                                <input
+                                    type="text"
+                                    class="slds-input"
+                                    placeholder="e.g. External_Id__c"
+                                    value={externalIdField}
+                                    oninput={handleExternalIdInput} />
+                            </div>
+                        </template>
+
+                    </div>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════
+                 STEP 2 — Upload CSV
+            ══════════════════════════════════════════ -->
+            <div class="step-card">
+                <div class="step-header">
+                    <span class="step-number">2</span>
+                    <span class="step-title">Upload CSV File</span>
+                    <span class="step-hint">First row must be Salesforce field API names</span>
+                </div>
+                <div class="step-body">
+
+                    <!-- Drop zone -->
+                    <div
+                        class={dropZoneClass}
+                        ondragover={handleDragOver}
+                        ondragleave={handleDragLeave}
+                        ondrop={handleDrop}>
+
+                        <lightning-icon icon-name="utility:upload" size="large" class="dz-icon"></lightning-icon>
+                        <p class="dz-text">Drag &amp; drop your CSV here</p>
+                        <p class="dz-or">— or —</p>
+                        <label class="browse-btn">
+                            Browse File
+                            <input
+                                type="file"
+                                accept=".csv,.txt"
+                                class="hidden-input"
+                                onchange={handleFileUpload} />
+                        </label>
+
+                        <template if:true={csvFileName}>
+                            <div class="file-badge">
+                                <lightning-icon icon-name="utility:check" size="x-small"></lightning-icon>
+                                <span>{csvFileName}</span>
+                                <span class="file-meta">{csvRowCount} data rows · {csvColCount} columns</span>
+                            </div>
+                        </template>
+                    </div>
+
+                    <!-- CSV format guide -->
+                    <div class="format-guide">
+                        <div class="format-guide-title">CSV Format Guide</div>
+                        <div class="format-examples">
+                            <div class="format-example">
+                                <div class="format-op">Insert</div>
+                                <code>Name,Phone,Industry<br/>Acme,9999,Tech</code>
+                            </div>
+                            <div class="format-example">
+                                <div class="format-op">Update / Delete</div>
+                                <code>Id,Phone<br/>0012x...,8888</code>
+                            </div>
+                            <div class="format-example">
+                                <div class="format-op">Upsert</div>
+                                <code>Ext_Id__c,Name<br/>EXT001,Acme</code>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════════════════
+                 STEP 3 — Field Mapping
+            ══════════════════════════════════════════ -->
+            <template if:true={hasFieldMappings}>
+                <div class="step-card">
+                    <div class="step-header">
+                        <span class="step-number">3</span>
+                        <span class="step-title">Field Mapping</span>
+                        <span class="step-hint">{mappedCount} of {totalColumns} columns mapped</span>
+                    </div>
+                    <div class="step-body">
+
+                        <!-- Mapping stats bar -->
+                        <div class="mapping-stats">
+                            <span class="stat stat-ok">{mappedCount} mapped</span>
+                            <span class="stat stat-warn">{unmappedCount} not found</span>
+                            <span class="stat stat-skip">{skippedCount} excluded</span>
+                        </div>
+
+                        <!-- Mapping table -->
+                        <div class="mapping-table-wrap">
+                            <table class="mapping-table">
+                                <thead>
+                                    <tr>
+                                        <th>CSV Column</th>
+                                        <th>Salesforce Field</th>
+                                        <th>Field Label</th>
+                                        <th>Type</th>
+                                        <th>Required</th>
+                                        <th>Include</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={fieldMappings} for:item="fm">
+                                        <tr key={fm.csvCol} class={fm.rowClass}>
+                                            <td class="col-csv">{fm.csvCol}</td>
+                                            <td class={fm.sfClass}>{fm.sfField}</td>
+                                            <td class="col-label">{fm.sfLabel}</td>
+                                            <td class="col-type">{fm.sfType}</td>
+                                            <td class="col-req">{fm.required}</td>
+                                            <td>
+                                                <input
+                                                    type="checkbox"
+                                                    checked={fm.included}
+                                                    data-col={fm.csvCol}
+                                                    onchange={toggleMapping} />
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Data preview -->
+                        <template if:true={hasPreviewRows}>
+                            <div class="preview-section">
+                                <div class="preview-title">Data Preview (first 5 rows)</div>
+                                <div class="preview-table-wrap">
+                                    <table class="preview-table">
+                                        <thead>
+                                            <tr>
+                                                <template for:each={previewHeaders} for:item="h">
+                                                    <th key={h}>{h}</th>
+                                                </template>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template for:each={previewRows} for:item="row">
+                                                <tr key={row._key}>
+                                                    <template for:each={row.cells} for:item="cell">
+                                                        <td key={cell.col}>{cell.val}</td>
+                                                    </template>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </template>
+
+                    </div>
+                </div>
+            </template>
+
+            <!-- ══════════════════════════════════════════
+                 STEP 4 — Run Import
+            ══════════════════════════════════════════ -->
+            <template if:true={hasFieldMappings}>
+                <div class="step-card">
+                    <div class="step-header">
+                        <span class="step-number">4</span>
+                        <span class="step-title">Run Import</span>
+                    </div>
+                    <div class="step-body">
+
+                        <div class="run-row">
+                            <lightning-button
+                                label={runBtnLabel}
+                                variant="brand"
+                                icon-name="utility:upload"
+                                onclick={runImport}
+                                disabled={isImporting}>
+                            </lightning-button>
+                            <lightning-button
+                                label="Reset"
+                                variant="neutral"
+                                icon-name="utility:refresh"
+                                onclick={resetAll}
+                                class="slds-m-left_x-small">
+                            </lightning-button>
+                            <template if:true={isImporting}>
+                                <div class="import-progress">
+                                    <lightning-spinner size="small" alternative-text="Importing"></lightning-spinner>
+                                    <span>Importing {csvRowCount} records…</span>
+                                </div>
+                            </template>
+                        </div>
+
+                        <div class="batch-note">
+                            Salesforce processes up to 200 records per DML call.
+                            Large files are automatically chunked.
+                        </div>
+
+                    </div>
+                </div>
+            </template>
+
+            <!-- ══════════════════════════════════════════
+                 ERROR
+            ══════════════════════════════════════════ -->
+            <template if:true={errorMsg}>
+                <div class="slds-notify slds-notify_alert slds-alert_error slds-m-bottom_small" role="alert">
+                    <lightning-icon icon-name="utility:error" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                    {errorMsg}
+                    <button class="slds-button slds-button_icon slds-button_icon-small slds-float_right" onclick={clearError}>
+                        <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
+                    </button>
+                </div>
+            </template>
+
+            <!-- ══════════════════════════════════════════
+                 RESULTS
+            ══════════════════════════════════════════ -->
+            <template if:true={hasResults}>
+                <div class="step-card results-card">
+                    <div class="step-header">
+                        <span class="step-title">Import Results</span>
+                    </div>
+                    <div class="step-body">
+
+                        <!-- Summary bar -->
+                        <div class="results-summary">
+                            <div class="summary-pill pill-success">
+                                <lightning-icon icon-name="utility:check" size="x-small"></lightning-icon>
+                                {successCount} Succeeded
+                            </div>
+                            <div class="summary-pill pill-fail">
+                                <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
+                                {failCount} Failed
+                            </div>
+                            <div class="summary-pill pill-total">
+                                {totalCount} Total
+                            </div>
+                            <template if:true={hasFailures}>
+                                <lightning-button
+                                    label="Download Error Log"
+                                    variant="neutral"
+                                    icon-name="utility:download"
+                                    size="small"
+                                    onclick={downloadErrorLog}
+                                    class="slds-m-left_small">
+                                </lightning-button>
+                            </template>
+                        </div>
+
+                        <!-- Progress bar -->
+                        <div class="progress-bar-wrap">
+                            <div class="progress-bar-fill" style={progressBarStyle}></div>
+                        </div>
+                        <div class="progress-label">{successCount} of {totalCount} records processed successfully</div>
+
+                        <!-- Results table -->
+                        <div class="results-table-wrap">
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered result-table">
+                                <thead>
+                                    <tr>
+                                        <th style="width:60px">Row</th>
+                                        <th style="width:100px">Status</th>
+                                        <th>Record ID</th>
+                                        <th>Error Message</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={importResults} for:item="r">
+                                        <tr key={r.row} class={r.rowClass}>
+                                            <td>{r.row}</td>
+                                            <td>
+                                                <span class={r.statusClass}>{r.status}</span>
+                                            </td>
+                                            <td>
+                                                <template if:true={r.isLink}>
+                                                    <a href={r.href} target="_blank">{r.id}</a>
+                                                </template>
+                                                <template if:false={r.isLink}>
+                                                    {r.id}
+                                                </template>
+                                            </td>
+                                            <td class="error-cell">{r.error}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div>
+                </div>
+            </template>
+
+        </div>
+    </lightning-card>
+</template>

@@ -1,0 +1,1319 @@
+import { LightningElement, track, api, wire } from 'lwc';
+import { NavigationMixin } from "lightning/navigation";
+import { ShowToastEvent } from 'lightning/platformShowToastEvent';
+import { deleteRecord } from 'lightning/uiRecordApi';
+import fetchCollateral from '@salesforce/apex/hl_technicalRecordController.fetchCollateral';
+//import fetchCollateralId from '@salesforce/apex/hl_technicalRecordController.fetchCollateralId';
+import assigneeList from '@salesforce/apex/hl_technicalRecordController.assigneeList';
+import checkUser from '@salesforce/apex/hl_technicalRecordController.checkUser';
+import getCurrentUserProfileName from '@salesforce/apex/Utility.getCurrentUserProfileName';
+import checkCurrentUserPermissionSet from '@salesforce/apex/Utility_V1.getCurrentUserPermissionSets';
+
+import getUsers from '@salesforce/apex/Utility_V1.getUsers';
+import getBranches from '@salesforce/apex/Utility_V1.getBranches';
+//import getLegalUsers from '@salesforce/apex/Utility.getLegalUsers';
+import setDocument from '@salesforce/apex/GenericDocumentInitiateController.setDocument';
+//import deleteDocumentCheckList from '@salesforce/apex/GenericDocumentInitiateController.deleteDocumentCheckList';
+import insertFileRecord from '@salesforce/apex/GenericDocumentInitiateController.insertFileRecord';
+import initiateTechnical from '@salesforce/apex/COMM_TechnicalRecordPageController.initiateTechnical';
+import getTechnicalRecords from '@salesforce/apex/COMM_TechnicalRecordPageController.getTechnicalRecords';
+import getCollateral from '@salesforce/apex/COMM_TechnicalRecordPageController.getCollateral';
+import getTechEvalId from '@salesforce/apex/COMM_TechnicalRecordPageController.getTechEvalId';
+//import getTechnicalRecordsByCollateral from '@salesforce/apex/COMM_TechnicalRecordPageController.getTechnicalRecordsByCollateral';
+import deleteDocumentsWithFiles from '@salesforce/apex/COMM_TechnicalRecordPageController.deleteDocumentsWithFiles';
+import FORM_FACTOR from '@salesforce/client/formFactor';
+import User_Id from '@salesforce/user/Id';
+import checkIfLoggedInUserIsHLRelated from '@salesforce/apex/Utility_V1.checkIfLoggedInUserIsHLRelated';
+import getRelatedTechnicalRecord from '@salesforce/apex/hl_technicalRecordController.getRelatedTechnicalRecord';
+
+export default class Hl_technicalRecordTypeSelection_v1 extends NavigationMixin(LightningElement) {
+
+    get reportOptions() {
+        return [
+            { label: 'Internal', value: 'Internal' },
+            { label: 'External', value: 'External' },
+        ];
+    }
+
+    @track progressStep = {
+        step1: false,
+        step2: false,
+        step3: false,
+        step4: false,
+        step5: false
+    }
+    showTechnicalTable = false
+    isEvaluationSelected = false
+
+    value = '';// No default value is set
+    @api showModal;
+    @api recordId;
+    @api trancheId;
+    @track disableLoanReject = false;
+    @track options1 = [];
+    @track options2 = [];
+    @track datatop = [];
+    @track datatop1 = [];
+    option
+    optionTranche
+    @track aplicationcolatteral;
+    @track tranche;
+    @track error;
+    @track isLoading = false;
+    @track recordAllocation = false;
+    @track technicalrecordId;
+    @track objectFields = [];
+    @track userList = [];
+    optionUser;
+    @track optionUser1 = [];
+    data;
+
+    @track allocated;
+    @track optionsUsers;
+
+    @track userDetails;
+    @track error;
+    @track checkAddress = false;
+    @track checkSpin = false
+    @track isTranch = true;
+    plotNo;
+    buildingName;
+    floorNo;
+    pincode;
+    town;
+    tehsil;
+    district;
+    state;
+    // @track reportOptions;
+    @track reportType;
+    @api genericInitiate;
+
+    @track documents = []
+    @track technicals = []
+    currentDocId;
+    currentIndex;
+    @track locallyRemovedDocIds = new Set();//updated Ayushi
+    assigneeOptions = [];
+    assigneeOptions1 = [];
+
+    @track collateralAddress = '';
+
+    @track helptext = '';
+    // collateralId = '';
+    showConfirmModal = false;
+    showConfirmDocModal = false;
+
+    originalCollateral;
+    originalAssignee;
+
+    pendingChangeType; // 'collateral' or 'assignee'
+    pendingNewValue;
+    collApplicationCollIdObject = [];
+
+    get isMobile() {
+        return FORM_FACTOR == 'Large' ? 'line slds-align_absolute-center' : 'linemobile slds-align_absolute-center'
+    }
+    @track profileName;
+    @track userId = User_Id;
+    @track isOperationProfile = false;
+    @track loanStatus;
+    @track loanStage;
+    @track uploadedFiles = [];
+    currentDocId;
+    techEvalId;
+    docAdded = false;
+    loanAmount;
+    @track showFlow = false;
+    @track inputVariables = [];
+    @track collateralRelatedTechnicals = [];
+    technicalOptions = [];
+    selectedTechnical = '';
+    showTechEvluation = false;
+    showSqYardCheck = false;
+    showActionButton = false;
+    showTechSelection = false;
+    @track isTechManager=false;
+    isHLUser= false;
+
+    showErrorToast(message) {
+        this.dispatchEvent(new ShowToastEvent({
+            title: 'Validation Error',
+            message: message,
+            variant: 'error',
+        }));
+    }
+
+    checkIfLoggedInUserIsHLRelated(){
+        checkIfLoggedInUserIsHLRelated()
+        .then(result => {
+            this.isHLUser = result.isHLRelated;
+        })
+        .catch(error => {
+            console.log('error-->',error);
+        })
+        //HL-Ishi-10/10
+    }
+
+    showSuccessToast(message) {
+        this.dispatchEvent(new ShowToastEvent({
+            title: 'Success',
+            message: message,
+            variant: 'success',
+        }));
+    }
+
+    get acceptedFormats() {
+        return ['.pdf', '.png', '.jpg'];
+    }
+
+    handleFormFactor() {
+        console.log('handleFormFactor: ', this.formFactor);
+        if (this.formFactor === "Large") {
+            this.deviceType = "Desktop/Laptop";
+        } else if (this.formFactor === "Medium") {
+            this.deviceType = "Tablet";
+        } else if (this.formFactor === "Small") {
+            this.deviceType = "Mobile";
+        }
+    }
+
+    get getProgressBar(){
+        if(this.deviceType == 'Mobile'){
+            return 'progress-bar-mobile';
+        }
+        return 'progress-bar';
+    }
+
+    get progressStages() {
+        return [
+            { key: 'step1', label: 'Select Type of Evaluation', completed: this.progressStep?.step1, showLine : true, sequence: 1 },
+            { key: 'step2', label: 'Select Related Collateral', completed: this.progressStep?.step2, showLine : true, sequence: 2 },
+            { key: 'step3', label: 'Select Assignee', completed: this.progressStep?.step3, showLine : true, sequence: 3 },
+            { key: 'step4', label: 'Upload Documents', completed: this.progressStep?.step4, showLine : true, sequence: 4 },
+            { key: 'step5', label: 'Initiate Report', completed: this.progressStep?.step5, showLine : true, sequence: 5 }
+        ];
+    }
+
+    collateralData = [];
+    @wire(fetchCollateral, { loanId: '$recordId' })
+    picklistvalues({ error, data }) {
+        this.collateralData = data;
+
+        if (data) {
+            console.log('collateralsdata', data);
+
+            if(data){
+                for (var i=0; i< data.length; i++) {
+                    this.option = {
+                        label: data[i].name,
+                        value: data[i].id
+                    }; 
+
+                    this.options1 = [...this.options1, this.option];
+                }
+            }
+
+            // this.datatop = data;
+            // for (let key in this.datatop) {
+            //     console.log('collaterals', key, this.datatop[key]);
+            //     this.option = {
+            //         label: this.datatop[key],
+            //         value: key
+            //     };
+            //     console.log('Option', this.option);
+            //     this.options1 = [...this.options1, this.option]
+            //     this.collApplicationCollIdObject = [...this.collApplicationCollIdObject, ];
+            //     console.log('collaterals----->>', this.options1);
+            // }
+            console.log('Options1', this.options1);
+        } else if (error) {
+            console.log('rahul is okay');
+            window.console.log(error);
+        }
+    }
+
+    fetchUserProfile() {
+        if(!this.isHLUser){
+        getCurrentUserProfileName()
+        .then((data) => {
+            if (data) {
+                // Check if the user is a Technical Manager
+                if (data === 'Technical Manager') {
+                    this.getCollaterals();
+                    this.techRecords = 'Technical Evaluation';
+                    this.showTechEvluation = true;
+                    this.showSqYardCheck = false;
+                    this.showActionButton = true;
+                    this.isEvaluationSelected = true;
+                    this.isUserSelected = true;
+                    this.progressStep.step1 = true;
+                    this.progressStep.step2 = true;
+                    this.isTechManager= true;
+                }
+                this.profileName = data;
+                console.log('data :: ', data);
+            }
+            this.getTechUser();
+        })
+        .catch((error) => {
+            console.log('Error while fetching profile name: ', error);
+        });
+    }else{
+         checkCurrentUserPermissionSet().then(pm => {
+            console.log('pm>>>>'+JSON.stringify(pm));
+            if(pm){
+                if(pm.includes('PS_Technical_Manager_HL')){
+                    this.getCollaterals();
+                    this.techRecords = 'Technical Evaluation';
+                    this.showTechEvluation = true;
+                    this.showSqYardCheck = false;
+                    this.showActionButton = true;
+                    this.isEvaluationSelected = true;
+                    this.isUserSelected = true;
+                    this.progressStep.step1 = true;
+                    this.progressStep.step2 = true;
+                    this.isTechManager= true;
+                }
+                this.profileName = data;
+                console.log('data :: ', data);
+            }
+            this.getTechUser();
+        }).catch((error) => {
+            console.log('Error while fetching permission name: ', error);
+        });
+    }
+    }
+    
+    get finaloptions() {
+        return [
+            {label: 'Technical Evaluation', value: 'Technical Evaluation'},
+            {label: 'Square Yard Check', value: 'Square Yard Check'}
+        ];
+    }
+
+    connectedCallback() {
+        this.checkIfLoggedInUserIsHLRelated();
+        this.fetchUserProfile();
+        
+        this.setTechRecords();
+        this.setAssignee();
+        this.originalCollateral = this.aplicationcolatteral;
+        this.originalAssignee = this.selectedAssignee;
+    }
+
+    getCollaterals() {
+        getCollateral({ loanId: this.recordId })
+        .then(data => {
+            console.log('collateralsdata dd: ', JSON.stringify(data));
+            this.datatop = data;
+            for (let key in this.datatop) {
+                this.option = {
+                    label: this.datatop[key],
+                    value: key
+                };
+                this.aplicationcolatteral = key;
+                console.log('aplicationcolatteral ID:::', this.aplicationcolatteral);
+                this.recordAllocation = true;
+
+                this.fetchRelatedTechnical(this.aplicationcolatteral);
+                this.resetDocuments();
+            }
+            // this.getCollateralId();
+        }).catch(error => {
+            console.error(error)
+        })
+
+        // getTechEvalId({ loanId: this.recordId })
+        // .then(data => {
+        //     console.log('Technical Data', data);
+        //     this.techEvalId = data.Id;
+        //     this.loanAmount = data.HL_Loan_Amount__c
+        //     console.log('loanAmount', this.loanAmount);
+
+        //     console.log('techEvalId :: ', this.techEvalId);
+        // }).catch(error => {
+        //     console.error(error)
+        // })
+    }
+
+    // F(){
+    //     console.log('Calling fetchCollateralId with:', this.aplicationcolatteral);
+
+    //     if(this.aplicationcolatteral){
+    //     fetchCollateralId({ appCollId:this.aplicationcolatteral })
+    //         .then(data => {
+    //             this.collateralId = data;
+    //             console.log('collateralId', this.collateralId);
+    //     }).catch(error => {
+    //             console.error(error)
+    //     })
+    // }
+    // }
+
+    setAssignee() {
+        assigneeList({ loanId: this.recordId })
+        .then((data) => {
+            this.assigneeOptions = data;
+            if (this.assigneeOptions.length > 0) { this.selectedAssignee = this.assigneeOptions[0].value }
+            console.log(`The Value is : ${JSON.stringify(this.selectedAssignee)}`)
+        })
+        .catch((error) => {
+            console.error(`Error : assigneeList : ${JSON.stringify(error)}`);
+        });
+    }
+
+    getTechUser() {
+        var roleList = ['Technical Admin', 'Technical Manager'];
+        console.log('this.isTechManager----', this.isTechManager);
+        
+        if(this.isTechManager){
+            getUsers({ role: roleList, userType: '' })
+            .then(result => {
+                console.log('getUsers result: ', JSON.stringify(result));
+                let items = [];
+                for (let key in result) {
+                    items.push({ label: result[key], value: key });
+                }
+                this.assigneeOptions1 = JSON.parse(JSON.stringify(items));
+                if (this.isTechManager) {
+                    this.recordAllocation = true;
+                }
+                console.log('this.assigneeOptions1 ::  ', this.assigneeOptions1);
+            })
+            .catch(error => {
+                // Handle error
+                console.error('Error fetching users:', error);
+            });
+        }else{
+            getBranches()
+            .then(result => {
+                console.log('getUsers result: ', JSON.stringify(result));
+                let items = [];
+                for (let key in result) {
+                    items.push({ label: result[key], value: key });
+                }
+                this.assigneeOptions1 = JSON.parse(JSON.stringify(items));
+                if (this.isTechManager) {
+                    this.recordAllocation = true;
+                }
+                console.log('this.assigneeOptions1 ::  ', this.assigneeOptions1);
+            })
+            .catch(error => {
+                // Handle error
+                console.error('Error fetching users:', error);
+            });
+        }
+    }
+
+    techRecords;
+    handleChange(event) {
+        this.progressStep.step1 = true;
+        this.techRecords = event.detail.value;
+
+        this.isEvaluationSelected = true;
+        this.showActionButton = false;
+        this.aplicationcolatteral = '';
+        this.recordAllocation = false;
+        this.showTechSelection = false;
+        this.isUserSelected = false;
+        this.openTable = false;
+        this.showSqYardCheck = false;
+
+        if(this.techRecords === 'Technical Evaluation'){
+            this.showTechEvluation = true;
+        }
+        else{
+            this.showTechEvluation = false;
+        }
+    }
+
+    handleCollateralSelection(event) {
+        const selectedValue = event.detail.value;
+        console.log('selectedValue :: ', selectedValue)
+        // console.log('collateralData: '+JSON.stringify(this.collateralData));
+        
+        const record = this.collateralData.filter(row => row.id === selectedValue);
+        console.log('record: '+JSON.stringify(record));
+        console.log('this.techRecords: '+this.techRecords);
+
+        this.showActionButton = true;
+
+        if(this.techRecords === 'Square Yard Check'){
+            this.isEvaluationSelected = false;
+
+            if(record[0].isAPF == false){
+                this.isEvaluationSelected = true;
+                this.showActionButton = false;
+                this.showSqYardCheck = false;
+                this.aplicationcolatteral = '';
+                this.pendingNewValue = '';
+                event.target.value = '';
+                
+                this.dispatchEvent(new ShowToastEvent({
+                    title: 'Error',
+                    message: 'Square Yard check is not allowd on Non APF collateral.',
+                    variant: 'error',
+                }));
+                this.aplicationcolatteral =  event.target.value;
+                return;
+            }
+            else{
+                this.isEvaluationSelected = true;
+                this.showSqYardCheck = true;
+                this.showActionButton = true;
+            }    
+        }
+        
+        // fetchCollateralId({ appCollId:selectedValue })
+        //         .then(data => {
+        //             this.collateralId = data;
+        //         }).catch(error => {
+        //             console.error(error)
+        //         })
+
+        //this.resetDocuments();Updated Ayushi
+
+        // If value changed and documents exist, ask for confirmation
+        if (selectedValue !== this.aplicationcolatteral && this.documents?.length > 0) {
+            console.log('412');
+            this.pendingChangeType = 'collateral';
+            this.pendingNewValue = selectedValue;
+             console.log(' this.pendingNewValue'+ this.pendingNewValue);
+            this.showConfirmDocModal = true;
+            return; // stop here, wait for user action
+        }
+
+        if(selectedValue){
+           this.fetchRelatedTechnical(selectedValue);
+        }
+        console.log('426');
+        this.updateCollateral(selectedValue);
+    }
+
+    fetchRelatedTechnical(selectedValue){
+         getRelatedTechnicalRecord({ loanId: this.recordId, collateralId: selectedValue })
+        .then(result => {
+            console.log('getRelatedTechnicalRecord result: ', JSON.stringify(result));
+            this.technicalOptions = result;
+            this.showTechSelection = false;
+
+            if(this.profileName == 'Technical Manager'){
+                if(result.length >0){
+                    this.showTechSelection = true;
+                }
+            }
+        })
+        .catch(error => {
+            // Handle error
+            console.error('Error fetching getRelatedTechnicalRecord:', error);
+        });
+    }
+
+    handleTechnicalSelection(event) {
+        let selectedList = event.detail.selectedList;
+        console.log('selectedList :: ', JSON.stringify(selectedList))
+
+        var selectedIds = '';
+        for(var i=0; i< selectedList.length; i++){
+            selectedIds += selectedList[i] +',';
+        }
+
+        if(selectedIds){
+            selectedIds = selectedIds.substring(0, selectedIds.length - 1);
+        }
+        console.log('selectedIds: '+selectedIds);
+
+        this.techEvalId = selectedIds;
+    }
+
+    updateCollateral(value) {
+        console.log('465----'+value);
+        this.aplicationcolatteral = value;
+         console.log(' this.aplicationcolatteral----'+ this.aplicationcolatteral);
+        this.progressStep.step2 = true;
+        this.recordAllocation = true;
+        this.isUserSelected = true;
+        this.locallyRemovedDocIds.clear();//updated Ayushi
+        this.resetDocuments();//updated Ayushi
+
+        if (this.documents.length > 0) {
+            this.progressStep.step4 = true;
+            this.openTable = true;      
+        }
+
+        this.options1.forEach(record => {
+            console.log('this.aplicationcolatteral :: ', this.aplicationcolatteral);
+            console.log('record :: ', record);
+            if (record.value === value) {
+                this.collateralAddress = record.label;
+            }
+        });
+
+        if (value === '') {
+            this.dispatchEvent(new ShowToastEvent({
+                title: 'Cannot initiate Technical Evaluation',
+                message: 'Collateral is required.',
+                variant: 'error',
+            }));
+        } else {
+            this.checkAddress = false;
+        }
+
+        if (this.checkAddress === true) {
+            getaddressDetails({
+                loanId: this.recordId,
+                appColId: value
+            })
+            .then(result => {
+                if (result) {
+                    this.addressData = result;
+                    const addr = result[0];
+                    this.plotNo = addr.plotNo;
+                    this.buildingName = addr.buildingName;
+                    this.floorNo = addr.floorNo;
+                    this.pincode = addr.pincode;
+                    this.town = addr.town;
+                    this.tehsil = addr.tehsil;
+                    this.district = addr.district;
+                    this.state = addr.state;
+                }
+            })
+            .catch(error => {
+                this.dispatchEvent(new ShowToastEvent({
+                    title: 'Error',
+                    message: error.message,
+                    variant: 'error',
+                }));
+            });
+        }
+    }
+
+    // handleCollateralSelection(event) {
+    //     console.log('event :: ', event);
+    //     this.aplicationcolatteral = event.detail.value;
+    //     this.progressStep.step2 = true;
+    //     this.recordAllocation = true;
+
+    //     console.log('value of value line 156', this.value);
+    //     //if(this.value!==''){
+    //     this.isUserSelected = true;
+    //     this.progressStep.step2 = true;
+    //     if (this.documents.length > 0) {
+    //         this.progressStep.step4 = true;
+    //         this.openTable = true
+    //         // }
+    //     }
+
+    //     console.log('this.options1 -->' + JSON.stringify(this.options1));
+    //     this.options1.forEach(record => {
+    //         if (record.value == event.detail.value) {
+    //             this.collateralAddress = record.label;
+    //         }
+    //     });
+    //     console.log('Application Collateral-->' + this.aplicationcolatteral);
+    //     if (this.aplicationcolatteral == '') {
+    //         this.dispatchEvent(new ShowToastEvent({
+    //             title: 'Cannot initiate Technical Evaluation',
+    //             message: error,
+    //             variant: 'error',
+    //         }));
+
+    //     }
+    //     else {
+    //         //addressValidated();
+    //         this.checkAddress = false;
+    //     }
+    //     if (this.checkAddress == true) {
+    //         console.log('fetching data from coll');
+    //         this.showModal = false
+    //         getaddressDetails({
+    //             loanId: this.recordId,
+    //             appColId: this.aplicationcolatteral
+    //         })
+    //             .then(result => {
+    //                 console.log("addressData =>", JSON.stringify(result));
+    //                 if (result) {
+    //                     this.addressData = JSON.parse(JSON.stringify(result));
+    //                     this.plotNo = this.addressData[0].plotNo;
+    //                     this.buildingName = this.addressData[0].buildingName;
+    //                     this.floorNo = this.addressData[0].floorNo;
+    //                     this.pincode = this.addressData[0].pincode
+    //                     this.town = this.addressData[0].town;
+    //                     this.tehsil = this.addressData[0].tehsil;
+    //                     this.district = this.addressData[0].district;
+    //                     this.state = this.addressData[0].state;
+    //                     //this.dataAdd = this.propData.nearestPropertyAddressList;
+    //                     console.log('addressData', this.addressData);
+    //                     console.log('plot no', this.addressData[0].plotNo);
+    //                     //console.log('landRate-==========>'this.propData.landRate);
+    //                     //console.log('result.nearestPropertyAddressList===>',this.propData.nearestPropertyAddressList);
+    //                     console.log('gotcha');
+
+    //                 }
+
+    //             })
+    //             .catch(error => {
+    //                 console.log("error ==> ", error.message);
+    //                 this.dispatchEvent(new ShowToastEvent({
+    //                     title: 'Error',
+    //                     message: error,
+    //                     variant: 'error',
+    //                 }));
+    //             })
+    //     }
+    // }
+
+    handleLoad(event) {
+        console.log(event.type);
+        console.log(JSON.stringify(event.detail));
+    }
+
+    hanCancel(event) {
+        this.recordAllocation = false;
+        console.log(event.type);
+        console.log(JSON.stringify(event.detail));
+    }
+
+    handleSubmit(event) {
+        this.recordAllocation = false;
+        console.log(event.type);
+        console.log(JSON.stringify(event.detail));
+    }
+
+    handleSuccess(event) {
+        this.recordAllocation = false;
+        console.log(event.type);
+        console.log(JSON.stringify(event.detail));
+    }
+
+    handleError(event) {
+        console.log(event.type);
+        console.log(JSON.stringify(event.detail));
+    }
+
+    handleUserChange(event) {
+
+        console.log('event -->' + JSON.stringify(event));
+        if (this.documents.length > 0) { 
+            this.progressStep.step4 = true; 
+        }
+
+        this.userSelected = event.detail.value;
+        this.selectedLabel = event.detail.value;
+        
+        if (this.userSelected == '--None--') {
+            this.progressStep.step3 = false;
+            console.log('Step 2: ' + this.progressStep.step2);
+            this.initiateButtonVisibility = false;
+        } else {
+            this.setDocList(); 
+             this.openTable = true;
+            this.progressStep.step3 = true;
+            console.log('Step 2: ' + this.progressStep.step2);
+            this.initiateButtonVisibility = true;
+        }
+
+        console.log('User selected is : ' + this.userSelected);
+        console.log('User Name is : ' + this.selectedLabel);
+
+        checkUser({ userId: this.userSelected })
+        .then((result) => {
+            console.log('09', result);
+            this.userDetails = result;
+            console.log('in get user', this.userDetails);
+
+        });
+    }
+
+    openAddDocModal = false;
+    openDocumentModal() {
+        this.openAddDocModal = true;
+    }
+
+    /*handledoc(event) {
+        console.log(event.detail.docadded);
+        this.docAdded = true;
+    }*/
+    //updated Ayushi
+    handleDocumentsAdded(event) {
+    const newlyCreatedDocs = event.detail;
+    if (!newlyCreatedDocs || newlyCreatedDocs.length === 0) {
+        this.closeDocumentModal();
+        return;
+    }
+
+    // Format new docs and add to the existing array
+    const newDocWrappers = newlyCreatedDocs.map((newDoc, i) => ({
+        srno: this.documents.length + i + 1,
+        docId: newDoc.Id,
+        contentId: null,
+        docName: newDoc.Name,
+        isUploaded: true,
+        isUploadNeeded: false,
+        uploadedFiles: [],
+        isRequired: false,
+        docCategory: 'Technical Documents'
+    }));
+
+    this.documents = [...this.documents, ...newDocWrappers];
+
+    // If this is the first document, show the table
+    if (!this.openTable) {
+        this.openTable = true;
+    }
+}
+//end updated
+
+    closeDocumentModal() {
+        this.openAddDocModal = false;
+    }
+
+    closeModal() {
+        this.openAddDocModal = false;
+    }
+
+    resetDocuments() {
+        setDocument({
+            recordId: this.recordId,
+            name: 'Technical Documents',
+            applicationColl: this.aplicationcolatteral
+        })
+        .then(response => {
+            console.log('response from reset', response);
+            this.documents = response;
+            //updated Ayushi
+            const filteredResponse = response.filter(doc => !this.locallyRemovedDocIds.has(doc.docId));
+            this.documents = filteredResponse;
+            //end updated
+            this.closeDocumentModal();
+            this.openTable = true;
+            console.log('length', this.documents.length, this.documents);
+            if (this.documents.length > 0) {
+                this.showDocTable = true;
+                console.log('324');
+            } else {
+                this.showDocTable = false;
+                console.log('327');
+            }
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+
+    deleteCheckList(evt){
+        let currentId = evt.currentTarget.dataset.id;
+        let index = evt.currentTarget.dataset.index;
+        console.log(`The Record Id : ${currentId}`);
+        //updated Ayushi
+        // Get the full document object from our local list
+        let documentToDelete = this.documents[index];
+        let docCategory = documentToDelete.docCategory;
+
+        // --- START: NEW LOGIC ---
+        if (docCategory === 'Technical Documents') {
+            
+            // --- BEHAVIOR 1: ADDITIONAL DOC ---
+            // This is an "Additional Doc" - delete it permanently from the database.
+            console.log(`Permanently deleting Additional Doc: ${currentId}`);
+            
+            deleteRecord(currentId)
+                .then(() => {
+                    this.showToastMessage('Success', 'Document record deleted successfully!', 'Success');
+                    // Now, remove it from the local list
+                    this.removeDocumentFromLocalList(index);
+                })
+                .catch(error => {
+                    this.showToastMessage('Error', 'Error deleting record: ' + error.body.message, 'error');
+                    console.error(error);
+                });
+
+        } else {
+
+            // --- BEHAVIOR 2: SHARED DOC ---
+            // This is a "Shared Doc" (Category is null or blank)
+            // Only remove it from the local list for this session.
+            console.log(`Temporarily removing Shared Doc: ${currentId}`);
+            
+            this.locallyRemovedDocIds.add(currentId); // Add to memory
+            this.removeDocumentFromLocalList(index); // Remove from list
+            this.showToastMessage('Success', 'Document removed from this new report.', 'Success');
+        }
+        
+        /*deleteRecord(currentId)
+        .then(() => {
+            if(this.documents.length==1){
+                this.documents = [];
+                this.openTable = false;
+                //this.progressStep.step4 = false;
+            }else{
+                this.documents.splice(index, 1);
+                //console.log(`The Serialize Value : ${JSON.stringify(this.documents)}`)
+                for(let indexF = 0;indexF<this.documents.length;indexF++){
+                    this.documents[indexF].srno = indexF + 1
+                }
+            }
+            this.showToastMessage('Success', 'Document deleted successfully!', 'Success');
+        })
+        .catch(error => {
+            this.showToastMessage('Error', 'Document cannot be deleted as it was uploaded by another user', 'error');
+            console.error(error)
+        })*/
+       //end updated
+        /*deleteDocumentCheckList({ recordId: currentId }).then(response => {
+            // if(index != null && index != '' && index != undefined){
+            if (this.documents.length == 1) {
+                this.documents = []
+                this.openTable = false;
+            } else {
+                this.documents.splice(index, 1);
+                console.log(`The Serialize Value : ${JSON.stringify(this.documents)}`)
+                for (let indexF = 0; indexF < this.documents.length; indexF++) {
+                    this.documents[indexF].srno = indexF + 1
+                }
+            }
+            // }
+
+            console.log(`The Record Delete Status : ${response}`)
+        }).catch(error => {
+            console.error(error)
+        })*/
+    }
+
+    showToastMessage(title, message, variant) {
+        const evt = new ShowToastEvent({
+            title: title,
+            message: message,
+            variant: variant
+        });
+        this.dispatchEvent(evt);
+    }
+
+    setDocList() {
+        setDocument({
+            recordId: this.recordId,
+            name: 'Technical Documents',
+            applicationColl: this.aplicationcolatteral
+        })
+        .then(response => {
+            this.documents = response
+            //updated Ayushi
+            const filteredResponse = response.filter(doc => !this.locallyRemovedDocIds.has(doc.docId));
+            this.documents = filteredResponse;
+            //end updated
+            console.log('The Value is documents: ' + JSON.stringify(response));
+        })
+        .catch(error => {
+            console.log(error);
+        });
+    }
+
+    setTechRecords() {
+        getTechnicalRecords({ recordId: this.recordId }).then(response => {
+            this.technicals = response
+            if (this.technicals.length > 0) { this.showTechnicalTable = true }
+        }).catch(error => {
+            console.error(error)
+        })
+    }
+
+    handleRecordSelection(event) {
+        if(this.techRecords === 'Square Yard Check'){
+            if(!this.aplicationcolatteral){
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error',
+                        message: 'Please select collateral.',
+                        variant: 'error',
+                    }),
+                );
+                return;
+            }
+
+            this.template.querySelector('c-hl_square-yard-check').initiateSquareYardCheck(event);
+        }
+        else{
+            this.checkSpin = true;
+            console.log('checking spin status', this.checkSpin);
+            this.reportType = 'External'
+            console.log('this.techEvalId :: , ', this.techEvalId);
+            // if(!this.techEvalId && this.profileName === 'Technical Manager') {
+            //     this.dispatchEvent(
+            //         new ShowToastEvent({
+            //             title: 'Error',
+            //             message: 'Please select technical record to assign',
+            //             variant: 'error',
+            //         }),
+            //     );
+            //     return;
+            // }
+            // if (this.techEvalId == undefined && this.docAdded == true && (!this.documents || this.documents.length == 0)) {
+            //     this.dispatchEvent(
+            //         new ShowToastEvent({
+            //             title: 'Error',
+            //             message: 'Please upload Technical Document',
+            //             variant: 'error',
+            //         }),
+            //     );
+            //     return;
+            // }
+            if (this.techRecords && this.aplicationcolatteral && this.reportType && this.userSelected) {
+                //Add validation for document upload
+                // if (!this.documents || this.documents.length == 0) {
+                //     console.log(`11`);
+                //     if (this.techEvalId == undefined) {
+                //         this.dispatchEvent(
+                //             new ShowToastEvent({
+                //                 title: 'Error',
+                //                 message: 'Please upload Technical Document',
+                //                 variant: 'error',
+                //             }),
+                //         );
+                //         this.checkSpin = false;//updated Ayushi
+                //         return;
+                //     }
+                // }
+                for (let index = 0; index < this.documents.length; index++) {
+                    if (this.documents[index].isUploaded) {
+                        console.log(`13`)
+                        if (this.techEvalId == undefined) {
+                            this.dispatchEvent(
+                                new ShowToastEvent({
+                                    title: 'Error',
+                                    message: 'Please Upload all the Technical Documents',
+                                    variant: 'error',
+                                }),
+                            );
+                            this.checkSpin = false;//updated Ayushi
+                            return;
+                        }
+                    } else {
+                        this.objectFields.push('OwnerId');
+                        console.log('this.objecFields', this.objectFields);
+                        this.recordAllocation = true;
+                    }
+                }
+
+                // if(this.genericInitiate && this.openTable){
+                //     console.log(`11`)
+                //     if(!this.documents || this.documents.length == 0){
+                //         this.dispatchEvent(
+                //             new ShowToastEvent({
+                //                 title: 'Error',
+                //                 message: 'Please upload Technical Document',
+                //                 variant: 'error',
+                //             }),
+                //         );
+                //         return;
+                //     }
+                //     for(let index =0;index <this.documents.length;index++){
+                //         if(this.documents[index].isUploaded){
+                //             console.log(`13`)
+                //             this.dispatchEvent(
+                //                 new ShowToastEvent({
+                //                     title: 'Error',
+                //                     message: 'Please Upload all the Technical Documents',
+                //                     variant: 'error',
+                //                 }),
+                //             );
+                //             return;
+                //         }else{
+                //             this.objectFields.push('OwnerId');
+                //             console.log('this.objecFields',this.objectFields);
+                //             this.recordAllocation=true;
+                //         }
+                //     }
+                // }
+                this.objectFields.push('OwnerId');
+                console.log('this.objecFields', this.objectFields);
+                this.recordAllocation = true;
+            } else {
+                if (!this.genericInitiate) { this.showModal = true; }
+                if (this.techEvalId == undefined) {
+                    this.dispatchEvent(
+                        new ShowToastEvent({
+                            title: 'Error',
+                            message: 'Please select type of Technical Valuation',
+                            variant: 'error',
+                        }),
+                    );
+                    return;
+                }
+            }
+
+            //if(this.checkIfError()){
+            if (this.aplicationcolatteral) {
+
+                if (this.techRecords == 'Vetting_Report' && this.userDetails == true) {
+                    console.log('3', this.techRecords);
+                    console.log('4', this.userDetails);
+                    if (this.techEvalId == undefined) {
+
+                        this.dispatchEvent(
+                            new ShowToastEvent({
+                                title: 'Error ',
+                                message: 'Technical cant be assign to External user',
+                                variant: 'error',
+                            }),
+                        );
+                        this.checkSpin = false;
+                    }
+                }
+                else {
+                    console.log('inside then block', this.recordId);
+                    this.progressStep.step4 = true;
+                    this.progressStep.step5 = true;
+                    console.log('this.techEvalId ::: ', this.techEvalId);
+
+                    const techInitiation = {
+                        techEvalId: this.techEvalId,
+                        loanId: this.recordId,
+                        aplicationcolatteral: this.aplicationcolatteral, 
+                        Owner: this.userSelected,
+                        recordTypeName: this.techRecords,
+                        documentIds: this.documents.map(doc => doc.docId)//updated Ayushi
+                    };
+                    console.log('techInitiation: '+ JSON.stringify(techInitiation));
+
+                    initiateTechnical({createTechWrapperString: JSON.stringify(techInitiation)})
+                    .then((result) => {
+                        this.isLoading = true;
+                        console.log('inside then block');
+                        console.log('in success' + JSON.stringify(result));
+                        if (result == 'Required Technical Already Initiated') {
+                            this.dispatchEvent(
+                                new ShowToastEvent({
+                                    title: 'Error',
+                                    message: result,
+                                    variant: 'error',
+                                }),
+                            );
+                            this.checkSpin = false;
+                        }
+                        else {
+                            this.technicalrecordId = result;
+                            this.checkSpin = false;
+                            this.setTechRecords();
+                            this.openTable = false;
+                            this.documents = [];
+                            this.dispatchEvent(new ShowToastEvent({
+                                title: 'Success',
+                                message: 'Technical initiated successfully!',
+                                variant: 'success',
+                            }));
+
+                            this.dispatchEvent(new CustomEvent('close', { detail: 'Refresh List' })); //dispatching to refresh list
+                        }
+                        this.techRecords = '';
+                        setDocument({
+                            recordId: this.recordId,
+                            name: 'Technical Documents',
+                            applicationColl: this.aplicationcolatteral
+                        })
+                        .then(response => {
+                            this.documents = response
+                        })
+                        .catch(error => {
+                            console.log(error);
+                        });
+                        this.aplicationcolatteral = '';
+                        this.progressStep.step1 = false;
+                        this.progressStep.step2 = false;
+                        this.progressStep.step3 = false;
+                        this.progressStep.step4 = false;
+                        this.progressStep.step5 = false;
+                        this.isEvaluationSelected = false;
+                        this.recordAllocation = false;
+                        this.isUserSelected = false;
+                        this.isLoading = false;
+                    })
+                    .catch((error) => {
+                        this.isLoading = false;
+                        this.error = error;
+                        console.log('in error:', JSON.stringify(this.error));
+                        const errorMessage = error?.body?.message || error?.message || 'An unexpected error occurred.';
+
+                        this.dispatchEvent(new ShowToastEvent({
+                            title: 'Technical Evaluation Error',
+                            message: errorMessage,
+                            variant: 'error',
+                        }));
+
+                        this.checkSpin = false;
+                    });
+                }
+            }
+
+            //initiateTechnical(this.techRecords);
+            console.log('on save')
+        }
+    }
+
+    insertFileRecordToSalesforce(file) {
+        insertFileRecord({
+            fileName: file.name,
+            fileSize: file.size,
+            fileContentDocumentId: file.documentId,
+            recordId: this.currentDocId, // Associate with the specific record
+            loanAppId: this.recordId
+        })
+        .then(() => {
+            this.dispatchEvent(
+                new ShowToastEvent({
+                    title: 'Success',
+                    message: 'File uploaded and associated with record!',
+                    variant: 'success',
+                }),
+            );
+            this.setDocList();
+        })
+        .catch((error) => {
+        });
+    }
+
+    handleFileChange(event) {
+        this.progressStep.step4 = true; // whenever files uploaded successfully
+        console.log('event-' + event);
+        const files = event.detail.files;
+        console.log('No. of files uploaded : ' + JSON.stringify(files));
+        const recordId = event.target.dataset.id;
+        console.log('Id-' + recordId);
+        this.currentDocId = recordId;
+        files.forEach(file => {
+            // For each uploaded file, create an object with necessary details
+            this.uploadedFiles.push({
+                id: file.documentId,
+                name: file.name,
+                downloadUrl: file.downloadUrl
+            });
+        });
+        for (var i = 0; i < files.length; i++) {
+            this.insertFileRecordToSalesforce(files[i]);
+        }
+    }
+
+    closeAction(event) {
+        this.showModal = false;
+        if(event && event.detail && event.detail == 'Refresh List'){
+            this.dispatchEvent(new CustomEvent('close', { detail: 'Refresh List' }));
+        }
+        else{
+            this.dispatchEvent(new CustomEvent('close'));
+        }
+        this.showModal = false;
+    }
+
+    // get isTechManager() {
+    //     return this.profileName == 'Technical Manager';
+    // }
+
+    handleFlowStatusChange(event) {
+        if (event.detail.status === 'FINISHED') {
+            this.showFlow = false;
+            this.genericInitiate = false;
+            this.closeAction(null);
+            console.log('Flow completed');
+            this.dispatchEvent(new CustomEvent('close'));
+        }
+    }
+
+    async handleShowAction() {
+        this.showConfirmModal = true;
+        // try {
+        //     await this.setTechnicalRecords(); // Wait for records to load
+
+        //     if (this.loanAmount >= 3000000 && this.loanAmount < 7500000 && this.collateralRelatedTechnicals.length < 2) {
+        //         console.log("30 Lakhs");
+        //         this.showErrorToast('Please select Technical Admin');
+        //     } 
+        //     else if (this.loanAmount >= 7500000 && this.collateralRelatedTechnicals.length < 3) {
+        //         console.log("75 lakhs");
+        //         this.showErrorToast('Please select Technical Admin');
+        //     }
+        //     else {
+        //         this.showConfirmModal = true;
+        //     }
+        // } catch (error) {
+        //     console.log('Error in handleShowAction:', error);
+        //     this.showErrorToast('Something went wrong while validating technical records.');
+        // }
+    }
+
+    // setTechnicalRecords() {
+    //     console.log('application Collateral', this.aplicationcolatteral);
+    //     console.log('loan Amount', this.loanAmount);
+    //     console.log('recordId', this.recordId);
+
+    //     return getTechnicalRecordsByCollateral({ collateralId: this.aplicationcolatteral, loanId: this.recordId })
+    //         .then(result => {
+    //             this.collateralRelatedTechnicals = result;
+    //             console.log('collateralRelatedTechnicals', this.collateralRelatedTechnicals);
+    //         })
+    //         .catch(error => {
+    //             console.error('Error fetching technicals:', error);
+    //             throw error; // re-throw to handle in handleShowAction()
+    //         });
+    // }
+
+    closeConfirmModal() {
+        this.showConfirmModal = false;
+    }
+
+    confirmCloseAction(event) {
+        this.showConfirmModal = false;
+        this.closeAction(event);
+    }
+
+    closeConfirmDocModal() {
+        this.showConfirmDocModal = false;
+        this.pendingChangeType = null;
+        this.pendingNewValue = null;
+    }
+
+    confirmDocDeletion() {
+        // Clear documents and apply pending change
+        //this.documents = [];
+        console.log('documents', this.documents);
+
+        const documentIdsToDelete = this.documents.map(doc => doc.docId);
+        console.log('documentIdsToDelete', documentIdsToDelete);
+        deleteDocumentsWithFiles({ documentDetailIds: documentIdsToDelete })
+        .then(() => {
+            this.showSuccessToast('Documents deleted successfully');
+            this.showConfirmDocModal = false;
+            this.openTable = false;
+            this.documents = [];
+        })
+        .catch(error => {
+            this.showErrorToast('Deletion failed: ' + error.body.message);
+        });
+    }
+    //updated Ayushi
+    removeDocumentFromLocalList(index) {
+        // 1. Remove the document from the local JavaScript array
+        this.documents.splice(index, 1);
+
+        // 2. Re-index the 'srno' (serial number)
+        this.documents = this.documents.map((doc, i) => ({ 
+            ...doc, srno: i + 1 
+        }));
+
+        // 3. If the table is now empty, hide it
+        if (this.documents.length === 0) {
+            this.openTable = false;
+        }
+    }
+
+    handlePreview(event){
+        this[NavigationMixin.Navigate]({ 
+            type:'standard__namedPage',
+            attributes:{ 
+                pageName:'filePreview'
+            },
+            state:{ 
+                selectedRecordId: event.target.dataset.id
+            }
+        })
+    }
+    //end updated
+}

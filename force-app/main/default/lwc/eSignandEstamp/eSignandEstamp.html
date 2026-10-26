@@ -1,0 +1,1292 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 07-23-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:true={showhistory}>
+        <c-view-document-history record-id={vcontentId} onclose={closeHistory}></c-view-document-history>
+    </template>
+    <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </template>
+    <lightning-accordion allow-multiple-sections-open active-section-name="mandatory">
+        <lightning-accordion-section name="mandatory" label="Mandatory Documents">
+            <div style="padding: 1rem;"> <!-- min-height: 100vh; -->
+                <template if:true={modalVisibility}>
+                    <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Meaningful description of the modal content"
+                        class="slds-modal slds-fade-in-open">
+                        <div class="slds-modal__container" style="min-width: 60%;">
+                            <header class="slds-modal__header" style="background-color: #5bb6e3; color:white;font-weight:500;">
+                                <div class="slds-text-align_center">
+                                    <h2 slot="title"
+                                        style="font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px"
+                                        class="slds-text-heading_medium slds-hyphenate">Add New Document</h2>
+                                </div>
+                            </header>
+                            <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless " id="confirm-body"
+                                style="min-height: 30% !important;">
+                                <template if:false={newRecordVisibility}>
+                                    <c-search-lookup label="Documents" show-label="true" required="true"
+                                    placeholder="Search Documents" object-name="Document_Master__c"  selected-id={selectedId}
+                                        return-fields="['Id','Name']" search-fields="['Name']" 
+                                        onlookupselected={handleSelectDocument}
+                                        onlookupdeselected={handleldeselectDocument} onclose={handleaddNew}></c-search-lookup>
+                                </template>
+                                <template if:true={showapplicablefor}>
+                                    <lightning-combobox 
+                                        name="documentApplicableFor" 
+                                        label="Document Applicable For"
+                                        value={selectedValue} 
+                                        placeholder="Select an option" 
+                                        options={documentRequiredforOptions}
+                                        onchange={handleDocumentChange}>
+                                    </lightning-combobox>
+                                    <div style="margin-top: 1px; display: flex; flex-direction: column;">
+                                        <lightning-input 
+                                            type="text" 
+                                            name="docName" 
+                                            placeholder="Enter document name"
+                                            variant="standard"
+                                            label="Document Name"
+                                            value={documentName}
+                                            onchange={handleDocumentName}
+                                            style="width: 100%;"
+                                            required="true">
+                                        </lightning-input>
+                                    </div>
+                                </template>
+                                <template if:true={tableVisibility}>
+                                    <br>
+                                    <p slot="title" style="font-size:14px; font-style: italic; color: #113451;">Please select the
+                                        applicants applicable for this documents.</p>
+                                    <div class="slds-scrollable_y" style="overflow: auto;">
+                                        <table class="slds-table slds-table_cell-buffer slds-no-row-hover" style="border-collapse: collapse; border: none;">
+                                            <template for:each={allChecklist} for:item="checklistrecord">
+                                                <tr key={checklistrecord.id} style="border: none;">
+                                                    <td style="width: 5%; border: none;"></td>
+                                                    <td style="width: 95%; border: none;">
+                                                        <label style="display: flex; align-items: center;">
+                                                            <lightning-input type="checkbox" data-id={checklistrecord.id}
+                                                                data-name={checklistrecord.id} onchange={handleselectApplicants}
+                                                                class="applicant-checkbox">
+                                                            </lightning-input>
+                                                            <span style="margin-left: 8px;">{checklistrecord.name}</span>
+                                                        </label>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </table>
+                                        
+                                    </div>
+                                </template>
+                                <br>
+                                <div>
+                                    <button class="save-button slds-button slds-button_brand"
+                                        style="border: none"
+                                        onclick={handlesave}>Add</button>
+                                </div>
+                                <template if:true={createdRecordsVisibility}>
+                                    <div style="padding-top: 3%;">
+                                        <p slot="title" style="font-size:14px; font-style: italic; color: #113451;">New Documents.</p>
+                                        <table
+                                            class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right">
+                                            <thead>
+                                                <tr class="slds-line-height_reset">
+                                                    <th class="" scope="col" style="width: 10%; text-align: center;">
+                                                        <div class="slds-truncate" title="Serial No.">Sr No.</div>
+                                                    </th>
+                                                    <th class="" scope="col" style="width: 25%; text-align: center;">
+                                                        <div class="slds-truncate" title="Serial No.">Applicable For</div>
+                                                    </th>
+                                                    <th class="" scope="col" style="width: 25%; text-align: center;">
+                                                        <div class="slds-truncate" title="Serial No.">Applicants</div>
+                                                    </th>
+                                                    <th class="" scope="col" style="width: 30%; text-align: center;">
+                                                        <div class="slds-truncate" title="Serial No.">Document Name</div>
+                                                    </th>
+                                                    <th class="" scope="col" style="width: 10%; text-align: center;">
+                                                        <div class="slds-truncate" title="Serial No.">Actions</div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <template for:each={createdNewDocTable} for:item="record">
+                                                <tbody key={record.id}>
+                                                    <td style="width: 10%;text-align:centre">{record.no}</td>
+                                                    <td style="width: 25%;text-align:centre;">{record.reqLevel}</td>
+                                                    <td style="width: 25%;text-align:centre;">{record.custName}</td>
+                                                    <td style="width: 30%;text-align:centre;">{record.name}</td>
+                                                    <td style="width: 10%;text-align:centre;">                                                    
+                                                        <c-upload-view-delete-document 
+                                                        doc-detail-id={record.id}
+                                                        content-doc-id={record.contentId} 
+                                                        show-upload={record.showUpload}
+                                                        show-view={record.showView}
+                                                        show-delete={record.showDelete} 
+                                                        show-retake={record.showRetake} 
+                                                        show-location={record.showLocation}
+                                                        lattitude={record.lattitude}
+                                                        longitude={record.longitude}
+                                                        file-type={record.fileType}
+                                                        doc-name={record.docName}
+                                                        name={processObject}
+                                                        is-esign=true>
+                                                    </c-upload-view-delete-document>
+                                                </td>
+                                                </tbody>
+                                            </template>
+                                        </table>
+                                    </div>
+                                </template>
+                            </div>
+                            <footer class="slds-modal__footer" style="border: revert;">
+                                <div class="slds-align_absolute-center">
+                                    <button class="cancel-button slds-button slds-button_brand"
+                                        style="border:none" onclick={handleClose}>Close</button>
+                                    <!-- <button class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color: #113451;color: white;border-color: #113451;font-weight: 500;" onclick={handleSave}>Create</button> -->
+                                </div>
+                            </footer>
+                        </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+                </template>
+
+                <template lwc:if={showSummaryStyle}>
+                    <div style="overflow-x: auto;" class="slds-box slds-m-bottom_medium scroll-container">
+                        
+                        <table class="slds-table slds-table_bordered slds-border_right slds-border_left">
+                            <thead style="top: 0; z-index: 2; background: white;">
+                                <tr>
+                                    <th scope="col" style="background-color: #5bb6e3; color: white; border: 1px solid black" class="slds-size_1-of-12">Select</th>
+                                    <th scope="col" style="background-color: #5bb6e3; color: white; border: 1px solid black" class="slds-size_1-of-12">Sr No.</th>
+                                    <th scope="col" style="background-color: #5bb6e3; color: white; border: 1px solid black" class="slds-size_6-of-12">Document Name</th>
+                                    <th scope="col" style="background-color: #5bb6e3; color: white; border: 1px solid black" class="slds-size_2-of-12">Type</th>
+                                    <th scope="col" style="background-color: #5bb6e3; color: white; border: 1px solid black" class="slds-size_2-of-12">View/Regenerate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={displayList} for:item="parentItem">
+                                    <template for:each={parentItem.docDetails} for:item="iterDet">
+                                        <tr key={iterDet.id}>
+                                        <td class="slds-size_1-of-12">
+                                            <template if:true={enableEdit}>
+                                                <lightning-input type="checkbox" value={iterDet.selected} onchange={handleCheckboxChange} checked={iterDet.isCheckboxChecked} 
+                                                disabled={iterDet.mntEsign} onclose={hanldrefreshTable} data-id={iterDet.id}></lightning-input>
+                                            </template>
+                                        <template if:false={enableEdit}>
+                                            <lightning-input type="checkbox" value={iterDet.selected} onchange={handleCheckboxChange} checked={iterDet.isCheckboxChecked} 
+                                            disabled=true onclose={hanldrefreshTable} data-id={iterDet.id}></lightning-input>
+                                            </template>
+                                        </td>
+                                        <td class="slds-size_1-of-12">
+                                            <template if:true={enableEdit}>
+                                            <template if:true={iterDet.isCheckboxChecked}>
+                                                <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                                    <template if:true={editChecklist}>
+                                                    <lightning-input 
+                                                        type="number" 
+                                                        value={iterDet.esignSequence} 
+                                                        data-id={iterDet.id} 
+                                                        onchange={handleSequenceChange}
+                                                        class="slds-m-right_xx-small"
+                                                        variant="label-hidden"
+                                                        style="width: 80px;">
+                                                    </lightning-input>
+                                        
+                                                    <lightning-button-icon 
+                                                        icon-name="utility:save" 
+                                                        alternative-text="Save"
+                                                        title="Save" 
+                                                        variant="border-filled"
+                                                        data-id={iterDet.id} 
+                                                        onclick={handleSaveSequence}>
+                                                    </lightning-button-icon>
+                                                </template>
+                                                <template if:false={editChecklist}>
+                                                    <div class="slds-truncate slds-cell-wrap">{iterDet.esignSequence}</div>
+                                                </template>
+                                                </div>
+                                            </template>
+                                            <template if:false={iterDet.isCheckboxChecked}>
+                                                <div class="slds-truncate slds-cell-wrap">{iterDet.esignSequence}</div>
+                                            </template>
+                                        </template>
+                                        <template if:false={enableEdit}>
+                                            <div class="slds-truncate slds-cell-wrap">{iterDet.esignSequence}</div>
+                                        </template>
+                                        </td>
+                                            <td class="slds-size_6-of-12">
+                                                <div class="slds-truncate slds-cell-wrap">{iterDet.docName}</div>
+                                            </td>
+                                            <td class="slds-size_2-of-12">
+                                                <template if:true={iterDet.isRequired}>
+                                                    <div class="slds-truncate slds-cell-wrap">Default</div>
+                                                </template>
+                                                <template if:false={iterDet.isRequired}>
+                                                    <div class="slds-truncate slds-cell-wrap">Manual</div>
+                                                </template>
+                                            </td>
+                                            <td class="slds-size_2-of-12">
+                                                <c-upload-view-delete-document 
+                                                    doc-detail-id={iterDet.id}
+                                                    content-doc-id={iterDet.contentId} 
+                                                    show-upload={iterDet.showUpload}
+                                                    show-view={iterDet.showView}
+                                                    show-delete={iterDet.showDelete} 
+                                                    show-retake={iterDet.showRetake} 
+                                                    show-location={iterDet.showLocation}
+                                                    lattitude={iterDet.lattitude}
+                                                    longitude={iterDet.longitude}
+                                                    file-type={iterDet.fileType}
+                                                    doc-name={iterDet.docName}
+                                                    name={processObject}
+                                                    onrecallmethod ={getdocDetails}
+                                                    is-esign=true>
+                                                </c-upload-view-delete-document>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="text-align: left; margin-top: 1rem;">
+                        <lightning-layout>
+                            <lightning-layout multiple-rows="true" class="slds-var-p-around_medium" style="gap: 1rem; align-items: center;"></lightning-layout>
+                            <lightning-layout-item size="4" class="slds-var-p-around_x-small">
+                            <lightning-combobox
+                                name="teamUser"
+                                label="Authorized Signatory Name"
+                                value={selectedUserId}
+                                options={userOptions}
+                                placeholder="Select a user"
+                                onchange={handleChange}
+                                disabled={showEsignChecklist}
+                                required>
+                            </lightning-combobox>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="4" class="slds-var-p-around_x-small"></lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                    <!-- <div style="text-align: left; margin-top: 1rem;">
+                        <lightning-accordion allow-multiple-sections-open>
+                            <lightning-accordion-section name="esealDetails" label={eSealSectionLabel}>
+                                <lightning-layout multiple-rows="true">
+                                <lightning-layout-item size="6" padding="around-small">
+                                    <div class="form-container slds-box slds-theme_default custom-border">
+                                    <lightning-input label="Outer Name" value={outerName} onchange={handleOuterNameChange}
+                                    disabled={isSigned}  required></lightning-input>
+                                    <lightning-input label="Inner Name" value={innerName} onchange={handleInnerNameChange}
+                                    disabled={isSigned}  required></lightning-input>
+                                    <lightning-combobox
+                                    name="E-Seal_Colour"
+                                    label="E-Seal Colour"
+                                    value={selectedColour}
+                                    options={colourOptions}
+                                    placeholder="Select Colour"
+                                    onchange={handleColourChange}
+                                    disabled={isSigned}
+                                    required>
+                                    </lightning-combobox>
+                                    <lightning-combobox
+                                    name="E-Seal_Shape"
+                                    label="E-Seal Shape"
+                                    value={selectedShape}
+                                    options={shapeOptions}
+                                    placeholder="Select Shape"
+                                    onchange={handleShapeChange}
+                                    disabled={isSigned}
+                                    required>
+                                    </lightning-combobox>
+                                    <div if:true={enableEdit}>
+                                    <div if:false={isSigned} style="margin-top: 1.5rem;">
+                                <button class="save-button slds-button slds-button_brand" style="border: none;"  onclick={handlegeneratedEseal}>
+                                Generate E-Seal
+                                </button>
+                                    </div>
+                                    </div>
+                                </div>
+                                </lightning-layout-item>
+                                <lightning-layout-item size="6" padding="around-small">
+                                <div class="form-container slds-box slds-theme_default custom-border">
+                                <div if:true={esealgenerated} class="scrollable slds-grid slds-grid_align-center slds-grid_vertical-align-center">
+                                    <img data-id="documentImage" src={imageUrl} alt="Document Image">
+                                </div>
+                                    <div if:false={esealgenerated} class="scrollable slds-grid slds-grid_align-center" style="padding: 1rem;">
+                                    <p style="text-align: center; font-style: italic; color: gray;">Eseal Not Generated</p>
+                                    </div>
+                                </div>
+                                </lightning-layout-item>
+                                </lightning-layout>
+                            </lightning-accordion-section>
+                        </lightning-accordion>
+                    </div> -->
+
+
+
+                    <!-- Add Documents Button -->
+                    <div if:true={enableEdit}>
+                        <div if:true={showaddandgen} style="text-align: left; margin-top: 1rem;">
+                            <!-- <button class="save-button slds-button slds-button_brand" style="border: none;"  onclick={handleAddDocs}>
+                                Add Documents
+                            </button> -->
+                            <!-- <button class="save-button slds-button slds-button_brand" style="border: none; width:max-content"  onclick={handleAddNonManDocs}>
+                                Add Non-Mandatory Documents
+                            </button> -->
+                            <button class="save-button slds-button slds-button_brand" style="border: none;"  onclick={loadDocuments}>
+                            Generate Documents
+                            </button>
+                             <!-- <template if:true={showGeneratedDoc}>
+                                 <button class="save-button slds-button slds-button_brand" style="border: none;"  onclick={getDocument}>
+                                    Refresh Document
+                                 </button>
+                             </template> -->
+                            
+                        </div>
+
+                        <template lwc:if={showError}>
+                            <br />
+                            <table class="slds-table" style="margin-top: 20px;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="text-align: left; width: 150px;">Tab</th>
+                                        <th scope="col" style="text-align: left;">Error Message</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={validationErrors} for:item="error">
+                                        <tr key={error.type}>
+                                            <td style="text-align: left;">{error.type}</td>
+                                            <td style="text-align: left;">{error.message}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </template>
+
+                    </div>
+                </template>
+                <template if:true={showGeneratedDocs}>
+                    <lightning-accordion allow-multiple-sections-open>
+                        <template if:true={showGeneratedDoc}>
+                            <lightning-accordion-section name="generatedDocs" label="Generated Documents">
+                                <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                    <thead>
+                                        <tr class="slds-line-height_reset">
+                                            <th scope="col" style="width: 25%; text-align: center;background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                <div class="slds-truncate" title="Name">Name</div>
+                                            </th>
+                                            <th scope="col" style="width: 25%; text-align: center;background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                <div class="slds-truncate" title="Name">Generated By</div>
+                                            </th>
+                                            <th scope="col" style="width: 25%; text-align: center;background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                <div class="slds-truncate" title="Name">Timestamp</div>
+                                            </th>
+                                            <th scope="col" style="width: 25%; text-align: center;background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                <div class="slds-truncate" title="Preview">Preview</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                            <tbody>
+                                <template for:each={displayList} for:item="parentItem">
+                                    <template for:each={parentItem.docDetails} for:item="iterDet">
+                                    <tr key={iterDet.id}>
+                                        <td>
+                                            <div class="slds-truncate">{iterDet.docName}</div>
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate">{iterDet.generatedBy}</div>
+                                        </td>
+                                        <td>
+                                            <!-- <div class="slds-truncate">{iterDet.uploadedDate}</div> -->
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate">
+                                                <c-upload-view-delete-document 
+                                                doc-detail-id={iterDet.id}
+                                                content-doc-id={iterDet.contentId} 
+                                                show-upload={iterDet.showUpload}
+                                                show-view={iterDet.showView}
+                                                show-delete={iterDet.showDelete} 
+                                                show-retake=false
+                                                show-location={iterDet.showLocation}
+                                                lattitude={iterDet.lattitude}
+                                                longitude={iterDet.longitude}
+                                                file-type={iterDet.fileType}
+                                                doc-name={iterDet.docName}
+                                                is-esign=false
+                                                from-credit=true
+                                                ></c-upload-view-delete-document>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </template>
+                                </template>
+                            </tbody>
+                                </table>
+                                <!-- added by kalpesh -->
+                                <!-- <lightning-file-upload label="" name="Mandatory"
+                                        accept=".png,.jpeg,.jpg,.pdf,.xlsx,.msg,.docx" record-id={recordId}
+                                        onuploadfinished={handleUpload}>
+                                </lightning-file-upload> -->
+                                <!-- added by kalpesh -->
+                                <lightning-layout style="margin-top: 20px;" horizontal-align="start">
+                                    <lightning-layout-item size="3">
+                                        <lightning-combobox 
+                                            name="Esign Type" 
+                                            label="Select Mode of Signature" 
+                                            placeholder="Select Mode of Signature"
+                                            options={timestampOptions} 
+                                            value={selectedCategory} 
+                                            onchange={hanldeEsignType}
+                                            disabled={isDisabled}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                                <lightning-layout style="margin-top: 20px;" horizontal-align="start">
+                                <div if:true={enableEdit}>
+                                    <div if:true={showesignProceed} class="save-button slds-button slds-button_brand slds-float_left"  style="border:none">
+                                    <button class="save-button slds-button slds-button_brand " style="border: none;" name="Mandatory" onclick={fillMandatoryDetails}>
+                                        Proceed 
+                                    </button>
+                                </div>
+                            </div>
+                                </lightning-layout>
+                            </lightning-accordion-section>
+                        </template>
+                        <template if:true={showMandatorydata}>
+                            <lightning-accordion-section name="MandatoryFields" label="Mandatory Fields">
+                                <lightning-layout multiple-rows="true" class="slds-var-p-around_medium" style="gap: 1rem; align-items: center;">
+                                    <!-- Authorized Signatory Name -->
+                                    <lightning-layout-item size="6" class="slds-var-p-around_x-small">
+                                        <c-generic-multi-picklist-selector 
+                                            label="Select Stamp" 
+                                            required 
+                                            showpills="true"
+                                            options={formattedOptions} 
+                                            onselectedvalueschange={handleRequestFromUsers}>
+                                        </c-generic-multi-picklist-selector>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="3" class="slds-var-p-around_x-small">
+                                        <lightning-input 
+                                            name="StampCharge" 
+                                            label="Total Stamp Charges" 
+                                            value={totalCharges} 
+                                            required 
+                                            disabled>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                                <lightning-layout multiple-rows="true" class="slds-var-p-around_medium" style="gap: 1rem; align-items: center;">
+                                    <lightning-layout-item size="4" class="slds-var-p-around_x-small">
+                                    <template if:true={showTable}>
+                                        <lightning-card title="Selected Stamps">
+                                            <div class="table-container">
+                                                <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col" style="width: 70%;background-color: #5bb6e3; color: white; border: 1px solid black">Stamp Name</th>
+                                                            <th scope="col" style="width: 30%;background-color: #5bb6e3; color: white; border: 1px solid black">Denominations</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <template for:each={stampWrapperList} for:item="stamp">
+                                                            <tr key={stamp.Id}>
+                                                                <td style="width: 70%;">{stamp.name}</td>
+                                                                <td style="display: flex; align-items: center; gap: 0.5rem;">
+                                                                    <!-- Subtract Button (Red) -->
+                                                                    <lightning-button-icon 
+                                                                        data-name={stamp.name}
+                                                                        icon-name="utility:dash"
+                                                                        alternative-text="Decrease"
+                                                                        class="red-icon"
+                                                                        onclick={handleDecrement}>
+                                                                    </lightning-button-icon>
+
+                                                                    <span class="denom-count">{stamp.count}</span>
+
+                                                                    <!-- Add Button (Green) -->
+                                                                    <lightning-button-icon 
+                                                                        data-name={stamp.name}
+                                                                        icon-name="utility:add"
+                                                                        alternative-text="Increase"
+                                                                        class="green-icon"
+                                                                        onclick={handleIncrement}>
+                                                                    </lightning-button-icon>
+                                                                </td>
+                                                            </tr>
+                                                        </template>
+                                                        
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </lightning-card>
+                                        
+                                    </template>
+                                </lightning-layout-item>
+                                </lightning-layout>
+                                <lightning-layout style="margin-top:7px;" horizontal-align="start">
+                                <div if:true={enableEdit}>
+                                    <div if:true={showesignProceed} class="save-button slds-button slds-button_brand slds-float_left"  style="border:none">
+                                    <button class="save-button slds-button slds-button_brand " style="border: none;" onclick={createEsignChecklist}>
+                                        Proceed 
+                                    </button>
+                                </div>
+                            </div>
+                                </lightning-layout>
+                            </lightning-accordion-section>
+                        </template>
+                        <template if:true={showEsignChecklist} >
+                            <lightning-accordion-section name="EsignChecklist" label="Esign Checklist">
+                                <div style="overflow-x: auto;margin-top:1rem;" class="slds-box slds-m-bottom_medium scroll-container">
+                                    <lightning-card title="Signatory Status">
+                                        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                            <thead>
+                                                <tr class="slds-line-height_reset">
+                                                    <th scope="col" style="width: 20%; text-align: center; background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                        <div class="slds-truncate" title="Document Name">Document Name</div>
+                                                    </th>
+                                                    <th if:true={wsign} scope="col" style="width: 15%; text-align: center; background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                        <div class="slds-truncate" title="Uploaded By">Uploaded By</div>
+                                                    </th>
+                                                    <th if:true={wsign}  scope="col" style="width: 15%; text-align: center; background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                        <div class="slds-truncate" title="Timestamp">Timestamp</div>
+                                                    </th>
+                                                    <th scope="col" style="width: 15%; text-align: center; background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                        <div class="slds-truncate" title="Timestamp">Status</div>
+                                                    </th>
+                                                    <th if:true={wsign} scope="col" style="width: 10%; text-align: center; background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                        <div class="slds-truncate" title="Upload/Preview">Upload/Preview</div>
+                                                    </th>
+                                                    <th if:true={wsign} scope="col" style="width: 20%; text-align: center; background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                        <div class="slds-truncate" title="View History">View History</div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- for:each={esignedChecklist} -->
+                                                <template if:true={wsign} for:each={esignedChecklist} for:item="doc">
+                                                    <tr key={doc.id}>
+                                                        <td>
+                                                            <div class="slds-truncate">{doc.documentName}</div>
+                                                        </td>
+                                                        <td if:true={wsign} >
+                                                            <div class="slds-truncate">{doc.Uploadedby}</div>
+                                                        </td>
+                                                        <td if:true={wsign} >
+                                                            <div class="slds-truncate">{doc.Timestamp}</div>
+                                                        </td>
+                                                        <td if:true={wsign}>
+                                                            <lightning-combobox 
+                                                                name="MandStatus" 
+                                                                placeholder="Select Signature Status"
+                                                                options={esignStatusOptions} 
+                                                                value={selectedSignatureStatus}
+                                                                onchange={handlesignatureStatus}
+                                                                disabled={disableWetSignStatus}>
+                                                            </lightning-combobox>
+                                                        </td>
+                                                        <td if:false={wsign}>
+                                                            <lightning-combobox 
+                                                                name="MandStatus" 
+                                                                placeholder="Select Signature Status"
+                                                                options={esignStatusOptions} 
+                                                                value={doc.finalStatus}
+                                                                onchange={handlesignatureStatus}
+                                                                disabled={esign}>
+                                                            </lightning-combobox>
+                                                        </td>
+                                                        <td>
+                                                            <div class="slds-truncate">
+                                                                <template if:true={wsign}>
+                                                                    <c-upload-view-delete-document 
+                                                                        doc-detail-id={doc.id}
+                                                                        content-doc-id={doc.contentId} 
+                                                                        show-upload={doc.showUpload}
+                                                                        show-view={doc.showView}
+                                                                        show-delete={doc.showDelete} 
+                                                                        show-retake={doc.showRetake} 
+                                                                        file-type={doc.fileType}
+                                                                        doc-name={doc.docName}
+                                                                        reupload-ifnot-uploaded={reuploadifnotuploaded}
+                                                                        esign-content={estampdocId}
+                                                                        onclose = {getdocDetails}
+                                                                        is-esign=false>
+                                                                    </c-upload-view-delete-document>
+                                                                </template>
+                                                                <template if:true={esign}>
+                                                                    <lightning-icon icon-name="utility:preview" alternative-text="View" title="View" size="small" class="slds-icon-text-default"></lightning-icon>
+                                                                </template>
+                                                            
+                                                            </div>
+                                                        </td>
+                                                        <td style="text-align: center;">
+                                                            <div class="slds-truncate slds-cell-wrap" style="overflow:auto;padding-left: 10%">
+                                                                <button class="save-button slds-button slds-button_brand slds-float_left"
+                                                                        style="border:none" data-id={doc.id} name="Mandatory"  data-name={doc.id}  onclick={handlehistory}>
+                                                                    View 
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </template>
+                                                
+                                                <template if:true={esign} for:each={esignDocDetail} for:item="parentItem">
+                                                    <template for:each={parentItem.docData} for:item="iterDet">
+                                                        <tr key={iterDet.documentName}>
+                                                            <td><div class="slds-truncate">{iterDet.documentName}</div></td>
+                                                            <td>
+                                                                <lightning-combobox name="Status" placeholder="Select Signature Status"
+                                                                    options={esignStatusOptions} value={iterDet.finalStatus}
+                                                                    onchange={handlesignatureStatus} disabled>
+                                                                </lightning-combobox>
+                                                            </td>
+                                                        </tr>
+                                                    </template>
+                                                </template>
+                                            </tbody>
+
+                                        </table>
+                                    </lightning-card>
+                                </div>
+                                <template if:true={esign}>
+                                    <lightning-card title="Individual Signatory Status">
+                                        <div style="overflow-x: auto; margin-top:1rem;" class="slds-box slds-m-bottom_medium scroll-container">
+                                            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                                <thead>
+                                                    <tr class="slds-line-height_reset">
+                                                        <th scope="col" style="width: 20%; text-align: center; background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                            <div class="slds-truncate" title="Applicant Name">Applicant Name</div>
+                                                        </th>
+                                                        <th scope="col" style="width: 15%; text-align: center; background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                            <div class="slds-truncate" title="Status">Status</div>
+                                                        </th>
+                                                        <th scope="col" style="width: 25%; text-align: center; background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                            <div class="slds-truncate" title="Link">Link</div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <template for:each={esignResponse} for:item="parentItem">
+                                                        <template for:each={parentItem.applicants} for:item="iterDet">
+                                                            <tr key={iterDet.applicantName}>
+                                                                <td style="text-align: center; border: 1px solid black">
+                                                                    {iterDet.applicantName}
+                                                                </td>
+                                                                <td style="text-align: center; border: 1px solid black">
+                                                                    {iterDet.individualStatus}
+                                                                </td>
+                                                                <td style="text-align: center; border: 1px solid black">
+                                                                    {iterDet.signedLink}
+                                                                </td>
+                                                            </tr>
+                                                        </template>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </lightning-card>
+                                </template>
+                            <div if:true={esign} class="slds-grid slds-gutters slds-m-left_small slds-m-right_small">
+                                <div class="slds-col slds-size_6-of-12 slds-p-top_small slds-float_left" style="display: flex;">
+                                <div if:true={enableEdit}>
+                                    <div if:false={esigncompleted} style="padding-top:2%; display: flex; gap: 1rem;">
+                                        <button class="save-button slds-button slds-button_brand"
+                                            style="border: none;" onclick={handleCheckStatus}>Check Status</button>
+                                        <button class="save-button slds-button slds-button_brand"
+                                            style="border: none;" onclick={cancelEsign}>Cancel Esign</button>
+                                    </div>
+                                </div>
+                                    <div if:true={esigncompleted} style="padding-top:2%" onclick={handleDownloadDocument}>
+                                        <button class="save-button slds-button slds-button_brand slds-float_left"
+                                            style="border:none" >Download Document</button>
+                                    </div>
+                                </div>
+                            </div>
+                            </lightning-accordion-section>
+                        </template>
+                    </lightning-accordion>
+                </template>
+            </div>
+        </lightning-accordion-section>
+
+        <lightning-accordion-section name="non-mandatory" label="Non-Mandatory Documents">
+            <template if:false={showNonMandatoryAccordion}>
+                <div>Please complete E-sign of the Mandatory Documents</div>
+            </template>
+            <template if:true={showNonMandatoryAccordion}>
+                <template if:true={nonmandatoryModalVisibility}>
+                    <section role="dialog" tabindex="-1" aria-modal="true"
+                        class="slds-modal slds-fade-in-open">
+                        <div class="slds-modal__container" style="min-width: 60%;">
+                            <header class="slds-modal__header" style="background-color: #5bb6e3; color:white;font-weight:500;">
+                                <div class="slds-text-align_center">
+                                    <h2 slot="title"
+                                            style="font-style: Lato Bold; font-size:15px; font-weight: bold; margin: 5px 0;"
+                                            class="slds-text-heading_medium slds-hyphenate">
+                                            Add Template Document
+                                    </h2>
+                                </div>
+                            </header>
+
+                            <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless">
+                                    
+                                <p style="font-size:14px; font-style: italic; color: #113451; margin-bottom: 10px;">
+                                    Select one or more template documents from the list below:
+                                </p>
+
+                                <template for:each={nonMandatoryDocOptions} for:item="doc">
+                                        <div key={doc.value} style="margin:1.5%;">
+                                            <lightning-input type="checkbox" data-id={doc.value} data-name={doc.label} label={doc.label}
+                                                onchange={handleNonManChange} checked={doc.checked} disabled={doc.isDisabled}>
+                                            </lightning-input>
+                                        </div>
+                                </template>
+
+                                <div style="margin-top: 15px; text-align:center;">
+                                    <lightning-button
+                                        class="slds-m-right_small"
+                                        variant="brand"
+                                        label="Add Selected Templates"
+                                        onclick={addSelectedNonManDocs}
+                                        disabled={isAddButtonDisabled}>
+                                    </lightning-button>
+                                </div>
+                            </div>
+
+                                
+                            <footer class="slds-modal__footer" style="border: revert;">
+                                <div class="slds-align_absolute-center">
+                                    <button class="cancel-button slds-button slds-button_brand"
+                                        style="border:none"
+                                        onclick={handleCloseNonMand}>Close</button>
+                                </div>
+                            </footer>
+                        </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+                </template>
+
+                <template lwc:if={showSummaryStyleNonMand}>
+                    <div style="overflow-x: auto;" class="slds-box slds-m-bottom_medium scroll-container">
+                
+                        <table class="slds-table slds-table_bordered slds-border_right slds-border_left">
+                            <thead style="top: 0; z-index: 2; background: white;">
+                                <tr>
+                                    <th scope="col" style="background-color: #5bb6e3; color: white; border: 1px solid black"
+                                        class="slds-size_1-of-12">Select</th>
+                                    <th scope="col" style="background-color: #5bb6e3; color: white; border: 1px solid black"
+                                        class="slds-size_1-of-12">Sr No.</th>
+                                    <th scope="col" style="background-color: #5bb6e3; color: white; border: 1px solid black"
+                                        class="slds-size_6-of-12">Document Name</th>
+                                    <th scope="col" style="background-color: #5bb6e3; color: white; border: 1px solid black"
+                                        class="slds-size_2-of-12">Type</th>
+                                    <th scope="col" style="background-color: #5bb6e3; color: white; border: 1px solid black"
+                                        class="slds-size_2-of-12">View/Regenerate</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={nonMandatoryDisplayList} for:item="parentItem">
+                                    <template for:each={parentItem.docDetails} for:item="iterDet">
+                                        <tr key={iterDet.id}>
+                                            <td class="slds-size_1-of-12">
+                                                <template if:true={enableEdit}>
+                                                    <lightning-input type="checkbox" value={iterDet.selected}
+                                                        onchange={handleNonMandCheckboxChange} checked={iterDet.isCheckboxChecked}
+                                                        disabled={iterDet.mntEsign} onclose={hanldrefreshTable}
+                                                        data-id={iterDet.id}></lightning-input>
+                                                </template>
+                                                <template if:false={enableEdit}>
+                                                    <lightning-input type="checkbox" value={iterDet.selected}
+                                                        onchange={handleNonMandCheckboxChange} checked={iterDet.isCheckboxChecked}
+                                                        disabled=true onclose={hanldrefreshTable}
+                                                        data-id={iterDet.id}></lightning-input>
+                                                </template>
+                                            </td>
+                                            <td class="slds-size_1-of-12">
+                                                <template if:true={enableEdit}>
+                                                    <template if:true={iterDet.isCheckboxChecked}>
+                                                        <div class="slds-grid slds-grid_align-spread slds-grid_vertical-align-center">
+                                                            <template if:true={editChecklistNonMand}>
+                                                                <lightning-input type="number" value={iterDet.esignSequence}
+                                                                    data-id={iterDet.id} onchange={handleSequenceChange}
+                                                                    class="slds-m-right_xx-small" variant="label-hidden"
+                                                                    style="width: 80px;">
+                                                                </lightning-input>
+                
+                                                                <lightning-button-icon icon-name="utility:save" alternative-text="Save"
+                                                                    title="Save" variant="border-filled" data-id={iterDet.id}
+                                                                    onclick={handleSaveSequence}>
+                                                                </lightning-button-icon>
+                                                            </template>
+                                                            <template if:false={editChecklistNonMand}>
+                                                                <div class="slds-truncate slds-cell-wrap">{iterDet.esignSequence}</div>
+                                                            </template>
+                                                        </div>
+                                                    </template>
+                                                    <template if:false={iterDet.isCheckboxChecked}>
+                                                        <div class="slds-truncate slds-cell-wrap">{iterDet.esignSequence}</div>
+                                                    </template>
+                                                </template>
+                                                <template if:false={enableEdit}>
+                                                    <div class="slds-truncate slds-cell-wrap">{iterDet.esignSequence}</div>
+                                                </template>
+                                            </td>
+                                            <td class="slds-size_6-of-12">
+                                                <div class="slds-truncate slds-cell-wrap">{iterDet.docName}</div>
+                                            </td>
+                                            <td class="slds-size_2-of-12">
+                                                <template if:true={iterDet.isRequired}>
+                                                    <div class="slds-truncate slds-cell-wrap">Default</div>
+                                                </template>
+                                                <template if:false={iterDet.isRequired}>
+                                                    <div class="slds-truncate slds-cell-wrap">Manual</div>
+                                                </template>
+                                            </td>
+                                            <td class="slds-size_2-of-12">
+                                                <c-upload-view-delete-document doc-detail-id={iterDet.id}
+                                                    content-doc-id={iterDet.contentId} show-upload={iterDet.showUpload}
+                                                    show-view={iterDet.showView} show-delete={iterDet.showDelete}
+                                                    show-retake={iterDet.showRetake} show-location={iterDet.showLocation}
+                                                    lattitude={iterDet.lattitude} longitude={iterDet.longitude}
+                                                    file-type={iterDet.fileType} doc-name={iterDet.docName} name={processObject}
+                                                    onrecallmethod={getdocDetails} is-esign=true>
+                                                </c-upload-view-delete-document>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div style="text-align: left; margin-top: 1rem;">
+                        <!-- <lightning-layout>
+                            <lightning-layout multiple-rows="true" class="slds-var-p-around_medium"
+                                style="gap: 1rem; align-items: center;"></lightning-layout>
+                            <lightning-layout-item size="4" class="slds-var-p-around_x-small">
+                                <lightning-combobox name="teamUser" label="Authorized Signatory Name" value={selectedUserId}
+                                    options={userOptions} placeholder="Select a user" onchange={handleChange}
+                                    disabled={showEsignChecklistNonMand} required>
+                                </lightning-combobox>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="4" class="slds-var-p-around_x-small"></lightning-layout-item>
+                        </lightning-layout> -->
+                    </div>
+                    <!-- <div style="text-align: left; margin-top: 1rem;">
+                        <lightning-accordion allow-multiple-sections-open>
+                            <lightning-accordion-section name="esealDetails" label={eSealSectionLabel}>
+                                <lightning-layout multiple-rows="true">
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <div class="form-container slds-box slds-theme_default custom-border">
+                                            <lightning-input label="Outer Name" value={outerName} onchange={handleOuterNameChange}
+                                                disabled={isSigned} required></lightning-input>
+                                            <lightning-input label="Inner Name" value={innerName} onchange={handleInnerNameChange}
+                                                disabled={isSigned} required></lightning-input>
+                                            <lightning-combobox name="E-Seal_Colour" label="E-Seal Colour" value={selectedColour}
+                                                options={colourOptions} placeholder="Select Colour" onchange={handleColourChange}
+                                                disabled={isSigned} required>
+                                            </lightning-combobox>
+                                            <lightning-combobox name="E-Seal_Shape" label="E-Seal Shape" value={selectedShape}
+                                                options={shapeOptions} placeholder="Select Shape" onchange={handleShapeChange}
+                                                disabled={isSigned} required>
+                                            </lightning-combobox>
+                                            <div if:true={enableEdit}>
+                                                <div if:false={isSigned} style="margin-top: 1.5rem;">
+                                                    <button class="save-button slds-button slds-button_brand" style="border: none;"
+                                                        onclick={handlegeneratedEseal}>
+                                                        Generate E-Seal
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="6" padding="around-small">
+                                        <div class="form-container slds-box slds-theme_default custom-border">
+                                            <div if:true={esealgenerated}
+                                                class="scrollable slds-grid slds-grid_align-center slds-grid_vertical-align-center">
+                                                <img data-id="documentImage" src={imageUrl} alt="Document Image">
+                                            </div>
+                                            <div if:false={esealgenerated} class="scrollable slds-grid slds-grid_align-center"
+                                                style="padding: 1rem;">
+                                                <p style="text-align: center; font-style: italic; color: gray;">Eseal Not Generated</p>
+                                            </div>
+                                        </div>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </lightning-accordion-section>
+                        </lightning-accordion>
+                    </div> -->
+                
+                
+                
+                    <!-- Add Documents Button -->
+                    <div if:true={enableEdit}>
+                        <div if:true={showaddandgenNonMand} style="text-align: left; margin-top: 1rem;">
+                            <button class="save-button slds-button slds-button_brand" style="border: none; width:max-content"
+                                onclick={handleAddNonManDocs}>
+                                Add Non-Mandatory Documents
+                            </button>
+                            <button class="save-button slds-button slds-button_brand" style="border: none;"
+                                onclick={handlegeneratedDocsNonMand}>
+                                Generate Documents
+                            </button>
+                        </div>
+                
+                        <template lwc:if={showError}>
+                            <br />
+                            <table class="slds-table" style="margin-top: 20px;">
+                                <thead>
+                                    <tr>
+                                        <th scope="col" style="text-align: left; width: 150px;">Tab</th>
+                                        <th scope="col" style="text-align: left;">Error Message</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={validationErrors} for:item="error">
+                                        <tr key={error.type}>
+                                            <td style="text-align: left;">{error.type}</td>
+                                            <td style="text-align: left;">{error.message}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </template>
+                
+                    </div>
+                </template>
+                <template if:true={showGeneratedDocsNonMand}>
+                    <lightning-accordion allow-multiple-sections-open>
+                        <template if:true={showGeneratedDocNonMand}>
+                            <lightning-accordion-section name="generatedDocs" label="Generated Documents">
+                                <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                    <thead>
+                                        <tr class="slds-line-height_reset">
+                                            <th scope="col"
+                                                style="width: 25%; text-align: center;background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                <div class="slds-truncate" title="Name">Name</div>
+                                            </th>
+                                            <th scope="col"
+                                                style="width: 25%; text-align: center;background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                <div class="slds-truncate" title="Name">Generated By</div>
+                                            </th>
+                                            <th scope="col"
+                                                style="width: 25%; text-align: center;background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                <div class="slds-truncate" title="Name">Timestamp</div>
+                                            </th>
+                                            <th scope="col"
+                                                style="width: 25%; text-align: center;background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                <div class="slds-truncate" title="Preview">Preview</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={documentsNonMand} for:item="doc">
+                                            <tr key={doc.id}>
+                                                <td>
+                                                    <div class="slds-truncate">{doc.name}</div>
+                                                </td>
+                                                <td>
+                                                    <div class="slds-truncate">{doc.generatedBy}</div>
+                                                </td>
+                                                <td>
+                                                    <div class="slds-truncate">{doc.uploadedDate}</div>
+                                                </td>
+                                                <td>
+                                                    <div class="slds-truncate">
+                                                        <c-upload-view-delete-document doc-detail-id={doc.id}
+                                                            content-doc-id={doc.contentId} show-upload={doc.showUpload}
+                                                            show-view={doc.showView} show-delete={doc.showDelete} show-retake=false
+                                                            show-location={doc.showLocation} lattitude={doc.lattitude}
+                                                            longitude={doc.longitude} file-type={doc.fileType} doc-name={doc.docName}
+                                                            is-esign=false></c-upload-view-delete-document>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                                <!-- added by kalpesh -->
+                                 <lightning-file-upload label="" name="Non-Mandatory"
+                                        accept=".png,.jpeg,.jpg,.pdf,.xlsx,.msg,.docx" record-id={recordId}
+                                        onuploadfinished={handleUpload}>
+                                </lightning-file-upload>
+                                <!-- added by kalpesh -->
+                                <lightning-layout style="margin-top: 20px;" horizontal-align="start">
+                                    <lightning-layout-item size="3">
+                                        <lightning-combobox name="Esign Type" label="Select Mode of Signature"
+                                            placeholder="Select Mode of Signature" options={timestampOptions} value={selectedCategory}
+                                            onchange={hanldeEsignType} disabled={isDisabled}>
+                                        </lightning-combobox>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                                <lightning-layout style="margin-top: 20px;" horizontal-align="start">
+                                    <div if:true={enableEdit}>
+                                        <div if:true={showesignProceedNonMand}
+                                            class="save-button slds-button slds-button_brand slds-float_left" style="border:none">
+                                            <button class="save-button slds-button slds-button_brand " style="border: none;" name="Non-mandatory"
+                                                onclick={fillMandatoryDetails}>
+                                                Proceed
+                                            </button>
+                                        </div>
+                                    </div>
+                                </lightning-layout>
+                            </lightning-accordion-section>
+                        </template>
+                        <template if:true={showMandatorydataNonMand}>
+                            <lightning-accordion-section name="MandatoryFields" label="Mandatory Fields">
+                                <lightning-layout multiple-rows="true" class="slds-var-p-around_medium"
+                                    style="gap: 1rem; align-items: center;">
+                                    <!-- Authorized Signatory Name -->
+                                    <lightning-layout-item size="6" class="slds-var-p-around_x-small">
+                                        <c-generic-multi-picklist-selector label="Select Stamp" required showpills="true"
+                                            options={formattedOptions} onselectedvalueschange={handleRequestFromUsers}>
+                                        </c-generic-multi-picklist-selector>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="3" class="slds-var-p-around_x-small">
+                                        <lightning-input name="StampCharge" label="Total Stamp Charges" value={totalCharges} required
+                                            disabled>
+                                        </lightning-input>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                                <lightning-layout multiple-rows="true" class="slds-var-p-around_medium"
+                                    style="gap: 1rem; align-items: center;">
+                                    <lightning-layout-item size="4" class="slds-var-p-around_x-small">
+                                        <template if:true={showTable}>
+                                            <lightning-card title="Selected Stamps">
+                                                <div class="table-container">
+                                                    <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                                        <thead>
+                                                            <tr>
+                                                                <th scope="col"
+                                                                    style="width: 70%;background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                                    Stamp Name</th>
+                                                                <th scope="col"
+                                                                    style="width: 30%;background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                                    Denominations</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <template for:each={stampWrapperList} for:item="stamp">
+                                                                <tr key={stamp.Id}>
+                                                                    <td style="width: 70%;">{stamp.name}</td>
+                                                                    <td style="display: flex; align-items: center; gap: 0.5rem;">
+                                                                        <!-- Subtract Button (Red) -->
+                                                                        <lightning-button-icon data-name={stamp.name}
+                                                                            icon-name="utility:dash" alternative-text="Decrease"
+                                                                            class="red-icon" onclick={handleDecrement}>
+                                                                        </lightning-button-icon>
+                
+                                                                        <span class="denom-count">{stamp.count}</span>
+                
+                                                                        <!-- Add Button (Green) -->
+                                                                        <lightning-button-icon data-name={stamp.name}
+                                                                            icon-name="utility:add" alternative-text="Increase"
+                                                                            class="green-icon" onclick={handleIncrement}>
+                                                                        </lightning-button-icon>
+                                                                    </td>
+                                                                </tr>
+                                                            </template>
+                
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </lightning-card>
+                
+                                        </template>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                                <lightning-layout style="margin-top:7px;" horizontal-align="start">
+                                    <div if:true={enableEdit}>
+                                        <div if:true={showesignProceedNonMand}
+                                            class="save-button slds-button slds-button_brand slds-float_left" style="border:none">
+                                            <button class="save-button slds-button slds-button_brand " style="border: none;"
+                                                onclick={createEsignChecklist}>
+                                                Proceed
+                                            </button>
+                                        </div>
+                                    </div>
+                                </lightning-layout>
+                            </lightning-accordion-section>
+                        </template>
+                        <template if:true={showEsignChecklistNonMand}>
+                            <lightning-accordion-section name="EsignChecklist" label="Esign Checklist">
+                                <div style="overflow-x: auto;margin-top:1rem;" class="slds-box slds-m-bottom_medium scroll-container">
+                                    <lightning-card title="Signatory Status">
+                                        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                            <thead>
+                                                <tr class="slds-line-height_reset">
+                                                    <th scope="col"
+                                                        style="width: 20%; text-align: center; background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                        <div class="slds-truncate" title="Document Name">Document Name</div>
+                                                    </th>
+                                                    <th if:true={wsign} scope="col"
+                                                        style="width: 15%; text-align: center; background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                        <div class="slds-truncate" title="Uploaded By">Uploaded By</div>
+                                                    </th>
+                                                    <th if:true={wsign} scope="col"
+                                                        style="width: 15%; text-align: center; background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                        <div class="slds-truncate" title="Timestamp">Timestamp</div>
+                                                    </th>
+                                                    <th scope="col"
+                                                        style="width: 15%; text-align: center; background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                        <div class="slds-truncate" title="Timestamp">Status</div>
+                                                    </th>
+                                                    <th if:true={wsign} scope="col"
+                                                        style="width: 10%; text-align: center; background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                        <div class="slds-truncate" title="Upload/Preview">Upload/Preview</div>
+                                                    </th>
+                                                    <th if:true={wsign} scope="col"
+                                                        style="width: 20%; text-align: center; background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                        <div class="slds-truncate" title="View History">View History</div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <!-- for:each={esignedChecklist} -->
+                                                <template if:true={wsign} for:each={esignedChecklist} for:item="doc">
+                                                    <tr key={doc.id}>
+                                                        <td>
+                                                            <div class="slds-truncate">{doc.documentName}</div>
+                                                        </td>
+                                                        <td if:true={wsign}>
+                                                            <div class="slds-truncate">{doc.Uploadedby}</div>
+                                                        </td>
+                                                        <td if:true={wsign}>
+                                                            <div class="slds-truncate">{doc.Timestamp}</div>
+                                                        </td>
+                                                        <td if:true={wsign}>
+                                                            <lightning-combobox name="NonMandStatus" placeholder="Select Signature Status"
+                                                                options={esignStatusOptions} value={selectedSignatureStatus}
+                                                                onchange={handlesignatureStatus} disabled={esign}>
+                                                            </lightning-combobox>
+                                                        </td>
+                                                        <td if:false={wsign}>
+                                                            <lightning-combobox name="NonMandStatus" placeholder="Select Signature Status"
+                                                                options={esignStatusOptions} value={doc.finalStatus}
+                                                                onchange={handlesignatureStatus} disabled={esign}>
+                                                            </lightning-combobox>
+                                                        </td>
+                                                        <td>
+                                                            <div class="slds-truncate">
+                                                                <template if:true={wsign}>
+                                                                    <c-upload-view-delete-document doc-detail-id={doc.id}
+                                                                        content-doc-id={doc.contentId} show-upload={doc.showUpload}
+                                                                        show-view={doc.showView} show-delete={doc.showDelete}
+                                                                        show-retake={doc.showRetake} file-type={doc.fileType}
+                                                                        doc-name={doc.docName}
+                                                                        reupload-ifnot-uploaded={reuploadifnotuploaded}
+                                                                        esign-content={estampdocId} onclose={getdocDetails}
+                                                                        is-esign=false>
+                                                                    </c-upload-view-delete-document>
+                                                                </template>
+                                                                <template if:true={esign}>
+                                                                    <lightning-icon icon-name="utility:preview" alternative-text="View"
+                                                                        title="View" size="small"
+                                                                        class="slds-icon-text-default"></lightning-icon>
+                                                                </template>
+                
+                                                            </div>
+                                                        </td>
+                                                        <td style="text-align: center;">
+                                                            <div class="slds-truncate slds-cell-wrap"
+                                                                style="overflow:auto;padding-left: 10%">
+                                                                <button
+                                                                    class="save-button slds-button slds-button_brand slds-float_left"
+                                                                    style="border:none" data-id={doc.id} data-name={doc.id} name="Non-mandatory"
+                                                                    onclick={handlehistory}>
+                                                                    View
+                                                                </button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                </template>
+                
+                                                <template if:true={esign} for:each={esignDocDetail} for:item="parentItem">
+                                                    <template for:each={parentItem.docData} for:item="iterDet">
+                                                        <tr key={iterDet.documentName}>
+                                                            <td>
+                                                                <div class="slds-truncate">{iterDet.documentName}</div>
+                                                            </td>
+                                                            <td>
+                                                                <lightning-combobox name="Status" placeholder="Select Signature Status"
+                                                                    options={esignStatusOptions} value={iterDet.finalStatus}
+                                                                    onchange={handlesignatureStatus} disabled>
+                                                                </lightning-combobox>
+                                                            </td>
+                                                        </tr>
+                                                    </template>
+                                                </template>
+                                            </tbody>
+                
+                                        </table>
+                                    </lightning-card>
+                                </div>
+                                <template if:true={esign}>
+                                    <lightning-card title="Individual Signatory Status">
+                                        <div style="overflow-x: auto; margin-top:1rem;"
+                                            class="slds-box slds-m-bottom_medium scroll-container">
+                                            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                                <thead>
+                                                    <tr class="slds-line-height_reset">
+                                                        <th scope="col"
+                                                            style="width: 20%; text-align: center; background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                            <div class="slds-truncate" title="Applicant Name">Applicant Name</div>
+                                                        </th>
+                                                        <th scope="col"
+                                                            style="width: 15%; text-align: center; background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                            <div class="slds-truncate" title="Status">Status</div>
+                                                        </th>
+                                                        <th scope="col"
+                                                            style="width: 25%; text-align: center; background-color: #5bb6e3; color: white; border: 1px solid black">
+                                                            <div class="slds-truncate" title="Link">Link</div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <template for:each={esignResponse} for:item="parentItem">
+                                                        <template for:each={parentItem.applicants} for:item="iterDet">
+                                                            <tr key={iterDet.applicantName}>
+                                                                <td style="text-align: center; border: 1px solid black">
+                                                                    {iterDet.applicantName}
+                                                                </td>
+                                                                <td style="text-align: center; border: 1px solid black">
+                                                                    {iterDet.individualStatus}
+                                                                </td>
+                                                                <td style="text-align: center; border: 1px solid black">
+                                                                    {iterDet.signedLink}
+                                                                </td>
+                                                            </tr>
+                                                        </template>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </lightning-card>
+                                </template>
+                                <div if:true={esign} class="slds-grid slds-gutters slds-m-left_small slds-m-right_small">
+                                    <div class="slds-col slds-size_6-of-12 slds-p-top_small slds-float_left" style="display: flex;">
+                                        <div if:true={enableEdit}>
+                                            <div if:false={esigncompletedNonMand} style="padding-top:2%; display: flex; gap: 1rem;">
+                                                <button class="save-button slds-button slds-button_brand" style="border: none;"
+                                                    onclick={handleCheckStatusNonMand}>Check Status</button>
+                                                <button class="save-button slds-button slds-button_brand" style="border: none;"
+                                                    onclick={cancelEsign}>Cancel Esign</button>
+                                            </div>
+                                        </div>
+                                        <div if:true={esigncompletedNonMand} style="padding-top:2%" onclick={handleDownloadDocument}>
+                                            <button class="save-button slds-button slds-button_brand slds-float_left"
+                                                style="border:none">Download Document</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </lightning-accordion-section>
+                        </template>
+                    </lightning-accordion>
+                </template>
+            </template>
+        </lightning-accordion-section>
+    </lightning-accordion>
+    
+</template>

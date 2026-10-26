@@ -1,0 +1,182 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import "c/cssLibrary";
+
+/*
+ * Same dark palette used by creditFIInitiationCmp.css so the FCU accordion
+ * section visually matches the Field Investigation accordion section.
+ */
+:host {
+    display: block;
+    background: #12172b;
+    color: #ffffff;
+    --fcu-page-bg: #12172b;
+    --fcu-panel-bg: #1c2238;
+    --fcu-field-bg: #16283f;
+    --fcu-border: #2a2f45;
+    --fcu-muted: #8a99b3;
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+}
+
+.fcu-panel {
+    background-color: var(--fcu-page-bg);
+    border: 1px solid var(--fcu-border);
+    border-radius: 8px;
+    padding: 12px 16px;
+}
+
+.fcu-section-title {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 8px;
+}
+
+.fcu-status-fields {
+    background-color: #12172b;
+    border: 1px solid var(--fcu-border);
+    border-radius: 6px;
+    padding: 10px 12px;
+    margin-bottom: 12px;
+}
+
+.fcu-status-fields lightning-input-field,
+.fcu-status-fields lightning-record-edit-form {
+    --slds-c-input-color-background: var(--fcu-field-bg);
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: var(--fcu-border);
+    --slds-c-combobox-color-background: var(--fcu-field-bg);
+    --slds-c-combobox-text-color: #ffffff;
+    --slds-c-combobox-color-border: var(--fcu-border);
+
+    /* Picklist dropdown/options panel - same shadow-DOM-piercing technique
+       used for the Category/Customer dropdowns in documentProcessingScreen
+       (.filter-card lightning-combobox): the options listbox is rendered
+       inside the combobox's own shadow DOM, so ordinary class selectors
+       can't reach it - only inherited CSS custom properties cross that
+       boundary. The dedicated --slds-c-combobox-option-* hooks aren't
+       consistently honored for the RESTING (non-hover) option background,
+       so the underlying SLDS2 global neutral-base surface/text tokens are
+       overridden too, matching this component's own dark backdrop
+       (--fcu-page-bg) instead of the default white. */
+    --slds-g-color-neutral-base-100: var(--fcu-page-bg);
+    --slds-g-color-neutral-base-95: var(--fcu-page-bg);
+    --slds-g-color-neutral-base-10: #ffffff;
+    --slds-c-combobox-listbox-color-background: var(--fcu-page-bg);
+    --sds-c-combobox-listbox-color-background: var(--fcu-page-bg);
+    --slds-c-combobox-option-color-background: var(--fcu-page-bg);
+    --sds-c-combobox-option-color-background: var(--fcu-page-bg);
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: var(--fcu-field-bg);
+    --sds-c-combobox-option-color-background-hover: var(--fcu-field-bg);
+    --slds-c-combobox-option-color-background-focus: var(--fcu-field-bg);
+    --sds-c-combobox-option-color-background-focus: var(--fcu-field-bg);
+}
+
+/* Fallback plain-CSS overrides in case the dropdown panel is portaled
+   outside this component's shadow root (some SLDS combobox builds render
+   the open listbox into a shared overlay container rather than fully
+   inside shadow DOM) - scoped to .fcu-status-fields so it can't leak into
+   comboboxes elsewhere on the page. */
+.fcu-status-fields lightning-combobox .slds-dropdown,
+.fcu-status-fields lightning-combobox .slds-listbox,
+.fcu-status-fields lightning-combobox .slds-listbox_vertical {
+    background-color: var(--fcu-page-bg) !important;
+    border: 1px solid var(--fcu-border) !important;
+}
+
+.fcu-status-fields lightning-combobox .slds-listbox__option,
+.fcu-status-fields lightning-combobox .slds-listbox__item {
+    background-color: var(--fcu-page-bg) !important;
+    color: #ffffff !important;
+}
+
+.fcu-status-fields lightning-combobox .slds-listbox__option:hover,
+.fcu-status-fields lightning-combobox .slds-listbox__option:focus,
+.fcu-status-fields lightning-combobox .slds-listbox__option.slds-has-focus {
+    background-color: var(--fcu-field-bg) !important;
+    color: #ffffff !important;
+}
+
+.fcu-status-fields lightning-combobox .slds-listbox__option .slds-media__body,
+.fcu-status-fields lightning-combobox .slds-listbox__option .slds-truncate {
+    color: #ffffff !important;
+}
+
+.fcu-action-row {
+    margin-bottom: 12px;
+}
+
+.fcu-table-wrapper {
+    background-color: var(--fcu-panel-bg);
+    border: 1px solid var(--fcu-border);
+    border-radius: 6px;
+    overflow: hidden;
+}
+
+.fcu-table-wrapper .slds-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: var(--fcu-panel-bg) !important;
+    color: #ffffff;
+}
+
+.fcu-table-wrapper .slds-table thead th {
+    background-color: var(--fcu-field-bg) !important;
+    border-color: var(--fcu-border) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.fcu-table-wrapper .slds-table tbody td {
+    background-color: var(--fcu-panel-bg) !important;
+    border-color: var(--fcu-border) !important;
+    color: #ffffff !important;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.fcu-table-wrapper .slds-table tbody tr:hover td {
+    background-color: #242c46 !important;
+}
+
+.fcu-table-wrapper .slds-table a {
+    color: #7db2ff !important;
+}
+
+.fcu-empty-state {
+    color: var(--fcu-muted);
+    text-align: center;
+    padding: 12px;
+}
+
+/* Positive CTA (Save) - #7c3aed fill, no border, 8px radius. */
+.save-fields-button {
+    /* lightning-button renders its <button> inside a shadow root, so the
+       brand color has to be set via SLDS styling hooks (custom properties
+       pierce shadow DOM), not via background-color on the host element. */
+    --slds-c-button-brand-color-background: #7c3aed;
+    --sds-c-button-brand-color-background: #7c3aed;
+    --slds-c-button-brand-color-background-hover: #6b21d1;
+    --sds-c-button-brand-color-background-hover: #6b21d1;
+    --slds-c-button-brand-color-background-active: #6b21d1;
+    --sds-c-button-brand-color-background-active: #6b21d1;
+    --slds-c-button-brand-color-border: transparent;
+    --sds-c-button-brand-color-border: transparent;
+    --slds-c-button-brand-color-border-hover: transparent;
+    --sds-c-button-brand-color-border-hover: transparent;
+    --slds-c-button-brand-text-color: #ffffff;
+    --sds-c-button-brand-text-color: #ffffff;
+    --slds-c-button-brand-text-color-hover: #ffffff;
+    --sds-c-button-brand-text-color-hover: #ffffff;
+    --slds-c-button-radius-border: 8px;
+    --sds-c-button-radius-border: 8px;
+    font-weight: 600;
+    margin-top: 8px;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

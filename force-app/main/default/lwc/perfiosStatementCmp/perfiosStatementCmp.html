@@ -1,0 +1,45 @@
+<template>
+    <lightning-card title="Perfios Output" icon-name="custom:custom63">
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+        </template>
+        <div class="slds-scrollable_x" style="overflow: auto;">
+        <template if:true={documents.length}>
+            <table class=" sortable slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right"
+            style="border-color: #ffffff;">
+                <thead>
+                    <tr style=" width:fit-content; background: var(--dt-header-bg);color: white;text-align: left;">
+                        <th style="text-align: center; background-color: var(--dt-header-bg); color: white; border-color: #ffffff;min-width: 150px;"
+                        scope="col" colspan="1">Version</th>
+                        <th style="text-align: center; background-color: var(--dt-header-bg); color: white; border-color: #ffffff;min-width: 150px;"
+                        scope="col" colspan="1">BSA Fetch Date</th>
+                        <th style="text-align: center; background-color: var(--dt-header-bg); color: white; border-color: #ffffff;min-width: 150px;"
+                        scope="col" colspan="1">Download button</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={documents} for:item="doc">
+                        <tr key={doc.id}>
+                            <td style="border-color: #ffffff">{doc.version}</td>
+                            <td style="border-color: #ffffff">{doc.createdDate}</td>
+                            <td style="border-color: #ffffff">
+                                <lightning-button 
+                                    icon-name="utility:download"
+                                    alternative-text="Download" 
+                                    onclick={handleDownload} 
+                                    data-url={doc.fileUrl} 
+                                    variant="base">
+                                </lightning-button>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </template>
+        <template if:false ={documents.length}>
+            No Record Available
+        </template>
+        </div>
+        <iframe if:true={iframeSrc} src={iframeSrc} style="display:none;"></iframe>
+    </lightning-card>
+</template>

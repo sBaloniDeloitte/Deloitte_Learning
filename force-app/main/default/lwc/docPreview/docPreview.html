@@ -1,0 +1,13 @@
+<template>
+  <template if:true={isImage}>
+    <img src={imageUrl} alt="Document" style="width:100%;height:auto;" />
+  </template>
+
+  <template if:true={isPdf}>
+    <object data={pdfUrl} type="application/pdf" style="width:100%;height:80vh;border:none;">
+      <p>Can’t show the PDF inline.
+        <a href={pdfUrl} target="_blank">Open</a>
+      </p>
+    </object>
+  </template>
+</template>

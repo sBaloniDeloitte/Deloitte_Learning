@@ -1,0 +1,53 @@
+<!--
+    @description : Static "Lead Score" eligibility snapshot card for a Home
+                    Loan applicant (dark/purple theme aligned with
+                    leadManagementV2 / leadPriorityCmp).
+    @author       : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <div class="ls-container">
+
+        <div class="ls-header">
+            <lightning-icon icon-name="utility:chart" size="small" variant="inverse" class="ls-header-icon"></lightning-icon>
+            <div class="ls-header-text">
+                <div class="ls-header-title">Lead Score</div>
+                <div class="ls-header-subtitle">Eligibility snapshot</div>
+            </div>
+        </div>
+
+        <div class="ls-body">
+
+            <div class="ls-summary-row">
+                <div class="ls-ring" style={ringStyle}>
+                    <div class="ls-ring-hole">
+                        <span class="ls-ring-value">{scoreValue}</span>
+                        <span class="ls-ring-max">/ {scoreMax}</span>
+                    </div>
+                </div>
+
+                <div class="ls-summary-info">
+                    <span class="ls-status-badge">👍 {statusLabel}</span>
+                    <p class="ls-parameters-filled">{parametersFilledLabel}</p>
+                </div>
+            </div>
+
+            <div class="ls-divider"></div>
+
+            <p class="ls-breakdown-heading">SCORE BREAKDOWN</p>
+
+            <div class="ls-breakdown-list">
+                <template for:each={scoreRows} for:item="row">
+                    <div key={row.id} class={row.rowClass}>
+                        <lightning-icon icon-name={row.arrowIcon} size="x-small" class="ls-row-icon"></lightning-icon>
+                        <span class="ls-row-label">{row.label}</span>
+                        <span class={row.valueClass}>{row.value}</span>
+                    </div>
+                </template>
+            </div>
+
+            <p class="ls-model-info">{modelInfo}</p>
+
+        </div>
+
+    </div>
+</template>

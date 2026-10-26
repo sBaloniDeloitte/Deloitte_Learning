@@ -1,0 +1,1143 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 03-18-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    
+    <template if:true={showSpinner}>
+        <section role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open" style="z-index: 900003;">
+            <lightning-spinner></lightning-spinner>
+        </section>
+    </template>
+    <!-- The generic field-scaffolding wrapper below is only used by the dynamic
+         fieldDetails-driven screens. For the Bank Statement Analysis screen it
+         renders empty (no fieldDetails configured for this stage), leaving a
+         visible empty bordered box above the "Statement method" dropdown - so
+         it is skipped entirely when the BSA custom component is the active
+         screen. This does not affect any other screen type. -->
+    <template if:false={showBSAScreen}>
+    <div class="container" style={getMarginByDeviceType}>
+        <span class="styleContainer"></span>
+      
+        <template if:true={small}>
+           
+            
+           <!-- <div class="slds-border_bottom" style="padding-top:2%; border-color:#9bbf56;width: 95%;border-width: 2px;">
+                <span style="display:inline-flex;">
+                    <lightning-icon icon-name="utility:justify_text" size="x-small" alternative-text="Verified"
+                    onclick={handleNavigationClick} style="margin-top: 0.5%;"></lightning-icon> &nbsp;&nbsp;
+                    <p style="font-size: small; font-weight:bold; color:black;width: 100%;text-align: left;margin-bottom:0%">Digital Loan Application Form</p>
+                </span>
+            </div>-->
+        </template>
+
+        <div class="content-container" style={getPaddingStyleByDeviceType}>
+            
+            <template if:true={small}>
+            <!--<div class="instruction-box-nav" style="padding-top:3%;padding-bottom:2%;">-->
+                <!--<lightning-progress-bar value={completionVal} size="large" type="base" variant="circular" class="navClass"></lightning-progress-bar>{completionVal}%-->
+            <!--</div>-->
+            </template>
+
+        
+            <template if:true={onePage}>
+                <div class={getInputContByDeviceType}>
+                    <template if:true={showScreenFieldLoginAppFields}>
+                        <template if:false={small}>
+                            <lightning-layout multiple-rows="true">
+                                <template for:each={fieldDetails} for:item="item">
+                                    
+                                    <template if:false={item.hideField}>
+                                        <template if:false={item.showBusinessIndustry}>
+                                            <template if:false={item.is_Lookup__c}>
+                                                <template if:false={item.isPicklist}>
+                                                    <template if:true={item.Section_Seperator__c}>
+                                                        <br key={item.Id}/>
+                                                        <lightning-layout-item size="12" key={item.Id} >
+                                                            <div class="section-seperator" style="padding-top: 1%;font-weight: 700;width: 100%;text-align: center;background: lightgrey;padding-bottom: 1%;">
+                                                            
+                                                                    {item.Section_Name__c}
+                                                            
+                                                            </div>
+                                                        </lightning-layout-item>
+                                                    </template>
+                                                    <template if:true={item.isCheckBox}>
+                                                        <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                            <lightning-input class="hideInput"
+                                                                type="checkbox" 
+                                                                style="width:100%;"
+                                                                name={item.Field_Type__c}
+                                                                label={item.Field_Label__c} value={item.value}
+                                                                checked={item.value}
+                                                                required={item.Is_Mandatory__c}
+                                                                data-id={item.Id} data-name={item.Storage_Field__c} onchange={handleInputChangeCheckbox}
+                                                                disabled={item.Is_Disabled__c}
+                                                                onfocus={handleFocus}
+                                                                onblur={handleBlur}>
+                                                            </lightning-input>
+                                                        </lightning-layout-item>
+                                                        
+                                                    </template>
+                                                    <template if:false={item.isCheckBox}>
+                                                        <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                            
+                                                            <!-- <div class="editable-container">
+                                                                <label class="editable-label">{item.Field_Label__c}</label>
+                                                                <div class="editable-field"
+                                                                    contenteditable="true"
+                                                                    data-id={item.Id}
+                                                                    data-name={item.Storage_Field__c}
+                                                                    data-type={item.Field_Type__c}
+                                                                    data-required={item.Is_Mandatory__c}
+                                                                    data-disabled={item.Is_Disabled__c}
+                                                                    data-maxlength={item.Maximum_Length__c}
+                                                                    onfocus={handleFocus}
+                                                                    onblur={handleBlur}>
+                                                                    {item.value}
+                                                                </div>
+                                                            </div> -->
+                                                            
+                                                                <lightning-input class="hideInput"
+                                                                
+                                                                    variant="bare"
+                                                                    type={item.Field_Type__c}
+                                                                    label={item.Field_Label__c}
+                                                                    data-id={item.Id}
+                                                                    data-name={item.Storage_Field__c}
+                                                                    data-type={item.Field_Type__c}
+                                                                    data-required={item.Is_Mandatory__c}
+                                                                    required={item.Is_Mandatory__c}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                    max-length={item.Maximum_Length__c}
+                                                                    value={item.value}
+                                                                    onchange={handleInputChange}
+                                                                    onfocus={handleFocus}
+                                                                    onblur={handleBlur}>
+                                                                </lightning-input>
+                                                            <template if:true={item.Show_in_words__c}>
+                                                                <div style="display: inline-block; color: green; font-style: italic;">
+                                                                    {loanamtinwords}
+                                                                </div>
+                                                            </template>
+                                                        </lightning-layout-item>
+                                                        
+                                                    </template>
+                                                </template>
+                                                <template if:true={item.isPicklist}>
+                                                    <template if:true={item.Section_Seperator__c}>
+                                                        <br key={item.Id}/>
+                                                        <lightning-layout-item size="12" key={item.Id}>
+                                                            <div class="section-seperator" key={item.Id} style="padding-top: 1%;font-weight: 700;width: 100%;text-align: center;background: lightgrey;padding-bottom: 1%;">
+                                                            
+                                                                    {item.Section_Name__c}
+                                                            
+                                                            </div>
+                                                        </lightning-layout-item>
+                                                        
+                                                    </template>
+                                                    <!-- <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                        <div class="editable-container">
+                                                            <label class="editable-label">{item.Field_Label__c}</label>
+                                                    
+                                                            
+                                                            <div class="editable-field"
+                                                                data-id={item.Id}
+                                                                data-name={item.Storage_Field__c}
+                                                                onclick={handleDropdownClick}>
+                                                    
+                                                                <span class="selected-value">{item.value}</span>
+                                                                <span class="dropdown-icon">▼</span>
+                                                            </div>
+                                                    
+                                                            
+                                                            <template if:true={item.isDropdownOpen}>
+                                                                <ul class="custom-dropdown">
+                                                                    <template for:each={item.picklistOptions} for:item="option">
+                                                                        <li key={option.value}
+                                                                            data-id={item.Id}
+                                                                            data-name={item.Storage_Field__c}
+                                                                            data-value={option.value}
+                                                                            onclick={handleSelection}>
+                                                                            {option.label}
+                                                                        </li>
+                                                                    </template>
+                                                                </ul>
+                                                            </template>
+                                                        </div>
+                                                    </lightning-layout-item> -->
+                                                    
+                                                    
+                                                    
+                                                        <!-- <lightning-layout-item size="3" key={item.Id} padding="around-small" class="custom-layout-item">
+                                                            <div class="editable-container-combo">
+                                                                <label class="custom-label">{item.Field_Label__c}</label>
+                                                                <div class="editable-field" data-id={item.Id} onfocusout ={handleFocusOut}
+                                                                onblur ={handleBlur}  onclick={toggleDropdown}>
+                                                                    <span class="selected-value">{item.value}</span>
+                                                                    <ul class="dropdown-options" if:true={item.isDropdownOpen}>
+                                                                        <template for:each={item.picklistOptions} for:item="option">
+                                                                            <li key={option.value} data-value={option.value}  data-name={item.Storage_Field__c}  data-id={item.Id} onclick={handleSelect} onfocusout ={handleFocusOut}
+                                                                            onblur ={handleBlur}> 
+                                                                                {option.value}
+                                                                            </li>
+                                                                        </template>
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+                                                        </lightning-layout-item> -->
+                                                    
+                                                        <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                            <lightning-combobox class="removeborder"
+                                                                
+                                                                style="width:100%;"
+                                                                label={item.Field_Label__c}
+                                                                placeholder="Select Picklist"
+                                                                options={item.picklistOptions}
+                                                                data-id={item.Id} 
+                                                                data-name={item.Storage_Field__c} 
+                                                                onchange={handleInputChange}
+                                                                value={item.value}
+                                                                onfocus={handleFocus}
+                                                                onblur={handleBlur}
+                                                                required={item.Is_Mandatory__c} disabled={item.Is_Disabled__c}></lightning-combobox>
+                                                        </lightning-layout-item>
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    
+                                                    <!-- <lightning-layout-item size="3" key={item.Id} class="">
+                                                    <div>
+                                                        <label class="custom-label">{item.Field_Label__c}</label>
+                                                        <lightning-combobox  class="removeBorder"
+                                                            
+                                                            placeholder="Select Picklist"
+                                                            options={item.picklistOptions}
+                                                            data-id={item.Id} 
+                                                            data-name={item.Storage_Field__c} 
+                                                            onchange={handleInputChange}
+                                                            value={item.value}
+                                                            
+                                                            required={item.Is_Mandatory__c} 
+                                                            disabled={item.Is_Disabled__c}>
+                                                        </lightning-combobox>
+                                                    </div>
+                                                </lightning-layout-item>  -->
+                                                </template>
+                                            </template>
+                                            <template if:true={item.is_Lookup__c}>
+                                                <template if:true={item.Section_Seperator__c}>
+                                                    <br key={item.Id}/>
+                                                    <lightning-layout-item size="12" key={item.Id}>
+                                                        <div class="section-seperator" key={item.Id} style="padding-top: 1%;font-weight: 700;width: 100%;text-align: center;background: lightgrey;padding-bottom: 1%;">
+                                                        
+                                                                {item.Section_Name__c}
+                                                        
+                                                        </div>
+                                                    </lightning-layout-item>
+                                                    
+                                                </template>    
+                                                <template if:true={loadLookUps}>
+                                                    <template if:true={item.showEmployerMasterLookup}>
+                                                            <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                                <c-sales-loan-login-employment-master-lookup class="removelookup"
+                                                                    label="Employer"
+                                                                    show-label="true"
+                                                                    required="true"
+                                                                    selected-id={item.value}
+                                                                    selected-name={item.savedName}
+                                                                    placeholder="Search Employer"
+                                                                    object-name="Employer_Master__c"
+                                                                    border-less =true
+                                                                    return-fields={employerReturnFields}
+                                                                    onlookupselected={handleEmployerlookupselected}
+                                                                    onlookupdeselected={handleEmployerlookupDeselected}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                ></c-sales-loan-login-employment-master-lookup>
+                                                            </lightning-layout-item>
+                                                        </template>
+
+                                                    <!-- <div key={item.Id}> -->
+                                                        <template if:true={item.showSubBranchLookup}>
+                                                            <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                                <c-search-lookup class="removelookup"
+                                                                    label="Sub Branch"
+                                                                    show-label="true"
+                                                                    required="true"
+                                                                    selected-id={item.value}
+                                                                    selected-name={item.savedName}
+                                                                    placeholder="Search sub branch"
+                                                                    object-name="Account"
+                                                                    border-less =true
+                                                                     branch-lookup =true
+                                                                    filter-criteria={sunBranchFilter}
+                                                                    return-fields="['Id','Name','Branch_Code__c','Branch_Type__c']"
+                                                                    onlookupselected={handlesubbranchlookupselected}
+                                                                    onlookupdeselected={handlesubbranchlookupdeselected}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                ></c-search-lookup>
+                                                            </lightning-layout-item>
+                                                            
+                                                            
+                                                            <!-- <c-lookup-search  saved-term={item.savedName} object-a-p-i-name = "Branch_Master__c" query-fields = "['Name']" return-fields="['Name']" search-box-name="Branch" icon-name="standard:address" onbranchlookupselected={handlebranchlookupselected} onbranchlookupdeselected={handlebranchlookupdeselected}></c-lookup-search> -->
+                                                        </template>
+                                                        <template if:true={item.showDSTLookup}>
+                                                        <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                            <c-search-lookup class="removelookup"
+                                                                label="DST"
+                                                                show-label="true"
+                                                                required="false"
+                                                                selected-id={item.value}
+                                                                selected-name={item.savedName}
+                                                                placeholder="Search DST"
+                                                                object-name="User"
+                                                                border-less =true
+                                                                branch-lookup =false
+                                                                
+                                                                return-fields="['Id','Name']"
+                                                                onlookupselected={handleDSTselected}
+                                                                onlookupdeselected={handleDSTdeselected}
+                                                                disabled={item.Is_Disabled__c}
+                                                            ></c-search-lookup>
+                                                            <!-- filter-criteria={DSTFilter} -->
+                                                        </lightning-layout-item>
+                                                        </template>
+                                                        <template if:true={item.showAMLookup}>
+                                                            <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                                <c-search-lookup class="removelookup"
+                                                                    label="Area Manager"
+                                                                    show-label="true"
+                                                                    required="true"
+                                                                    selected-id={item.value}
+                                                                    selected-name={item.savedName}
+                                                                    placeholder="Search AM"
+                                                                    object-name="User"
+                                                                    border-less =true
+                                                                    branch-lookup =false
+                                                                    
+                                                                    return-fields="['Id','Name']"
+                                                                    onlookupselected={handleAMselected}
+                                                                    onlookupdeselected={handleAMdeselected}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                ></c-search-lookup>
+                                                                <!-- filter-criteria={AMFilter} -->
+                                                            </lightning-layout-item>
+                                                        </template>
+                                                        <template if:true={item.showRMLookup}>
+                                                            <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                                <c-search-lookup class="removelookup"
+                                                                    label="Relationship Manager"
+                                                                    show-label="true"
+                                                                    required="true"
+                                                                    selected-id={item.value}
+                                                                    selected-name={item.savedName}
+                                                                    placeholder="Search RM"
+                                                                    object-name="User"
+                                                                    border-less =true
+                                                                    branch-lookup =false
+                                                                    
+                                                                    return-fields="['Id','Name']"
+                                                                    onlookupselected={handleRMselected}
+                                                                    onlookupdeselected={handleRMdeselected}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                ></c-search-lookup>
+                                                                <!-- filter-criteria={rmFilter} -->
+                                                            </lightning-layout-item>
+                                                        </template>
+                                                        <template if:true={item.showBranchLookup}>
+                                                            <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                                <c-search-lookup class="removelookup"
+                                                                    label="Branch"
+                                                                    show-label="true"
+                                                                    required="true"
+                                                                    selected-id={item.value}
+                                                                    selected-name={item.savedName}
+                                                                    placeholder="Search branch"
+                                                                    object-name="Account"
+                                                                    filter-criteria={branchFilter}
+                                                                    border-less=true
+                                                                    branch-lookup =true
+                                                                    return-fields="['Id','Name','Branch_Code__c','Branch_Type__c']"
+                                                                    onlookupselected={handlebranchlookupselected}
+                                                                    onlookupdeselected={handlebranchlookupdeselected}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                ></c-search-lookup>
+                                                            </lightning-layout-item>
+                                                            
+                                                            
+                                                            <!-- <c-lookup-search  saved-term={item.savedName} object-a-p-i-name = "Branch_Master__c" query-fields = "['Name']" return-fields="['Name']" search-box-name="Branch" icon-name="standard:address" onbranchlookupselected={handlebranchlookupselected} onbranchlookupdeselected={handlebranchlookupdeselected}></c-lookup-search> -->
+                                                        </template>
+    
+                                                        <template if:true={item.showAreaManagerLookup}>
+                                                            <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                                <c-search-lookup class="removelookup"
+                                                                    label="Relationship Manager/Area Manager"
+                                                                    show-label="true"
+                                                                    required="true"
+                                                                    selected-id={item.value}
+                                                                    selected-name={item.savedName}
+                                                                    placeholder="Search user"
+                                                                    object-name="User"
+                                                                    border-less=true
+                                                                    branch-lookup =true
+                                                                    return-fields="['Id','Name']"
+                                                                    opportunity-id={recordId}
+                                                                    branch-id={selectedBranchId}
+                                                                    onlookupselected={handleamlookupselectedAreaManager}
+                                                                    onlookupdeselected={handleamlookupdeselectedAreaManager}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                ></c-search-lookup>
+                                                            </lightning-layout-item>
+                                                            
+                                                            
+                                                            <!-- <c-lookup-search  saved-term={item.savedName} object-a-p-i-name = "Branch_Master__c" query-fields = "['Name']" return-fields="['Name']" search-box-name="Branch" icon-name="standard:address" onbranchlookupselected={handlebranchlookupselected} onbranchlookupdeselected={handlebranchlookupdeselected}></c-lookup-search> -->
+                                                        </template>
+
+                                                           <template if:true={item.showPinCodeLookup}>
+                                                            
+                                                            <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                                <c-search-lookup class="removelookup"
+                                                                    label="Resident/Business Pincode"
+                                                                    show-label="true"
+                                                                    required="true"
+                                                                    selected-id={item.value}
+                                                                    selected-name={item.savedName}
+                                                                    placeholder="Search pincode"
+                                                                    
+                                                                    object-name="Pincode_Master__c"
+                                                                    return-fields="['Id','Name','Town_and_Post_Office__c','Is_Pincode_Servicable__c','Serviceable_For_Business_Loan__c','Town__c','Post_Office__c','District__c','State__c']"
+                                                                    onlookupselected={handlepincodelookupselected}
+                                                                    onlookupdeselected={handlepincodelookupdeselected}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                ></c-search-lookup>
+                                                            </lightning-layout-item>
+                                                            
+                                                            
+                                                            <!-- <c-lookup-search  saved-term={item.savedName} object-a-p-i-name = "Pincode_Master__c" query-fields = "['Name']" return-fields="['Name','Town__c','Post_Office__c','District__c','State__c','Is_Pincode_Servicable__c','Town_and_Post_Office__c']" search-box-name="Pincode" icon-name="standard:address" onpinlookupselected={handlepincodelookupselected} onpinlookupdeselected={handlepincodelookupdeselected}></c-lookup-search> -->
+                                                        </template>
+                                                        
+                                                        <template if:true={item.showCollateralPinCodeLookup}>
+                                                            
+                                                            <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                                <c-search-lookup class="removelookup"
+                                                                    label="Collateral Area Pin code"
+                                                                    show-label="true"
+                                                                    selected-id={item.value}
+                                                                    selected-name={item.savedName}
+                                                                    placeholder="Search pincode"
+                                                                    
+                                                                    object-name="Pincode_Master__c"
+                                                                    return-fields="['Id','Name','Town_and_Post_Office__c','Is_Pincode_Servicable__c','Serviceable_For_Business_Loan__c','Town__c','Post_Office__c','District__c','State__c']"
+                                                                    onlookupselected={handlepincodelookupselected}
+                                                                    onlookupdeselected={handlepincodelookupdeselected}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                    required
+                                                                ></c-search-lookup>
+                                                            </lightning-layout-item>
+                                                            
+                                                            
+                                                            <!-- <c-lookup-search  saved-term={item.savedName} object-a-p-i-name = "Pincode_Master__c" query-fields = "['Name']" return-fields="['Name','Town__c','Post_Office__c','District__c','State__c','Is_Pincode_Servicable__c','Town_and_Post_Office__c']" search-box-name="Pincode" icon-name="standard:address" onpinlookupselected={handlepincodelookupselected} onpinlookupdeselected={handlepincodelookupdeselected}></c-lookup-search> -->
+                                                        </template>
+                                                        <template if:true={item.showPermanentPinCodeLookup}>
+                                                            
+                                                            <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                                <c-search-lookup class="removelookup"
+                                                                    label="Permanent Address Pin code"
+                                                                    show-label="true"
+                                                                    selected-id={item.value}
+                                                                    selected-name={item.savedName}
+                                                                    placeholder="Search pincode"
+                                                                    
+                                                                    object-name="Pincode_Master__c"
+                                                                    return-fields="['Id','Name','Town_and_Post_Office__c','Is_Pincode_Servicable__c','Serviceable_For_Business_Loan__c','Town__c','Post_Office__c','District__c','State__c']"
+                                                                    onlookupselected={handlepincodelookupselected}
+                                                                    onlookupdeselected={handlepincodelookupdeselected}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                ></c-search-lookup>
+                                                            </lightning-layout-item>
+                                                            
+                                                            
+                                                            <!-- <c-lookup-search  saved-term={item.savedName} object-a-p-i-name = "Pincode_Master__c" query-fields = "['Name']" return-fields="['Name','Town__c','Post_Office__c','District__c','State__c','Is_Pincode_Servicable__c','Town_and_Post_Office__c']" search-box-name="Pincode" icon-name="standard:address" onpinlookupselected={handlepincodelookupselected} onpinlookupdeselected={handlepincodelookupdeselected}></c-lookup-search> -->
+                                                        </template>
+    
+                                                        <template if:true={item.showBranchMasterLookup}>
+                                                            <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                                <c-search-lookup class="removelookup"
+                                                                    label="Branch"
+                                                                    show-label="true"
+                                                                    required="true"
+                                                                    selected-id={item.value}
+                                                                    selected-name={item.savedName}
+                                                                    placeholder="Search branch"
+                                                                    object-name="Branch_Master__c"
+                                                                    border-less =true
+                                                                    return-fields="['Id','Name','Branch_Code__c','Branch_Type__c']"
+                                                                    onlookupselected={handlebranchlookupselected}
+                                                                    onlookupdeselected={handlebranchlookupdeselected}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                ></c-search-lookup>
+                                                            </lightning-layout-item>
+                                                        </template>
+    
+                                                        <template if:true={item.showLeadChannelLookup}>
+                                                            <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                                <c-search-lookup class="removelookup"
+                                                                    label="Channel Code"
+                                                                    show-label="true"
+                                                                    required="true"
+                                                                    selected-id={item.value}
+                                                                    selected-name={item.savedName}
+                                                                    placeholder="Search Channel"
+                                                                    object-name="Lead__c"
+                                                                    border-less =true
+                                                                    return-fields="['Id','Name','Branch_Code__c']"
+                                                                    onlookupselected={handlebranchlookupselected}
+                                                                    onlookupdeselected={handlebranchlookupdeselected}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                ></c-search-lookup>
+                                                            </lightning-layout-item>
+                                                        </template>
+
+                                                        <template if:true={item.showRefDetails1Pincode}>
+                                                            <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                                <c-search-lookup
+                                                                    label="Reference Details 1 Pincode"
+                                                                    show-label="true"
+                                                                    required="false"
+                                                                    selected-id={item.value}
+                                                                    selected-name={item.savedName}
+                                                                    placeholder="Search pincode"
+                                                                    object-name="Pincode_Master__c"
+                                                                    return-fields="['Id','Name','Town_and_Post_Office__c','Is_Pincode_Servicable__c','Serviceable_For_Business_Loan__c','Town__c','Post_Office__c','District__c','State__c']"
+                                                                    onlookupselected={handleRef1PincodeSelected}
+                                                                    onlookupdeselected={handleRef1PincodeDeSelected}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                ></c-search-lookup>
+                                                            </lightning-layout-item>
+                                                            <!-- <c-lookup-search  saved-term={item.savedName} object-a-p-i-name = "Pincode_Master__c" query-fields = "['Name']" return-fields="['Name','Town__c','Post_Office__c','District__c','State__c','Is_Pincode_Servicable__c','Town_and_Post_Office__c']" search-box-name="Pincode" icon-name="standard:address" onpinlookupselected={handlepincodelookupselected} onpinlookupdeselected={handlepincodelookupdeselected}></c-lookup-search> -->
+                                                        </template>
+                                                        <template if:true={item.showRefDetails2Pincode}>
+                                                            <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                                <c-search-lookup
+                                                                    label="Reference Details 2 Pincode"
+                                                                    show-label="true"
+                                                                    required="false"
+                                                                    selected-id={item.value}
+                                                                    selected-name={item.savedName}
+                                                                    placeholder="Search pincode"
+                                                                    object-name="Pincode_Master__c"
+                                                                    return-fields="['Id','Name','Town_and_Post_Office__c','Is_Pincode_Servicable__c','Serviceable_For_Business_Loan__c','Town__c','Post_Office__c','District__c','State__c']"
+                                                                    onlookupselected={handleRef2PincodeSelected}
+                                                                    onlookupdeselected={handleRef2PincodeDeSelected}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                ></c-search-lookup>
+                                                            </lightning-layout-item>                                                       
+                                                            <!-- <c-lookup-search  saved-term={item.savedName} object-a-p-i-name = "Pincode_Master__c" query-fields = "['Name']" return-fields="['Name','Town__c','Post_Office__c','District__c','State__c','Is_Pincode_Servicable__c','Town_and_Post_Office__c']" search-box-name="Pincode" icon-name="standard:address" onpinlookupselected={handlepincodelookupselected} onpinlookupdeselected={handlepincodelookupdeselected}></c-lookup-search> -->
+                                                        </template>
+                                                        <template if:true={item.showEmployerPincode}>
+                                                            <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                                <c-search-lookup
+                                                                    label="Employer Pincode"
+                                                                    show-label="true"
+                                                                    required="false"
+                                                                    selected-id={item.value}
+                                                                    selected-name={item.savedName}
+                                                                    placeholder="Search pincode"
+                                                                    object-name="Pincode_Master__c"
+                                                                    return-fields="['Id','Name','Town_and_Post_Office__c','Is_Pincode_Servicable__c','Serviceable_For_Business_Loan__c','Town__c','Post_Office__c','District__c','State__c']"
+                                                                    onlookupselected={handleEmployerPincodeSelected}
+                                                                    onlookupdeselected={handleEmployerPincodeDeSelected}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                    data-id ={item.Id} data-name={item.Storage_Field__c}
+                                                                ></c-search-lookup>
+                                                            </lightning-layout-item>                                                       
+                                                            <!-- <c-lookup-search  saved-term={item.savedName} object-a-p-i-name = "Pincode_Master__c" query-fields = "['Name']" return-fields="['Name','Town__c','Post_Office__c','District__c','State__c','Is_Pincode_Servicable__c','Town_and_Post_Office__c']" search-box-name="Pincode" icon-name="standard:address" onpinlookupselected={handlepincodelookupselected} onpinlookupdeselected={handlepincodelookupdeselected}></c-lookup-search> -->
+                                                        </template>
+                                                    <!-- </div> -->
+                                                </template>
+                                            </template>
+                                        </template>
+                                        <template if:true={item.showBusinessIndustry}>
+                                            <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                <c-searchable-combobox data-id={item.Id} required="true" label="Business Industry" options={industryOptions}
+                                                    value={item.value} onchange={handlebIndustryChange} onblur={handlebIndustryBlur}></c-searchable-combobox>
+                                            </lightning-layout-item>
+                                        </template>
+                                    </template>
+                                </template>
+                                <template if:true={showPermanentAdr}>
+                                    <template if:true={showUploadCurrentAddressProofDoc}>
+                                        <template if:false={isUploaded}>
+                                            <div class="sectionDiv uploadCurrentAddressProof" style="margin-top:0.7%">
+                                                <lightning-file-upload label="" name="Address Proof" multiple="false"
+                                                            record-id={recordId} onuploadfinished={handleUploadAddressProof} disabled={isDisabled}>
+                                                        </lightning-file-upload>
+                                            </div>
+                                        </template>
+                                        <template if:true={isUploaded}>
+                                            <div class="slds-grid slds-wrap slds-align_absolute-center">
+                                                <div class="slds-col slds-size_1-of-1 slds-text-align_center">
+                                                    <lightning-button-icon 
+                                                        variant="basic" 
+                                                        label="" 
+                                                        title="Preview Document" 
+                                                        size="large" 
+                                                        icon-name="utility:preview" 
+                                                        data-id={contentDocIdCurrentAddressProof} 
+                                                        onclick={handlePreview} 
+                                                        class="uploaded-view" 
+                                                        style="color: green;">
+                                                    </lightning-button-icon>
+                                                </div>
+                                                <div class="slds-col slds-size_1-of-1 slds-text-align_center reuploadCurrentAddressProof">
+                                                    <lightning-file-upload 
+                                                        label="" 
+                                                        name="Reupload Address Proof" 
+                                                        multiple="false"  
+                                                        record-id={recordId} 
+                                                        onuploadfinished={handleUploadAddressProof} 
+                                                        disabled={isDisabled}>
+                                                    </lightning-file-upload>
+                                                </div>
+                                            </div>
+                                            <input 
+                                            type="file" 
+                                            class="hidden-input" 
+                                            style="display: none;" 
+                                            onchange={handleReUploadClick}  />
+                                        </template>
+                                    </template>
+                                    <!-- <c-loan-login-permanent-address-cmp record-id={recordId} applicant-detail-id={mainApplicantId} onchildvaluechange={handleChildValueChange} onconfirmpermanentfilled={confirmpermanentfilled} style="width: 100%;"></c-loan-login-permanent-address-cmp><br/> -->
+                                </template>
+                            </lightning-layout>
+                        </template>
+                        <template if:true={small}>
+                            <template for:each={fieldDetails} for:item="item">
+                                <!-- <lightning-layout-item size="3" key={item.Id}> -->
+                                    <template if:false={item.showBusinessIndustry}>
+                                        <template if:false={item.is_Lookup__c}>
+                                            <template if:false={item.isPicklist}>
+                                                <template if:true={item.Section_Seperator__c}>
+                                                    <br key={item.Id}/>
+                                                    <div class="section-seperator" key={item.Id} style="padding-top: 1%;font-weight: 700;width: 100%;text-align: center;background: lightgrey;padding-bottom: 1%;">
+                                                        <!-- <div > -->
+                                                            {item.Section_Name__c}
+                                                        <!-- </div> -->
+                                                    </div>
+                                                </template>
+                                                <template if:true={item.isCheckBox}>
+                                                    <lightning-input class="" key={item.Id}
+                                                        type="checkbox" 
+                                                        style="width:100%;"
+                                                        name={item.Field_Type__c}
+                                                        label={item.Field_Label__c} value={item.value}
+                                                        checked={item.value}
+                                                        required={item.Is_Mandatory__c}
+                                                        onfocus={handleFocus}
+                                                                onblur={handleBlur}
+                                                        data-id={item.Id} data-name={item.Storage_Field__c} onchange={handleInputChangeCheckbox}
+                                                        disabled={item.Is_Disabled__c}>
+                                                    </lightning-input>
+                                                </template>
+                                                <template if:false={item.isCheckBox}>
+                                                    <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                    <lightning-input class="hideInput" variant="bare" type={item.Field_Type__c}
+                                                    label={item.Field_Label__c} data-id={item.Id} data-name={item.Storage_Field__c}
+                                                    data-type={item.Field_Type__c} name={item.Field_Type__c}
+                                                    data-required={item.Is_Mandatory__c} required={item.Is_Mandatory__c}
+                                                    disabled={item.Is_Disabled__c} max-length={item.Maximum_Length__c}
+                                                    value={item.value} onchange={handleInputChange} onfocus={handleFocus}
+                                                    onblur={handleBlur}>
+                                                    </lightning-input>
+                                                    <template if:true={item.Show_in_words__c}>
+                                                    <div style="display: inline-block; color: green; font-style: italic;">
+                                                        {loanamtinwords}
+                                                    </div>
+                                                    </template>
+                                                    </lightning-layout-item>
+                                                    <!--
+                                                    <div class="editable-container" key={item.Id} style="width:95%;">
+                                                        <label class="editable-label">{item.Field_Label__c}</label>
+                                                        <div class="editable-field"
+                                                            contenteditable="true"
+                                                            data-id={item.Id}
+                                                            data-name={item.Storage_Field__c}
+                                                            data-type={item.Field_Type__c}
+                                                            data-required={item.Is_Mandatory__c}
+                                                            data-disabled={item.Is_Disabled__c}
+                                                            data-maxlength={item.Maximum_Length__c}
+                                                            onfocus={handleFocus}
+                                                                onblur={handleBlur}
+                                                            oninput={handleInputChange}>
+                                                            <template if:true={item.Is_Mandatory__c}>
+                                                                <span style="color: red;">*</span>
+                                                            </template>
+                                                            {item.value}
+                                                        </div>
+                                                    </div>
+                                                    -->
+                                                </template>
+                                            </template>
+                                            <template if:true={item.isPicklist}>
+                                                <template if:true={item.Section_Seperator__c}>
+                                                    <br key={item.Id}/>
+                                                    <div class="section-seperator" key={item.Id} style="padding-top: 1%;font-weight: 700;width: 100%;text-align: center;background: lightgrey;padding-bottom: 1%;">
+                                                        <!-- <div > -->
+                                                            {item.Section_Name__c}
+                                                        <!-- </div> -->
+                                                    </div>
+                                                </template>
+                                                <lightning-combobox key={item.Id}
+                                                    class=""
+                                                    style="width:100%;"
+                                                    label={item.Field_Label__c}
+                                                    placeholder="Select Picklist"
+                                                    options={item.picklistOptions}
+                                                    data-id={item.Id} 
+                                                    data-name={item.Storage_Field__c} 
+                                                    onchange={handleInputChange}
+                                                    onfocus={handleFocus}
+                                                                onblur={handleBlur}
+                                                    value={item.value}
+                                                    required={item.Is_Mandatory__c} disabled={item.Is_Disabled__c}></lightning-combobox>
+                                            </template>
+                                        </template>
+                                        <template if:true={item.is_Lookup__c}>
+                                            <template if:true={item.Section_Seperator__c}>
+                                                <br key={item.Id}/>
+                                                <div class="section-seperator" key={item.Id} style="padding-top: 1%;font-weight: 700;width: 100%;text-align: center;background: lightgrey;padding-bottom: 1%;">
+                                                    <!-- <div > -->
+                                                        {item.Section_Name__c}
+                                                    <!-- </div> -->
+                                                </div>
+                                            </template>
+                                            <template if:true={loadLookUps}>
+                                                <div key={item.Id} style="width: 100%;">
+                                                    <template if:true={item.showEmployerMasterLookup}>
+                                                        <div key={item.Id} data-id={item.Id} style="width:100%;">
+                                                            <c-sales-loan-login-employment-master-lookup label="Employer" show-label="true"
+                                                                required={item.Is_Mandatory__c} selected-id={item.value} selected-name={item.savedName}
+                                                                placeholder="Search Employer" object-name="Employer_Master__c" border-less="true"
+                                                                return-fields={employerReturnFields} onlookupselected={handleEmployerlookupselected}
+                                                                onlookupdeselected={handleEmployerlookupDeselected} disabled={item.Is_Disabled__c}>
+                                                            </c-sales-loan-login-employment-master-lookup>
+                                                        </div>
+                                                    </template>
+                                                    <template if:true={item.showEmployerPincode}>
+                                                            <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                                <c-search-lookup
+                                                                    label="Employer Pincode"
+                                                                    show-label="true"
+                                                                    required="false"
+                                                                    selected-id={item.value}
+                                                                    selected-name={item.savedName}
+                                                                    placeholder="Search pincode"
+                                                                    object-name="Pincode_Master__c"
+                                                                    return-fields="['Id','Name','Town_and_Post_Office__c','Is_Pincode_Servicable__c','Serviceable_For_Business_Loan__c','Town__c','Post_Office__c','District__c','State__c']"
+                                                                    onlookupselected={handleEmployerPincodeSelected}
+                                                                    onlookupdeselected={handleEmployerPincodeDeSelected}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                    data-id ={item.Id} data-name={item.Storage_Field__c}
+                                                                ></c-search-lookup>
+                                                            </lightning-layout-item>                                                       
+                                                            <!-- <c-lookup-search  saved-term={item.savedName} object-a-p-i-name = "Pincode_Master__c" query-fields = "['Name']" return-fields="['Name','Town__c','Post_Office__c','District__c','State__c','Is_Pincode_Servicable__c','Town_and_Post_Office__c']" search-box-name="Pincode" icon-name="standard:address" onpinlookupselected={handlepincodelookupselected} onpinlookupdeselected={handlepincodelookupdeselected}></c-lookup-search> -->
+                                                        </template>
+                                                    <template if:true={item.showSubBranchLookup}>
+                                                        <c-search-lookup
+                                                            label="Sub Branch"
+                                                            show-label="true"
+                                                            required="true"
+                                                            selected-id={item.value}
+                                                            selected-name={item.savedName}
+                                                            placeholder="Search sub branch"
+                                                            object-name="Account"
+                                                            filter-criteria={sunBranchFilter}
+                                                            return-fields="['Id','Name','Branch_Code__c','Branch_Type__c']"
+                                                            onlookupselected={handlebranchlookupselected}
+                                                            onlookupdeselected={handlebranchlookupdeselected}
+                                                            disabled={item.Is_Disabled__c}
+                                                        ></c-search-lookup>
+                                                        
+                                                        <!-- <c-lookup-search  saved-term={item.savedName} object-a-p-i-name = "Branch_Master__c" query-fields = "['Name']" return-fields="['Name']" search-box-name="Branch" icon-name="standard:address" onbranchlookupselected={handlebranchlookupselected} onbranchlookupdeselected={handlebranchlookupdeselected}></c-lookup-search> -->
+                                                    </template>
+                                                    <template if:true={item.showDSTLookup}>
+                                                        <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                            <c-search-lookup class="removelookup"
+                                                                label="DST"
+                                                                show-label="true"
+                                                                required="false"
+                                                                selected-id={item.value}
+                                                                selected-name={item.savedName}
+                                                                placeholder="Search DST"
+                                                                object-name="User"
+                                                                border-less =true
+                                                                branch-lookup =false
+                                                                
+                                                                return-fields="['Id','Name']"
+                                                                onlookupselected={handleDSTselected}
+                                                                onlookupdeselected={handleDSTdeselected}
+                                                                disabled={item.Is_Disabled__c}
+                                                            ></c-search-lookup>
+                                                            <!-- filter-criteria={DSTFilter} -->
+                                                        </lightning-layout-item>
+                                                    </template>
+                                                    <template if:true={item.showAMLookup}>
+                                                        <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                            <c-search-lookup class="removelookup"
+                                                                label="Area Manager"
+                                                                show-label="true"
+                                                                required="true"
+                                                                selected-id={item.value}
+                                                                selected-name={item.savedName}
+                                                                placeholder="Search AM"
+                                                                object-name="User"
+                                                                border-less =true
+                                                                branch-lookup =false
+                                                               
+                                                                return-fields="['Id','Name']"
+                                                                onlookupselected={handleAMselected}
+                                                                onlookupdeselected={handleAMdeselected}
+                                                                disabled={item.Is_Disabled__c}
+                                                            ></c-search-lookup>
+                                                             <!-- filter-criteria={AMFilter} -->
+                                                        </lightning-layout-item>
+                                                    </template>
+                                                    <template if:true={item.showRMLookup}>
+                                                        <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                            <c-search-lookup class="removelookup"
+                                                                label="Relationship Manager"
+                                                                show-label="true"
+                                                                required="true"
+                                                                selected-id={item.value}
+                                                                selected-name={item.savedName}
+                                                                placeholder="Search RM"
+                                                                object-name="User"
+                                                                border-less =true
+                                                                branch-lookup =false
+                                                                
+                                                                return-fields="['Id','Name']"
+                                                                onlookupselected={handleRMselected}
+                                                                onlookupdeselected={handleRMdeselected}
+                                                                disabled={item.Is_Disabled__c}
+                                                            ></c-search-lookup>
+                                                        </lightning-layout-item>
+                                                        <!-- filter-criteria={rmFilter} -->
+                                                    </template>
+                                                    <template if:true={item.showBranchLookup}>
+                                                        <c-search-lookup
+                                                            label="Branch"
+                                                            show-label="true"
+                                                            required="true"
+                                                            selected-id={item.value}
+                                                            selected-name={item.savedName}
+                                                            placeholder="Search branch"
+                                                            object-name="Account"
+                                                            filter-criteria={branchFilter}
+                                                            return-fields="['Id','Name','Branch_Code__c','Branch_Type__c']"
+                                                            onlookupselected={handlebranchlookupselected}
+                                                            onlookupdeselected={handlebranchlookupdeselected}
+                                                            disabled={item.Is_Disabled__c}
+                                                        ></c-search-lookup>
+                                                        
+                                                        <!-- <c-lookup-search  saved-term={item.savedName} object-a-p-i-name = "Branch_Master__c" query-fields = "['Name']" return-fields="['Name']" search-box-name="Branch" icon-name="standard:address" onbranchlookupselected={handlebranchlookupselected} onbranchlookupdeselected={handlebranchlookupdeselected}></c-lookup-search> -->
+                                                    </template>
+                                                    <template if:true={item.showAreaManagerLookup}>
+                                                        <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                            <c-search-lookup class="removelookup"
+                                                                label="Relationship/Area Manager"
+                                                                show-label="true"
+                                                                required="true"
+                                                                selected-id={item.value}
+                                                                selected-name={item.savedName}
+                                                                placeholder="Search user"
+                                                                object-name="User"
+                                                                border-less=true
+                                                                branch-lookup =true
+                                                                opportunity-id={recordId}
+                                                                branch-id={selectedBranchId}
+                                                                return-fields="['Id','Name']"
+                                                                onlookupselected={handleamlookupselected}
+                                                                onlookupdeselected={handleamlookupdeselected}
+                                                                disabled={item.Is_Disabled__c}
+                                                            ></c-search-lookup>
+                                                        </lightning-layout-item>
+                                                        
+                                                        
+                                                        
+                                                        <!-- <c-lookup-search  saved-term={item.savedName} object-a-p-i-name = "Branch_Master__c" query-fields = "['Name']" return-fields="['Name']" search-box-name="Branch" icon-name="standard:address" onbranchlookupselected={handlebranchlookupselected} onbranchlookupdeselected={handlebranchlookupdeselected}></c-lookup-search> -->
+                                                    </template>
+                                                    <template if:true={item.showCollateralPinCodeLookup}>
+                                                            
+                                                            <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                                <c-search-lookup class="removelookup"
+                                                                    label="Collateral Area Pin code"
+                                                                    show-label="true"
+                                                                    selected-id={item.value}
+                                                                    selected-name={item.savedName}
+                                                                    placeholder="Search pincode"
+                                                                    
+                                                                    object-name="Pincode_Master__c"
+                                                                    return-fields="['Id','Name','Town_and_Post_Office__c','Is_Pincode_Servicable__c','Serviceable_For_Business_Loan__c','Town__c','Post_Office__c','District__c','State__c']"
+                                                                    onlookupselected={handlepincodelookupselected}
+                                                                    onlookupdeselected={handlepincodelookupdeselected}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                    required
+                                                                ></c-search-lookup>
+                                                            </lightning-layout-item>
+                                                            
+                                                            
+                                                            <!-- <c-lookup-search  saved-term={item.savedName} object-a-p-i-name = "Pincode_Master__c" query-fields = "['Name']" return-fields="['Name','Town__c','Post_Office__c','District__c','State__c','Is_Pincode_Servicable__c','Town_and_Post_Office__c']" search-box-name="Pincode" icon-name="standard:address" onpinlookupselected={handlepincodelookupselected} onpinlookupdeselected={handlepincodelookupdeselected}></c-lookup-search> -->
+                                                        </template>
+
+                                                        <template if:true={item.showRefDetails1Pincode}>
+                                                            <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                                <c-search-lookup
+                                                                    label="Reference Details 1 Pincode"
+                                                                    show-label="true"
+                                                                    required="false"
+                                                                    selected-id={item.value}
+                                                                    selected-name={item.savedName}
+                                                                    placeholder="Search pincode"
+                                                                    object-name="Pincode_Master__c"
+                                                                    return-fields="['Id','Name','Town_and_Post_Office__c','Is_Pincode_Servicable__c','Serviceable_For_Business_Loan__c','Town__c','Post_Office__c','District__c','State__c']"
+                                                                    onlookupselected={handleRef1PincodeSelected}
+                                                                    onlookupdeselected={handleRef1PincodeDeSelected}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                ></c-search-lookup>
+                                                            </lightning-layout-item>
+                                                            <!-- <c-lookup-search  saved-term={item.savedName} object-a-p-i-name = "Pincode_Master__c" query-fields = "['Name']" return-fields="['Name','Town__c','Post_Office__c','District__c','State__c','Is_Pincode_Servicable__c','Town_and_Post_Office__c']" search-box-name="Pincode" icon-name="standard:address" onpinlookupselected={handlepincodelookupselected} onpinlookupdeselected={handlepincodelookupdeselected}></c-lookup-search> -->
+                                                        </template>
+
+                                                        <template if:true={item.showRefDetails2Pincode}>
+                                                            <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                                                <c-search-lookup
+                                                                    label="Reference Details 2 Pincode"
+                                                                    show-label="true"
+                                                                    required="false"
+                                                                    selected-id={item.value}
+                                                                    selected-name={item.savedName}
+                                                                    placeholder="Search pincode"
+                                                                    object-name="Pincode_Master__c"
+                                                                    return-fields="['Id','Name','Town_and_Post_Office__c','Is_Pincode_Servicable__c','Serviceable_For_Business_Loan__c','Town__c','Post_Office__c','District__c','State__c']"
+                                                                    onlookupselected={handleRef2PincodeSelected}
+                                                                    onlookupdeselected={handleRef2PincodeDeSelected}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                ></c-search-lookup>
+                                                            </lightning-layout-item>                                                       
+                                                            <!-- <c-lookup-search  saved-term={item.savedName} object-a-p-i-name = "Pincode_Master__c" query-fields = "['Name']" return-fields="['Name','Town__c','Post_Office__c','District__c','State__c','Is_Pincode_Servicable__c','Town_and_Post_Office__c']" search-box-name="Pincode" icon-name="standard:address" onpinlookupselected={handlepincodelookupselected} onpinlookupdeselected={handlepincodelookupdeselected}></c-lookup-search> -->
+                                                        </template>
+                                                    <template if:true={item.showPinCodeLookup}>
+                                                        <c-search-lookup
+                                                            label="Resident Pincode"
+                                                            show-label="true"
+                                                            required="true"
+                                                            selected-id={item.value}
+                                                            selected-name={item.savedName}
+                                                            placeholder="Search pincode"
+                                                            object-name="Pincode_Master__c"
+                                                            return-fields="['Id','Name','Town_and_Post_Office__c','Is_Pincode_Servicable__c','Serviceable_For_Business_Loan__c','Town__c','Post_Office__c','District__c','State__c']"
+                                                            onlookupselected={handlepincodelookupselected}
+                                                            onlookupdeselected={handlepincodelookupdeselected}
+                                                            disabled={item.Is_Disabled__c}
+                                                        ></c-search-lookup>
+                                                        
+                                                        <!-- <c-lookup-search  saved-term={item.savedName} object-a-p-i-name = "Pincode_Master__c" query-fields = "['Name']" return-fields="['Name','Town__c','Post_Office__c','District__c','State__c','Is_Pincode_Servicable__c','Town_and_Post_Office__c']" search-box-name="Pincode" icon-name="standard:address" onpinlookupselected={handlepincodelookupselected} onpinlookupdeselected={handlepincodelookupdeselected}></c-lookup-search> -->
+                                                    </template>
+                                                </div>
+                                            </template>
+                                        </template>
+                                    </template>
+                                    <template if:true={item.showBusinessIndustry}>
+                                        <lightning-layout-item size="3" key={item.Id} padding="around-small">
+                                            <c-searchable-combobox data-id={item.Id} required="true" label="Business Industry" options={industryOptions}
+                                                value={item.value} onchange={handlebIndustryChange} onblur={handlebIndustryBlur}></c-searchable-combobox>
+                                        </lightning-layout-item>
+                                    </template>
+                                <!-- </lightning-layout-item> -->
+                            </template>
+                            <template if:true={showPermanentAdr}>
+                                <template if:true={showUploadCurrentAddressProofDoc}>
+                                    <template if:false={isUploaded}>
+                                        <div class="sectionDiv uploadCurrentAddressProof">
+                                            <lightning-file-upload label="" name="Address Proof" multiple="false"
+                                                        record-id={recordId} onuploadfinished={handleUploadAddressProof} disabled={isDisabled}>
+                                                    </lightning-file-upload>
+                                        </div>
+                                    </template>
+                                    <template if:true={isUploaded}>
+                                        <div class="slds-grid slds-wrap slds-align_absolute-center">
+                                            <div class="slds-col slds-size_1-of-1 slds-text-align_center">
+                                                <lightning-button-icon 
+                                                    variant="basic" 
+                                                    label="" 
+                                                    title="Preview Document" 
+                                                    size="large" 
+                                                    icon-name="utility:preview" 
+                                                    data-id={contentDocIdCurrentAddressProof} 
+                                                    onclick={handlePreview} 
+                                                    class="uploaded-view" 
+                                                    style="color: green;">
+                                                </lightning-button-icon>
+                                            </div>
+                                            <div class="slds-col slds-size_1-of-1 slds-text-align_center reuploadCurrentAddressProof">
+                                                <lightning-file-upload 
+                                                    label="" 
+                                                    name="Reupload Address Proof" 
+                                                    multiple="false"  
+                                                    record-id={recordId} 
+                                                    onuploadfinished={handleUploadAddressProof} 
+                                                    disabled={isDisabled}>
+                                                </lightning-file-upload>
+                                            </div>
+                                        </div>
+                                        <input 
+                                        type="file" 
+                                        class="hidden-input" 
+                                        style="display: none;" 
+                                        onchange={handleReUploadClick}  />
+                                    </template>
+                                </template>
+                                <!-- <c-loan-login-permanent-address-cmp record-id={recordId} applicant-detail-id={mainApplicantId} onchildvaluechange={handleChildValueChange} onconfirmpermanentfilled={confirmpermanentfilled} style="width: 100%;"></c-loan-login-permanent-address-cmp><br/> -->
+                            </template>
+                    
+                        </template>
+                    </template>    
+                    <template if:false={loginChecklist}>
+                        <!-- Mobile APP -->
+                        <div class={getClassByDeviceType} style="margin-top: 1%;">
+                            <!-- Mobile APP -->
+                            <template if:true={previousVisibility}>
+                                <button type="button" class="slds-button previous-button" onclick={goPrevious} disabled={isDisabled}>Previous</button>
+                            </template>
+                            <template if:true={showSaveVisibility}>
+                                <button type="button" class="slds-button save-button" onclick={validateSaveAndNext} data-id="save-pmay-button" disabled={isDisabled}>Save</button>
+                            </template>
+                            <template if:false={showSaveVisibility}>
+                                <button type="button" class="slds-button save-button" onclick={validateSaveAndNext} disabled={isDisabled} data-id="save-next-button">{saveandnext}</button>
+                            </template>
+                            <template if:true={showSkipForBusinessAddress}>
+                                <button type="button" class="slds-button previous-button" onclick={skipAction} disabled={isDisabled}>Skip</button>
+                            </template>
+                        </div>
+                    </template>
+                    
+                    <div class="slds-m-around_small">
+                                </div>
+                            <!-- </div>                     -->
+                    </div>
+                     
+            </template>
+        </div>
+    </div>
+    </template>
+
+    <template if:true={showIncomeScreen}>
+        <c-sales--income-eligibility-cmp record-id={recordId}></c-sales--income-eligibility-cmp > 
+    </template>
+    <template if:true={showBSAScreen}>
+      
+        <c-sales-login-b-s-a-screen-cmp record-id={recordId} onkeepaccordionopen={handleKeepAccordionOpen}
+        device-type={deviceType}></c-sales-login-b-s-a-screen-cmp>
+    </template>
+    <template if:true={cibilOneView}>
+        <c-cibil-one-view-cmp app-id={appId} record-id={recordId} from-sales=true ></c-cibil-one-view-cmp>
+    </template>
+    <template if:true={showCibilEligibility}>
+        <c-cibil-eligibility record-id={recordId} applicant-detail-id={appId} from-sales=true></c-cibil-eligibility>
+    </template>
+    <!-- <template if:true={showSalesLoginPrimaryApplicantInfoScreen}> -->
+        <!-- <c-sales-login-primary-applicant-info-cmp record-id={recordId}></c-sales-login-primary-applicant-info-cmp>
+    </template> -->
+   
+    <template if:true={showProductInfoScreen}>
+        
+        <c-sales-login-product-details-cmp record-id={recordId} onrefreshactions={refreshaction}
+        oncallloandetails={navToLoanDetails} device-type={deviceType}
+        ></c-sales-login-product-details-cmp>
+    </template>
+     <template if:true={showLoginFeeScreen}>
+        
+        <c-login-fee-cmp record-id={recordId}  onnavigatetonexttab={navigateNext} device-type={deviceType} onrefreshmenucmp={handleRefreshCmp}        ></c-login-fee-cmp>
+    </template>
+    <template if:true={showFSA}>
+        <c-fsa-cmp record-id={recordId} device-type={deviceType}></c-fsa-cmp>
+    </template>
+    <template if:true={hasNoErrors}>
+        <c-popup-screen record-id={recordId} show-login-without-exception="true" header-title="Login Screen" confirm-message={confirmationMessage} errors={errors} show-login={showLoginButton} 
+                show-close-btn=true close-btn-text="Close" process-name="Login Without Exception"  show-save-btn=false  onhandleclose={handleCloseConfirm} is-loading ={isLoading}>
+        </c-popup-screen>
+    </template>
+    <template if:true={showLoginButton}>
+        <c-popup-screen record-id={recordId} show-login-button="true" header-title="Login Screen" confirm-message={confirmationMessageLogin} onhndleconfirmationyes={handleLoginLoan} show-login={showLoginButton} 
+        show-close-btn=true close-btn-text="Close" process-name="Login Loan" save-btn-text="Continue" show-save-btn="true"  onhandleclose={handleCloseConfirmLogin} is-loading ={isLoading}>
+        </c-popup-screen>
+    </template>
+    <template if:true={viewEligibilityBSA}>
+        <c-sales-login-eligibility-cmp loanid={recordId}></c-sales-login-eligibility-cmp>
+    </template>
+    <template if:true={showcreditEligibilityComponent}>
+        <c-eligibility-screen record-id={recordId} fromsales=true is-disabled={isDisabled} onnavigatetonexttab={handleNavigateNext}> </c-eligibility-screen>
+    </template>
+    <template if:true={modalAPIVisibility}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Meaningful description of the modal content"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="min-width: 60%;">
+                <header class="slds-modal__header api-check-modal-header" >
+                    <div class="slds-text-align_center">
+                        <h2 style="font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px"
+                            class="slds-text-heading_medium slds-hyphenate">API Details Check</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless api-check-modal-content" id="confirm-body3"
+                    style="min-height: 30% !important;">
+
+                    <c-sales-loan-login-integration-details-check-cmp record-id={recordId} from-stage="Draft"></c-sales-loan-login-integration-details-check-cmp>
+                </div>
+                <footer class="slds-modal__footer api-check-modal-footer" style="border: revert;">
+                    <div class="slds-align_absolute-center">
+                        <button class="cancel-button slds-button slds-button_brand" style="border:none"
+                            onclick={handleCloseAPI} disabled={isDisabled}>Close</button>
+                        <button class="save-button slds-button slds-button_brand" style="border: none;"
+                            onclick={navToNextFromApi} disabled={isDisabled}>Next</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+    </template>
+      <template if:true={errorModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="min-width: 80%;">
+                <header class="slds-modal__header" style="background-color: skyblue; font-weight:500;">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Please review the
+                        following errors</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <template for:each={errorLst} for:item="listVariable" for:index="index">
+                        <div style="color: red;" key={listVariable}>
+                            {listVariable.errorMsg}
+                        </div>
+                    </template>
+                </div>
+                <div class="slds-modal__footer"
+                    style="background-color: skyblue;border-radius: 0px 0px 5px 5px;text-align: center;min-height: 30px;">
+                    <button class="slds-button slds-button_brand previous-button"
+                        style="width: 140px;background-color: #dc387e;font-weight: 500;"
+                        onclick={hideModalBoxError}>Cancel</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <template if:true={dontCheckBREAPI}>
+        <c-hl_-quick-sanction-cmp record-id={recordId} check-bre-api={dontCheckBREAPI} onclosescreen={handleCloseBRE} onhandleproceed={handleProceedBRE}></c-hl_-quick-sanction-cmp>
+    </template>
+    <template if:true={generateAppform}>
+        <c-app-form-sales-cmp record-id={recordId} fromlogin=true></c-app-form-sales-cmp>
+    </template>
+</template>

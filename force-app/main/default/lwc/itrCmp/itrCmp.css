@@ -1,0 +1,393 @@
+@import "c/cssLibrary";
+
+/* ----------------- Dark Theme (matches covenantParentCmp / hl_covenantsDetailForm) ----------------- */
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+
+    --bg-primary: #0a1524;
+    --bg-card: #0e1c30;
+    --input-bg: #16283f;
+    --accent: #1467eb;
+    --accent-hover: #0d54c9;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-muted: #8a99b3;
+    --border-color: #33455e;
+    --card-glow: 0 0 20px rgba(20, 103, 235, 0.15);
+
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-placeholder-text-color: #8a99b3;
+    --slds-c-input-label-color: #ffffff;
+
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+    --slds-c-combobox-listbox-color-background: #16283f;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+    --slds-c-combobox-label-color: #ffffff;
+
+    --slds-c-select-color-background: #16283f;
+    --slds-c-select-text-color: #ffffff;
+    --slds-c-select-color-border: #33455e;
+
+    --slds-c-textarea-color-background: #16283f;
+    --slds-c-textarea-text-color: #ffffff;
+    --slds-c-textarea-color-border: #33455e;
+
+    --slds-c-checkbox-label-color: #ffffff;
+
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+
+    /* Global SLDS2 surface/neutral tokens - the combobox DROPDOWN LISTBOX
+       (as opposed to the input box, which was already dark) falls back to
+       these global tokens rather than the --slds-c-combobox-listbox-* hook,
+       which is why it was still rendering white. Overriding the whole
+       neutral ramp + surface tokens forces it dark regardless of which
+       specific hook the listbox happens to read internally. */
+    --slds-g-color-neutral-base-100: #16283f;
+    --slds-g-color-neutral-base-95: #16283f;
+    --slds-g-color-neutral-base-90: #1d2f45;
+    --slds-g-color-surface: #16283f;
+    --slds-g-color-surface-1: #16283f;
+    --slds-g-color-surface-2: #0a1524;
+    --slds-g-color-surface-container: #16283f;
+    --slds-g-color-surface-container-1: #16283f;
+    --slds-g-color-border-base-1: #33455e;
+    --slds-g-color-neutral-base-30: #ffffff;
+    --slds-g-color-neutral-base-40: #ffffff;
+    --slds-g-color-neutral-base-50: #ffffff;
+    --slds-g-color-neutral-base-10: #ffffff;
+    --slds-g-color-neutral-base-20: #ffffff;
+    --slds-g-color-on-surface: #ffffff;
+    --slds-g-color-on-surface-1: #ffffff;
+}
+
+/* Direct fallback for the listbox option text - crosses shadow boundary via
+   the SLDS "part" exposed on lightning-combobox's listbox rows. */
+lightning-combobox::part(listbox),
+lightning-combobox::part(option) {
+    color: #ffffff !important;
+}
+
+/* Belt-and-braces alongside the :host hooks above - covers base component
+   versions that read ::part() rather than the styling hooks. */
+lightning-input::part(input),
+lightning-select::part(select),
+lightning-combobox::part(input) {
+    background-color: var(--input-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+    height: 2.25rem !important;
+}
+
+lightning-textarea::part(textarea) {
+    background-color: var(--input-bg) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+lightning-input[disabled]::part(input) {
+    background-color: var(--bg-card) !important;
+    color: var(--text-muted) !important;
+}
+
+.slds-form-element__label {
+    color: #ffffff !important;
+}
+
+.custom-border {
+    border: 2px solid var(--border-color);
+    background: var(--bg-card);
+    padding: 1rem;
+    border-radius: 5px;
+}
+.custom-width {
+    width: 30%;
+}
+.combobox-container {
+    display: flex;
+    justify-content: center;
+}
+
+.instruction-text {
+    color: #f87171;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.form-container {
+    background-color: var(--bg-card);
+    padding: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--card-glow);
+    color: var(--text-primary);
+    position: relative;
+}
+
+.upload-instruction {
+    font-size: 14px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    color: var(--text-secondary);
+}
+
+.save-button,
+.previous-button,
+.green-button {
+    border: none;
+    text-align: center;
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+    width: 140px;
+    border-radius: 4px;
+}
+.save-button {
+    background-color: var(--accent) !important;
+}
+.save-button:hover {
+    background-color: var(--accent-hover) !important;
+}
+.previous-button {
+    background-color: transparent !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    color: var(--text-primary) !important;
+}
+.previous-button:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+}
+.green-button {
+    background-color: var(--accent) !important;
+}
+.green-button:hover {
+    background-color: var(--accent-hover) !important;
+}
+
+/* === Button Group Alignment === */
+.button-group {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.sticky {
+    background-color: var(--bg-card);
+    color: var(--text-primary);
+    font-weight: bold;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.table-container {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    padding: 10px;
+}
+
+.layout-border {
+    border: 2px solid var(--border-color);
+    background: var(--bg-card);
+    padding: 10px;
+    border-radius: 30px;
+}
+.form-container,
+.table-container {
+    border: 1px solid var(--border-color);
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.fixed-table {
+    width: 100%;
+    table-layout: fixed;
+}
+.col-width {
+    width: 200px;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+.fixed-button {
+    position: sticky;
+    bottom: 0;
+    background: var(--bg-card);
+    padding: 10px;
+    text-align: center;
+    border-top: 1px solid var(--border-color);
+    color: var(--text-primary);
+}
+
+.andcontainers {
+    text-align: left;
+    font-weight: bold;
+    margin-top: 5%;
+    margin-bottom: 14px;
+    color: var(--text-primary);
+}
+
+.password-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.eye-icon {
+    position: absolute;
+    right: 4%;
+    top: 66%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+.manual-eye-icon {
+    position: absolute;
+    right: 4%;
+    top: 58%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+.hidden-icon {
+    display: none;
+}
+
+.uploaded-file-name {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--text-primary);
+    font-weight: 500;
+    padding: 4px 8px;
+    margin: 4px 0;
+    border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    /* Stack layout items */
+    .slds-size_6-of-12,
+    .slds-size_12-of-12,
+    lightning-layout-item[size="6"],
+    lightning-layout-item[size="12"] {
+        width: 100% !important;
+        flex: 0 0 100%;
+    }
+
+    .form-container {
+        padding: 12px;
+    }
+
+    .layout-border {
+        padding: 10px;
+        border-radius: 15px;
+    }
+
+    .upload-instruction {
+        font-size: 12px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Make inputs full width */
+    lightning-combobox,
+    lightning-input,
+    lightning-file-upload {
+        width: 100%;
+    }
+
+
+    .combobox-container {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .uploaded-file-name {
+        font-size: 12px;
+    }
+
+
+}
+.header-div{
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    padding: 5px;
+    text-align: center;
+    }
+    .span-div{
+            width: 100%;
+    display: inline-block;
+    }
+
+.sub-card {
+  border: 1px solid var(--border-color);
+  border-radius: 0.375rem;
+  background: var(--bg-card);
+  padding: 0.75rem 1rem;
+  margin: 0.75rem 0;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+}
+
+.section-subtitle {
+  text-align: center;
+  font-size: 0.95rem;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+/*
+.field-row {
+  display: grid;
+  grid-template-columns: 32% 68%;
+  align-items: start;
+  padding: 0.25rem 0;
+  border-top: 1px solid var(--lwc-colorBorder, #d9dde3);
+}
+.field-row:first-child { border-top: 0; }
+.field-label { font-weight: 600; color: var(--lwc-colorTextWeak, #3e3e3c); }
+.field-value { word-break: break-word; }
+
+/* Slightly tighter on small screens
+@media only screen and (max-width: 480px) {
+  .field-row { grid-template-columns: 40% 60%; }
+}
+*/
+
+:host .itr-table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid var(--border-color);
+  background: var(--bg-card);
+}
+
+:host .itr-table > tbody > tr > th,
+:host .itr-table > tbody > tr > td {
+  border: 1px solid var(--border-color) !important;
+  color: var(--text-primary);
+}
+
+:host .itr-table th.label-cell {
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+/* keep if you still want horizontal scroll safety */
+.slds-scrollable_x { overflow-x: auto; }

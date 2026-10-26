@@ -1,0 +1,265 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import "c/cssLibrary";
+
+/* ----------------- Dark Theme (matches incomeAssessmentMainCmp / hl_LoanApprovalProcess) ----------------- */
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+    padding-top: 0.2rem;
+    padding-bottom: 0.1rem;
+
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-placeholder-text-color: #8a99b3;
+    --slds-c-input-label-color: #ffffff;
+
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-positive: #1467eb;
+    --dt-negative: #1467eb;
+
+    --slds-g-color-neutral-base-30: #ffffff;
+    --slds-c-card-color-background: #0a1524;
+    --slds-c-tabs-item-text-color-active: #ffffff;
+
+    
+}
+
+/* Outer page wrapper - extra breathing room above/below the accordion so the
+   component doesn't sit flush against the page edges (matches spacing used
+   by other dark-theme screens). */
+.bsa-page {
+    margin-top: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+lightning-accordion.example-accordion {
+    display: block;
+    margin-top: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Container headings */
+.andcontainers {
+    text-align: left;
+    font-weight: bold;
+    margin-top: 5%;
+    margin-bottom: 14px;
+    color: #ffffff;
+}
+
+/* ----------------- Accordion (gradient header bars, matches salesLoanLoginMainCmp) ----------------- */
+lightning-accordion-section {
+    --slds-c-accordion-summary-text-color: #ffffff;
+    --slds-c-accordion-color-background: var(--dt-panel-bg);
+    --slds-c-accordion-summary-color-background: var(--dt-panel-bg);
+    background-color: var(--dt-panel-bg) !important;
+    color: #ffffff !important;
+    font-weight: 500;
+}
+
+:host .slds-accordion__summary,
+:host .slds-accordion__summary-heading,
+:host .slds-accordion__summary-action,
+:host .slds-accordion__summary-content,
+:host h2,
+:host h3 {
+    color: #ffffff !important;
+}
+
+:host .slds-accordion__section {
+    background-color: var(--dt-panel-bg) !important;
+    border-color: var(--dt-border) !important;
+}
+
+:host .slds-accordion__list-item {
+    margin-bottom: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--dt-border);
+}
+
+:host .slds-accordion__summary-action {
+    background-image: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%) !important;
+    background-color: #003087 !important;
+    border-radius: 10px !important;
+    padding: 14px 16px !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+    transition: box-shadow 0.2s ease, transform 0.15s ease;
+}
+
+:host .slds-accordion__summary-action:hover {
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+}
+
+:host .slds-accordion__summary-heading,
+:host .slds-accordion__summary-heading .slds-truncate {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 15px;
+}
+
+:host .slds-accordion__summary-action,
+:host .slds-accordion__summary-action * {
+    color: #ffffff !important;
+}
+
+:host .slds-accordion__summary-action-icon {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+:host .slds-accordion__summary-action-icon svg {
+    fill: currentColor !important;
+}
+
+/* ----------------- Tabset ----------------- */
+lightning-tabset {
+    --slds-c-tabs-item-text-color: #ffffff;
+    --slds-c-tabs-item-text-color-hover: #ffffff;
+    --slds-c-tabs-item-text-color-selected: #ffffff;
+    --slds-c-tabs-item-color-background-selected: var(--dt-header-bg);
+    --slds-c-tabs-line-color-border-active: var(--dt-positive);
+    --slds-c-tabs-color-background: transparent;
+}
+
+/* Previous button */
+.previous-button {
+    padding: 0px 8px;
+    border: 1px solid var(--dt-negative);
+    display: inline-block;
+    text-align: center;
+    color: #ffffff;
+    background-color: var(--dt-negative);
+    align-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 140px;
+    border-radius: 4px;
+}
+
+/* Save (Generate Sanction Letter) button */
+.save-button {
+    display: inline-block !important;
+    text-align: center !important;
+    margin-left: 0 !important;
+    margin-right: auto !important;
+    background-color: var(--dt-positive);
+    color: #ffffff;
+    border: 1px solid var(--dt-positive);
+    border-radius: 4px;
+    padding: 4px 12px;
+    font-size: 13px;
+    height: 28px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+    width: auto !important;
+    min-width: 180px;
+}
+
+.save-button:hover {
+    background-color: #0f56c4;
+}
+
+/* Ensure section and tab content are left aligned */
+.slds-accordion__section lightning-tab,
+.slds-accordion__section div,
+.sanction-container,
+.sanction-content,
+.button-container {
+    text-align: left !important;
+}
+
+/* ----------------- Table ----------------- */
+.table-container {
+    background-color: var(--dt-panel-bg);
+    border-radius: 0.75rem;
+    padding: 0.5rem;
+}
+
+.custom-table {
+    border-radius: 0.75rem;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border: 1px solid var(--dt-border) !important;
+    background-color: var(--dt-panel-bg) !important;
+}
+
+.custom-table th {
+    background-color: var(--dt-header-bg) !important;
+    color: #ffffff !important;
+    border-color: var(--dt-border) !important;
+}
+
+.custom-table td {
+    background-color: var(--dt-panel-bg) !important;
+    color: #ffffff !important;
+    border-color: var(--dt-border) !important;
+}
+
+/* ----------------- Inputs / Combobox (matches hl_cashProfitChildCmp look & feel) ----------------- */
+lightning-input::part(input),
+lightning-combobox::part(input) {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+lightning-input[disabled]::part(input),
+lightning-combobox[disabled]::part(input) {
+    background-color: var(--dt-panel-bg) !important;
+    color: #8a99b3 !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #8a99b3 !important;
+}
+
+/* Status section styling */
+.status-row {
+    text-align: left !important;
+    margin-bottom: 8px;
+    font-size: 14px;
+    color: #ffffff;
+}
+
+.status-label {
+    font-weight: 600;
+    margin-right: 6px;
+    color: #ffffff;
+}
+
+.status-value {
+    font-weight: normal;
+    color: #ffffff;
+}
+
+/* Spinner and message alignment */
+.slds-spinner_container {
+    text-align: center;
+}
+
+/* Responsive tweak for small screens */
+@media (max-width: 768px) {
+    .save-button {
+        min-width: 160px;
+        font-size: 12px;
+        height: 30px;
+    }
+
+    .status-row {
+        font-size: 13px;
+    }
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

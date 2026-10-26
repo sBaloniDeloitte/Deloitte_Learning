@@ -1,0 +1,426 @@
+<template>
+    <template if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </template>
+    <template if:false={spinner}>
+        <lightning-card title="PD Screen">
+            <div slot="actions">
+                <lightning-button class="upload-pictures-btn" variant="brand" label="Upload Pictures"
+                    icon-name="utility:upload" onclick={handleOpenUploadModal}>
+                </lightning-button>
+            </div>
+
+            <!-- Section: Applicant & Co-Applicant Details -->
+            <div class="header-section">Applicant & Co-Applicant Details</div>
+            <div>
+                <c-personal-details hide-id-status-columns="true" record-id={recordId} app-id={primaryApplicantId}>
+                </c-personal-details>
+            </div>
+            <lightning-layout multiple-rows></lightning-layout>
+
+            <div class="header-section">Address Details</div>
+            <template if:true={primaryApplicantId}>
+                <c-applicant-addresses object-api-name="Opportunity" record-id={recordId} app-id={primaryApplicantId}
+                    login-checklist></c-applicant-addresses>
+                <lightning-layout multiple-rows>
+                    <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                        class="slds-p-around_medium">
+                        <lightning-textarea label="Address of any other owned properties by applicant"
+                            value={otherAddresses} data-id="Other_Addresses__c" onchange={handleOnChange}>
+                        </lightning-textarea>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                        class="slds-p-around_medium">
+                        <template if:false={isHLRelated}>
+                            <lightning-combobox name="typeOfAddress" label="Type of Address" value={typeOfAddress}
+                                options={typeOfAddressOptions} placeholder="Select" data-id="Type_of_Address__c"
+                                onchange={handleOnChange}>
+                            </lightning-combobox>
+                        </template>
+                        <template if:true={isHLRelated}>
+                            <lightning-combobox name="typeOfAddress" label="Type of Address" value={typeOfAddress}
+                                options={typeOfAddressOptions} placeholder="Select" required="true"
+                                data-id="Type_of_Address__c" onchange={handleOnChange}>
+                            </lightning-combobox>
+                        </template>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                        class="slds-p-around_medium">
+                        <lightning-input type="number" label="Stability (in years)" value={stabilityInYears}
+                            data-id="Stability_in_years__c" onchange={handleOnChange}>
+                        </lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                        class="slds-p-around_medium">
+                        <lightning-textarea label="Family Details" value={familyDetails} data-id="Family_Details__c"
+                            onchange={handleOnChange}></lightning-textarea>
+                    </lightning-layout-item>
+                </lightning-layout>
+                <div style="padding: 10px 0px;">
+                    <button class="slds-button slds-button_brand save-button slds-align_absolute-center"
+                        onclick={handleSave} disabled={disableNext}>Save</button>
+                </div>
+            </template>
+
+            <!-- Section: Business & Employment Details -->
+            <div class="header-section">Business & Employment Details</div>
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-textarea label="Nature of Business/Employment Details" value={natureOfBusinessDetails}
+                        max-length="32768" data-id="Nature_of_Business_Details__c" onchange={handleOnChange}>
+                    </lightning-textarea>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-textarea label="Address of Business/Employment" value={addressOfBusiness}
+                        data-id="Address_of_Business_Employment__c" onchange={handleOnChange}></lightning-textarea>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-input type="datetime" label="Date of Commencement of Business" value={dateOfCommencement}
+                        data-id="Date_of_Commencement_of_Business__c" onchange={handleOnChange}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-input label="Nature / Sector of Business" value={natureOfBusiness}
+                        data-id="Nature_Sector_of_Business__c" onchange={handleOnChange}>
+                    </lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-input label="Ownership of business" value={ownershipOfBusiness}
+                        data-id="Ownership_of_business__c" onchange={handleOnChange}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-input label="Proof of Business/Employment" value={proofOfBusiness}
+                        data-id="Proof_of_Business__c" onchange={handleOnChange}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-input label="Number of Employees" value={employees} data-id="Employees__c"
+                        onchange={handleOnChange}>
+                    </lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-textarea label="Details of Company" value={detailsOfCompany} max-length="32768"
+                        data-id="Details_of_Company__c" onchange={handleOnChange}></lightning-textarea>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <!-- FIXED: was bound to detailsOfCompany, now bound to addressOfCompany -->
+                    <lightning-textarea label="Address of Company" value={addressOfCompany} max-length="32768"
+                        data-id="Address_of_Company__c" onchange={handleOnChange}></lightning-textarea>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-combobox name="designation" label="Designation" value={designationS}
+                        data-id="Designation__c" placeholder="Select Designation"
+                        options={designationPicklistOptions} onchange={handleOnChange}>
+                    </lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-input type="number" label="Vintage of Company" value={businessVintage}
+                        data-id="Vintage_of_Company__c" onchange={handleOnChange}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-input type="number" label="Annual Income" value={annualIncome} data-id="Annual_Income__c"
+                        onchange={handleOnChange}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-input type="number" label="Remaining Age of Retirement" value={remainingAgeOfRetirement}
+                        data-id="Remaining_Age_of_Retirement__c" onchange={handleOnChange}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-textarea label="Details of Previous Organization"
+                        value={detailsOfPreviousOrganisation} max-length="32768"
+                        data-id="Details_of_previous_organisation__c" onchange={handleOnChange}></lightning-textarea>
+                </lightning-layout-item>
+            </lightning-layout>
+            <div style="padding: 10px 0px;">
+                <button class="slds-button slds-button_brand save-button slds-align_absolute-center"
+                    onclick={handleSave} disabled={disableNext}>Save</button>
+            </div>
+
+            <!-- Section: Income & Asset Details -->
+            <div class="header-section">Income & Asset Details</div>
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-textarea label="Any Other Asset Details" value={anyOtherAssetDetails}
+                        data-id="Any_Other_Asset_Details__c" onchange={handleOnChange}></lightning-textarea>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <!-- FIXED: was bound to anyOtherAssetDetails, now bound to detailsOfOtherOwnedProperty -->
+                    <lightning-textarea label="Details of other owned property by applicant"
+                        value={detailsOfOtherOwnedProperty} data-id="Details_of_Other_Owned_Property__c"
+                        onchange={handleOnChange}></lightning-textarea>
+                </lightning-layout-item>
+            </lightning-layout>
+            <div style="padding: 10px 0px;">
+                <button class="slds-button slds-button_brand save-button slds-align_absolute-center"
+                    onclick={handleSave} disabled={disableNext}>Save</button>
+            </div>
+
+            <!-- Section: Loan & Property -->
+            <div class="header-section">Loan & Property</div>
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-input type="number" label="Loan Amount Required" formatter="currency"
+                        value={loanAmountRequired} data-id="Loan_Amount_Required__c" onchange={handleOnChange}>
+                    </lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-input label="End use of fund" value={endUseOfFund} data-id="End_use_of_fund__c"
+                        onchange={handleOnChange}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-input label="On whose name property will get registered" value={propertyRegisteredOnName}
+                        data-id="Property_Registered_On_Name__c" onchange={handleOnChange}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-textarea label="OCR details (OCR Source & Proof)" value={ocrDetails}
+                        data-id="OCR_Details__c" onchange={handleOnChange}></lightning-textarea>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-input type="number" formatter="currency" label="Market Value" value={marketValue}
+                        data-id="Market_Value__c" onchange={handleOnChange}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-input type="number" formatter="currency" label="Registry Value" value={registryValue}
+                        data-id="Registry_Value__c" onchange={handleOnChange}></lightning-input>
+                </lightning-layout-item>
+            </lightning-layout>
+            <div style="padding: 10px 0px;">
+                <button class="slds-button slds-button_brand save-button slds-align_absolute-center"
+                    onclick={handleSave} disabled={disableNext}>Save</button>
+            </div>
+
+            <div class="header-section">Bank Details</div>
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-textarea label="Banking Details" value={bankingDetails} data-id="Banking_Details__c"
+                        onchange={handleOnChange}></lightning-textarea>
+                </lightning-layout-item>
+            </lightning-layout>
+            <div style="padding: 10px 0px;">
+                <button class="slds-button slds-button_brand save-button slds-align_absolute-center"
+                    onclick={handleSave} disabled={disableNext}>Save</button>
+            </div>
+
+            <!-- Section: Additional Notes & Recommendations -->
+            <div class="header-section">Additional Notes & Recommendations</div>
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-textarea label="Additional Details-1" value={additionalDetail1}
+                        data-id="Additional_Details_1__c" onchange={handleOnChange}></lightning-textarea>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-textarea label="Additional Details-2" value={additionalDetail2}
+                        data-id="Additional_Details_2__c" onchange={handleOnChange}></lightning-textarea>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-textarea label="Additional Note" value={additionalNote} data-id="Additional_Note__c"
+                        onchange={handleOnChange}>
+                    </lightning-textarea>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-textarea label="Concerns" value={concerns} data-id="Concerns__c"
+                        onchange={handleOnChange}></lightning-textarea>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-textarea label="Strength" value={strength} data-id="Strength__c"
+                        onchange={handleOnChange}></lightning-textarea>
+                </lightning-layout-item>
+            </lightning-layout>
+            <div style="padding: 10px 0px;">
+                <button class="slds-button slds-button_brand save-button slds-align_absolute-center"
+                    onclick={handleSave} disabled={disableNext}>Save</button>
+            </div>
+
+            <!-- Section: Trade Reference -->
+            <div class="header-section">Trade Reference</div>
+            <div class="slds-p-top_medium slds-p-left_medium">
+                <button class="save-button small-button slds-button slds-button_brand" onclick={addRow}
+                    data-id="TradeReference">Add</button>
+            </div>
+            <div class="slds-p-around_medium">
+                <template lwc:if={showRefTable}>
+                    <c-credit-pd-form-table lwc:ref="tradeRef" table-data={verificationByRecordType}
+                        parent-av-id={appVerifId} loan-app-id={recordId} onchangeinput={handleOnChange}
+                        section-type-trade-ref="TradeReference" trade-ref-list-from-parent={tradeReferenceList}
+                        onrowdeleted={handleRowDeleted}>
+                    </c-credit-pd-form-table>
+                </template>
+            </div>
+
+            <!-- Section: Assets -->
+            <div class="header-section">Asset</div>
+            <div class="slds-p-top_medium slds-p-left_medium">
+                <button class="save-button small-button slds-button slds-button_brand" onclick={addRow}
+                    data-id="Asset">Add</button>
+            </div>
+            <div class="slds-p-around_medium">
+                <template lwc:if={showAssetTable}>
+                    <c-credit-pd-form-table lwc:ref="asset" parent-av-id={appVerifId} loan-app-id={recordId}
+                        onchangeinput={handleOnChange} section-type-asset="Asset" asset-list-from-parent={assetOnLoad}
+                        onrowdeleted={handleRowDeleted}>
+                    </c-credit-pd-form-table>
+                </template>
+            </div>
+
+            <!-- Section: Children Details -->
+            <div class="header-section">Children Details</div>
+            <div class="slds-p-top_medium slds-p-left_medium">
+                <button class="save-button small-button slds-button slds-button_brand" onclick={addRow}
+                    data-id="Children">Add</button>
+            </div>
+            <div class="slds-p-around_medium">
+                <template lwc:if={showChildrenTable}>
+                    <c-credit-pd-form-table lwc:ref="children" parent-av-id={appVerifId} loan-app-id={recordId}
+                        onchangeinput={handleOnChange} section-type-children="Children"
+                        children-list-from-parent={childrenOnLoad} onrowdeleted={handleRowDeleted}>
+                    </c-credit-pd-form-table>
+                </template>
+            </div>
+
+            <template if:true={isHLRelated}>
+                <div class="header-section">Interviewer Details</div>
+                <lightning-layout multiple-rows>
+                    <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                        class="slds-p-around_medium">
+                        <lightning-textarea label="Interviewer Comments (if any)" value={interviewComment}
+                            data-id="Interviewer_Comments__c" onchange={handleOnChange}></lightning-textarea>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </template>
+
+            <!-- Section: Status & Comments -->
+            <div class="header-section">Status & Comments</div>
+            <lightning-layout multiple-rows>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-combobox name="progress" label="Status" value={dispositionValue}
+                        data-id="Crime_Check_Status__c" placeholder="Select Status" options={dispositionOptionsForTele}
+                        onchange={handleOnChange}>
+                    </lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item size="4" small-device-size="12" large-device-size="4"
+                    class="slds-p-around_medium">
+                    <lightning-textarea label="Comments (if any)" value={comments} data-id="Comments__c"
+                        onchange={handleOnChange}></lightning-textarea>
+                </lightning-layout-item>
+            </lightning-layout>
+            <button class="slds-button slds-button_brand save-button slds-align_absolute-center" onclick={handleSave}
+                disabled={disableNext}>Save</button>
+
+        </lightning-card>
+    </template>
+
+    <template if:true={isUploadModalOpen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-modal_large slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header custom-modal-header">
+                    <lightning-button-icon class="slds-modal__close" icon-name="utility:close" alternative-text="Close"
+                        onclick={handleCloseUploadModal}>
+                    </lightning-button-icon>
+                    <h2 class="slds-text-heading_medium">Upload Files</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium slds-is-relative">
+
+                    <template if:true={isLoadingDocs}>
+                        <lightning-spinner alternative-text="Loading documents"></lightning-spinner>
+                    </template>
+
+                    <div class="slds-text-title_bold slds-m-bottom_x-small">Add Document/Picture</div>
+
+                    <div class="slds-grid slds-grid_vertical-align-center slds-gutters_x-small slds-m-bottom_small">
+                        <div class="slds-col slds-grow">
+                            <lightning-input variant="label-hidden"
+                                placeholder="Enter document name (e.g., Picture with Customer)" value={newDocName}
+                                onchange={handleNewDocNameChange}>
+                            </lightning-input>
+                        </div>
+                        <div class="slds-col">
+                            <lightning-button class="add-btn" variant="brand" label="Add" onclick={handleAddDocument}
+                                disabled={disableAdd}>
+                            </lightning-button>
+                        </div>
+                    </div>
+
+                    <template if:true={showRequiredHint}>
+                        <div
+                            class="slds-text-align_center slds-text-color_error slds-m-bottom_small slds-text-body_small">
+                            * Documents shown in red are mandatory
+                        </div>
+                    </template>
+
+                    <lightning-layout multiple-rows class="doc-grid">
+                        <template if:true={hasDocs}>
+                            <template for:each={documentList} for:item="doc">
+                                <lightning-layout-item key={doc.id} size="12" medium-device-size="6"
+                                    large-device-size="4" padding="around-small">
+                                    <div class="file-widget-outer slds-box slds-var-p_medium">
+
+                                        <div class={doc.titleClass} title={doc.docName}>{doc.name}</div>
+
+                                        <c-upload-view-delete-document doc-detail-id={doc.id}
+                                            content-doc-id={doc.contentId} show-upload={doc.showUpload}
+                                            show-view={doc.showView} show-delete={doc.showDelete}
+                                            view-only-preview="true" show-retake={doc.showRetake}
+                                            show-widget-style="true" file-type={doc.fileType} auto-show-delete="true"
+                                            doc-name={doc.docName} onuploadsuccess={handleUploadSuccess}
+                                            ondeletedoc={handleDeletedDoc}>
+                                        </c-upload-view-delete-document>
+
+                                        <template if:true={doc.showLatLong}>
+                                            <div class="latlong">
+                                                <div title="Latitude">Latitude: {doc.lattitude}</div>
+                                                <div title="Longitude">Longitude: {doc.longitude}</div>
+                                            </div>
+                                        </template>
+
+                                    </div>
+                                </lightning-layout-item>
+                            </template>
+                        </template>
+
+                        <template if:false={hasDocs}>
+                            <div
+                                class="slds-text-align_center slds-text-color_weak slds-m-vertical_small slds-size_1-of-1">
+                                No documents found.
+                            </div>
+                        </template>
+                    </lightning-layout>
+                </div>
+
+                <footer class="slds-modal__footer slds-grid slds-grid_align-end custom-modal-footer">
+                    <button class="slds-button slds-button_neutral cancel-btn" onclick={handleCloseUploadModal}>
+                        Close
+                    </button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

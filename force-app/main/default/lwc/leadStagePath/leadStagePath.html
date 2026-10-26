@@ -1,0 +1,52 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-17-2024
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template lwc:if={showStatus}>
+     <!-- <div class="slds-box slds-theme_default centered-box" style="width: fit-content; padding: 8px 25px; margin-bottom: -8px; margin-top: 0;">
+        <p class="slds-text-body_medium">Current status: <b>{leadSubStatus}</b></p>
+    </div> -->
+    </template>
+    <div class="slds-progress" style="position: relative;">
+        <!-- Progress Bar List -->
+        <ol class="slds-progress__list">
+            <!-- Step One -->
+            <li class={stepOneClass} style="align-items: flex-start;">
+                <button class="slds-button slds-progress__marker">
+                    <span class="slds-assistive-text">Open</span>
+                </button>
+                <div class="slds-progress__item_content slds-grid slds-grid_align-spread" style="margin-left: -0.5rem; text-align: center;">
+                    Open
+                </div>
+            </li>
+
+            <!-- Step Four -->
+            <li class={stepfourClass} style="align-items: flex-end;">
+                <button class="slds-button slds-progress__marker">
+                    <span class="slds-assistive-text">Closed</span>
+                </button>
+                <div class="slds-progress__item_content slds-grid slds-grid_align-spread" style="margin-right: -0.5rem; text-align: center;">
+                    Closed
+                </div>
+            </li>
+        </ol>
+
+        <!-- Dynamic Progress Indicator -->
+        <!-- <div class={dynamicCss} aria-valuemin="0" aria-valuemax="100" aria-valuenow="50" role="progressbar"> -->
+            <div class={dynamicCss}
+    aria-valuemin="0"
+    aria-valuemax="100"
+    aria-valuenow={progressValue}
+    role="progressbar">
+            <span class={progressStatusClass}>
+                <span class="slds-assistive-text">Progress: 50%</span>
+            </span>
+        </div>
+
+        <!-- Value Box for Lead_Sub_Status -->
+    </div>
+</template>

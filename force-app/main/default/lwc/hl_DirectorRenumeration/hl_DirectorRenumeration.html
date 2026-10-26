@@ -1,0 +1,123 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 09-26-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+  <template if:true={isLoading}>
+    <lightning-spinner alternative-text="Loading" variant="brand" size="medium"></lightning-spinner>
+  </template>
+  <template if:true={showcomp}>
+    <div class="slds-grid slds-wrap slds-scrollable_x">
+      <div class="dr-table-wrap">
+      <table class="slds-table dr-table">
+        <thead>
+          <tr class="dr-header-row">
+            <th scope="col" class="dr-th dr-th-month">
+              Month
+            </th>
+            <template for:each={directorNames} for:item="directorName">
+              <th key={directorName} class="dr-th dr-th-director">
+                {directorName}
+              </th>
+            </template>
+          </tr>
+        </thead>
+
+        <tbody>
+          <template for:each={rows} for:item="row">
+            <tr key={row.month} class="dr-row">
+              <td class="dr-td-month">
+                {row.month}
+              </td>
+
+              <template for:each={row.directorSalaries} for:item="directorSalary">
+                <td key={directorSalary.directorName} class="dr-td-salary">
+                  <div class="input-wrapper">
+                    <lightning-input data-id={directorSalary.directorName} data-childid={directorSalary.monthRecordId}
+                      data-prvalue={directorSalary.salary} value={directorSalary.salary} onchange={handleInputChange}
+                      data-month={row.month} type="text" class="custom-input">
+                    </lightning-input>
+                  </div>
+                </td>
+              </template>
+            </tr>
+          </template>
+
+
+          <template if:true={showTotal}>
+            <tr key={totalRowKey} class="dr-row">
+              <td class="dr-label-cell">
+                Total
+              </td>
+              <template for:each={totals} for:item="total">
+                <td key={total.directorName} class="dr-value-cell">
+                  {total.totalSalary}
+                </td>
+              </template>
+            </tr>
+          </template>
+          <template if:true={showAverage}>
+            <tr key={totalRowKey} class="dr-row">
+              <td colspan="1" class="dr-label-cell">
+                Average
+              </td>
+              <td colspan={columnCount} class="dr-value-cell">
+                {averageAmount}
+              </td>
+            </tr>
+          </template>
+          <template if:true={showTotal}>
+            <tr key={totalRowKey} class="dr-row">
+              <td class="dr-label-cell">
+                  Additional FOIR
+              </td>
+              <template for:each={totals} for:item="director2">
+                  <td key={director2.parentId} class="dr-input-cell">
+
+                      <lightning-input
+                          type="number"
+                          variant="label-hidden"
+                          value={director2.additonalFoir}
+                          data-parentid={director2.parentId}
+                          onchange={handleAdditonalFoirChange}>
+                      </lightning-input>
+
+                  </td>
+              </template>
+            </tr>
+          </template>
+          <template if:true={showEligibility}>
+            <tr class="dr-row">
+              <td class="dr-label-cell">
+                Considered for eligibility
+              </td>
+              <template for:each={eligibilityData} for:item="director">
+                <td key={director.Name} class="dr-input-cell">
+                  <lightning-input data-id={director.Name} data-recordid={director.Id}
+                    data-amount={director.AmountConsideredForEligibilityPurpos}
+                    value={director.AmountConsideredForEligibilityPurpos} onchange={handleInputChangeAmount} type="text"
+                    class="custom-input">
+                  </lightning-input>
+                </td>
+              </template>
+            </tr>
+          </template>
+          
+        </tbody>
+      </table>
+      </div>
+    </div>
+    <div class="dr-action-bar">
+      <button class="slds-button slds-button_brand btn-add-action" onclick={addRow}>
+        Add Month
+      </button>
+      <button class="slds-button slds-button_brand btn-negative-action" onclick={handleDeleteRow}>
+        Delete Last Added Row
+      </button>
+    </div>
+  </template>
+
+</template>

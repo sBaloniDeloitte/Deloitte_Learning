@@ -1,0 +1,31 @@
+<template>
+    <div class="kyc-card">
+
+        <div class="kyc-header">
+            <span class="kyc-title">KYC and CKYC</span>
+        </div>
+
+        <div class="kyc-list">
+            <template for:each={items} for:item="item">
+                <div key={item.id} class="kyc-row">
+
+                    <div class="kyc-info">
+                        <div class="kyc-name">
+                            {item.title}
+                        </div>
+
+                        <div class="kyc-sub">
+                            {item.subtitle}
+                        </div>
+                    </div>
+
+                    <span class={item.badgeClass}>
+                        {item.status}
+                    </span>
+
+                </div>
+            </template>
+        </div>
+
+    </div>
+</template>

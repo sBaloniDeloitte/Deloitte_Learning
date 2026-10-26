@@ -1,0 +1,34 @@
+/* _______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________ */
+/* This component previously had no stylesheet at all, so its
+   lightning-datatable rendered with default (light) SLDS colors - black
+   text on a white/transparent surface - inside the dark-themed "Field
+   Investigation Audit Trail" accordion, making the audit trail text
+   effectively unreadable against the dark panel. lightning-datatable
+   renders inside its own shadow DOM, so only inherited custom properties
+   can reach it (same constraint hit earlier with lightning-combobox). */
+:host {
+    display: block;
+}
+
+lightning-datatable {
+    --slds-c-datatable-color-background: #0e1626;
+    --slds-c-datatable-text-color: #ffffff;
+    --slds-c-datatable-cell-text-color: #ffffff;
+    --slds-c-datatable-header-color-background: #111d30;
+    --slds-c-datatable-header-text-color: #ffffff;
+    --slds-c-datatable-row-color-background: #0e1626;
+    --slds-c-datatable-row-color-background-hover: #16283f;
+    --slds-c-datatable-color-border: #1d2f45;
+    /* Fallback: same shadow-piercing technique already used elsewhere in
+       this app (salesLoginAadharDetailsCmp, documentProcessingScreen's
+       filter dropdowns) for base components whose dedicated style hooks
+       aren't consistently honored - forces the default "on light surface"
+       text/background ramp to match the dark theme. */
+    --slds-g-color-neutral-base-10: #ffffff;
+    --slds-g-color-neutral-base-100: #0e1626;
+    --slds-g-color-neutral-base-95: #111d30;
+}
+
+.slds-text-color_weak {
+    color: #8a99b3 !important;
+}

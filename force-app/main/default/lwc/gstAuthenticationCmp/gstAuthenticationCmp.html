@@ -1,0 +1,174 @@
+<template>
+    <template if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </template>
+    <lightning-layout multiple-rows>
+        <lightning-layout-item size="2" class="slds-p-around_x-small">
+
+        </lightning-layout-item>
+        <lightning-layout-item size="4" class="slds-p-around_x-small">
+            <lightning-combobox value={applicantValue} options={options} onchange={handleApplicantChange}
+                                    class="validate" label="Select Applicant" placeholder="Select Applicant" ></lightning-combobox>
+        </lightning-layout-item>
+        <template if:true={isGSTNumber}>
+        <lightning-layout-item size="4" class="slds-p-around_x-small">
+            <lightning-combobox value={gstNumber} options={gstOptions} onchange={handleGSTChange}
+                                    class="validate" label="Select GST Number" placeholder="Select GST Number" ></lightning-combobox>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-p-around_x-small" style="text-align: center;">
+             <template if:false={hideButton}>
+            <button class="save-button slds-button slds-button_brand" style="border: none;"
+                onclick={fetchShopDataAPI}>
+                Fetch Information
+            </button>
+            </template>
+        </lightning-layout-item>
+    </template>
+    <template if:false={isGSTNumber}>
+        <lightning-layout-item size="4" class="slds-p-around_x-small">
+            <lightning-input type="text" value={panNumber} label="PAN Number" disabled ></lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-p-around_x-small" style="text-align: center;">
+             <template if:false={hideButton}>
+            <button class="save-button slds-button slds-button_brand" style="border: none;"
+                onclick={getGSTNumber}>
+                Get GSTIN Number
+            </button>
+            </template>
+        </lightning-layout-item>
+    </template>
+    </lightning-layout>
+    <template if:true={hasData}>
+        <div style="margin: 10px 0px;">
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                <thead>
+                    <tr>
+                        <th class="slds-text-title_caps tableCss" scope="col" colspan="6"
+                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;"> <!-- color: white; -->
+                            GSTIN Number : {jsonData.result.gstin}</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td style="border:1px solid black;text-align: left;width: 50%;" colspan="3">
+                            <div><span class = "tdtile">Trade name :</span> {jsonData.result.tradeNam}</div>
+                            <div><span class = "tdtile">Registration Date :</span> {jsonData.result.rgdt}</div>
+                            <div><span class = "tdtile">Status :</span> {jsonData.result.sts}</div>
+                        </td>
+
+                        <td style="border:1px solid black;text-align: left;" colspan="3">
+                            <div><span class = "tdtile">State Jurisdiction :</span> {jsonData.result.stj}</div>
+                            <div><span class = "tdtile">Constitution of Business :</span> {jsonData.result.ctb}</div>
+                            <div><span class = "tdtile">Central Jurisdiction :</span> {jsonData.result.ctj}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;text-align: left;" colspan="6">
+                            <div><span class = "tdtile">Nature of Business :</span> {jsonData.result.nba}</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black;text-align: left;" colspan="6">
+                            <div><span class = "tdtile">Member Names :</span> {jsonData.result.mbr}</div>
+                        </td>
+                    </tr>
+                    <template if:true={adadr}>
+
+                    
+                    <tr>
+                        <th class="slds-text-title_caps tableCss" scope="col" colspan="6"
+                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;font-weight: 800;
+                            font-size: 14px;">
+                            Address information for additional places of business
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;font-size: 14px;
+                            font-weight: 700;"> 
+                            Address</th>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;font-size: 14px;
+                            font-weight: 700;">  
+                            Nature of Business</th>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;font-size: 14px;
+                            font-weight: 700;"> 
+                            Email id</th>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;font-size: 14px;
+                            font-weight: 700;"> 
+                            Mobile number</th>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;font-size: 14px;
+                            font-weight: 700;"> 
+                            Address</th>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;font-size: 14px;
+                            font-weight: 700;"> 
+                            Last Updated Date</th>
+                        
+                    </tr>
+                    
+                    <template for:each={adadr} for:item="row">
+                        <tr key={row.addr}>
+                            <td style="border:1px solid black">{row.addr}</td>
+                            <td style="border:1px solid black">{row.ntr}</td>
+                            <td style="border:1px solid black">{row.em}</td>
+                            <td style="border:1px solid black">{row.mb}</td>
+                            <td style="border:1px solid black">{row.adr}</td>
+                            <td style="border:1px solid black">{row.lastUpdatedDate}</td>
+                        </tr>
+                    </template>
+                </template>
+                <template if:true={jsonData.result.pradr}>
+                    <tr>
+                        <th class="slds-text-title_caps tableCss" scope="col" colspan="6"
+                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;font-weight: 800;
+                            font-size: 14px;">
+                            Address information for principal place of business
+                        </th>
+                    </tr>
+                    <tr>
+                        <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;font-size: 14px;
+                            font-weight: 700;"> 
+                            Address</th>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;font-size: 14px;
+                            font-weight: 700;"> 
+                            Nature of Business</th>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;font-size: 14px;
+                            font-weight: 700;"> 
+                            Email id</th>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;font-size: 14px;
+                            font-weight: 700;"> 
+                            Mobile number</th>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;font-size: 14px;
+                            font-weight: 700;"> 
+                            Address</th>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;font-size: 14px;
+                            font-weight: 700;"> 
+                            Last Updated Date</th>
+                        
+                    </tr>
+                    <tr>
+                        <td style="border:1px solid black">{jsonData.result.pradr.addr}</td>
+                        <td style="border:1px solid black">{jsonData.result.pradr.ntr}</td>
+                        <td style="border:1px solid black">{jsonData.result.pradr.em}</td>
+                        <td style="border:1px solid black">{jsonData.result.pradr.mb}</td>
+                        <td style="border:1px solid black">{jsonData.result.pradr.adr}</td>
+                        <td style="border:1px solid black">{jsonData.result.pradr.lastUpdatedDate}</td>
+                    </tr>
+                </template>
+                    
+                </tbody>
+            </table>
+        </div>
+
+    </template>
+</template>

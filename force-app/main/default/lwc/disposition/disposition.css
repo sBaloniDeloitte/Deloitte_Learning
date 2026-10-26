@@ -1,0 +1,217 @@
+/* ───────────────────────────────────────────────────────────────
+   Design Tokens
+   ─────────────────────────────────────────────────────────────── */
+
+:host {
+    --sky-bg: #dff2fb;
+    --sky-mid: #b8e3f5;
+    --sky-card: #eaf7fd;
+    --navy: #0d2b5e;
+    --navy-mid: #1a3f7a;
+    --navy-light: #2c5499;
+    --white: #ffffff;
+    --success: #2e7d32;
+    --success-bg: #e8f5e9;
+    --follow-up-bg: #fff8e1;
+    --follow-up-border: rgba(230, 81, 0, 0.25);
+    --follow-up-text: #e65100;
+    --radius-sm: 8px;
+    --radius-md: 14px;
+    --radius-lg: 20px;
+    --shadow-card: 0 8px 32px rgba(13, 43, 94, 0.14);
+    --transition: 0.22s ease;
+
+    display: block;
+    width: 100%;
+    overflow: visible !important;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Card
+   ─────────────────────────────────────────────────────────────── */
+
+.disposition-card {
+    background: var(--white);
+    border: 1.5px solid var(--sky-mid);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+
+    /* IMPORTANT FIX */
+    overflow: visible !important;
+
+    width: 100%;
+    box-sizing: border-box;
+    position: relative;
+    z-index: 1;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Header
+   ─────────────────────────────────────────────────────────────── */
+
+.disposition-card-header {
+    background: linear-gradient(
+        135deg,
+        #0d2b5e 0%,
+        #1a3f7a 100%
+    );
+
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.disposition-card-header-icon {
+    font-size: 1.3rem;
+}
+
+.disposition-card-title {
+    font-size: 0.98rem;
+    font-weight: 800;
+    color: var(--white);
+    margin: 0;
+    line-height: 1.2;
+}
+
+.disposition-card-subtitle {
+    font-size: 0.72rem;
+    color: rgba(255, 255, 255, 0.78);
+    margin: 2px 0 0;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Body
+   ─────────────────────────────────────────────────────────────── */
+
+.disposition-card-body {
+    padding: 16px 16px 18px;
+
+    /* IMPORTANT FIX */
+    overflow: visible !important;
+
+    position: relative;
+    z-index: 2;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Field Wrappers
+   ─────────────────────────────────────────────────────────────── */
+
+.field-wrapper {
+    margin-bottom: 12px;
+
+    /* IMPORTANT FIX */
+    overflow: visible !important;
+
+    position: relative;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Follow-up Area
+   ─────────────────────────────────────────────────────────────── */
+
+.follow-up-field {
+    background: var(--follow-up-bg);
+    border: 1.5px solid var(--follow-up-border);
+    border-radius: var(--radius-sm);
+    padding: 10px 12px 4px;
+
+    overflow: visible !important;
+
+    animation: fadeSlideIn 0.2s ease;
+}
+
+@keyframes fadeSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-6px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Follow-up Badge
+   ─────────────────────────────────────────────────────────────── */
+
+.follow-up-badge {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.follow-up-icon {
+    font-size: 0.88rem;
+}
+
+.follow-up-label {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--follow-up-text);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Buttons
+   ─────────────────────────────────────────────────────────────── */
+
+.action-row {
+    margin-top: 14px;
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Saved Panel
+   ─────────────────────────────────────────────────────────────── */
+
+.follow-up-field--saved {
+    background: var(--success-bg);
+    border-color: rgba(46, 125, 50, 0.25);
+}
+
+.follow-up-field--saved .follow-up-label {
+    color: var(--success);
+}
+
+.saved-datetime-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 2px 0 10px;
+}
+
+.saved-datetime-value {
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: var(--navy);
+}
+
+/* ───────────────────────────────────────────────────────────────
+   Edit Link
+   ─────────────────────────────────────────────────────────────── */
+
+.edit-link {
+    background: none;
+    border: none;
+    padding: 0;
+    margin: 0;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: var(--navy-light);
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.edit-link:hover {
+    color: var(--navy);
+}

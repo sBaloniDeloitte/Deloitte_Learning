@@ -1,0 +1,188 @@
+<!--_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________-->
+<template>
+    <div class="loan-banner">
+        <div class="loan-banner__top">
+            <div class="loan-banner__icon">
+                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                    <path d="M10 2 L12.2 6.6 L17.5 7.2 L13.6 10.7 L14.6 16 L10 13.3 L5.4 16 L6.4 10.7 L2.5 7.2 L7.8 6.6 Z"
+                          fill="#ffffff"/>
+                </svg>
+            </div>
+            <div class="loan-banner__title">
+                <div class="loan-banner__label">Loan Application</div>
+                <div class="loan-banner__name">{loanName}</div>
+            </div>
+
+            <template if:true={showCommonStageActions}>
+                <div class="loan-banner__actions">
+                    <button type="button"
+                            class="loan-banner__action-btn loan-banner__action-btn--reassign"
+                            onclick={handleReassignClick}>Reassign</button>
+
+                    <template if:true={showSalesStageActions}>
+                        <template if:false={isOnDetailScreen}>
+                            <button type="button"
+                                    class="loan-banner__action-btn loan-banner__action-btn--detail"
+                                    onclick={handleDetailScreenClick}>Detail Screen</button>
+                        </template>
+                        <template if:true={isOnDetailScreen}>
+                            <button type="button"
+                                    class="loan-banner__action-btn loan-banner__action-btn--detail"
+                                    onclick={handleContinueJourneyClick}>Continue Journey</button>
+                        </template>
+                    </template>
+
+                    <template if:true={showRejectLoanButton}>
+                        <button type="button"
+                                class="loan-banner__action-btn loan-banner__action-btn--reject"
+                                onclick={handleRejectLoanClick}>Reject Loan</button>
+                    </template>
+                    <button type="button"
+                            class="loan-banner__action-btn loan-banner__action-btn--query"
+                            onclick={handleRaiseQueryClick}>Raise a Query</button>
+
+                    <template if:true={showSendBackButton}>
+                        <button type="button"
+                                class="loan-banner__action-btn loan-banner__action-btn--sendback"
+                                onclick={handleSendBackClick}>Send Back</button>
+                    </template>
+                    <template if:true={showPushToLmsButton}>
+                        <button type="button"
+                                class="loan-banner__action-btn loan-banner__action-btn--pushtolms"
+                                onclick={handlePushToLmsClick}>Push to LMS</button>
+                    </template>
+                    <template if:true={showAssignToCmButton}>
+                        <button type="button"
+                                class="loan-banner__action-btn loan-banner__action-btn--assigncm"
+                                onclick={handleAssignToCmClick}>Assign To CM</button>
+                    </template>
+                    <template if:true={showMarkCompleteButton}>
+                        <button type="button"
+                                class="loan-banner__action-btn loan-banner__action-btn--markcomplete"
+                                onclick={handleMarkAsCompleteClick}>Mark As Complete</button>
+                    </template>
+                </div>
+            </template>
+        </div>
+
+        <div class="loan-banner__divider"></div>
+
+        <div class="loan-banner__details">
+            <div class="loan-banner__field">
+                <div class="loan-banner__field-label">Branch Master</div>
+                <template if:true={branchId}>
+                    <a href="#"
+                       class="loan-banner__field-value loan-banner__link"
+                       onclick={handleBranchClick}>{branchName}</a>
+                </template>
+                <template if:false={branchId}>
+                    <div class="loan-banner__field-value">{branchName}</div>
+                </template>
+            </div>
+
+            <div class="loan-banner__field">
+                <div class="loan-banner__field-label">Stage</div>
+                <div class="loan-banner__field-value">{stage}</div>
+            </div>
+
+            <div class="loan-banner__field">
+                <div class="loan-banner__field-label">Sub Stage</div>
+                <div class="loan-banner__field-value">{subStage}</div>
+            </div>
+
+            <div class="loan-banner__field">
+                <div class="loan-banner__field-label">Income Approval Status</div>
+                <div class={incomeStatusClass}>{incomeApprovalStatus}</div>
+            </div>
+
+            <div class="loan-banner__field">
+                <div class="loan-banner__field-label">Loan Application Status</div>
+                <div class={loanStatusClass}>{loanApplicationStatus}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Reassign -- same LWC used by the standard "Reassign" Quick Action.
+         It renders its own slds-modal chrome and closes itself via 'closemodal'. -->
+    <template if:true={showReassignModal}>
+        <c-loan-reassignment-screen
+            record-id={recordId}
+            onclosemodal={handleCloseReassignModal}>
+        </c-loan-reassignment-screen>
+    </template>
+
+    <!-- Reject Loan -- same LWC used by the standard "Reject Loan" Quick Action.
+         It renders its own slds-modal chrome and closes via 'close' or 'success'. -->
+    <template if:true={showRejectModal}>
+        <c-reject-loan-application-cmp
+            record-id={recordId}
+            onclose={handleCloseRejectModal}
+            onsuccess={handleRejectSuccess}>
+        </c-reject-loan-application-cmp>
+    </template>
+
+    <!-- Raise a Query -- same screen Flow used by the standard "Raise A Query" Quick
+         Action. Flows render no chrome of their own, so we provide the modal here. -->
+    <template if:true={showQueryModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container query-modal-container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon query-modal-close-btn"
+                            title="Close" aria-label="Close" onclick={handleCloseQueryModal}>
+                        <lightning-icon icon-name="utility:close" alternative-text="Close" size="x-small" variant="inverse"></lightning-icon>
+                    </button>
+                    <h2 class="slds-text-heading_medium slds-hyphenate">Raise a Query</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-flow
+                        flow-api-name={raiseQueryFlowApiName}
+                        flow-input-variables={queryFlowInputVariables}
+                        onstatuschange={handleQueryFlowStatusChange}>
+                    </lightning-flow>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open query-modal-backdrop"></div>
+    </template>
+
+    <!-- Send Back -- same LWC used by the standard "Send Back" Quick Action.
+         It renders its own slds-modal chrome and closes via 'closemodal'. -->
+    <template if:true={showSendBackModal}>
+        <c-home-quick-action
+            record-id={recordId}
+            action-name="Send_Back"
+            onclosemodal={handleCloseSendBackModal}>
+        </c-home-quick-action>
+    </template>
+
+    <!-- Assign To CM -- same LWC used by the standard "Assign To CM" Quick Action.
+         It renders its own modal chrome and closes via 'close'. -->
+    <template if:true={showAssignToCmModal}>
+        <c-assign-to-c-m-cmp
+            record-id={recordId}
+            onclose={handleCloseAssignToCmModal}>
+        </c-assign-to-c-m-cmp>
+    </template>
+
+    <!-- Mark As Complete (PSV) -- same LWC used by the standard "Mark As Complete"
+         Quick Action, which is homeQuickAction (same component as Send Back) invoked
+         with a different actionName. It renders its own slds-modal chrome and closes
+         via 'closemodal'. -->
+    <template if:true={showMarkCompleteModal}>
+        <c-home-quick-action
+            record-id={recordId}
+            action-name="Mark_As_Complete1"
+            onclosemodal={handleCloseMarkCompleteModal}>
+        </c-home-quick-action>
+    </template>
+
+    <!-- Push to LMS (Disbursement / Ops Author) -- launches checkLmsPushCmp, which
+         renders its own slds-modal chrome. On confirmation it moves Sub Stage to
+         "Disbursed" and refreshes the LDS cache, then closes via 'close'. -->
+    <template if:true={showPushToLmsModal}>
+        <c-check-lms-push-cmp
+            record-id={recordId}
+            onclose={handleClosePushToLmsModal}>
+        </c-check-lms-push-cmp>
+    </template>
+</template>

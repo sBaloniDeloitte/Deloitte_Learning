@@ -1,0 +1,295 @@
+@import "c/cssLibrary";
+
+/* ----------------- Dark Theme (matches incomeAssessmentMainCmp / incomeEligibilityCalculator) ----------------- */
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-radius-border: 0;
+    --slds-c-input-placeholder-text-color: #8a99b3;
+    --slds-c-input-label-color: #ffffff;
+
+    /* combobox / dropdown - matches salesLoginProductDetailsCmp reference tokens */
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+    --slds-c-combobox-input-value-text-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: #16283f;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+    --slds-c-combobox-label-color: #ffffff;
+
+    /* icons / generic label text - matches salesLoginProductDetailsCmp reference tokens */
+    --slds-c-icon-color-foreground: #cfd8e6;
+    --slds-c-icon-color-foreground-default: #cfd8e6;
+    --slds-c-label-text-color: #ffffff;
+
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-positive: #8b5cf6;
+    --dt-negative: #16283f;
+
+    --slds-g-color-neutral-base-30: #ffffff;
+    --slds-c-card-color-background: #0a1524;
+    --slds-c-tabs-item-text-color-active: #ffffff;
+    --slds-c-textarea-color-background: #16283f;
+    --slds-c-textarea-color-background-focus: #16283f;
+}
+
+.wrapped-content{
+    overflow-wrap: break-word;
+}
+
+.card-div{
+    padding: 8px;
+    border: 1px solid var(--dt-border);
+    border-radius: 5px;
+    background-color: var(--dt-panel-bg);
+    color: #ffffff;
+}
+
+.custom-table .slds-icon-action-preview{
+    border-radius: 0!important;
+    padding: 1px 8px;
+    background-color: var(--dt-positive);
+}
+
+/* ----------------- Inputs / Combobox (underline style, matches Product/Sub Product field design - no boxed border) -----------------
+   NOTE: lightning-combobox renders its border via an inset box-shadow on
+   .slds-combobox__input (not the `border` property), and that element is
+   NOT reachable via ::part(input). Must target it as a plain descendant
+   selector and neutralize box-shadow explicitly - same technique already
+   used in salesLoginProductDetailsCmp.css for this exact combobox. */
+lightning-input::part(input) {
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid var(--dt-border) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+}
+
+lightning-combobox .slds-combobox__input {
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid var(--dt-border) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+}
+
+lightning-combobox .slds-combobox__input:focus {
+    border-bottom: 1px solid #60a5fa !important;
+    box-shadow: none !important;
+}
+
+/* ____GenAI: Generated code starts here - lightning-combobox option list
+   (approvalType / levelType / Udaan Approver dropdowns) themed with the
+   shared --dt-* palette. These styling hooks cover the closed input's
+   value text and the option rows themselves; the open dropdown popover
+   itself is handled via JS-injected style below since it renders outside
+   the reach of this scoped CSS file (same technique already used for
+   lightning-input-rich-text / Quill in this component).____ */
+lightning-combobox {
+    --slds-c-combobox-input-color-background: var(--dt-input-bg);
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: var(--dt-border);
+    --slds-c-combobox-input-value-text-color: #ffffff;
+    --slds-c-combobox-label-color: #ffffff;
+    --slds-c-combobox-text-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: var(--dt-input-bg);
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+}
+/* ____GenAI: Generated code ends here____ */
+
+lightning-input[disabled]::part(input) {
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid var(--dt-border) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: #8a99b3 !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #8a99b3 !important;
+}
+
+lightning-combobox[disabled] .slds-combobox__input {
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid var(--dt-border) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: #8a99b3 !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #8a99b3 !important;
+}
+
+/* ----------------- Approval Type / Approver Level fields - Material design-style / bottom-border-only inputs -----------------
+   Scoped to .material-input-field (applied only to the approvalType and
+   levelType comboboses) rather than overriding the generic combobox rules
+   above, so this polish doesn't affect other fields in the component.
+   Material Design input characteristics: no surrounding box, a thin resting
+   underline, a smooth color/width transition, and a thicker accent-colored
+   underline while focused. */
+.material-input-field,
+.material-input-field .slds-form-element,
+.material-input-field .slds-form-element__control,
+.material-input-field .slds-combobox,
+.material-input-field .slds-combobox_container,
+.material-input-field .slds-combobox__form-element {
+    background-color: transparent !important;
+    border: none !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+}
+
+.material-input-field .slds-combobox__input {
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid var(--dt-border) !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+    transition: border-bottom-color 0.2s ease, border-bottom-width 0.2s ease;
+}
+
+.material-input-field .slds-combobox__input:hover {
+    border-bottom-color: #4a6684 !important;
+    box-shadow: none !important;
+}
+
+.material-input-field .slds-combobox__input:focus {
+    border-bottom: 2px solid #60a5fa !important;
+    box-shadow: none !important;
+}
+
+.material-input-field[disabled] .slds-combobox__input {
+    border-bottom: 1px solid var(--dt-border) !important;
+    box-shadow: none !important;
+    color: #8a99b3 !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #8a99b3 !important;
+}
+
+/* ----------------- Rich Text Editor (Recommendation Notes) ----------------- */
+lightning-input-rich-text {
+    --slds-c-textarea-color-background: var(--dt-input-bg);
+    --slds-c-textarea-text-color: #ffffff;
+}
+
+.custom-div .slds-rich-text-editor {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+}
+
+.custom-div .slds-rich-text-editor__textarea,
+.custom-div .ql-editor {
+    background-color: var(--dt-input-bg) !important;
+    color: #ffffff !important;
+}
+
+.custom-div .slds-rich-text-editor__toolbar {
+    background-color: var(--dt-panel-bg) !important;
+    border-bottom: 1px solid var(--dt-border) !important;
+}
+
+/* ----------------- Tabset ----------------- */
+lightning-tabset {
+    --slds-c-tabs-item-text-color: #ffffff;
+    --slds-c-tabs-item-text-color-hover: #ffffff;
+    --slds-c-tabs-item-text-color-selected: #ffffff;
+    --slds-c-tabs-item-color-background-selected: var(--dt-header-bg);
+    --slds-c-tabs-line-color-border-active: var(--dt-positive);
+    --slds-c-tabs-color-background: transparent;
+}
+
+/* ----------------- Approval History table ----------------- */
+.card-div table th,
+.card-div table td {
+    border-color: var(--dt-border) !important;
+    color: #ffffff;
+}
+
+/* ----------------- CTA Buttons (theme parity, no rounding) ----------------- */
+.SaveButton.slds-button_brand {
+    border-radius: 6px !important;
+}
+
+.save-button,
+.save-button.slds-button_brand {
+    background-color: var(--dt-positive) !important;
+    border: 1px solid var(--dt-positive) !important;
+    color: #ffffff !important;
+    border-radius: 0 !important;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
+.cancel-button,
+.cancel-button.slds-button_brand,
+.previous-button.slds-button_brand {
+    background-color: var(--dt-negative) !important;
+    border: 1px solid var(--dt-negative) !important;
+    color: #ffffff !important;
+    border-radius: 0 !important;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
+.continue-button.slds-button_brand {
+    background-color: var(--dt-positive) !important;
+    border: 1px solid var(--dt-positive) !important;
+    color: #ffffff !important;
+    border-radius: 0 !important;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
+.slds-modal__header,
+.slds-modal__footer {
+    background-color: var(--dt-header-bg) !important;
+    color: #ffffff !important;
+}
+
+.slds-modal__content {
+    background-color: var(--dt-panel-bg) !important;
+    color: #ffffff !important;
+}
+
+.slds-modal__container {
+    /* background-color: var(--dt-panel-bg) !important; */
+}
+
+.single-upload-div lightning-file-upload{
+    float: left;
+}
+
+.formatted-text {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+
+  .header-section {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.footer-section {
+    position: sticky; 
+    bottom: 0;
+}

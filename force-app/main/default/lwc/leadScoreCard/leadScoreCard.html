@@ -1,0 +1,85 @@
+<!-- This Code was generated using GenAI tool: Codify, Please check for accuracy -->
+<template>
+    <div class="score-card">
+
+        <!-- Header — navy gradient matching app header -->
+        <div class="score-card-header">
+            <span class="score-card-header-icon">📊</span>
+            <div>
+                <h2 class="score-card-title">Lead Score</h2>
+                <p class="score-card-subtitle">Eligibility snapshot</p>
+            </div>
+        </div>
+
+        <div class="score-card-body">
+
+            <!-- SCORE CIRCLE + GRADE ROW -->
+            <div class="score-section">
+
+                <!-- Circular progress -->
+                <div class="score-circle-wrapper">
+                    <svg class="progress-ring" viewBox="0 0 120 120">
+                        <circle class="ring-bg" cx="60" cy="60" r="50"></circle>
+                        <circle class="ring-fill" cx="60" cy="60" r="50" style={progressStyle}></circle>
+                    </svg>
+                    <div class="score-inner">
+                        <div class="score-number" style={scoreNumberStyle}>{score}</div>
+                        <div class="score-denom">/ 40</div>
+                    </div>
+                </div>
+
+                <!-- Grade badge -->
+                <div class="grade-area">
+                    <span class={gradeBadgeClass}>{gradeText}</span>
+                    <p class="params-done">{completedParameters} / 4 parameters filled</p>
+                </div>
+
+            </div>
+
+            <!-- DIVIDER -->
+            <hr class="section-divider" />
+
+            <!-- BREAKDOWN -->
+            <div class="breakdown-title">SCORE BREAKDOWN</div>
+
+            <div class="factor-list">
+
+                <div class="factor-row">
+                    <span class={ageIconClass}>{ageIcon}</span>
+                    <span class="factor-label">Age</span>
+                    <span class={agePointsClass}>{ageScore}/10</span>
+                </div>
+
+                <div class="factor-row">
+                    <span class={incomeIconClass}>{incomeIcon}</span>
+                    <span class="factor-label">Income Range</span>
+                    <span class={incomePointsClass}>{incomeScore}/10</span>
+                </div>
+
+                <!-- <div class="factor-row">
+                    <span class={educationIconClass}>{educationIcon}</span>
+                    <span class="factor-label">Education Profile</span>
+                    <span class={educationPointsClass}>{educationScore}/10</span>
+                </div> -->
+
+                <div class="factor-row">
+                    <span class={requestedAmountIconClass}>{requestedAmountIcon}</span>
+                    <span class="factor-label">Required Loan Amount</span>
+                    <span class={requestedAmountPointsClass}>{requiredLoanAmountScore}/10</span>
+                </div>
+
+                <div class="factor-row">
+                    <span class={countryIconClass}>{countryIcon}</span>
+                    <span class="factor-label">Country of Study</span>
+                    <span class={countryPointsClass}>{countryScore}/10</span>
+                </div>
+
+            </div>
+
+            <!-- Footer note -->
+            <div class="model-note">Model: Lead Score v1 · Updated dynamically</div>
+
+        </div>
+    </div>
+</template>
+<!-- GenAI: Generated code ends here -->

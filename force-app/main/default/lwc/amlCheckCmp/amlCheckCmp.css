@@ -1,0 +1,163 @@
+@import 'c/cssLibrary';
+
+:host {
+	display: block;
+	min-height: 100%;
+	background: #12172b;
+	color: #ffffff;
+	--aml-page-bg: #12172b;
+	--aml-panel-bg: #1c2238;
+	--aml-field-bg: #16283f;
+	--aml-accent: #1467eb;
+	--aml-border: #2a2f45;
+	--aml-muted: #8a99b3;
+	--slds-c-input-label-color: #ffffff;
+	--slds-c-checkbox-label-color: #ffffff;
+	--slds-c-accordion-color-background: #12172b;
+	--slds-c-accordion-section-color-background: #1c2238;
+	--slds-c-accordion-summary-color-background: #1c2238;
+	--slds-c-accordion-summary-heading-color: #ffffff;
+	--slds-c-accordion-summary-text-color: #ffffff;
+	--slds-c-accordion-color-border: #2a2f45;
+}
+
+.bsa-page,
+.example-accordion {
+	background: var(--aml-page-bg) !important;
+	color: #ffffff;
+}
+
+.example-accordion {
+	display: block;
+	border: 1px solid var(--aml-border);
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.example-accordion lightning-accordion-section {
+	background-color: var(--aml-panel-bg) !important;
+	color: #ffffff !important;
+	--slds-c-accordion-section-color-background: var(--aml-panel-bg);
+	--slds-c-accordion-summary-color-background: var(--aml-panel-bg);
+	--slds-c-accordion-summary-heading-color: #ffffff;
+	--slds-c-accordion-summary-text-color: #ffffff;
+	--slds-c-accordion-color-border: var(--aml-border);
+}
+
+/* .aml-table-wrap prefix (2 classes) needed to out-specify cssLibrary's .slds-table thead tr th / tbody tr td !important rules */
+/* Table theme matched EXACTLY to the "Field Investigation Initiation"
+   table in creditFIInitiationCmp.css (.accordion-container .slds-table /
+   .fi-table-wrapper) - dark-navy #0a1524 outer backdrop (wrapper),
+   #0e1c30 table surface for both header and body, #33455e borders on
+   every cell, 18px rounded corners on the outer cells only, left-aligned
+   bold white header text with 12px/10px padding, 13px body text, and the
+   same #16283f row-hover highlight - replacing the previous #0e1626/
+   #111d30/#1d2f45 theme so this table now shares one consistent visual
+   language with the other Application Verification accordion tables. */
+.aml-table-wrap {
+	background-color: #0a1524 !important;
+	padding: 1rem 1.5rem !important;
+	border-radius: 18px;
+}
+
+.aml-table-wrap .slds-table {
+	width: 100%;
+	border-collapse: separate !important;
+	border-spacing: 0;
+	background: #0e1c30 !important;
+	border: 1px solid #33455e !important;
+	border-radius: 18px;
+	overflow: hidden;
+	color: #ffffff;
+}
+
+.aml-table-wrap .slds-table th,
+.aml-table-wrap .slds-table td {
+	overflow: hidden;
+	text-overflow: ellipsis;
+}
+
+.aml-table-wrap .slds-table thead tr th {
+	background-color: #0e1c30 !important;
+	background-image: none !important;
+	border-right: 1px solid #33455e !important;
+	border-bottom: 1px solid #33455e !important;
+	border-color: #33455e !important;
+	color: #ffffff !important;
+	font-weight: bold !important;
+	font-size: 12.5px;
+	letter-spacing: 0.2px;
+	padding: 12px 10px !important;
+	text-align: left !important;
+	box-shadow: none !important;
+	vertical-align: middle;
+}
+
+.aml-table-wrap .slds-table thead tr:first-child th:first-child {
+	border-top-left-radius: 18px;
+}
+
+.aml-table-wrap .slds-table thead tr:first-child th:last-child {
+	border-top-right-radius: 18px;
+}
+
+.aml-table-wrap .slds-table tbody tr td {
+	background-color: #0e1c30 !important;
+	border-right: 1px solid #33455e !important;
+	border-bottom: 1px solid #33455e !important;
+	border-color: #33455e !important;
+	color: #ffffff !important;
+	font-size: 13px;
+	font-weight: normal;
+	text-align: left !important;
+	padding: 12px 10px;
+	vertical-align: middle;
+}
+
+.aml-table-wrap .slds-table tbody tr:last-child td:first-child {
+	border-bottom-left-radius: 18px;
+}
+
+.aml-table-wrap .slds-table tbody tr:last-child td:last-child {
+	border-bottom-right-radius: 18px;
+}
+
+.aml-table-wrap .slds-table tbody tr:hover td {
+	background-color: #16283f !important;
+}
+
+/* In-cell checkbox (Select column) must use the SAME #33455e border as
+   the table cells - matches the fix already applied to the Initiation
+   table's lightning-input tokens in creditFIInitiationCmp.css, avoiding
+   the same close-but-different-hex mismatch (#2a2f45 vs #33455e). */
+.slds-table lightning-input,
+.slds-table lightning-combobox {
+	--slds-c-input-color-background: var(--aml-field-bg);
+	--slds-c-input-text-color: #ffffff;
+	--slds-c-input-color-border: #33455e;
+	--slds-c-checkbox-color-background: #0e1c30;
+	--slds-c-checkbox-color-border: #33455e;
+	--slds-c-combobox-color-background: var(--aml-field-bg);
+	--slds-c-combobox-text-color: #ffffff;
+	--slds-c-combobox-color-border: #33455e;
+}
+
+/* Positive CTA (Initiate AML Check) - #1467eb fill/border, 8px radius. */
+.save-button {
+    background-color: #1467eb !important;
+    border: 1px solid #1467eb !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    margin-top: 20px !important
+}
+
+.save-button:hover {
+	background-color: #1257c9 !important;
+}
+
+.disabled-button {
+	background-color: #2a2f45 !important;
+	border: 1px solid var(--aml-border) !important;
+	color: var(--aml-muted) !important;
+}

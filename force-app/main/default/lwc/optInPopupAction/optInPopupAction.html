@@ -1,0 +1,64 @@
+<template>
+    <!-- This component is used as a Screen Quick Action.
+         Salesforce renders it inside the standard quick action panel. -->
+
+    <div class="slds-p-around_medium">
+        <div class="slds-media slds-media_center slds-m-bottom_medium">
+            <div class="slds-media__figure">
+                <lightning-icon icon-name="utility:notification" size="small" alternative-text="Opt In"></lightning-icon>
+            </div>
+            <div class="slds-media__body">
+                <h2 class="slds-text-heading_small slds-m-bottom_xx-small">
+                    {headerText}
+                </h2>
+                <p class="slds-text-body_regular">
+                    {messageText}
+                </p>
+            </div>
+        </div>
+
+        <template if:true={optInAlreadyTrue}>
+            <lightning-layout class="slds-m-bottom_small">
+                <lightning-layout-item size="12">
+                    <div class="slds-text-color_success">
+                        You are already opted in for email notifications.
+                    </div>
+                </lightning-layout-item>
+            </lightning-layout>
+        </template>
+
+        <lightning-input
+            type="checkbox"
+            name="optInConfirm"
+            label="I want to opt in for email notifications"
+            checked={confirmChecked}
+            onchange={handleCheckboxChange}
+            class="slds-m-bottom_medium"
+            disabled={optInAlreadyTrue}
+        >
+        </lightning-input>
+
+        <div class="slds-align_absolute-center slds-m-top_small">
+            <lightning-button
+                label="Cancel"
+                variant="neutral"
+                class="slds-m-right_small"
+                onclick={handleCancel}
+                disabled={isSaving}
+            ></lightning-button>
+
+            <lightning-button
+                label="Confirm"
+                variant="brand"
+                onclick={handleConfirm}
+                disabled={isConfirmDisabled}
+            ></lightning-button>
+        </div>
+
+        <template if:true={isSaving}>
+            <div class="slds-m-top_medium slds-align_absolute-center">
+                <lightning-spinner size="small" alternative-text="Saving"></lightning-spinner>
+            </div>
+        </template>
+    </div>
+</template>

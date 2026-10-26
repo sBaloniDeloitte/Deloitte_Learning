@@ -1,0 +1,324 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 04-06-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+
+<template>
+    <span class="styleContainer"></span>
+    <div class="card-panel">
+        <div class="scrollable-content">
+            <!-- Icon at the top-left corner -->
+            <div if:false={ckyc}>
+                <div class="top-left-icon">
+                    <!--
+                    <lightning-icon 
+                        icon-name="utility:justify_text" 
+                        alternative-text="Justify Text" 
+                        size="x-small"
+                        onclick={docMenu}
+                        disabled={disabled}>
+                    </lightning-icon>
+                    -->
+                </div>
+            </div>
+
+            <!-- Document details -->
+            <!--
+        <div style="font-weight: 500; padding: 5px; text-align: center;">
+            <table class="slds-table slds-table_cell-buffer slds-table_fixed-layout slds-table_bordered slds-table_col-bordered doc-table-css"
+                border="2"
+                style="width: 80%; margin: auto;">
+                <thead if:false={ckyc}>
+                    <tr class="slds-line-height_reset">
+                        <th class="slds-text-title tableCss" scope="col" style="width:20%;text-align: center;background-color: #5bb6e3;color: white;border: 1px solid black;">
+                            <div class="slds-truncate" title="Field">Name of the Field</div>
+                        </th>
+                        <th class="slds-text-title tableCss" scope="col" style="width:20%;text-align: center;background-color: #5bb6e3;color: white;border: 1px solid black;">
+                            <div class="slds-truncate" title="Value">Value</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr if:true={ckyc} class="slds-line-height_reset">
+                        <td style="border: 1px solid black; width:2px; word-wrap:break-word;">
+                            <div class="slds-truncate slds-cell-wrap" style="text-align: center;">{salesdocname}</div>
+                        </td>
+                    </tr>
+                    <tr if:false={ckyc} class="slds-line-height_reset">
+                        <td class="tableCss" style="width:2px; word-wrap:break-word;">
+                            <div class="slds-truncate slds-cell-wrap" style="text-align: center;">{docMasterName}</div>
+                        </td>
+                    </tr>
+                    <tr if:false={ckyc} class="slds-line-height_reset">
+                        <td class="tableCss" style="width:2px; word-wrap:break-word;">
+                            <div class="slds-truncate slds-cell-wrap" style="text-align: center;">Customer Name</div>
+                        </td>
+                        <td class="tableCss" style="width:2px; word-wrap:break-word;">
+                            <div class="slds-truncate slds-cell-wrap" style="text-align: center;">{custname}</div>
+                        </td>
+                    </tr>
+                    <tr if:false={ckyc} class="slds-line-height_reset">
+                        <td class="tableCss" style="width:2px; word-wrap:break-word;">
+                            <div class="slds-truncate slds-cell-wrap" style="text-align: center;">Document Category</div>
+                        </td>
+                        <td class="tableCss" style="width:2px; word-wrap:break-word;">
+                            <div class="slds-truncate slds-cell-wrap" style="text-align: center;">{doctype}</div>
+                        </td>
+                    </tr>
+                    <tr if:false={ckyc} class="slds-line-height_reset">
+                        <td class="tableCss" style="width:2px; word-wrap:break-word;">
+                            <div class="slds-truncate slds-cell-wrap" style="text-align: center;">Status</div>
+                        </td>
+                        <td class="tableCss" style="width:2px; word-wrap:break-word;">
+                            <div class="slds-truncate slds-cell-wrap" style="text-align: center;">{status}</div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+-->
+            <!-- Content Viewer - Moved inside scrollable-content -->
+            <!--
+        <div if:true={showimage}>
+            <div style="margin-top: 2%;">
+                <div class="content-container">
+                    <template if:true={isPdf}>
+                        <object data={modalPdfUrl} type="application/pdf" style="width:100%; height:600px; border:none;" aria-label="PDF preview">
+                                    <p>
+                                        Your browser doesn’t support inline PDFs.
+                                        <a href={modalPdfUrl} target="_blank">Download the PDF</a>
+                                        </p>
+                                    </object>
+                    </template>
+                    <template if:true={showimage}>
+                        <div class="scrollable">
+                            <img data-id="documentImage" src={imageUrl} alt="Document Image" class="content-viewer"
+                                style="border: 1px solid #000000; margin-bottom: 5px; width:70%;">
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+        -->
+
+            <!-- Content Viewer -->
+            <template if:false={noImage}>
+                <div class="content-container" style="margin-top: 2%;">
+                    <!-- PDF Preview -->
+                    <template if:true={isPdf}>
+                        <template if:true={showAndroidPdfButton}>
+                            <div class="pdf-android-shell">
+                            <div class="pdf-android-center">
+                                <lightning-button variant="brand-outline" label="Open PDF"
+                                    icon-name="utility:new_window" onclick={handleOpenPdfExternally}>
+                                </lightning-button>
+                            </div>
+                            </div>
+                        </template>
+                        <template if:false={showAndroidPdfButton}>
+                            <object
+                                data={pdfUrl}
+                                type="application/pdf"
+                                style="width:100%; height:600px; border:none;"
+                                aria-label="PDF preview"
+                              >
+                                <p>
+                                  Your browser doesn’t support inline PDFs.
+                                  <a href={pdfUrl} target="_blank">Download PDF</a>
+                                </p>
+                              </object>
+                        </template>
+                    </template>
+
+                    <!-- Image Preview -->
+                    <template if:true={showimage}>
+                        <div class="scrollable">
+                            <img
+                                  data-id="documentImage"
+                                  src={imageUrl}
+                                  alt="Document Image"
+                                  class="content-viewer"
+                                  style="border:1px solid #000; margin-bottom:5px; width:70%;"
+                                />
+                        </div>
+                    </template>
+                </div>
+            </template>
+            <!-- No Image Message -->
+            <template if:true={noImage}>
+                <div class="no-document-message" style="text-align: center; margin-top: 2%;">
+                    <lightning-icon icon-name="utility:document" size="large"></lightning-icon>
+                    <p style="text-align: center; font-style: italic; color: gray;">Document Not Uploaded</p>
+                </div>
+            </template>
+        </div>
+
+        <!-- Action Buttons - Outside scrollable-content -->
+        <template if:false={noImage}>
+            <div>
+                <lightning-layout horizontal-align="center" multiple-rows>
+                    <!-- Zoom Out Button -->
+                    <lightning-layout-item size="3" class="slds-text-align_center">
+                        <lightning-button-icon icon-name="utility:dash" variant="bare" alternative-text="Zoom Out"
+                            title="Zoom Out" size="large" class="slds-m-left_xx-small icon-blue" onclick={handleZoomOut}
+                            disabled={disabled}>
+                        </lightning-button-icon>
+                    </lightning-layout-item>
+
+                    <!-- Zoom In Button -->
+                    <lightning-layout-item size="3" class="slds-text-align_center">
+                        <lightning-button-icon icon-name="utility:zoomin" variant="bare" alternative-text="Zoom In"
+                            title="Zoom In" size="large" class="slds-m-left_xx-small icon-blue" onclick={handleZoomIn}
+                            disabled={disabled}>
+                        </lightning-button-icon>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+        </template>
+
+        <!-- Upload Section -->
+        <template if:false={loginChecklist}>
+            <template if:true={ckyc}>
+                <lightning-layout-item size="12">
+                    <lightning-layout justify="start">
+                        <lightning-layout-item>
+                            <div class="trigger-api-container">
+                                <template if:false={noImage}>
+                                    <lightning-file-upload label="" name="fileUploader" disabled={disabled}
+                                        accept=".png,.jpeg,.jpg,.pdf," record-id={recordId}
+                                        onuploadfinished={handleReUpload}>
+                                    </lightning-file-upload>
+                                </template>
+                                <template if:true={noImage}>
+                                    <lightning-file-upload label="" name="fileUploader" disabled={disabled}
+                                        accept=".png,.jpeg,.jpg,.pdf," record-id={recordId}
+                                        onuploadfinished={handleUpload}>
+                                    </lightning-file-upload>
+                                </template>
+                            </div>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </lightning-layout-item>
+            </template>
+
+            <template if:true={showMaskingCheck}>
+                <div style="padding-top: 5%;">
+                    The system is currently unable to mask the uploaded Aadhar card. You can try again later or upload a
+                    masked Aadhar by clicking the checkbox below.
+                    <lightning-input class="comboBoxSelect" type="checkbox"
+                        label="I acknowledge that I am uploading a masked Aadhar card." disabled={disableMaskingCheck}
+                        checked={checked} onchange={handleAckowledgeChangeChange}></lightning-input>
+                </div>
+            </template>
+
+            <!-- Fixed Action Buttons -->
+            <!--
+        <div style="padding: 2%;" if:false={ckyc}>
+            <lightning-layout class="fixed-action-buttons" horizontal-align="center" multiple-rows>
+                <lightning-layout-item size="2"></lightning-layout-item>
+                <lightning-layout-item size="2">
+                    <template if:true={previous}>
+                        <lightning-button-icon 
+                            icon-name="utility:jump_to_left" 
+                            variant="bare" 
+                            alternative-text="Previous" 
+                            title="Previous" 
+                            size="large" 
+                            class="slds-m-left_xx-small icon-blue" 
+                            onclick={handlePrevious}
+                            disabled={disabled}>
+                        </lightning-button-icon>
+                    </template>
+                    <template if:false={previous}>
+                        <lightning-button-icon 
+                            icon-name="utility:jump_to_left" 
+                            variant="bare" 
+                            alternative-text="Previous" 
+                            title="Previous" 
+                            size="large" 
+                            class="slds-m-left_xx-small"
+                            disabled={disabled}>
+                        </lightning-button-icon>
+                    </template>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="2">
+                    <lightning-button-icon 
+                        icon-name="utility:reply"  
+                        variant="bare" 
+                        alternative-text="Send Back" 
+                        title="Send Back" 
+                        class="slds-m-left_xx-small icon-red flipped-icon" 
+                        size="large" 
+                        onclick={showModalBox}
+                        disabled={disabled}>
+                    </lightning-button-icon>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="2">
+                    <template if:true={isVerified}>
+                        <lightning-button-icon 
+                            icon-name="utility:success" 
+                            variant="bare" 
+                            alternative-text="Validate" 
+                            title="Validate" 
+                            size="large" 
+                            class="slds-m-left_xx-small icon-success"
+                            onclick={unValidateDoc}
+                            disabled={disabled}>
+                        </lightning-button-icon>
+                    </template>
+                    <template if:false={isVerified}>
+                        <lightning-button-icon 
+                            icon-name="utility:success" 
+                            variant="bare" 
+                            alternative-text="Validate" 
+                            title="Validate" 
+                            size="large" 
+                            class="slds-m-left_xx-small" 
+                            onclick={validateDoc}
+                            disabled={disabled}>
+                        </lightning-button-icon>
+                    </template>
+                </lightning-layout-item>
+
+                <lightning-layout-item size="2">
+                    <template if:true={disableNext}>
+                        <lightning-button-icon 
+                            icon-name="utility:jump_to_right" 
+                            variant="bare" 
+                            alternative-text="Next" 
+                            title="Next" 
+                            size="large" 
+                            disabled 
+                            class="slds-m-left_xx-small">
+                        </lightning-button-icon>
+                    </template>
+                    <template if:false={disableNext}>
+                        <lightning-button-icon 
+                            icon-name="utility:jump_to_right" 
+                            variant="bare" 
+                            alternative-text="Next" 
+                            title="Next" 
+                            size="large" 
+                            class="slds-m-left_xx-small icon-blue" 
+                            onclick={handleNext}
+                            disabled={disabled}>
+                        </lightning-button-icon>
+                    </template>
+                </lightning-layout-item>
+                <lightning-layout-item size="2"></lightning-layout-item>
+            </lightning-layout>
+        </div>
+        -->
+
+            <input type="file" accept=".pdf,.PDF,.jpg,.png,.jpeg" capture="environment" onchange={handleUpload} class="hidden-input" disabled={disabled}/>
+            <input type="file" accept=".pdf,.PDF,.jpg,.png,.jpeg" capture="environment" onchange={handleReUpload} class="hidden-input-all" disabled={disabled}/>
+        </template>
+    </div>
+
+
+</template>

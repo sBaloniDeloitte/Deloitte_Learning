@@ -1,0 +1,9 @@
+<template>
+    <div if:true={isEditable}>
+        <lightning-accordion class="example-accordion" allow-multiple-sections-open>
+            <lightning-accordion-section label="Add Applicant" name="Add Applicant">
+                <c-sales-login-applicant-information-cmp record-id={recordId}></c-sales-login-applicant-information-cmp>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </div>
+</template>

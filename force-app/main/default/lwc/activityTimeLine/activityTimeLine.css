@@ -1,0 +1,262 @@
+.timeline-container {
+
+    background: #ffffff;
+
+    border-radius: 18px;
+
+    overflow: hidden;
+
+    border: 1px solid #dce6f1;
+
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+
+    height: 600px;
+}
+
+/* Header */
+
+.timeline-header {
+
+    background:
+        linear-gradient(
+            135deg,
+            #173f7a,
+            #2a64c5
+        );
+
+    color: white;
+
+    padding: 16px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    align-items: center;
+}
+
+.header-content {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+}
+
+.header-title {
+
+    font-size: 18px;
+
+    font-weight: 700;
+}
+
+.header-subtitle {
+
+    font-size: 12px;
+
+    opacity: .85;
+}
+
+.header-icon {
+
+    --slds-c-icon-color-foreground-default: white;
+}
+
+/* Activity Count Badge */
+
+.activity-count {
+
+    background: rgba(255,255,255,.20);
+
+    color: white;
+
+    min-width: 34px;
+
+    height: 34px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    font-weight: 700;
+
+    font-size: 14px;
+}
+
+/* Activity List */
+
+.activity-list {
+
+    padding: 12px;
+
+    overflow-y: auto;
+
+    height: calc(100% - 70px);
+
+    background: #f8fbff;
+}
+
+/* Activity Card */
+
+.activity-item {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    padding: 14px;
+
+    margin-bottom: 12px;
+
+    background: white;
+
+    border-radius: 12px;
+
+    border: 1px solid #d5e6f7;
+
+    border-left: 5px solid #4285f4;
+
+    cursor: pointer;
+
+    transition: all .25s ease;
+}
+
+.activity-item:hover {
+
+    transform: translateX(4px);
+
+    background: #f4f9ff;
+
+    box-shadow:
+        0 4px 12px rgba(66,133,244,.12);
+}
+
+/* Icons */
+
+.icon {
+
+    width: 40px;
+
+    height: 40px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    flex-shrink: 0;
+}
+
+/* Call */
+
+.call {
+
+    background: #dcfce7;
+}
+
+/* Email */
+
+.email {
+
+    background: #dbeafe;
+}
+
+/* Event */
+
+.meeting {
+
+    background: #ede9fe;
+}
+
+/* Task */
+
+.task {
+
+    background: #fef3c7;
+}
+
+/* Content */
+
+.activity-content {
+
+    flex: 1;
+}
+
+.activity-subject {
+
+    font-size: 14px;
+
+    font-weight: 700;
+
+    color: #173f7a;
+}
+
+.activity-desc {
+
+    margin-top: 4px;
+
+    color: #64748b;
+
+    font-size: 12px;
+
+    line-height: 1.4;
+}
+
+.activity-date {
+    margin-top: 6px;
+    color: #5d86be;
+    font-weight: 700;
+    font-size: 11px;
+}
+
+/* Empty State */
+
+.empty-state {
+
+    height: 450px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    align-items: center;
+
+    text-align: center;
+}
+
+.empty-icon {
+
+    --slds-c-icon-color-foreground-default: #2a64c5;
+}
+
+.empty-title {
+
+    margin-top: 12px;
+
+    color: #173f7a;
+
+    font-size: 18px;
+
+    font-weight: 700;
+}
+
+.empty-message {
+
+    margin-top: 8px;
+
+    color: #64748b;
+
+    font-size: 13px;
+}

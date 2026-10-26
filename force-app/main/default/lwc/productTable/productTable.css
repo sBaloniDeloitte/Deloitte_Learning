@@ -1,0 +1,71 @@
+@import 'c/cssLibrary';
+.container {
+    overflow: auto;
+    flex-direction: column;
+    align-items: center;
+    background-color: #16283f;
+}
+table {
+    border-collapse: collapse;
+    text-align: center;;
+    font-family: Arial, sans-serif;
+}
+th {
+    padding: 8px;
+    text-align: center; 
+    border: 1px solid black;
+    vertical-align: middle;
+    color:#f7f4f4
+}
+td {
+    padding: 8px;
+    text-align: center; 
+    border: 1px solid black;
+    vertical-align: middle;
+    color:#16283f
+}
+th{
+    background-color: #16283f ;
+    min-width: 150px;
+}
+.container {
+    margin-top: 16px;
+    overflow-x: auto;
+    overflow-y: auto;
+    background-color: #16283f;
+}
+
+/* ____GenAI: Generated code starts here - Native horizontal/vertical scrollbar
+   track under the table rendered white by default. Styled to match the
+   table's dark navy background (#16283f) with a lighter thumb for contrast.____ */
+.container::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+}
+.container::-webkit-scrollbar-track {
+    background-color: #16283f;
+}
+.container::-webkit-scrollbar-thumb {
+    background-color: #4a5b74;
+    border-radius: 4px;
+}
+.container {
+    scrollbar-color: #4a5b74 #16283f;
+}
+
+:host {
+    --slds-c-button-brand-color-background: #0a70f4;
+    --slds-c-button-brand-color-border: #0a70f4;
+    --slds-c-button-brand-color-background-hover: #085cc7;
+    --slds-c-button-brand-color-border-hover: #085cc7;
+}
+
+/* ____GenAI: Generated code starts here - Refresh button uses the shared
+   ".save-button" class from cssLibrary, which hardcodes a green fill
+   (#9bbf56) that overrides the slds-button_brand custom properties above.
+   Scoped override so the Refresh button renders #0a70f4 as requested.____ */
+.save-button {
+    background-color: #0a70f4 !important;
+    border-color: #0a70f4 !important;
+    color: #ffffff !important;
+}

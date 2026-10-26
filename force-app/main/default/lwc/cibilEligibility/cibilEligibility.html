@@ -1,0 +1,158 @@
+<template>
+    <template if:true={isloading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </template>
+    <template if:true={showErrorListBureau}>
+                           
+        <div class="button-shadow" style="width: 90%;background: white; margin: 12px;padding: 12px;border-radius: 10px;border: 1px solid black;">
+            <span style="display: inline-flex;">
+            <img src={notEligibleIcon} alt="Image Preview" style="max-width:60%; max-height:100%;height:79px"/>
+                <p class="slds-text-align_center" style="font-style: Lato Bold; font-size: 14px;color:red;padding-top:5%">{errorList}</p>
+            </span>
+           </div>
+   
+    </template>
+    <template if:true={showEligibleTemplate}>
+        <template if:false={cibilScoreLow}>
+            <div class="center-container button-shadow" onfocus={handleStopPropogation} onblur={handleStopPropogation} onfocousout={handleStopPropogation}>
+                <span style="display:inline-flex;">
+                    <!--<img src={eligibleIcon} alt="Image Preview" style="max-width:80%; max-height:100%;height:79px" class="slds-align_absolute-center" />-->
+                    <lightning-icon icon-name="utility:success" size="small" class="step-icon-completed slds-align_absolute-center" ></lightning-icon>
+                    <p class="slds-text-align_center" style="font-style: Lato Bold; font-size: 10px;color: #ffffff;padding-top:1%; padding-left:5px">
+                        We have performed an eligibility check, and this customer is eligible for availing a Housing Loan. Kindly proceed to the next steps.
+                    </p>
+                </span>
+            </div>
+        </template>
+        <template if:true={cibilScoreLow}>
+            <div class="center-container button-shadow" onfocus={handleStopPropogation} onblur={handleStopPropogation} onfocousout={handleStopPropogation}>
+                <span style="display:inline-flex;margin-bottom: 6%;">
+                    <!-- <img src={eligibleIcon} alt="Image Preview" style="max-width:80%; max-height:100%;height:79px" class="slds-align_absolute-center" /> -->
+                    <p class="slds-text-align_center" style="font-style: Lato Bold; font-size: 22px;color:red;padding-top:1%">
+                        We have performed an eligibility check, and this customer is not elligble for availing a Housing Loan. Kindly proceed to the next steps.
+                    </p>
+                </span>
+            </div>
+        </template>
+        <!--
+        <div style="display: flex; justify-content: center; margin-bottom: 20px;" onfocus={handleStopPropogation} onblur={handleStopPropogation} onfocousout={handleStopPropogation}>
+            <button type="button" class="slds-button previous-button" style="margin-right: 8px; width: 172px;" onclick={toggleDetails} onfocus={handleStopPropogation} onblur={handleStopPropogation} onfocousout={handleStopPropogation} >{buttonLabel}</button><br/>
+        </div>-->
+        <template if:true={isDetailsVisible}>
+            <div class="custom-table-container" onfocus={handleStopPropogation} onblur={handleStopPropogation} onfocousout={handleStopPropogation}>
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <!-- <th>Category</th> -->
+                            <th>Key</th>
+                            <th>Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={tableData} for:item="category">
+                            <template if:true={category.isSectionSeperator}>
+                                <tr key={category.fieldLabel}>
+                                    <td colspan="3" style="border-bottom: 1px solid #ccc; padding: 10px;background: lightgray;">
+                                        <div class="slds-text-title" style="text-align: center;font-weight: 900;">{category.sectionSeperatorName}</div>
+                                    </td>
+                                </tr>
+                            </template>
+                            <tr key={category.fieldLabel}>
+                                <!-- <template if:true={row.isFirstRow}>
+                                    <td rowspan={category.rows.length}>{category.name}</td>
+                                </template> -->
+                                <!-- <td>
+                                    <div class=""></div>
+                                </td> -->
+                                <td>
+                                    <template if:true={category.isBlank}>
+                                        <div class="">{category.fieldLabel}</div>
+                                    </template>
+                                    <template if:true ={category.isGreen}>
+                                        <div class=""  style="color:#9bbf56">{category.fieldLabel}</div>
+                                    </template>
+                                    <template if:true={category.isRed}>
+                                        <div class="" style="color:red">{category.fieldLabel}</div>
+                                    </template>
+                                    
+                                </td>
+                                <td>
+                                    <template if:true={category.isBlank}>
+                                        <div class="">{category.fieldValue}</div>
+                                    </template>
+                                    <template if:true={category.isGreen}>
+                                        <div class="" style="color:#9bbf56">{category.fieldValue}</div>
+                                    </template>
+                                    <template if:true={category.isRed}>
+                                        <div class="" style="color:red">{category.fieldValue}</div>
+                                    </template>
+                                    
+                                </td>
+                            </tr>
+                            <!-- <template for:each={category.rows} for:item="row">
+                                <tr key={row.id}>
+                                    <template if:true={row.isFirstRow}>
+                                        <td rowspan={category.rows.length}>{category.name}</td>
+                                    </template>
+                                    <td>
+                                        <div class={row.colorClass}>{row.key}</div>
+                                    </td>
+                                    <td>
+                                        <div class={row.colorClass}>{row.value}</div>
+                                    </td>
+                                </tr>
+                            </template> -->
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+        <!-- <footer class="center-container slds-modal__footer" style="border: revert;">
+            <template if:true={showChangeProgramButton}>
+                <button class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 163px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;" onclick={handleProgramChange}>Change Product Program</button>
+            </template>
+            <button class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;" onclick={handleYesConfirmation}>Continue</button>
+        </footer> -->
+    </template>
+    <template if:true={openProgramchangePop}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+              
+            <div class="slds-modal__container" style="height: 100%;width:50%">
+                <header class="slds-modal__header" style="background-color: skyblue; color:white;font-weight:500;">
+                 
+                     
+                    <div class="slds-text-align_center">
+                        <h2 slot="title" style="font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px" class="slds-text-heading_medium slds-hyphenate">Initate BSA</h2>
+                    </div>               
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <div class="datatable-container slds-align_absolute-center">
+                        <lightning-combobox 
+                        name="Choose Program"
+                        value={selectedProgram}
+                        placeholder="Choose Program"
+                        options={programOptions}
+                        onchange={handleSelectedProgram}
+                        style="width: 50%;"> >
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-align_absolute-center" style="margin-top: 20px;">
+
+                        <button type="button" class="slds-button previous-button" onclick={handleChangeProgram}>
+                           Change Program
+                        </button>
+                        <button type="button" class="slds-button button-green" onclick={handleCancel}>
+                            Cancel
+                         </button>
+                       
+                    </div>
+                    
+                </div>
+                <footer class="footer-section">
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+</template>

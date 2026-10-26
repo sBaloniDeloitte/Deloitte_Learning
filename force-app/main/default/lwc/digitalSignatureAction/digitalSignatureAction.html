@@ -1,0 +1,29 @@
+<template>
+    <div class="slds-p-around_medium">
+        <!-- <template if:true={isSigned}>
+            <p class="slds-text-color_success">
+                ✅ Document already signed. Regeneration not allowed.
+            </p>
+        </template>
+        <template if:false={isSigned}> -->
+            <div>
+                <div>
+                    <header class="slds-modal__header modal-header">
+                        <h2 class="slds-text-heading_medium slds-hyphenate header-title">Digital Signature Confirmation
+                        </h2>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium custom-modal-content">
+                        <p>The report will be digitally signed upon confirmation and cannot be generated again. Do you
+                            want to continue?</p>
+                    </div>
+                    <footer class="slds-modal__footer modal-footer">
+                        <div class="slds-align_absolute-center button-container">
+                            <button class="slds-button slds-button_brand no-button" onclick={closeAction}>No</button>
+                            <button class="slds-button slds-button_brand save-button" onclick={handleSign}>Yes</button>
+                        </div>
+                    </footer>
+                </div>
+            </div>
+        <!-- </template> -->
+    </div>
+</template>

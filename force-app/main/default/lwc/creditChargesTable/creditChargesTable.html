@@ -1,0 +1,341 @@
+<template>
+    <span class="styleContainer"></span>
+    <div class="slds-m-around_medium">
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+        </template>
+        <template lwc:if={isEditableUser}>
+        <div class="slds-m-top_medium slds-m-bottom_medium slds-text-align_left">
+            <template if:false={showNonEditable}><!--Sanwar-->
+                <template if:false={isHLUser}>
+                    <button class="save-button slds-button slds-button_brand" onclick={initializeLoanTransaction}>Generate Charges</button>
+                </template>
+                <template if:true={isHLUser}>
+                    <button class="save-button slds-button slds-button_brand" onclick={checkeSignStatus}>Generate Charges</button>
+                </template>
+                
+            </template>
+            </div>        
+        </template>
+        <div class="table-container">
+            <table cellpadding="0" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 1px solid #33455e;" class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right custom-table">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th style="width: 6%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                            <div class="slds-truncate" title="Product">Product</div>
+                        </th>
+                        <th style="width: 6%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                            <div class="slds-truncate" title="Charge Type">Charge Type</div>
+                        </th>
+                        <th style="width: 6%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                            <div class="slds-truncate" title="Accrued Amount">Accrued Amount</div>
+                        </th>
+                        <th style="width: 6%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                            <div class="slds-truncate" title="Collected Fees(Excluding Tax)">Collected Fees(Excluding Tax)</div>
+                        </th>
+                        <th style="width: 6%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                            <div class="slds-truncate" title="Balance Fees">Balance Fees</div>
+                        </th>
+                        <th style="width: 6%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                            <div class="slds-truncate" title="Waiver">Waiver</div>
+                        </th>
+                        <th style="width: 6%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                            <div class="slds-truncate" title="To be Collected(Including Tax)">To be Collected(Including Tax)</div>
+                        </th>
+                        <th style="width: 6%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                            <div class="slds-truncate" title="Fee Method">Fee Method</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- LOS -->
+                    <template for:each={loSrows} for:item="row">
+                        <tr key={row.id} style="height: 5px;">
+                            <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid black;" class="hideInput"> {row.productName}</td>
+                            <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid black;" class="hideInput"> {row.name}</td>
+                            <!-- <template if:true={row.stampedit}>
+                                <lightning-input class="hideInput" variant="bare" type="number"  value={row.defaultAmount} onchange={handleDefaultChange} data-id={row.id} data-field="defaultAmount" disabled></lightning-input>
+                            </template>
+                            <template if:false={row.stampedit}>  -->
+                                <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid black;" class="hideInput">
+                                    <template if:true={isProcFee}>
+                                        <template if:true={showNonEditable}>
+                                            {row.defaultAmount}
+                                        </template>
+                                        <template if:false={showNonEditable}>
+                                            <lightning-input class="hideInput" variant="bare" type="number" value={row.defaultAmount} onkeydown={handleNumberValidation} data-id={row.id} onblur={handleBlur} data-field="defaultAmount" disabled={row.isAccruedAmountDisabled}></lightning-input>
+                                        </template>
+                                    </template>
+                                    <template if:false={isProcFee}>
+                                        <template if:true={showNonEditable}>
+                                            {row.defaultAmount}
+                                        </template>
+                                        <template if:false={showNonEditable}>
+                                            <template if:true={row.isAccruedAmountDisabled}>
+                                                {row.defaultAmount}
+                                            </template>
+                                            <template if:false={row.isAccruedAmountDisabled}>
+                                                <lightning-input class="hideInput" variant="bare" type="number" value={row.defaultAmount} onkeydown={handleNumberValidation} data-id={row.id} onblur={handleBlur} data-field="defaultAmount" disabled={row.isAccruedAmountDisabled}></lightning-input>
+                                            </template>
+                                        </template>
+                                    </template>
+                                </td>
+                            <!-- </template> -->
+                            <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid black;" class="hideInput">
+                                <template if:true={showNonEditable}>
+                                    {row.loginFee}
+                                </template>
+                                <template if:false={showNonEditable}>
+                                    <template if:true={row.isCollectedFeesDisabled}>
+                                        {row.loginFee}
+                                    </template>
+                                    <template if:false={row.isCollectedFeesDisabled}>
+                                        <lightning-input class="hideInput" variant="bare" type="number" value={row.loginFee} onkeydown={handleNumberValidation} data-id={row.id} onblur={handleBlur} data-field="loginFee" disabled={row.isCollectedFeesDisabled}></lightning-input>
+                                    </template>
+                                </template>
+                            </td>
+                            <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid black;" class="hideInput">
+                                <template if:true={showNonEditable}>
+                                    {row.balanceFees}
+                                </template>
+                                <template if:false={showNonEditable}>
+                                    <template if:true={row.isBalanceFeeDisabled}>
+                                        {row.balanceFees}
+                                    </template>
+                                    <template if:false={row.isBalanceFeeDisabled}>
+                                        <lightning-input class="hideInput" variant="bare" type="number" value={row.balanceFees} onkeydown={handleNumberValidation} data-id={row.id} onblur={handleBlur} data-field="balanceFees" disabled={row.isBalanceFeeDisabled}></lightning-input>
+                                    </template>
+                                </template>
+                                </td>
+
+                            <td style="text-align: left; padding: 2px;padding-bottom:3px; width: 10%;border: 1px solid black;">
+                                <template if:true={showNonEditable}>
+                                    {row.requestedAmount}
+                                </template>
+                                <template if:false={showNonEditable}>
+                                    <template if:true={row.isDisabled}>
+                                        {row.requestedAmount}
+                                    </template>
+                                    <template if:false={row.isDisabled}>
+                                        <lightning-input class="hideInput" variant="bare" type="number"  value={row.requestedAmount} onkeydown={handleNumberValidation} data-id={row.id} onblur={handleBlur} data-field="requestedAmount" disabled={row.isDisabled}></lightning-input>
+                                    </template>
+                                </template>
+                            </td>
+                            <!-- <td if:true={hitGstMan} style="text-align: left; padding: 2px;padding-bottom:3px; width: 10%;border: 1px solid black;" class="hideInput"> 
+                                 <lightning-input class="hideInput" variant="bare" type="number"  value={row.tax} data-field="taxAmount" onchange={handleTaxAmountChange} data-id={row.id} disabled={row.notprocfee}></lightning-input>
+                            </td> -->
+                            <!-- <td if:false={hitGstMan} style="text-align: left; padding: 2px;padding-bottom:3px; width: 10%;border: 1px solid black;" data-id={row.id} class="hideInput"> {row.tax}</td> -->
+                            <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid black;" class="hideInput"> {row.finalAmount}</td>
+                            <!-- <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid black;" class="hideInput"> {row.feeMethod}</td>sanwar -->
+                            <td style="text-align: left; padding: 2px;padding-bottom:3px; width: 10%;border: 1px solid black;" class="hideInput">
+                                <template if:true={showNonEditable}>
+                                    <lightning-combobox class="removeborder" style="width:100%;" data-field="feeMethod" name="feeMethod" data-id={row.id} value={row.feeMethod} options={feeMethodOptions} onchange={handleInputChange} disabled></lightning-combobox>
+                                </template>
+                                <template if:false={showNonEditable}>
+                                    <lightning-combobox class="removeborder" style="width:100%;" data-field="feeMethod" name="feeMethod" data-id={row.id} value={row.feeMethod} options={feeMethodOptions} onblur={handleBlur} disabled={row.isFeeMethodDisabled}></lightning-combobox>
+                                </template>
+                            </td>
+                        </tr>
+                    </template>
+                    <!-- Insurance -->
+                     <!--<template if:true={isHLUser}> check removed by Kunal Bisht for SFHL-1404 - hotfix-->
+                        <template for:each={insuranceRows} for:item="row">
+                            <tr key={row.id} style="height: 5px;">
+                                <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid black;" class="hideInput"> {row.productName}</td>
+                                <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid black;" class="hideInput"> {row.name}</td>
+                                <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid black;" class="hideInput"> {row.defaultAmount} </td>
+                                <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid black;" class="hideInput"> {row.loginFee} </td>
+                                <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid black;" class="hideInput"> {row.balanceFees} </td>
+                                <td style="text-align: left; padding: 2px;padding-bottom:3px; width: 10%;border: 1px solid black;"> {row.requestedAmount} </td>
+                                <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid black;" class="hideInput"> {row.finalAmount}</td>
+                                <td style="text-align: left; padding: 2px;padding-bottom:3px; width: 10%;border: 1px solid black;">
+                                    <template if:true={showNonEditable}>
+                                        <lightning-combobox class="removeborder" style="width:100%;" data-field="feeMethod" name="feeMethod" data-id={row.id} value={row.feeMethod} options={feeMethodOptions} onchange={handleInputChange} disabled></lightning-combobox>
+                                    </template>
+                                    <template if:false={showNonEditable}>
+                                        <lightning-combobox class="removeborder" style="width:100%;" data-field="feeMethod" name="feeMethod" data-id={row.id} value={row.feeMethod} options={feeMethodOptions} onchange={handleInputChange} disabled></lightning-combobox>
+                                    </template>
+                                </td>
+                            </tr>
+                        </template>
+                    <!--</template>-->
+                    <!-- LMS -->
+                    <template for:each={lMSrows} for:item="row">
+                        <tr key={row.id} style="height: 5px;">
+                            <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid black;" class="hideInput"> {row.productName}</td>
+                            <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid black;" class="hideInput"> {row.name}</td>
+                            <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid black;" class="hideInput"> {row.defaultAmount} %</td>
+                            <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid black;" class="hideInput"> {row.loginFee} </td>
+                            <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid black;" class="hideInput"> {row.balanceFees} </td>
+                            <td style="text-align: left; padding: 2px;padding-bottom:3px; width: 10%;border: 1px solid black;">
+                                <template if:true={showNonEditable}>
+                                    {row.requestedAmount}
+                                </template>
+                                <template if:false={showNonEditable}>
+                                    <template if:true={row.isDisabled}>
+                                        {row.requestedAmount}
+                                    </template>
+                                    <template if:false={row.isDisabled}>
+                                        <lightning-input class="hideInput" variant="bare" type="number" value={row.requestedAmount} onkeydown={handleNumberValidation} data-id={row.id} data-field="requestedAmount" onblur={handleBlur} disabled={row.isDisabled}></lightning-input>
+                                    </template>
+                                </template>
+                            </td>
+                            <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid black;" class="hideInput"> {row.finalAmount}</td>
+                            <td style="text-align: left; padding: 2px;padding-bottom:3px; width: 10%;border: 1px solid black;">
+                                    NA
+                            </td>
+                        </tr>
+                    </template>
+                    <tr style="height: 5px;">
+                        <td colspan="4" style="border: none;"></td>
+                        <td colspan="2" style="text-align: left; padding: 2px; padding-bottom: 3px; border-left: 1px solid black; border-bottom: 1px solid black; border-right:1px solid black; ">
+                            Total *
+                        </td>
+                        <td colspan="1" style="text-align: left; padding: 2px; padding-bottom: 3px; border-right: 1px solid black; border-bottom: 1px solid black;"> {totalFeeChargeRecord.Total_Charges__c} </td>
+                    </tr>
+                    <tr style="height: 5px;">
+                        <td colspan="4" style="border: none;"></td>
+                        <td colspan="2" style="text-align: left; padding: 2px; padding-bottom: 3px; border-left: 1px solid black; border-bottom: 1px solid black; border-right:1px solid black;">
+                            Total Fee to be deducted *
+                        </td>
+                        <td colspan="1" style="text-align: left; padding: 2px; padding-bottom: 3px; border-right: 1px solid black; border-bottom: 1px solid black;"> {totalFeeChargeRecord.Total_Fee_to_be_deducted__c} </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div style="margin-top: 5px; text-align: left; font-size: 10px; font-style: italic;">
+                {excludingText}
+            </div>
+        </div>
+               <!-- Show Self-Funded Section Only If Any Fee Method = Self funded -->
+        <template if:true={showSelfFundedSection}>
+            <div class="slds-box slds-m-top_medium slds-theme_default">
+                    <h3 class="slds-text-heading_small slds-m-bottom_small">
+                        Self-Funded Details
+                    </h3>
+                <div class="slds-grid slds-wrap slds-p-around_small">
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small">
+                        <lightning-combobox
+                            name="subReceiptMode"
+                            options={receiptOptions}
+                            class="validate"
+                            label="Sub Receipt Mode"
+                            value={subReceiptMode}
+                            onchange={handleInputChangePSV}
+                            required>
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small">
+                        <lightning-input 
+                            name="receiptNumber"
+                            type="text" 
+                            label="Receipt No"
+                            class="validate"
+                            value={receiptValue}
+                            onchange={handleInputChangePSV}
+                            >
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small">
+                        <lightning-input 
+                            name="transactionRefNumber"
+                            type="text" 
+                            label="Transaction Reference"
+                            class="validate"
+                            value={transactionRefNoValue}
+                            onchange={handleInputChangePSV}
+                            required>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small">
+                        <lightning-input 
+                            name="remarks"
+                            type="text" 
+                            label="Remarks"
+                            class="validate"
+                            disabled={isReadOnly}
+                            value={Remarks}
+                            onchange={handleInputChangePSV}
+                            required>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small">
+                        <lightning-file-upload 
+                            label="Upload Receipt"
+                            name="fileUploader"
+                            accept={acceptedFormats}
+                            multiple="false"
+                            record-id={recordId}
+                            onuploadfinished={handleUploadFinished}
+                            disabled={isDisable}
+                            required>
+                        </lightning-file-upload>
+                        <template if:true={showDocumentName}>
+                            <template for:each={uploadedFileName} for:item="filename">
+                                <p key={filename} style="background-color:lightgrey; font-weight: 500;">
+                                    {filename}
+                                </p>
+                            </template>
+                        </template>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2 slds-p-around_small">
+                        <template if:true={showRecords}>
+                            <div class="slds-p-around_medium">
+                                <table class="slds-table">
+                                    <thead>
+                                        <tr class="sticky">
+                                            <th scope="col" style="text-align: left;white-space: nowrap;">File Name</th>
+                                            <th scope="col" style="width: 135px;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={documentList} for:item="doc">
+                                            <tr key={doc.id}>
+                                                <td scope="col" style="text-align: left;">
+                                                    <div style="font-weight: 500;" title={doc.docName}>{doc.name}</div>
+                                                </td>
+                                                <td scope="col">
+                                                    <div class="upload-icon" key={doc.contentId}>
+                                                        <div class="icon-hover">
+                                                            <lightning-icon size="small"
+                                                                icon-name="utility:preview" variant="brand" title="View Document"
+                                                                data-id={doc.contentId}
+                                                                onclick={handleView}
+                                                                class="green-utility-icon">
+                                                            </lightning-icon>
+                                                        </div>
+                                                        <div class="icon-hover">
+                                                            <lightning-icon size="small"
+                                                                icon-name="utility:delete" variant="brand" title="Delete Document"
+                                                                data-id={doc.contentId} data-doc={doc.id}
+                                                                onclick={handleDelete}
+                                                                data-name={doc.name}
+                                                                
+                                                                class="red-utility-icon">
+                                                            </lightning-icon>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                <div class="slds-p-top_medium" style="text-align: right;">
+                    <button class="save-button slds-button slds-button_brand" onclick={handleSave}>Save</button>
+        </div>
+    </div>
+        </template>
+    </div>
+    <lightning-accordion-section name="Upfront Fee Collection" label="Upfront Fee Collection">
+        <c-upfront-fee-collection-cmp record-id={recordId} los-rows={loSrows} onchargesrefresh ={loadChargesRecords}>
+        </c-upfront-fee-collection-cmp>
+    </lightning-accordion-section>
+    <template if:true={showConfirmation}>
+        <c-popup-screen process-name="Login Loan" show-dedupe-confirmation="true" width-percentage="95" show-save-btn ="true" close-btn-text="Cancel" save-btn-text="Continue"
+            header-title="Confirmation" confirm-message="Please note that E-Sign has been completed on the loan and will be reset once you confirm." show-close-btn=true onhandleclose={handleClose} onhndleconfirmationyes={handleyes}>
+        </c-popup-screen>
+    </template>
+</template>

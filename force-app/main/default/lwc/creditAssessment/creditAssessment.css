@@ -1,0 +1,29 @@
+@import 'c/cssLibrary';
+
+/* "Personal Discussion Details" table - matched to the "Aadhar Details"
+   table theme in salesLoginAadharDetailsCmp (:host .slds-table / thead th /
+   tbody td): dark navy #0e1626 body, #111d30 header with white bold text,
+   #1d2f45 borders - replacing the previous plain white table with a
+   "skyblue"/black header. */
+.pd-details-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: #0e1626;
+    border: 1px solid #1d2f45;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.pd-details-header {
+    text-align: center;
+    background-color: #111d30 !important;
+    color: #ffffff !important;
+    font-weight: 700;
+    border-color: #1d2f45 !important;
+}
+
+.pd-details-cell {
+    background-color: #0e1626 !important;
+    color: #ffffff !important;
+    border-color: #1d2f45 !important;
+}

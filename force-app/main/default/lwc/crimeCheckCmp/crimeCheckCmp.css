@@ -1,0 +1,199 @@
+@import 'c/cssLibrary';
+
+:host {
+	display: block;
+	min-height: 100%;
+	background: #12172b;
+	color: #ffffff;
+	--crime-page-bg: #12172b;
+	--crime-panel-bg: #1c2238;
+	--crime-field-bg: #16283f;
+	--crime-accent: #1467eb;
+	--crime-border: #2a2f45;
+	--crime-muted: #8a99b3;
+	--slds-c-input-label-color: #ffffff;
+	--slds-c-checkbox-label-color: #ffffff;
+}
+
+.bsa-page,
+.example-accordion {
+	background: var(--crime-page-bg) !important;
+	color: #ffffff;
+}
+
+.example-accordion {
+	display: block;
+	border: 1px solid var(--crime-border);
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+/* ____GenAI: Generated code starts here - lightning-accordion-section header
+   lives inside its own fully encapsulated shadow root in this org; neither
+   SLDS custom-property hooks nor external overrides on the base component
+   ever repaint it (same confirmed root cause/fix already applied in
+   mainPdCmp.css). Replaced with a hand-built accordion below, so these
+   rules style plain divs owned directly by this component - no shadow
+   boundary to cross, guaranteed to render the blue gradient header.____ */
+.custom-crime-accordion {
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.custom-crime-section {
+	border: 1px solid var(--crime-border);
+	border-radius: 8px;
+	overflow: hidden;
+	background-color: var(--crime-page-bg);
+}
+
+.custom-crime-header {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 16px;
+	background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+	color: #ffffff;
+	cursor: pointer;
+	user-select: none;
+}
+
+.custom-crime-icon {
+	--slds-c-icon-color-foreground-default: #ffffff;
+	--sds-c-icon-color-foreground-default: #ffffff;
+}
+
+.custom-crime-title {
+	color: #ffffff;
+	font-weight: 700;
+	font-size: 0.8125rem;
+}
+/* ____GenAI: Generated code ends here____ */
+
+.slds-scrollable_x {
+	background: var(--crime-page-bg);
+	color: #ffffff;
+}
+
+/* .example-accordion prefix (2 classes) needed to out-specify cssLibrary's .slds-table thead tr th / tbody tr td !important rules */
+/* Table theme matched to the "Aadhar Details" table in
+   salesLoginAadharDetailsCmp (:host .slds-table / thead th / tbody td /
+   tbody tr:hover td) - dark navy #0e1626 body, #111d30 header with white
+   bold text, #1d2f45 borders - instead of the previous blue accent
+   (var(--crime-accent): #1467eb) header. Kept as literal colors here
+   rather than changing --crime-panel-bg/--crime-accent so the
+   modal/accordion/button theme elsewhere in this component is unaffected.
+   Covers every applicant-type accordion section rendered by this table,
+   including the "Individual" one. */
+.example-accordion .slds-table {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	background: #0e1626 !important;
+	border: 1px solid #1d2f45 !important;
+	border-radius: 8px;
+	overflow: hidden;
+	color: #ffffff;
+}
+
+.example-accordion .slds-table thead tr th {
+	background-color: #111d30 !important;
+	border-color: #1d2f45 !important;
+	color: #ffffff !important;
+	font-weight: 700 !important;
+	padding: 10px !important;
+	text-align: center;
+	vertical-align: middle;
+}
+
+.example-accordion .slds-table tbody tr td {
+	background-color: #0e1626 !important;
+	border-color: #1d2f45 !important;
+	color: #ffffff !important;
+	vertical-align: middle;
+}
+
+.example-accordion .slds-table tbody tr:hover td {
+	background-color: #16283f !important;
+}
+
+.slds-table lightning-input,
+.slds-table lightning-combobox {
+	--slds-c-input-color-background: var(--crime-field-bg);
+	--slds-c-input-text-color: #ffffff;
+	--slds-c-input-color-border: var(--crime-border);
+	--slds-c-combobox-color-background: var(--crime-field-bg);
+	--slds-c-combobox-text-color: #ffffff;
+	--slds-c-combobox-color-border: var(--crime-border);
+}
+
+.slds-table a {
+	color: #7db2ff !important;
+}
+
+/* Positive CTA (Initiate Crime Check) - #1467eb fill/border, 8px radius. */
+.save-button,
+.initiate-button {
+	background-color: #1467eb !important;
+	border: 1px solid #1467eb !important;
+	border-radius: 8px !important;
+	color: #ffffff !important;
+	font-weight: 600;
+}
+
+.save-button:hover,
+.initiate-button:hover {
+	background-color: #1257c9 !important;
+}
+
+/* Negative CTA (Refresh) - #16283f fill, 1px solid #7c3aed border, 8px radius. */
+.cancel-button {
+	background-color: #16283f !important;
+	border: 1px solid #1257c9 !important;
+	border-radius: 8px !important;
+	color: #ffffff !important;
+	font-weight: 600;
+}
+
+.disabled-button {
+	background-color: #2a2f45 !important;
+	border: 1px solid var(--crime-border) !important;
+	color: var(--crime-muted) !important;
+}
+
+.slds-modal__container {
+	background: var(--crime-panel-bg);
+	border: 1px solid var(--crime-border);
+	border-radius: 8px;
+	overflow: hidden;
+}
+
+.slds-modal__header {
+	background-color: var(--crime-accent) !important;
+	border-bottom: 1px solid var(--crime-border);
+	color: #ffffff !important;
+}
+
+.slds-modal__title,
+.slds-modal__header h2 {
+	color: #ffffff !important;
+}
+
+.slds-modal__content {
+	background-color: var(--crime-page-bg) !important;
+	color: #ffffff !important;
+}
+
+.slds-modal__footer {
+	background-color: var(--crime-page-bg) !important;
+	border-top: 1px solid var(--crime-border) !important;
+}
+
+.slds-backdrop_open {
+	background: rgba(10, 15, 30, 0.78);
+}
+
+.styleContainer {
+	display: none;
+}

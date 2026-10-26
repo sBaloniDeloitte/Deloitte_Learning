@@ -1,0 +1,87 @@
+<template>
+    <template lwc:if={hasCollateralData}>
+    <lightning-card title="Technical Valuation Details by Collateral">
+        <div class="slds-table slds-table_cell-buffer slds-table_bordered fi-table-wrapper">
+            <table class="slds-table_custom-bordered">
+                <thead>
+                <!-- Header Row 1: Collateral Names -->
+                    <tr>
+                    <template for:each={collateralData} for:item="coll">
+                        <th colspan="3" key={coll.collateralId}>Collateral Name ({coll.collateralName})</th>
+                    </template>
+                    </tr>
+
+                <!-- Header Row 2: Label, Value, Checkbox -->
+                    <tr>
+                    <template for:each={collateralData} for:item="coll">
+                        <th key={coll.collateralId}>Technical Name</th>
+                        <th key={coll.collateralId}>Valuation</th>
+                        <th key={coll.collateralId}>Considered Valuation</th>
+                    </template>
+                    </tr>
+                </thead>
+
+            <tbody>
+                <template for:each={valuationMatrix} for:item="row">
+                    <tr key={row.type}>
+                        <template for:each={row.values} for:item="cell">
+                        <!-- Label -->
+                            <td key={cell.collateralId}>{cell.label}</td>
+
+                        <!-- Value / Input -->
+                            <td key={cell.collateralId}>
+                                <template if:true={cell.isInput}>
+                                    <template if:false={disabledCmp}>
+                                    <lightning-input
+                                    type="number"
+                                    value={cell.value}
+                                    data-id={cell.collateralId}
+                                    variant="label-hidden"
+                                    onblur={handleEstimateBlur}>
+                                    </lightning-input>
+                                    </template>
+                                    <template if:true={disabledCmp}>
+                                        <strong>{cell.value}</strong>
+                                    </template>
+                                </template>
+                                <template if:false={cell.isInput}>
+                                <template if:true={cell.value}>
+                                    <template if:true={isTotal}>
+                                        <strong>{cell.value}</strong>
+                                    </template>
+                                    <template if:false={isTotal}>
+                                        {cell.value}
+                                    </template>
+                                </template>
+                                <template if:false={cell.value}>
+                                    &nbsp;
+                                </template>
+                                </template>
+                            </td>
+
+                        <!-- Lowest Value Checkbox -->
+                        <td key={cell.collateralId}>
+                            <template if:true={cell.isLowest}>
+                                <lightning-input type="checkbox" checked disabled></lightning-input>
+                            </template>
+                        </td>
+                        </template>
+                    </tr>
+                </template>
+            </tbody>
+            </table>
+            <div class="slds-p-top_small slds-text-align_left">
+            <span class="slds-text-title_bold">Total Valuation : </span>
+                <span>{grandTotalFormatted}</span>
+            </div>
+
+        </div>
+    </lightning-card>
+    </template>
+   
+       <template lwc:else>
+            <div style="text-align: center; padding: 10px; border: solid 1px #000000; margin-top: 10px;">
+                <p> No collateral data found.</p>
+            </div>
+        </template>
+</template>

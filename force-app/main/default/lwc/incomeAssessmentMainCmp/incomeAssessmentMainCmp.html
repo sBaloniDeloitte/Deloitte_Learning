@@ -1,0 +1,105 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-02-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <div class="slds-scrollable_x iam-scroll-wrapper" style="overflow: auto; background: var(--dt-bg) !important;">
+    <lightning-card class="hide-header">
+        <lightning-layout>
+            <lightning-layout-item size="4" padding="around-small" style="background: var(--dt-bg) !important;">
+                <div class="iam-panel-header">
+                    Income Assessment Types
+                </div>
+                <div class="slds-p-around_medium iam-panel-body">
+                    <!-- <template for:each={incomeAssessmentOptions} for:item="opt">
+                        <lightning-input
+                            key={opt.label}
+                            type="checkbox"
+                            label={opt.label}
+                            value={opt.label}
+                            checked={opt.checked}
+                            disabled={opt.disabled}
+                            onchange={handleCheckboxChange}>
+                        </lightning-input>
+                    </template> -->
+                    <lightning-layout>
+                        <lightning-layout-item size="6">
+                            <template for:each={leftColumnOptions} for:item="opt">
+                                <lightning-input
+                                    key={opt.label}
+                                    type="checkbox"
+                                    label={opt.label}
+                                    value={opt.label}
+                                    checked={opt.checked}
+                                    disabled={opt.disabled}
+                                    onchange={handleCheckboxChange}>
+                                </lightning-input>
+                            </template>
+                        </lightning-layout-item>
+
+                        <!-- Right Column -->
+                        <lightning-layout-item size="6">
+                            <template for:each={rightColumnOptions} for:item="opt">
+                                <lightning-input
+                                    key={opt.label}
+                                    type="checkbox"
+                                    label={opt.label}
+                                    value={opt.label}
+                                    checked={opt.checked}
+                                    disabled={opt.disabled}
+                                    onchange={handleCheckboxChange}>
+                                </lightning-input>
+                            </template>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="8" padding="around-small" style="background: var(--dt-bg) !important;">
+                <div class="iam-panel-header">
+                    Existing Income Assessment Records
+                </div>
+
+                <div>
+                    <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered
+                                  slds-table_col-bordered slds-border_left slds-border_right iam-table">
+                        <thead>
+                            <tr>
+                                <th>Applicants</th>
+                                <th>Income Assessment Records</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={tableRows} for:item="row">
+                                <tr key={row.applicant}>
+                                    <td>{row.applicant}</td>
+                                    <td>
+                                        {row.recordTypes}
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </lightning-layout-item>
+
+        </lightning-layout>
+
+        <template if:true={incomeAssessmentSelectedValues.length}>
+            <div class="slds-m-top_medium iam-tabset-wrapper">
+                <lightning-tabset>
+                    <template for:each={incomeAssessmentSelectedValues} for:item="val">
+                        <lightning-tab key={val} label={val}>
+                            <p class="slds-p-around_medium">
+                              <c-hl_income-assessment-tabs-rendering-cmp record-id={recordId} show-calculator={showCalculator} tab-value={val} onincomeexpenceschanged={handleIncomeExpencesLoaded}></c-hl_income-assessment-tabs-rendering-cmp>
+                            </p>
+                        </lightning-tab>
+                    </template>
+                </lightning-tabset>
+            </div>
+        </template>
+    </lightning-card>
+    </div>
+</template>

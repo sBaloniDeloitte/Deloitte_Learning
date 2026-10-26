@@ -1,0 +1,97 @@
+@import 'c/cssLibrary';
+
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+
+:host {
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+}
+
+.slds-form-element__label {
+    color: #ffffff !important;
+}
+
+.card-panel{
+    border: 1px solid black;
+    padding: 10px;
+    margin: 10px;
+}
+.no-data-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%; /* Adjust as needed */
+    min-height: 150px; /* Prevents it from being too small */
+}
+
+.no-data-message {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #555;
+    padding: 10px;
+    border: 1px solid #ddd;
+    background-color: #f8f8f8;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.ocr-high-confidence {
+border-left: 4px solid #4bca81 !important;
+background-color: #f8fff9 !important;
+}
+
+.ocr-low-confidence {
+border-left: 4px solid #ffb75d !important;
+background-color: #fffbf5 !important;
+}
+
+.field-mismatch {
+border-right: 4px solid #e74c3c !important;
+background-color: #fdf2f2 !important;
+}
+
+.field-match {
+border-right: 4px solid #27ae60 !important;
+}
+
+.ocr-indicator {
+font-size: 0.75rem;
+color: #666;
+margin-top: 2px;
+display: flex;
+align-items: center;
+gap: 4px;
+}
+
+.ocr-processing {
+text-align: center;
+padding: 20px;
+color: #0070d2;
+background: #f4f6f9;
+border-radius: 4px;
+margin: 10px 0;
+}
+
+/* Primary action buttons (Save, Submit, Confirm, etc.) - Positive CTA:
+   #7c3aed, no border, 8px radius. */
+lightning-button[variant="brand"],
+lightning-button[variant="brand-outline"] {
+    --slds-c-button-brand-color-background: #7c3aed !important;
+    --slds-c-button-brand-color-text: #ffffff !important;
+    --slds-c-button-brand-border-color: #7c3aed !important;
+    --slds-c-button-brand-color-border: #7c3aed !important;
+    --slds-c-button-radius-border: 8px;
+    --sds-c-button-radius-border: 8px;
+    font-weight: 600;
+}
+
+/* Secondary action buttons (Cancel, Back, Close, Skip, Previous) -
+   Negative CTA: #16283f fill, 1px solid #7c3aed border, 8px radius. */
+lightning-button[variant="neutral"] {
+    --slds-c-button-neutral-color-background: #16283f !important;
+    --slds-c-button-neutral-color-text: #ffffff !important;
+    --slds-c-button-neutral-border-color: #7c3aed !important;
+    --slds-c-button-neutral-color-border: #7c3aed !important;
+    --slds-c-button-radius-border: 8px;
+    --sds-c-button-radius-border: 8px;
+}

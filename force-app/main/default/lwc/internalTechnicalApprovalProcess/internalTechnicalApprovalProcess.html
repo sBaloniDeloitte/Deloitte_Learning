@@ -1,0 +1,224 @@
+<template>
+    <lightning-card>
+        <div style="padding:1%; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
+            <template if:true={showRejectButtonToTech}>
+                <button class="SaveButton slds-button slds-button_brand"
+                    style="font-size: 11px;width: 140px;background-color: red;color: white;border-color: black;font-weight: 500;"
+                    data-name="IniReject" onclick={handleAction} onfocus={stopPropogation}
+                    onblur={stopPropogation}>Reject</button>
+            </template>
+
+            <template if:true={showApproveButton}>
+                <button class="SaveButton slds-button slds-button_brand"
+                    style="font-size: 11px;width: 140px;background-color: green;color: white;border-color: black;font-weight: 500;"
+                    data-name="Approv" onclick={handleAction} onfocus={stopPropogation}
+                    onblur={stopPropogation}>Approve</button>
+            </template>
+            <template if:true={showSubmitApprovalButton}>
+                <button class="SaveButton slds-button slds-button_brand"
+                    style="font-size: 11px;width: 140px;background-color: green;color: white;border-color: black;font-weight: 500;"
+                    data-name="submitted For Approval" onclick={handleAction} onfocus={stopPropogation}
+                    onblur={stopPropogation}>Submit for Approval</button>
+            </template>
+            <template if:true={showSendBackButton}>
+                <button class="SaveButton slds-button slds-button_brand"
+                    style="font-size: 11px;width: 140px;background-color: #FFC107;color: white;border-color: black;font-weight: 500;"
+                    data-name="Send Back" onclick={handleAction} onfocus={stopPropogation} onblur={stopPropogation}>Send
+                    Back</button>
+            </template>
+            <template if:true={showRejectButton}>
+                <button class="SaveButton slds-button slds-button_brand"
+                    style="font-size: 11px;width: 140px;background-color: red;color: white;border-color: black;font-weight: 500;"
+                    data-name="Reject" onclick={handleAction} onfocus={stopPropogation}
+                    onblur={stopPropogation}>Reject</button>
+            </template>
+            <template if:true={showEditButton}>
+                <button class="SaveButton slds-button slds-button_brand"
+                    style="font-size: 11px;width: 140px;background-color: green;color: white;border-color: black;font-weight: 500;"
+                    onclick={handleEditAction}>Edit Technical</button>
+            </template>
+            <div slot="actions">
+                <lightning-button class="upload-pictures-btn" variant="brand" label="Upload Pictures"
+                    icon-name="utility:upload" onclick={handleOpenUploadModal}>
+                </lightning-button>
+            </div>
+
+        </div>
+  
+    <template if:true={approvalData.showApprovalHistory}>
+        <hr class="slds-m-vertical_medium">  
+        <lightning-layout>
+            <lightning-layout-item size="12">
+                <div>
+                    <p slot="title" class="required-field" style="font-size: 106%;/* font-style: italic; */color: black;font-weight: bold;padding: 1%;text-align: left;">Approval History</p>
+                    <div class="slds-scrollable_y card-div"  style="overflow: hidden;padding:1%;max-height: 80%;padding-top: 3%;">
+                    
+                        <template for:each={approvalData.statusHistory} for:item="iterObj">   
+                            <div key={iterObj.timeStamp} class="slds-m-bottom_small wrapped-content" style="padding-bottom:4%">
+                                <template if:true={iterObj.isRequestor}>
+                                    <div><span style="font-weight: 700;">Timestamp</span> : <span class="data-div"><lightning-formatted-date-time value={iterObj.timeStamp} year="numeric" month="numeric" day="numeric" hour="2-digit"
+                                        minute="2-digit"></lightning-formatted-date-time></span></div>
+                                    <div><span style="font-weight: 700;">Requestor</span> : <span class="data-div">{iterObj.requestor}</span></div>
+                                    <div><span style="font-weight: 700;">Status</span> : <span class="data-div">{iterObj.status}</span></div>
+                                    <div><span style="font-weight: 700;">Remarks</span> : <div class="formatted-text">{iterObj.remarks}</div></div>                                    
+                                </template>
+
+                                <template if:false={iterObj.isRequestor}>
+                                    <div><span style="font-weight: 700;">Timestamp</span> : <span class="data-div"><lightning-formatted-date-time value={iterObj.timeStamp} year="numeric" month="numeric" day="numeric" hour="2-digit"
+                                        minute="2-digit"></lightning-formatted-date-time></span></div>
+                                    <div><span style="font-weight: 700;">Approver</span> : <span class="data-div">{iterObj.requestor}</span></div>
+                                    <div><span style="font-weight: 700;">Status</span> : <span class="data-div">{iterObj.status}</span></div>
+                                    <div><span style="font-weight: 700;">Remarks</span> : <div class="formatted-text">{iterObj.remarks}</div></div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+    </template>
+
+    </lightning-card>
+    <!-- Remarks Modal -->
+    <template if:true={showRemarksModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Add Remarks</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <lightning-textarea label="Remarks" value={remarks} onchange={handleRemarksChange}>
+                    </lightning-textarea>
+                </div>
+
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" onclick={closeModal} class="slds-m-right_small"></lightning-button>
+                    <lightning-button variant="brand" label="Save" onclick={handleConfirmAction}></lightning-button>
+                </footer>
+
+
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+
+    <template if:true={isUploadModalOpen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-modal_large slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header custom-modal-header">
+                    <lightning-button-icon class="slds-modal__close" icon-name="utility:close" alternative-text="Close"
+                        onclick={handleCloseUploadModal}>
+                    </lightning-button-icon>
+                    <h2 class="slds-text-heading_medium">Upload Files</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium slds-is-relative">
+
+                    <template if:true={isLoadingDocs}>
+                        <lightning-spinner alternative-text="Loading documents"></lightning-spinner>
+                    </template>
+
+                    <div class="slds-text-title_bold slds-m-bottom_x-small">Add Document/Picture</div>
+
+                    <div class="slds-grid slds-grid_vertical-align-center slds-gutters_x-small slds-m-bottom_small">
+                        <div class="slds-col slds-grow">
+                            <lightning-input variant="label-hidden"
+                                placeholder="Enter document name (e.g., Picture with Customer)" value={newDocName}
+                                onchange={handleNewDocNameChange}>
+                            </lightning-input>
+                        </div>
+                        <div class="slds-col">
+                            <lightning-button class="add-btn" variant="brand" label="Add" onclick={handleAddDocument}
+                                disabled={disableAdd}>
+                            </lightning-button>
+                        </div>
+                    </div>
+
+                    <!-- Hint for required docs (red title) -->
+                    <template if:true={showRequiredHint}>
+                        <div
+                            class="slds-text-align_center slds-text-color_error slds-m-bottom_small slds-text-body_small">
+                            * Documents shown in red are mandatory
+                        </div>
+                    </template>
+
+                    <!-- Widget grid -->
+                    <lightning-layout multiple-rows class="doc-grid">
+                        <template if:true={hasDocs}>
+                            <template for:each={documentList} for:item="doc">
+                                <lightning-layout-item key={doc.id} size="12" medium-device-size="6"
+                                    large-device-size="4" padding="around-small">
+                                    <div class="file-widget-outer slds-box slds-var-p_medium">
+
+                                        <!-- Title (red if required) -->
+                                        <div class={doc.titleClass} title={doc.docName}>{doc.name}</div>
+
+                                        <!-- Your existing child handles Upload / View / Delete / Retake -->
+                                        <c-upload-view-delete-document doc-detail-id={doc.id}
+                                            content-doc-id={doc.contentId} show-upload={doc.showUpload}
+                                            show-view={doc.showView} show-delete={doc.showDelete}
+                                            view-only-preview="true" show-retake={doc.showRetake}
+                                            show-widget-style="true" file-type={doc.fileType} auto-show-delete="true"
+                                            doc-name={doc.docName} onuploadsuccess={handleUploadSuccess}
+                                            ondeletedoc={handleDeletedDoc}>
+                                        </c-upload-view-delete-document>
+
+                                        <!-- Optional lat/long footer, hide by default -->
+                                        <template if:true={doc.showLatLong}>
+                                            <div class="latlong">
+                                                <div title="Latitude">Latitude: {doc.lattitude}</div>
+                                                <div title="Longitude">Longitude: {doc.longitude}</div>
+                                            </div>
+                                        </template>
+
+                                    </div>
+                                </lightning-layout-item>
+                            </template>
+                        </template>
+
+                        <template if:false={hasDocs}>
+                            <div
+                                class="slds-text-align_center slds-text-color_weak slds-m-vertical_small slds-size_1-of-1">
+                                No documents found.
+                            </div>
+                        </template>
+                    </lightning-layout>
+                </div>
+
+                <!-- footer -->
+                <footer class="slds-modal__footer slds-grid slds-grid_align-end custom-modal-footer">
+                    <button class="slds-button slds-button_neutral cancel-btn" onclick={handleCloseUploadModal}>
+                        Close
+                    </button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={showEditModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Edit Technical</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                     <p>Editing Technical will send back the stage to Assigned to Technical Manager and later will go for Approval, do you want to proceed ?</p>
+                </div>
+
+                <footer class="slds-modal__footer">
+                    <lightning-button label="Cancel" onclick={handleNo} class="slds-m-right_small"></lightning-button>
+                    <lightning-button variant="brand" label="Save" onclick={handleProceed}></lightning-button>
+                </footer>
+
+
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

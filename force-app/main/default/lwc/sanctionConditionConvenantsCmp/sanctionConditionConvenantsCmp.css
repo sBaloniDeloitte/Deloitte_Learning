@@ -1,0 +1,250 @@
+@import 'c/cssLibrary';
+
+/* ----------------- Dark Theme (matches salesLoginCollateralDetailCmp / covenant forms) ----------------- */
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-placeholder-text-color: #8a99b3;
+    --slds-c-input-label-color: #ffffff;
+
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+    --slds-c-combobox-listbox-color-background: #16283f;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+    --slds-c-combobox-label-color: #ffffff;
+
+    --slds-c-select-color-background: #16283f;
+    --slds-c-select-text-color: #ffffff;
+    --slds-c-select-color-border: #33455e;
+
+    --slds-c-textarea-color-background: #16283f;
+    --slds-c-textarea-text-color: #ffffff;
+    --slds-c-textarea-color-border: #33455e;
+
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-positive: #8b5cf6;
+    --dt-positive-hover: #7c3aed;
+    --dt-negative: #16283f;
+    --dt-add: #1467eb;
+    --dt-modal-gradient: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+}
+
+/* Belt-and-braces alongside the :host hooks above */
+lightning-input::part(input),
+lightning-select::part(select),
+lightning-combobox::part(input) {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+    height: 2.25rem !important;
+}
+
+lightning-textarea::part(textarea) {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+lightning-input[disabled]::part(input) {
+    background-color: var(--dt-panel-bg) !important;
+    color: #8a99b3 !important;
+}
+
+/* Outer wrapper - proper margin instead of flush edges */
+.slds-scrollable_x {
+    background-color: var(--dt-bg) !important;
+    padding: 1rem 1.5rem;
+    border-radius: 0.75rem;
+}
+
+/* ----------------- Tables (main list + both modal tables) -----------------
+   No overflow:hidden here on purpose - it would clip the lightning-combobox
+   dropdown listbox (it renders inline, not in a portal). Corners are rounded
+   per-cell instead, only on the actual corner cells. */
+.slds-scrollable_x table {
+    border-radius: 0.75rem;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border: 1px solid var(--dt-border) !important;
+    background-color: var(--dt-panel-bg) !important;
+    margin: 0 0.5rem 1rem;
+}
+
+.slds-scrollable_x th {
+    background-color: var(--dt-header-bg) !important;
+    color: #ffffff !important;
+    border-color: var(--dt-border) !important;
+}
+
+.slds-scrollable_x td {
+    background-color: var(--dt-panel-bg) !important;
+    color: #ffffff !important;
+    border-color: var(--dt-border) !important;
+}
+
+.slds-scrollable_x thead tr:first-child th:first-child {
+    border-top-left-radius: 0.75rem;
+}
+
+.slds-scrollable_x thead tr:first-child th:last-child {
+    border-top-right-radius: 0.75rem;
+}
+
+.slds-scrollable_x tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 0.75rem;
+}
+
+.slds-scrollable_x tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 0.75rem;
+}
+
+.add-sanction-btn-wrapper {
+    margin-bottom: 1.5rem;
+}
+
+.slds-scrollable_x th,
+.slds-scrollable_x td {
+    vertical-align: middle !important;
+}
+
+/* Product column (5th) needs more room for the search-lookup field */
+.sanction-main-table th:nth-child(5),
+.sanction-main-table td:nth-child(5) {
+    min-width: 200px;
+}
+
+.sanction-main-table lightning-combobox,
+.sanction-main-table c-search-lookup {
+    width: 100%;
+    display: block;
+}
+
+/* ----------------- CTA Buttons -----------------
+   Default .save-button covers the "Add" family (Add Sanction Conditions,
+   Add New Document, Add, Create) - blue per theme. .approve-cta overrides
+   it for genuine submit/approval actions (Send For Approval) - green. */
+.save-button,
+.save-button.slds-button_brand {
+    background-color: var(--dt-add) !important;
+    border: none !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
+.save-button.approve-cta,
+.save-button.approve-cta.slds-button_brand {
+    background-color: var(--dt-positive) !important;
+    border: none !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+}
+
+.save-button.approve-cta:hover,
+.save-button.approve-cta.slds-button_brand:hover {
+    background-color: var(--dt-positive-hover) !important;
+}
+
+.cancel-button,
+.cancel-button.slds-button_brand {
+    background-color: var(--dt-negative) !important;
+    border: none !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
+/* ----------------- Table Header -----------------
+   Overrides the hardcoded inline background-color:#5bb6e3 on <th> with the
+   theme's header color; !important in an author stylesheet beats a plain
+   (non-!important) inline style. */
+.sanction-main-table thead th {
+    background-color: var(--dt-header-bg) !important;
+    border-color: var(--dt-border) !important;
+}
+
+/* ----------------- Modal ----------------- */
+.slds-modal__container {
+    /* background-color: var(--dt-bg) !important; */
+}
+
+.slds-modal__header {
+    background: var(--dt-modal-gradient) !important;
+    color: #ffffff !important;
+    border-bottom: 1px solid var(--dt-border);
+}
+
+.slds-modal__header h2 {
+    color: #ffffff !important;
+}
+
+.slds-modal__content {
+    background-color: var(--dt-bg) !important;
+    color: #ffffff !important;
+}
+
+.slds-modal__footer {
+    background: var(--dt-modal-gradient) !important;
+    color: #ffffff !important;
+}
+
+.sanction-line {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+/*
+.slds-combobox__input {
+    width: 100% !important;
+    max-width: 150px !important;
+}*/
+
+.sanction-line::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: black; /* Line color */
+    top: 50%;
+    left: 0;
+    z-index: -1;
+}
+.sanction-row {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.sanction-row::after {
+    content: "";
+    position: absolute;
+    width: 50px; /* Adjust based on your UI */
+    height: 2px;
+    background-color: black;
+    top: 50%;
+    left: 100%;
+    margin-left: 10px; /* Adjust spacing between columns */
+}
+.slds-form-element .slds-dropdown_left .slds-listbox__option_plain {
+	width: 78%;
+}

@@ -1,0 +1,33 @@
+@import 'c/cssLibrary';
+.custom-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9000;
+}
+
+.custom-modal-container {
+    background: #ffffff;
+    width: 75%;
+    max-width: 900px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.modal-header {
+    background-color: #f3f3f3;
+}
+
+.modal-footer {
+    text-align: right;
+}
+
+:host {
+    --slds-c-combobox-listbox-max-height: 250px;
+}

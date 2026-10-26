@@ -1,0 +1,53 @@
+<template>
+    <div class="lead-dark-theme">
+        <div class="lead-header">
+            <div>
+                <div class="object-title">Leads</div>
+                <div class="listview-title">My Leads</div>
+            </div>
+            <div class="refreshBtn">
+                <lightning-button
+                    label="Refresh"
+                    icon-name="utility:refresh"
+                    onclick={handleRefresh}
+                    variant="brand">
+                </lightning-button>
+            </div>
+        </div>
+
+        <div class="lead-card">
+            <div class="lead-card">
+                <div class="table-scroll">
+                    <table class="lead-table">
+                        <thead>
+                            <tr>
+                                <th class="nameCol">Name</th>
+                                <th>Lead Number</th>
+                                <th>Mobile</th>
+                                <th>Status</th>
+                                <th class="leadTypeCol">Lead Type</th>
+                            </tr>
+                        </thead>
+                    
+                        <tbody>
+                            <template for:each={leads} for:item="lead">
+                                <tr key={lead.Id}>
+                                    <td>
+                                        <a href={lead.leadUrl} target="_blank" class="lead-link">
+                                            {lead.Name}
+                                        </a>
+                                    </td>
+                                
+                                    <td>{lead.Lead_Number__c}</td>
+                                    <td>{lead.MobilePhone}</td>
+                                    <td>{lead.Status}</td>
+                                    <td>{lead.Lead_Type__c}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</template>

@@ -1,0 +1,528 @@
+/* @import 'c/cssLibrary'; */
+
+.responsive-obligation-container {
+    padding-top: 20px;
+}
+
+.table-scroll-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Base table styling */
+/* .obligation-table {
+    width: 50%;
+    min-width: 600px;
+    border-color: #ffffff;
+    background-color: #131a35;
+} */
+
+/* .header-cell {
+    text-align: left;
+    background-color: #101f32;
+    color: #ffffff;
+    border-color: #ffffff;
+    font-weight: 600;
+    padding: 8px;
+} */
+
+/* .body-cell {
+    background-color: #101f32;
+    font-weight: 500;
+    color: #ffffff !important;
+   /* border-color: #2a3358;
+    text-align: left;
+    padding: 8px;
+} */
+ .obligation-table {
+    width: 50%;
+    min-width: 600px;
+    border: 1px solid #33455e !important;
+    border-color: #33455e !important;
+    background-color: #16283f !important;
+}
+
+.header-cell {
+    text-align: left;
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    border: 1px solid #33455e !important;
+    border-color: #33455e !important;
+    font-weight: 600;
+    padding: 8px;
+}
+
+.body-cell {
+    background-color: #16283f !important;
+    font-weight: 500;
+    color: #ffffff !important;
+    border: 1px solid #33455e !important;
+    border-color: #33455e !important;
+    text-align: left;
+    padding: 8px;
+}
+.slds-icon-text-default {
+    --slds-c-icon-color-foreground: #ffffff !important;
+}
+
+.accordion {
+    --slds-c-accordion-summary-color-background: #F3F3F3;
+}
+
+.filter-drop {
+    padding: 10px;
+}
+
+.save-button {
+    width: 110px;
+    border: none;
+    padding: 1px 0px;
+}
+
+.cancel-button {
+    width: 110px;
+    border: none;
+    padding: 1px 0px;
+}
+
+/* Filter / Add Row - dark navy background with purple outline
+   ("Previous" button look). Only colors/border changed, labels and
+   click handlers are untouched. */
+.previous-style-btn.slds-button_brand {
+    background-color: #16283f !important;
+    border: 1px solid #8b5cf6 !important;
+    color: #ffffff !important;
+}
+
+.previous-style-btn.slds-button_brand:hover {
+    background-color: #1f3550 !important;
+    border-color: #a855f7 !important;
+}
+
+/* Reset / Save Obligations - solid purple ("Start Application" look).
+   Only colors/border changed, labels and click handlers are untouched. */
+.start-app-style-btn.slds-button_brand {
+    background-color: #8b5cf6 !important;
+    border-color: #8b5cf6 !important;
+    color: #ffffff !important;
+}
+
+.start-app-style-btn.slds-button_brand:hover {
+    background-color: #7c3aed !important;
+    border-color: #7c3aed !important;
+}
+
+.filter-divs {
+    width: 14%;
+}
+
+@media only screen and (max-width: 768px) {
+    .obligation-table {
+        width: 100%;
+        min-width: unset;
+    }
+
+    .table-scroll-container {
+        width: 100%;
+    }
+
+    .width-13 {
+        width: 100% !important;
+        margin-bottom: 0.75rem;
+    }
+
+    .slds-m-horizontal_small {
+        margin-left: 0 !important;
+        margin-right: 0 !important;
+    }
+
+    .save-button,
+    .cancel-button {
+        width: 100% !important;
+        margin-bottom: 0.75rem;
+    }
+
+    .filter-drop > lightning-input {
+        width: 100%;
+        margin-bottom: 0.75rem;
+        white-space: nowrap;
+    }
+
+    /* Fix for Select All label breaking */
+    .slds-col.slds-size_3-of-12 {
+        width: 100% !important;
+    }
+
+    .filter-drop lightning-input[type="checkbox"] {
+        white-space: nowrap;
+        display: inline-flex;
+        align-items: center;
+    }
+}
+/* =========================================================
+   MAIN OBLIGATION TABLE
+   ========================================================= */
+
+.doc-table-css {
+    width: 100%;
+    min-width: 1500px;
+    border-collapse: collapse !important;
+
+    /* SLDS TABLE HEADER/BODY OVERRIDES */
+    --slds-c-table-heading-color-background: #16283f;
+    --slds-c-table-heading-text-color: #ffffff;
+    --slds-c-table-cell-color-background: #16283f;
+    --slds-c-table-cell-text-color: #ffffff;
+
+    background-color: #16283f !important;
+    border: 1px solid #33455e !important;
+}
+
+
+/* =========================================================
+   TABLE HEADER
+   ========================================================= */
+
+.doc-table-css > thead > tr > th {
+    background-color:  #16283f !important;
+    background: #16283f !important;
+
+    color: #ffffff !important;
+
+    font-weight: 700 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+
+    border: 1px solid #33455e !important;
+
+    padding: 8px 10px !important;
+}
+
+
+/* Header text */
+
+/* .doc-table-css > thead > tr > th,
+.doc-table-css > thead > tr > th *,
+.doc-table-css > thead > tr > th .slds-truncate {
+    background-color: #16283f   !important;
+    color: #ffffff !important;
+} */
+ .doc-table-css > thead > tr > th,
+.doc-table-css > thead > tr > th *,
+.doc-table-css > thead > tr > th .slds-truncate {
+    background-color: transparent !important;
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   TABLE BODY
+   ========================================================= */
+
+/* .doc-table-css > tbody > tr > td {
+    background-color: #101f32 !important;
+    background: #101f32 !important;
+
+    color: #ffffff !important;
+
+    border: 1px solid #536579 !important;
+
+    text-align: center !important;
+    vertical-align: middle !important;
+
+    padding: 7px 10px !important;
+} */
+ .doc-table-css > tbody > tr > td {
+    background-color: #16283f !important;
+    background: #16283f !important;
+
+    color: #ffffff !important;
+
+    border: 1px solid #33455e !important;
+
+    text-align: center !important;
+    vertical-align: middle !important;
+
+    padding: 7px 10px !important;
+}
+
+
+/* Body text */
+
+.doc-table-css > tbody > tr > td,
+.doc-table-css > tbody > tr > td *,
+.doc-table-css > tbody > tr > td .slds-truncate,
+.doc-table-css > tbody > tr > td .slds-cell-wrap {
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   TABLE ROW
+   ========================================================= */
+
+.doc-table-css > tbody > tr {
+    background-color: #16283f !important;
+}
+
+
+/* =========================================================
+   HOVER
+   ========================================================= */
+
+.doc-table-css > tbody > tr:hover > td {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+}
+
+
+/* =========================================================
+   STICKY HEADER
+   ========================================================= */
+
+.doc-table-css > thead {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.doc-table-css > thead > tr > th {
+    position: sticky;
+    top: 0;
+    z-index: 11;
+    /* background-color: #1688f300 !important; */
+     background-color: #16283f !important;
+}
+
+
+/* =========================================================
+   SORT ICONS
+   ========================================================= */
+
+.doc-table-css lightning-button-icon {
+    --slds-c-icon-color-foreground-default: #ffffff !important;
+    --slds-c-button-color-background: transparent !important;
+}
+
+
+/* =========================================================
+   DPD
+   ========================================================= */
+
+.doc-table-css tbody td[style*="green"] {
+    background: green !important;
+    color: #ffffff !important;
+}
+
+.doc-table-css tbody td[style*="red"] {
+    background: red !important;
+    color: #ffffff !important;
+}
+.slds-scrollable::-webkit-scrollbar {
+    height: 10px;
+}
+
+.slds-scrollable::-webkit-scrollbar-track {
+    background: #071426 !important;
+}
+
+.slds-scrollable::-webkit-scrollbar-thumb {
+    background: #7a8795 !important;
+    border-radius: 5px;
+}
+
+.slds-scrollable::-webkit-scrollbar-thumb:hover {
+    background: #9aa7b5 !important;
+}
+/* ================= LOAN TYPE DROPDOWN ================= */
+
+.loan-type-combobox {
+    --slds-c-input-color-background: #192d45;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #718096;
+    --slds-c-input-radius-border: 4px;
+}
+
+/* Selected value / input */
+.loan-type-combobox input {
+    background-color: #192d45 !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    border: 1px solid #718096 !important;
+}
+
+/* Placeholder */
+.loan-type-combobox input::placeholder {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* Dropdown arrow */
+.loan-type-combobox .slds-input__icon {
+    color: #9aa7b5 !important;
+}
+
+/* Dropdown list */
+.loan-type-combobox .slds-listbox {
+    background-color: #192d45 !important;
+    border: 1px solid #536579 !important;
+}
+
+/* Dropdown options */
+.loan-type-combobox .slds-listbox__option {
+    background-color: #192d45 !important;
+    color: #ffffff !important;
+}
+
+/* Hover option */
+.loan-type-combobox .slds-listbox__option:hover {
+    background-color: #16263a !important;
+    color: #ffffff !important;
+}
+
+/* Selected option */
+.loan-type-combobox .slds-listbox__option.slds-is-selected {
+    background-color: #1688f3 !important;
+    color: #ffffff !important;
+}
+/* =========================================================
+   UNIFIED TABLE COLORS - SAME AS APPLICANT DETAILS
+   ========================================================= */
+
+.obligation-div table,
+.obligation-div table thead,
+.obligation-div table tbody,
+.obligation-div table tr,
+.obligation-div table th,
+.obligation-div table td {
+    border-color: #33455e !important;
+}
+
+/* All table cells */
+.obligation-div .slds-table th,
+.obligation-div .slds-table td {
+    border-top-color: #33455e !important;
+    border-bottom-color: #33455e !important;
+}
+
+/* Vertical cell borders */
+.obligation-div .slds-table_col-bordered th,
+.obligation-div .slds-table_col-bordered td {
+    border-left-color: #33455e !important;
+    border-right-color: #33455e !important;
+}
+
+/* ================= START DATE CALENDAR (DATEPICKER) DARK THEME =================
+   The Start Date calendar popup defaults to SLDS light theme (white
+   background), which looks out of place against the dark page. These
+   design-token overrides + selector fallbacks recolor it to match the
+   rest of the screen. Only colors changed - the calendar's open/close
+   and date-selection behavior is untouched. */
+.obligation-div,
+:host {
+    --slds-c-calendar-color-background: #16283f;
+    --slds-c-calendar-text-color: #ffffff;
+    --slds-c-calendar-color-border: #33455e;
+    --slds-c-calendar-header-text-color: #ffffff;
+    --slds-c-calendar-day-text-color: #ffffff;
+    --slds-c-calendar-day-color-background-hover: #1f3550;
+    --slds-c-calendar-day-color-background-selected: #8b5cf6;
+    --slds-c-calendar-day-text-color-selected: #ffffff;
+    --slds-c-calendar-day-color-background-today: #1f3550;
+    --slds-c-icon-color-foreground: #ffffff;
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+.slds-datepicker,
+.obligation-div .slds-datepicker {
+    background-color: #16283f !important;
+    border: 1px solid #33455e !important;
+    color: #ffffff !important;
+}
+
+.slds-datepicker .slds-datepicker__filter,
+.slds-datepicker .slds-datepicker__filter_month,
+.slds-datepicker .slds-datepicker__filter_year {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+}
+
+.slds-datepicker select,
+.slds-datepicker .slds-select {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    border-color: #33455e !important;
+}
+
+.slds-datepicker table {
+    background-color: #16283f !important;
+}
+
+.slds-datepicker th,
+.slds-datepicker th abbr {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    border-color: #33455e !important;
+}
+
+.slds-datepicker td {
+    background-color: #16283f !important;
+    border-color: #33455e !important;
+}
+
+.slds-datepicker .slds-day {
+    color: #ffffff !important;
+}
+
+.slds-datepicker td.slds-disabled-text .slds-day {
+    color: #647895 !important;
+}
+
+.slds-datepicker td:hover .slds-day,
+.slds-datepicker td:focus .slds-day {
+    background-color: #1f3550 !important;
+    color: #ffffff !important;
+}
+
+.slds-datepicker .slds-is-selected .slds-day {
+    background-color: #8b5cf6 !important;
+    color: #ffffff !important;
+}
+
+.slds-datepicker .slds-is-today .slds-day {
+    border: 1px solid #8b5cf6 !important;
+}
+
+/* Prev/next month nav arrows */
+.slds-datepicker__filter_month button,
+.slds-datepicker__filter_month lightning-button-icon,
+.slds-datepicker__filter_month .slds-button {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+}
+
+/* ================= LOAN TYPE DROPDOWN SCROLLBAR (BLUE/GREY) ================= */
+/* Only the scrollbar color of the Loan Type dropdown list is changed
+   to match the app's grey scrollbar convention used elsewhere on this
+   screen - opening/searching/selecting behavior is untouched. */
+.loan-type-combobox .slds-listbox {
+    scrollbar-color: #7a8795 #16283f;
+    scrollbar-width: thin;
+}
+
+.loan-type-combobox .slds-listbox::-webkit-scrollbar {
+    width: 8px;
+}
+
+.loan-type-combobox .slds-listbox::-webkit-scrollbar-track {
+    background: #16283f !important;
+}
+
+.loan-type-combobox .slds-listbox::-webkit-scrollbar-thumb {
+    background: #7a8795 !important;
+    border-radius: 5px;
+}
+
+.loan-type-combobox .slds-listbox::-webkit-scrollbar-thumb:hover {
+    background: #9aa7b5 !important;
+}

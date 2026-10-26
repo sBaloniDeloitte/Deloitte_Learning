@@ -1,0 +1,229 @@
+<template>
+    <div class="demographic-container">
+
+<div class="component-header">
+
+    <div class="header-left">
+
+        <div class="profile-photo-wrapper">
+            <img
+                src={profilePhoto}
+                alt="Student profile"
+                class="profile-photo"
+            />
+        </div>
+
+        <div class="header-title">
+
+            <div class="title-main">
+                Demographic details
+            </div>
+
+            <div class="title-name">
+                {fullName}
+            </div>
+
+        </div>
+
+    </div>
+
+    <button
+        class="unmask-button"
+        onclick={handleUnmask}>
+        {unmaskLabel}
+    </button>
+
+</div>
+
+
+        <!-- IDENTITY -->
+        <section class="detail-section">
+
+            <div class="section-title">IDENTITY</div>
+
+            <div class="details-grid">
+
+                <div class="detail-item">
+                    <span class="label">Full name</span>
+                    <span class="value">{fullName}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Date of birth</span>
+                    <span class="value">{dateOfBirth}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Sex</span>
+                    <span class="value">{sex}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Marital status</span>
+                    <span class="value">Not available</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Nationality</span>
+                    <span class="value">Not available</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Father's name</span>
+                    <span class="value">Not available</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Role in household</span>
+                    <span class="value">Not available</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Dependants</span>
+                    <span class="value">Not available</span>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- CONTACT -->
+        <section class="detail-section">
+
+            <div class="section-title">CONTACT</div>
+
+            <div class="details-grid">
+
+                <div class="detail-item">
+                    <span class="label">Primary mobile</span>
+                    <span class="value">{primaryMobile}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Alternate mobile</span>
+                    <span class="value">{alternateMobile}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Email</span>
+                    <span class="value">Not available</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Preferred channel</span>
+                    <span class="value">Not available</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Language</span>
+                    <span class="value">English</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Best time to call</span>
+                    <span class="value">Not available</span>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- IDENTIFICATION -->
+        <section class="detail-section">
+
+            <div class="section-title">IDENTIFICATION</div>
+
+            <div class="details-grid">
+
+                <div class="detail-item">
+                    <span class="label">PAN</span>
+                    <span class="value masked">{displayPan}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Aadhaar</span>
+                    <span class="value masked">{displayAadhaar}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Passport</span>
+                    <span class="value masked">{displayPassport}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">CKYC number</span>
+                    <span class="value">Not available</span>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- ADDRESS -->
+        <section class="detail-section">
+
+            <div class="section-title">ADDRESS</div>
+
+            <div class="details-grid">
+
+                <div class="detail-item full-width">
+                    <span class="label">Current address</span>
+                    <span class="value">{currentAddress}</span>
+                </div>
+
+                <div class="detail-item full-width">
+                    <span class="label">Permanent address</span>
+                    <span class="value">{permanentAddress}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Communication address</span>
+                    <span class="value">{communicationAddress}</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Residence type</span>
+                    <span class="value">Permanent</span>
+                </div>
+
+                <div class="detail-item full-width">
+                    <span class="label">Address verified</span>
+                    <span class="value">No</span>
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- BACKGROUND -->
+        <section class="detail-section">
+
+            <div class="section-title">BACKGROUND</div>
+
+            <div class="details-grid">
+
+                <div class="detail-item">
+                    <span class="label">Highest qualification</span>
+                    <span class="value">Master</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Institution</span>
+                    <span class="value">Delhi University</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Occupation</span>
+                    <span class="value">Engineer</span>
+                </div>
+
+                <div class="detail-item">
+                    <span class="label">Income</span>
+                    <span class="value">Not available</span>
+                </div>
+
+            </div>
+        </section>
+
+    </div>
+</template>

@@ -1,0 +1,126 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 03-19-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={isloading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </template>
+    <div class="journey-layout">
+    <div class="journey-side-column">
+        <c-process-journey-cmp record-id={recordId} onvaluechange={handleProcessJourneyNavigate}></c-process-journey-cmp>
+    </div>
+    <div class="journey-main-column">
+    <template if:true={isLoginCheckList}>
+        <div class="container accordian" style="border-radius: 5px; border: 1px solid; margin: 8px 5px 1px 10px;">
+            <div  style="padding: 1%;">
+                <!-- class="button-container" -->
+                
+                <button if:true={showOpenAll} type="button" class="slds-button slds-button_brand save-button" onclick={openAllSections}>Open All</button>
+                <button type="button" if:true={showCloseAll} class="slds-button slds-button_brand previous-button" onclick={closeAllSections}>Close All</button>
+                <!-- <lightning-button label="Open All" onclick={openAllSections}></lightning-button>
+                <lightning-button label="Close All" onclick={closeAllSections}></lightning-button> -->
+            </div>
+            <lightning-accordion allow-multiple-sections-open active-section-name={openSections}>
+            <!-- active-section-name={activeSection} -->
+                <template for:each={stages} for:item="stage">
+                    <lightning-accordion-section key={stage.name} style="background-color: white; font-weight:500"   name={stage.name} label={stage.name} 
+                        onclick={handleAccordionClick}>
+                        <template if:true={stage.showLoanSummary}>
+                            <c-sales-loan-login-generic-screen-cmp current-app-seq={stage.sequence} passed-screen-name={stage.passedScreenName} record-id={recordId} active-section={activeSection} onrefreshmenucmp={handleRefreshCmp} onhighlightactivescreen={handleHighLightScreen} hide-next={appOtherDetails} login-checklist={stage.showLoanSummary} onrefreshactions={refreshaction}></c-sales-loan-login-generic-screen-cmp>
+                        </template>
+                        <template if:true={stage.showApplicantSummary}>
+                            <c-sales-loan-login-generic-screen-cmp current-app-seq={stage.sequence} passed-screen-name={stage.passedScreenName} record-id={recordId} active-section={activeSection} onrefreshmenucmp={handleRefreshCmp} onhighlightactivescreen={handleHighLightScreen} hide-next={appOtherDetails} onrefreshactions={refreshaction}></c-sales-loan-login-generic-screen-cmp>
+                        </template>
+                        <template if:true={stage.loginChecklist}>
+                            <c-sales-login-applicant-information-cmp login-checklist={stage.loginChecklist} record-id={recordId} other-info={applicantOtherDetails} passed-screen-name={stage.passedScreenName} form-name={stage.passedScreenName} ></c-sales-login-applicant-information-cmp>
+                        </template>
+                        <template if:true={stage.showdocchecklist}>
+                            <c-sales-all-documents-loan record-id={recordId} login-checklist={stage.showdocchecklist} onnavigatetootherdet={navToOtherDetails}></c-sales-all-documents-loan>
+                        </template>
+                        <template if:true={stage.showIncomeEligibility}>
+                            <c-sales-income-eligibility-cmp record-id={recordId} login-checklist={stage.showIncomeEligibility} form-name="Bank Statement Analysis Checklist" passed-screen-name="Bank Statement Analysis Checklist" ></c-sales-income-eligibility-cmp>
+                            <c-sales-income-eligibility-cmp record-id={recordId} login-checklist={stage.showIncomeEligibility} form-name="Financial Statement Analysis Checklist" passed-screen-name="Financial Statement Analysis Checklist" ></c-sales-income-eligibility-cmp>
+                        </template>
+                    </lightning-accordion-section>
+                </template>
+                
+            </lightning-accordion>
+        </div>
+    </template>
+    <template if:false={isLoginCheckList}>
+        <div class="container accordian" style="border-radius: 5px; border: 1px solid; margin: 8px 5px 1px 10px;">
+            <lightning-accordion  active-section-name={activeSection.name}>
+            <!-- active-section-name={activeSection} -->
+                <template for:each={stages} for:item="stage">
+                    <lightning-accordion-section key={stage.name} style="background-color: white; font-weight:500"   name={stage.name} label={stage.name} 
+                        onclick={handleAccordionClick} onfocus={handleAccordianClickFocus} onblur={handleAccordianClickFocus}>
+                        <template if:true={rerenderCmp}>
+                            <c-sales-loan-login-generic-screen-cmp current-app-seq={stage.sequence} passed-screen-name={passedScreenName} record-id={recordId} active-section={activeSection} onrefreshmenucmp={handleRefreshCmp} onhighlightactivescreen={handleHighLightScreen} hide-next={appOtherDetails} oncallloandetails={callLoanDetails} onopenpreviousscreen={handleOpenProductDet} onrefreshactions={refreshaction} onnavigatetonexttab={navigateNext}></c-sales-loan-login-generic-screen-cmp>
+                        </template>
+                        <template if:true={applicantOtherDetails}>
+                            <c-sales-login-applicant-information-cmp login-checklist={loginChecklist} record-id={recordId} other-info={applicantOtherDetails} passed-screen-name={passedScreenName} form-name={passedScreenName} onnavigatetonexttab={navigateNext}></c-sales-login-applicant-information-cmp>
+                        </template>
+                        <template if:true={loginChecklist}>
+                            <c-sales-login-applicant-information-cmp login-checklist={loginChecklist} record-id={recordId} other-info={applicantOtherDetails} passed-screen-name={passedScreenName} form-name={passedScreenName} onnavigatetonexttab={navigateNext}></c-sales-login-applicant-information-cmp>
+                        </template>
+                        <template if:true={applicantDetails}>
+                            <c-sales-login-applicant-information-cmp  record-id={recordId} login-checklist={loginChecklist} other-info={applicantDetails} passed-screen-name={passedScreenName} form-name={passedScreenName} onnavigatetonexttab={navigateNext}></c-sales-login-applicant-information-cmp>
+                        </template>
+                        <template if:true={showApplicantOtherInfo}>
+                            <c-sales-login-applicant-other-information-cmp  record-id={recordId}  active-section={activeSection} passed-screen-name={passedScreenName} form-name ={formName} onrefreshmenucmp={handleRefreshCmp} onnavigatetonexttab={navigateNext} onrefreshmenucmpfinal={handleRefreshCmpFinal}></c-sales-login-applicant-other-information-cmp>
+                            
+                        </template>
+                        <template if:true={showdoc}>
+                            <c-sales-all-documents-loan record-id={recordId} onrefreshmenucmp={handleRefreshCmp} login-checklist={showdocchecklist} onnavigatetonexttab={navigateNext}></c-sales-all-documents-loan>
+                        </template>
+                        <template if:true={showdocchecklist}>
+                            <c-sales-all-documents-loan record-id={recordId} onrefreshmenucmp={handleRefreshCmp} login-checklist={showdocchecklist} onnavigatetonexttab={navigateNext}></c-sales-all-documents-loan>
+                        </template>
+                        <template if:true={showException}>
+                            <c-loan-approval-process record-id={recordId} onrefreshmenucmp={handleRefreshCmp} approval-type="Exception Approval"></c-loan-approval-process>
+                        </template>
+                        <template if:true={showBSA}>
+                            <c-sales-income-eligibility-cmp record-id={recordId} login-checklist={showIncomeEligibility} form-name={formName} passed-screen-name={passedScreenName}></c-sales-income-eligibility-cmp>
+                        </template>
+                        <template if:true={showGSTScreen}>
+                            <!--<c-gst-screen-cmp record-id={recordId}></c-gst-screen-cmp>-->
+                            <c-gst-authentication-cmp record-id={recordId}></c-gst-authentication-cmp>
+                        </template>
+                        <template if:false={stage.showdoc}>
+                                    <template if:true={showDirectorsDetails} >
+                                       <c-director-details-cmp record-id={recordId}></c-director-details-cmp>
+                                    </template>
+                        </template>
+                        <template if:true={showFSA}>
+                            <c-fsa-cmp record-id={recordId}></c-fsa-cmp>
+                        </template>
+                        <template if:true={showITRScreen}>
+                            <c-itr-screen-cmp record-id={recordId} onnavigatetonexttab={navigateNext}></c-itr-screen-cmp>
+                        </template>
+                        <template if:true={showIncomeAssessment}>
+                            <c-income-assessment-main-cmp record-id={recordId} onnavigatetonexttab={navigateNext}></c-income-assessment-main-cmp>
+                        </template>
+                        <template if:true={showIncomeEligibility}>
+                            <c-sales-income-eligibility-cmp record-id={recordId} login-checklist={showIncomeEligibility} form-name="Bank Statement Analysis Checklist" passed-screen-name="Bank Statement Analysis Checklist" ></c-sales-income-eligibility-cmp>
+                            <c-sales-income-eligibility-cmp record-id={recordId} login-checklist={showIncomeEligibility} form-name="Financial Statement Analysis Checklist" passed-screen-name="Financial Statement Analysis Checklist" ></c-sales-income-eligibility-cmp>
+                        </template>
+                        <template if:true={showCollateral}>
+                            <c-sales-login-collateral-detail-cmp record-id={recordId}  onnavigatetonexttab={navigateNext}></c-sales-login-collateral-detail-cmp>
+                        </template>
+                        <template if:true={showBuilderSellerDetails}>
+                            <c-sales-login-builder-seller-details record-id={recordId} form-name={formName} passed-screen-name={passedScreenName} active-section={activeSection}></c-sales-login-builder-seller-details>
+                        </template>
+                    </lightning-accordion-section>
+                </template>
+                
+            </lightning-accordion>
+        </div>
+    </template>
+    </div>
+    </div>
+</template>

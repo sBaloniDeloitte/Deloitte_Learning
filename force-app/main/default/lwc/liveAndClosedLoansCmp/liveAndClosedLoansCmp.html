@@ -1,0 +1,214 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 03-19-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <span class="styleContainerDiv"></span>
+    <div class="sub-tab-div">
+        <div if:false={fromSales}  style="width: 15%;margin-bottom: 10px;">
+            <lightning-combobox name="progress" label="Status" value={value} placeholder="Select Applicant"
+                options={options} onchange={handleChange} variant="label-hidden" class="applicant-combobox"></lightning-combobox>
+
+        </div>
+
+        <div class="content slds-scrollable-x">
+            <div class="slds-scrollable-x slds-scrollable-y external-events slds-scrollable"
+                style="max-height:20rem;">
+                <template if:true={recordData.length}>
+                <table
+                    class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right doc-table-css"
+                    style="overflow-y: scroll; overflow-x: scroll;" border="2">
+                    <thead>
+                        <tr class="slds-line-height_reset" style="width:2px; word-wrap:break-word;">
+                            <th class="tableCss" scope="col">
+                                <div class="slds-truncate" style="text-align: center;" title="Name">Sr. No.
+                                </div>
+                            </th>
+                            <th class="tableCss" scope="col">
+                                <div class="slds-truncate" style="text-align: center;" title="Applicant Type">
+                                    Customer Name</div>
+                            </th>
+                            <th class="tableCss" scope="col">
+                                <div class="slds-truncate" style="text-align: center;" title="Mobile Number">
+                                    Customer Type</div>
+                            </th>
+                            <th class="tableCss" scope="col">
+                                <div class="slds-truncate" style="text-align: center;" title="Bank">Account Type
+                                </div>
+                            </th>
+                            <th class="tableCss" scope="col">
+                                <div class="slds-truncate" style="text-align: center;" title="Status">Loan
+                                    Amount</div>
+                            </th>
+                            <template if:true={isHLRelated}>
+                            <th class="tableCss" scope="col">
+                                <div class="slds-truncate" style="text-align: center;" title="Status">
+                                    Balance Tenure</div>
+                            </th>
+                            </template>
+                            <th class="tableCss" scope="col">
+                                <div class="slds-truncate" style="text-align: center;" title="Status">Current
+                                    Balance</div>
+                            </th>
+                            <th class="tableCss" scope="col">
+                                <div class="slds-truncate" style="text-align: center;" title="Status">Overdue
+                                </div>
+                            </th>
+                            <th class="tableCss" scope="col">
+                                <div class="slds-truncate" style="text-align: center;" title="Status">Ownership
+                                </div>
+                            </th>
+                            <th class="tableCss" scope="col">
+                                <div class="slds-truncate" style="text-align: center;" title="Status">Start Date
+                                </div>
+                            </th>
+                            <th class="tableCss" scope="col">
+                                <div class="slds-truncate" style="text-align: center;" title="Status">Last
+                                    Payment Date</div>
+                            </th>
+                            <th class="tableCss" scope="col">
+                                <div class="slds-truncate" style="text-align: center;" title="Status">DPD in
+                                    Tradeline</div>
+                            </th>
+                            <th class="tableCss" scope="col">
+                                <div class="slds-truncate" style="text-align: center;" title="Status">DPD</div>
+                            </th>
+                            <!--
+                            <th class="tableCss" scope="col">
+                                <div class="slds-truncate" style="text-align: center;" title="Status">Status
+                                </div>
+                            </th>-->
+                            <th class="tableCss" scope="col">
+                                <div class="slds-truncate" style="text-align: center;" title="Status">
+                                    Secured/Unsecured</div>
+                            </th>
+                            <th class="tableCss" scope="col">
+                                <div class="slds-truncate" style="text-align: center;" title="Status">Reported
+                                    Date</div>
+                            </th>
+                            <th class="tableCss" scope="col">
+                                <div class="slds-truncate" style="text-align: center;" title="Status">Credit
+                                    Remarks</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={recordData} for:item="rec" for:index="index">
+                            <tr class="slds-line-height_reset" key={rec.intDetRecordId}>
+                                <td scope="row" class="tableCss" >
+                                    <div class="slds-truncate slds-cell-wrap" >
+                                        {rec.docCount}</div>
+                                </td>
+                                <td scope="row" class="tableCss" >
+                                    <div class="slds-truncate slds-cell-wrap" >
+                                        {rec.customerName}</div>
+                                </td>
+                                <td scope="row" class="tableCss" >
+                                    <div class="slds-truncate slds-cell-wrap" >
+                                        {rec.customerType}</div>
+                                </td>
+                                <td scope="row" class="tableCss" >
+                                    <div class="slds-truncate slds-cell-wrap" >
+                                        {rec.accountType}</div>
+                                </td>
+                                <td scope="row" class="tableCss" >
+                                    <div class="slds-truncate slds-cell-wrap" >
+                                        {rec.loanAmount}</div>
+                                </td>
+                                <template if:true={isHLRelated}>
+                                <td scope="row" class="tableCss" >
+                                    <div class="slds-truncate slds-cell-wrap" >
+                                        {rec.balanceTenure}</div>
+                                </td>
+                                </template>
+                                <td scope="row" class="tableCss" >
+                                    <div class="slds-truncate slds-cell-wrap" >
+                                        {rec.currentBalance}</div>
+                                </td>
+                                <td scope="row" class="tableCss" >
+                                    <div class="slds-truncate slds-cell-wrap" >
+                                        {rec.overdue}</div>
+                                </td>
+                                <td scope="row" class="tableCss" >
+                                    <div class="slds-truncate slds-cell-wrap" >
+                                        {rec.ownership}</div>
+                                </td>
+                                <td scope="row" class="tableCss" >
+                                    <div class="slds-truncate slds-cell-wrap" >
+                                        {rec.startDate}</div>
+                                </td>
+                                <td scope="row" class="tableCss" >
+                                    <div class="slds-truncate slds-cell-wrap" >
+                                        {rec.lastPaymentDate}</div>
+                                </td>
+                                <template if:true={rec.isDPDRed}>
+                                    <td scope="row" class="tableCss" style="background: red;">
+                                    
+                                        <div class="slds-truncate slds-cell-wrap" style="color: white;">
+                                            {rec.dpdTradeline}
+                                        </div>
+                                        </td>
+                                </template>
+                                <template if:false={rec.isDPDRed}>
+                                    <td scope="row" class="tableCss" style="background: green;">
+                                    
+                                        <div class="slds-truncate slds-cell-wrap" style="color: white;">
+                                            {rec.dpdTradeline}
+                                        </div>
+                                        </td>
+                                </template>
+                                <td scope="row" class="tableCss">
+                                    <div class="slds-truncate slds-cell-wrap" style="width: 300px;">
+                                        {rec.dpd}
+                                    </div>
+                                </td>
+                                <!--
+                                <td scope="row" class="tableCss" style="text-align: center;">
+                                    <div class="slds-truncate slds-cell-wrap" style="text-align: center;">
+                                        <lightning-combobox name="status" label="Status" value={statusValue}
+                                            placeholder="Select Status" options={statusOptions}
+                                            onchange={handleStatusChange} variant="label-hidden"></lightning-combobox>
+                                    </div>
+                                </td>-->
+                                <td scope="row" class="tableCss">
+                                    <div class="slds-truncate slds-cell-wrap">
+                                        {rec.securedUnsecured}
+                                    </div>
+                                </td>
+                                <td scope="row" class="tableCss" >
+                                    <div class="slds-truncate slds-cell-wrap" >
+                                        {rec.reportedDate}
+                                    </div>
+                                </td>
+                                <td scope="row" class="tableCss" >
+                                    <div class="slds-truncate slds-cell-wrap" >
+                                        <template if:true={fromSales}>
+                                            <lightning-input type="text" label="Enter some text" value={rec.creditRemarks} disabled 
+                                                data-id={rec.intDetRecordId} variant="label-hidden" title={rec.creditRemarks} onblur={handleInputFocus}  class="credit-remarks-input">
+                                            </lightning-input>
+                                        </template>
+                                        <template if:false={fromSales}>
+                                            <lightning-input type="text" label="Enter some text" value={rec.creditRemarks} disabled={isDisabled}
+                                                data-id={rec.intDetRecordId} variant="label-hidden" title={rec.creditRemarks} onblur={handleInputFocus}  class="credit-remarks-input">
+                                            </lightning-input>
+                                        </template>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+                </template>
+                <template if:false={recordData.length}>
+                <div class="slds-text-align_center slds-p-top_medium slds-text-heading_medium slds-text-title_bold">
+                    No {type} loan records found to display.
+                </div>
+
+        </template>
+            </div>
+        </div>
+    </div>
+</template>

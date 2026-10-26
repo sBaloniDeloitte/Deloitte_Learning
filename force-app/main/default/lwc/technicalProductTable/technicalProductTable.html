@@ -1,0 +1,39 @@
+<template>
+    <template if:true={showAllProducts}>
+        <div class="slds-box slds-m-around_small" style="overflow: auto;">
+            <table
+                class="table-class slds-box slds-table slds-table_bordered slds-table_cell-buffer slds-table_striped">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="tdBorderHeader" scope="col"
+                            style="text-align: center; background-color: #87CEEB;color:#181818;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px;">
+                            Product Name</th>
+                        <th class="tdBorderHeader" scope="col"
+                            style="text-align: center; background-color: #87CEEB;color:#181818;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px;">
+                            Sub Product</th>
+                        <th class="tdBorderHeader" scope="col"
+                            style="text-align: center; background-color: #87CEEB;color:#181818;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px;">
+                            Loan Purpose</th>
+                        <th class="tdBorderHeader" scope="col"
+                            style="text-align: center; background-color: #87CEEB;color:#181818;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px;">
+                            Repayment Variant</th>
+                        <th class="tdBorderHeader" scope="col"
+                            style="text-align: center; background-color: #87CEEB;color:#181818;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px;">
+                            Sub Variant</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={products} for:item="product">
+                        <tr key={product.Id}>
+                            <td class="tdBorderHeader" style="text-align: center;">{product.prodName}</td>
+                            <td class="tdBorderHeader" style="text-align: center;">{product.subProdName}</td>
+                            <td class="tdBorderHeader" style="text-align: center;">{product.loanPurpose}</td>
+                            <td class="tdBorderHeader" style="text-align: center;">{product.variant}</td>
+                            <td class="tdBorderHeader" style="text-align: center;">{product.subvariantName}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </template>
+</template>

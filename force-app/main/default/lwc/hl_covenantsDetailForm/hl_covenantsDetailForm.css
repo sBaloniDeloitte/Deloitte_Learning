@@ -1,0 +1,265 @@
+@import "c/cssLibrary";
+
+/* ----------------- Dark Theme (matches salesLoginCollateralDetailCmp) ----------------- */
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-placeholder-text-color: #8a99b3;
+    --slds-c-input-label-color: #ffffff;
+
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+    --slds-c-combobox-listbox-color-background: #16283f;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+    --slds-c-combobox-label-color: #ffffff;
+
+    --slds-c-select-color-background: #16283f;
+    --slds-c-select-text-color: #ffffff;
+    --slds-c-select-color-border: #33455e;
+
+    --slds-c-textarea-color-background: #16283f;
+    --slds-c-textarea-text-color: #ffffff;
+    --slds-c-textarea-color-border: #33455e;
+
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-positive: #1467eb;
+    --dt-negative: #16283f;
+
+}
+
+/* Belt-and-braces alongside the :host hooks above - covers base component
+   versions that read ::part() rather than the styling hooks. Height is
+   pinned equal across single-line fields; textarea is excluded on purpose. */
+lightning-input::part(input),
+lightning-select::part(select),
+lightning-combobox::part(input) {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+    height: 2.25rem !important;
+}
+
+lightning-textarea::part(textarea) {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+lightning-input[disabled]::part(input) {
+    background-color: var(--dt-panel-bg) !important;
+    color: #8a99b3 !important;
+}
+
+/* Outer wrapper - proper margin/padding instead of flush edges */
+.slds-scrollable_x {
+    background-color: var(--dt-bg) !important;
+    padding: 1rem 1.5rem;
+    border-radius: 0.75rem;
+}
+
+/* ----------------- Table ----------------- */
+.table-wrapper {
+    margin: 0 0.5rem;
+}
+
+.table-wrapper table {
+    border-radius: 0.75rem;
+    overflow: hidden;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border: 1px solid var(--dt-border);
+}
+
+.table-wrapper th {
+    background-color: var(--dt-header-bg) !important;
+    color: #ffffff !important;
+    border-color: var(--dt-border) !important;
+}
+
+.table-wrapper td {
+    background-color: var(--dt-panel-bg) !important;
+    color: #ffffff !important;
+    border-color: var(--dt-border) !important;
+}
+
+/* ----------------- CTA Buttons ----------------- */
+.save-button,
+.save-button.slds-button_brand {
+    background-color: var(--dt-positive) !important;
+    border-color: var(--dt-positive) !important;
+    color: #ffffff !important;
+    /* border-radius: 1.25rem !important; */
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
+.slds-grid_align-end button.slds-button_brand:not(.save-button) {
+    background-color: var(--dt-negative) !important;
+    border-color: var(--dt-negative) !important;
+    color: #ffffff !important;
+}
+
+.icon-size-css {
+    padding: 0.2rem;
+}
+.approve-icon {
+    background-color: #00bc00;
+}
+.add-doc-button {
+    background: #5bb6e3;
+    color: rgb(255, 255, 255);
+}
+/* .sticky-col{
+    z-index: 2; background: white
+} */
+.first-col{
+    position: sticky;
+    left: 0;
+    background-color: #f3f3f3;
+    z-index: 2;
+}
+.second-col{
+    position: sticky;
+    background-color: #f3f3f3;
+    z-index: 2;
+}
+.slds-table {
+    /* min-width: 800px; Ensure table does not shrink */
+    border-collapse: collapse; /* Makes borders clean */
+}
+
+.slds-modal {
+z-index: 9001 !important;
+}
+
+.slds-modal__container {
+transform: translate(-50%, -50%) !important;
+position: fixed !important;
+top: 50% !important;
+left: 50% !important;
+margin: 0 !important;
+}
+
+/* Ensure modal content is scrollable */
+.slds-modal__content {
+overflow-y: auto !important;
+max-height: calc(80vh - 140px) !important;
+}
+
+/* Document viewer specific styles for Split View */
+.split-view-document-container {
+height: 100% !important;
+overflow: hidden !important;
+}
+
+.split-view-document-viewer {
+height: calc(100% - 60px) !important;
+overflow: auto !important;
+}
+/* sanwar start 18/12/2025 */
+.table-wrapper {
+    overflow-x: auto !important;
+    width: 100%;
+}
+
+.table-wrapper table {
+    min-width: 2500px;
+}
+
+.table-wrapper table th,
+.table-wrapper table td {
+    min-width: 150px;
+}
+/* sanwar end 18/12/2025 */
+
+
+/* Responsive adjustments for smaller screens */
+@media (max-width: 768px) {
+.slds-modal__container {
+max-width: 98vw !important;
+width: 98vw !important;
+min-height: 90vh !important;
+height: 90vh !important;
+}
+
+.slds-grid .slds-col {
+    width: 100% !important;
+    margin-bottom: 1rem;
+}
+
+}
+/* =========================================================
+   Covenant Details - Dark Navy Scrollbar
+   ========================================================= */
+
+.slds-scrollable,
+.slds-scrollable_x,
+.slds-scrollable_y,
+.slds-scrollable--x,
+.slds-scrollable--y {
+    scrollbar-width: thin;
+    scrollbar-color: #2a3f5f #0A1524;
+}
+
+/* Chrome / Edge */
+.slds-scrollable::-webkit-scrollbar,
+.slds-scrollable_x::-webkit-scrollbar,
+.slds-scrollable_y::-webkit-scrollbar,
+.slds-scrollable--x::-webkit-scrollbar,
+.slds-scrollable--y::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.slds-scrollable::-webkit-scrollbar-track,
+.slds-scrollable_x::-webkit-scrollbar-track,
+.slds-scrollable_y::-webkit-scrollbar-track,
+.slds-scrollable--x::-webkit-scrollbar-track,
+.slds-scrollable--y::-webkit-scrollbar-track {
+    background: #0A1524 !important;
+    border-radius: 6px;
+}
+
+.slds-scrollable::-webkit-scrollbar-thumb,
+.slds-scrollable_x::-webkit-scrollbar-thumb,
+.slds-scrollable_y::-webkit-scrollbar-thumb,
+.slds-scrollable--x::-webkit-scrollbar-thumb,
+.slds-scrollable--y::-webkit-scrollbar-thumb {
+    background: #2a3f5f !important;
+    border-radius: 6px;
+    border: 2px solid #0A1524;
+}
+
+.slds-scrollable::-webkit-scrollbar-thumb:hover,
+.slds-scrollable_x::-webkit-scrollbar-thumb:hover,
+.slds-scrollable_y::-webkit-scrollbar-thumb:hover,
+.slds-scrollable--x::-webkit-scrollbar-thumb:hover,
+.slds-scrollable--y::-webkit-scrollbar-thumb:hover {
+    background: #3b5578 !important;
+}
+
+.slds-scrollable::-webkit-scrollbar-corner,
+.slds-scrollable_x::-webkit-scrollbar-corner,
+.slds-scrollable_y::-webkit-scrollbar-corner,
+.slds-scrollable--x::-webkit-scrollbar-corner,
+.slds-scrollable--y::-webkit-scrollbar-corner {
+    background: #0A1524 !important;
+}

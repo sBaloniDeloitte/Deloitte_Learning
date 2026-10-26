@@ -1,0 +1,56 @@
+<template>
+    <div class="ts-card">
+        <div class="header">
+            <div class="title-section">
+                <span class="green-dot"></span>
+                <h2>Tranche </h2>
+            </div>
+
+            <div class="amount-pill">
+                ₹19,00,000 of ₹38,00,000 out
+            </div>
+        </div>
+
+        <!-- Semester Cards -->
+        <div class="semester-container">
+            <template for:each={semesterCards} for:item="sem">
+                <div
+                    key={sem.id}
+                    class={sem.className}
+                >
+                    <div class="sem-title">{sem.label}</div>
+                    <div class="sem-amount">{sem.amount}</div>
+                </div>
+            </template>
+        </div>
+
+        <!-- Table -->
+        <table class="custom-table">
+            <thead>
+                <tr>
+                    <th>TRANCHE</th>
+                    <th>AMOUNT</th>
+                    <th>STATUS</th>
+                    <!-- <th>CONDITION</th> -->
+                </tr>
+            </thead>
+
+            <tbody>
+                <template for:each={semesterDetails} for:item="item">
+                    <tr key={item.id}>
+                        <td>{item.semester}</td>
+                        <td>{item.amount}</td>
+
+                        <td>
+                            <span class={item.statusClass}>
+                                {item.status}
+                            </span>
+                        </td>
+
+                        <!-- <td>{item.condition}</td> -->
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+</template>

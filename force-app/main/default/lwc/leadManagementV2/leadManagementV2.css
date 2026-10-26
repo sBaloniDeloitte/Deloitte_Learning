@@ -1,0 +1,1136 @@
+@import "c/cssLibrary";
+/* makes the section scroll instead of clipping the dropdown */
+.form-scroll {
+max-height: 70vh; /* tune as you like, or use the JS below to auto-calc */
+overflow-y: auto; /* adds the vertical scrollbar */
+padding-right: .25rem; /* keeps content clear of the scrollbar */
+overscroll-behavior: contain;
+scrollbar-gutter: stable; /* avoids layout jump when scrollbar appears */
+}
+
+/* helps the combobox menu stack above neighbors inside the scroll area */
+.z-fix {
+position: relative;
+z-index: 1;
+  
+}
+
+/* relax layout containment so overflow works reliably in flexipages/console */
+
+/* .combowrapper  {
+   lightning-combobox::part(dropdown overlay) {
+   /* max-height: 150px;
+    overflow-y: scroll;
+    .slds-dropdown-trigger_click .slds-dropdown, .slds-dropdown-trigger_click:hover .slds-dropdown, .slds-dropdown-trigger--click .slds-dropdown, .slds-dropdown-trigger--click:hover .slds-dropdown {
+                        display: none;
+                        overflow-y: scroll;
+                        max-height: 150px;
+                    }
+}
+} */
+.page-wrapper {
+position: relative;
+min-height: 100vh; /* cover full viewport height */
+}
+
+/* full screen overlay */
+.spinner-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100vw;
+height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+background-color: rgba(0, 0, 0, 0.2); /* light dim */
+z-index: 9999; /* above everything in the page */
+}
+
+/* ____GenAI: dark theme + vertical stepper layout - visual only, no functional/field changes____ */
+
+/* .lmv2-page {
+background-color: #0a1524;
+padding: 1rem;
+} */
+.lmv2-page {
+    background-color: #0a1524;
+    padding: 0.5rem;
+    box-sizing: border-box;
+    min-height: 100vh;
+}
+
+/* .lmv2-layout {
+display: flex;
+align-items: stretch;
+gap: 0;
+max-width: 1200px;
+margin: 0 auto;
+border-radius: 0.75rem;
+overflow: hidden;
+box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+} */
+.lmv2-layout {
+    display: grid;
+    grid-template-columns: 220px 22px minmax(0, 1fr) 340px;
+    align-items: stretch;
+    /* ____GenAI: tightened the gaps between the stepper/scrollbar-separator/
+       main form/right rail column tracks (was 20px) per explicit request -
+       layout order, columns, and all component content/behavior unchanged____ */
+    column-gap: 6px;
+
+    width: 100%;
+    /* ____GenAI: max-width removed (was 1400px) so the stepper hugs the left
+       edge and the dialer/right components hug the right edge of the outer
+       page instead of leaving unused margin on both sides____ */
+    min-height: 720px;
+
+    /* ____GenAI: removed border-radius / box-shadow / overflow:hidden that were
+       drawing a second "card" nested inside the outer .lmv2-page background.
+       The stepper, scrollbar separator, form, and the dialer child component
+       now sit directly on the single outer surface, flush and aligned, with
+       no visual/functional change to any of their own content____ */
+}
+
+/* ____GenAI: info icon + tooltip for the field-level-help added on Basic
+   Information / Additional Information fields, per explicit request. The
+   attribute selector "[field-level-help]" scopes this rule ONLY to fields
+   that were given the new help text - every other field, icon, and dropdown
+   caret in the form is completely untouched. Custom properties are the only
+   way to reach lightning-helptext's icon + tooltip bubble, since they render
+   in native shadow DOM - no markup/handlers/validation/required logic was
+   changed, color only____ */
+lightning-input[field-level-help],
+lightning-combobox[field-level-help] {
+    --slds-c-icon-color-foreground: #38bdf8 !important;
+    --slds-c-icon-color-foreground-default: #38bdf8 !important;
+    --sds-c-icon-color-foreground: #38bdf8 !important;
+    --sds-c-icon-color-foreground-default: #38bdf8 !important;
+
+    --slds-c-popover-tooltip-color-background: #38bdf8 !important;
+    --slds-c-popover-tooltip-text-color: #ffffff !important;
+    --slds-c-popover-tooltip-color-border: #0ea5e9 !important;
+    --sds-c-popover-tooltip-color-background: #38bdf8 !important;
+    --sds-c-popover-tooltip-text-color: #ffffff !important;
+    --sds-c-popover-tooltip-color-border: #0ea5e9 !important;
+}
+
+/* Light-DOM fallback for the tooltip bubble/body, in case any part of the
+   popover markup is reachable outside shadow DOM - harmless no-op otherwise */
+.lead-main-panel .slds-popover_tooltip {
+    background: #38bdf8 !important;
+    border-color: #0ea5e9 !important;
+}
+
+.lead-main-panel .slds-popover_tooltip .slds-popover__body,
+.lead-main-panel .slds-popover_tooltip .slds-popover__body * {
+    color: #ffffff !important;
+}
+
+/* main form panel - overrides the previous white background */
+/* .lmv2-main.form-container.border-field {
+background-color: #0e1c30 !important;
+color: #e8edf5;
+flex: 1 1 auto;
+min-width: 0;
+padding: 2rem 2.25rem;
+border: none; */
+
+/* lmv2-main.form-container.border-field { */
+.lead-main-panel.form-container.border-field {
+
+    /* ____GenAI: matches the stepper/page background (#0a1524) instead of the
+       previous lighter #0e1c30, and kills the leftover 5px border-radius that
+       the shared global ".border-field" class was still applying (our earlier
+       "border: none" only cancelled the border line, not the radius). That
+       radius + color mismatch was what made the middle form column read as a
+       separate rounded "box" nested inside the outer .lmv2-page surface. No
+       layout/columns/gaps/functionality changed - color + radius only____ */
+    background-color: #0a1524 !important;
+    /* ____GenAI: added a purple outer border/radius to match the Dialer
+       Information child card's look, per explicit request. Background color
+       stays the same as the stepper/page (no reintroduced color-mismatch
+       "inner box"), only a border + radius + soft glow were added____ */
+    border-radius: 0.75rem !important;
+    color: #e8edf5;
+
+    /* ____GenAI: the shared cssLibrary ".form-container" class (imported at the
+       top of this file) applies "max-width: 40rem; margin: 0 auto;", which was
+       shrinking this panel and centering it inside its much wider grid column -
+       leaving large empty gaps to the stepper on the left and to the dialer/
+       assignment cards on the right even though those neighboring columns sit
+       tight against it. Overriding max-width to fill the column and removing
+       the auto-centering margin (per explicit request to close/stretch these
+       gaps) makes the panel hug both neighbors; no color/border/padding/other
+       styling on this panel changed____ */
+    max-width: none !important;
+    margin: 0 !important;
+
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+
+    padding: 2rem 2.25rem;
+
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.12);
+
+
+/* SLDS base-component styling hooks - these custom properties cross the
+   shadow boundary so lightning-input / lightning-combobox pick up the
+   dark theme without altering their markup or behavior */
+--slds-c-input-color-background: #16283f;
+--slds-c-input-text-color: #ffffff;
+--slds-c-input-color-border: #33455e;
+--slds-c-input-radius-border: 6px;
+--slds-c-input-shadow-focus: 0 0 0 1px #1589ee;
+--slds-c-input-placeholder-text-color: #8a99b3;
+--slds-c-textarea-color-background: #16283f;
+--slds-c-textarea-text-color: #ffffff;
+--slds-c-textarea-color-border: #33455e;
+/* ===== COMBOBOX DARK THEME ===== */
+
+--slds-c-combobox-input-color-background: #16283f;
+--slds-c-combobox-input-text-color: #ffffff;
+--slds-c-combobox-input-color-border: #33455e;
+--slds-c-combobox-input-value-text-color: #ffffff;
+
+/* Dropdown */
+--slds-c-combobox-listbox-color-background: #16283f;
+--slds-c-combobox-option-color-background: #16283f;
+--slds-c-combobox-option-text-color: #ffffff;
+
+/* Hover / Focus */
+--slds-c-combobox-option-color-background-hover: #1f3550;
+--slds-c-combobox-option-text-color-hover: #ffffff;
+
+/* Selected option */
+--slds-c-combobox-option-color-background-selected: #1f3550;
+--slds-c-combobox-option-text-color-selected: #ffffff;
+
+/* Selected + hover */
+--slds-c-combobox-option-color-background-selected-hover: #1f3550;
+--slds-c-combobox-option-text-color-selected-hover: #ffffff;
+
+--slds-c-combobox-listbox-radius-border: 6px;
+
+/* ____GenAI: the open dropdown menu (listbox) of the Product/Applicant Type
+   picklists was still rendering with the default white SLDS background and
+   black text, even though the closed combobox trigger already picks up the
+   dark navy theme via the "--slds-c-combobox-*" hooks above. Per the SAME
+   dual-prefix pattern already used for the field-level-help icon fix further
+   up in this file (this org's installed base-component version only honors
+   these hooks when BOTH the "--slds-c-" and "--sds-c-" prefixed custom
+   properties are set), mirroring every combobox/listbox/option hook under
+   "--sds-c-" as well makes the open dropdown match the same dark background,
+   navy border, and white option text as the closed field - no markup,
+   options list, selection logic, or any other styling changed____ */
+--sds-c-combobox-input-color-background: #16283f;
+--sds-c-combobox-input-text-color: #ffffff;
+--sds-c-combobox-input-color-border: #33455e;
+--sds-c-combobox-input-value-text-color: #ffffff;
+--sds-c-combobox-listbox-color-background: #16283f;
+--sds-c-combobox-option-text-color: #ffffff;
+--sds-c-combobox-option-color-background: #16283f;
+--sds-c-combobox-option-color-background-hover: #1f3550;
+--sds-c-combobox-option-text-color-hover: #ffffff;
+--sds-c-combobox-listbox-radius-border: 6px;
+
+--slds-c-icon-color-foreground: #cfd8e6;
+--slds-c-icon-color-foreground-default: #cfd8e6;
+--slds-c-label-text-color: #cfd8e6;
+--slds-c-checkbox-color-background: #16283f;
+--slds-c-checkbox-color-border: #33455e;
+--slds-c-radio-color-background: #16283f;
+--slds-c-radio-color-border: #33455e;
+
+/* ____GenAI: required-field validation state (when a required lightning-input /
+   lightning-combobox is left blank and blurred) was falling back to the
+   browser/SLDS default white error background, which then hid the white input
+   text typed afterwards. These hooks keep the SAME dark background used in the
+   valid state and surface the error only via a red border/focus ring, exactly
+   as requested - no validation logic, required attributes, or messages touched____ */
+--slds-c-input-color-background-error: #16283f;
+--slds-c-input-color-border-error: #ff4d4f;
+--slds-c-input-text-color-error: #ffffff;
+--slds-c-input-shadow-focus-error: 0 0 0 1px #ff4d4f;
+--slds-c-combobox-input-color-background-error: #16283f;
+--slds-c-combobox-input-color-border-error: #ff4d4f;
+--slds-c-combobox-input-text-color-error: #ffffff;
+--slds-c-textarea-color-background-error: #16283f;
+--slds-c-textarea-color-border-error: #ff4d4f;
+--slds-c-textarea-text-color-error: #ffffff;
+
+/* label color hooks - both the newer SLDS2 "--slds-c-*" style hooks and the
+   legacy "--lwc-*" design tokens are set so whichever one the installed base
+   component version reads from, the label text renders white on the dark bg */
+--slds-c-input-label-color: #ffffff;
+--slds-c-combobox-label-color: #ffffff;
+--slds-c-checkbox-label-color: #ffffff;
+--slds-c-radio-label-color: #ffffff;
+--slds-c-textarea-label-color: #ffffff;
+--lwc-formLabelTextColor: #ffffff;
+--lwc-labelColorTextRequired: #ff6b6b;
+--lwc-inputTextColor: #ffffff;
+--lwc-colorTextLabel: #ffffff;
+
+/* global SLDS2 tokens - label/secondary text in most base components ultimately
+   resolves to these neutral-base tokens when no component-specific hook exists.
+   Scoped to this component only, so it cannot bleed into the rest of the org. */
+--slds-g-color-neutral-base-30: #ffffff;
+--slds-g-color-neutral-base-40: #ffffff;
+--slds-g-color-neutral-base-50: #ffffff;
+
+/* ____GenAI: the required-field white-out was traced to the global SLDS2
+   "error-base" tokens - lightning-input/-combobox fall back to
+   --slds-g-color-error-base-95 (a near-white tint) for their background once
+   a required field is invalid, since no component-specific "-error" hook is
+   consumed for background. Repointing those global error tokens to the same
+   navy used for the valid state keeps the field dark; the red border/focus
+   ring and "Complete this field." message (which use the darker error-base
+   shades, left untouched below) still mark the field as required. Scoped to
+   this panel only - no validation logic, required attributes, or other
+   error-colored elements outside this form are touched.____ */
+--slds-g-color-error-base-99: #16283f;
+--slds-g-color-error-base-95: #16283f;
+--slds-g-color-error-base-90: #16283f;
+
+/* ____GenAI: the OPEN combobox dropdown (listbox) was still rendering white
+   with white-on-white option text, even though the closed combobox trigger
+   already shows the correct navy (#16283f) via the "--slds-c-combobox-*"
+   hooks above. The listbox popover's surface does not read those
+   component-specific hooks - it falls back to the global SLDS2 "surface"/
+   "neutral-base-100" tokens (white) for its background and the default dark
+   "neutral-base-10" token for its text, same root cause already fixed for
+   the required-field error background further up. Repointing those same
+   global surface/neutral tokens to the navy/white pair used everywhere else
+   in this panel makes the open dropdown match the closed field. Scoped to
+   this panel only - no options list, selection logic, or markup changed____ */
+--slds-g-color-surface-container-1: #16283f;
+--slds-g-color-surface-1: #16283f;
+--slds-g-color-surface-2: #16283f;
+--slds-g-color-neutral-base-100: #16283f;
+--sds-g-color-surface-container-1: #16283f;
+--sds-g-color-surface-1: #16283f;
+--sds-g-color-surface-2: #16283f;
+--sds-g-color-neutral-base-100: #16283f;
+--slds-g-color-neutral-base-10: #ffffff;
+--sds-g-color-neutral-base-10: #ffffff;
+--slds-g-color-on-surface-1: #ffffff;
+--sds-g-color-on-surface-1: #ffffff;
+}
+
+/* ____GenAI: fallback for the same open-dropdown white-out - kept alongside
+   the styling-hook fix above (same pattern already used for
+   ".slds-form-element__label" as a fallback further down this file) in case
+   this org's installed base-component version renders the listbox markup in
+   a way the design tokens above do not reach. Scoped to this panel only -
+   no options list, selection logic, or other markup changed____ */
+.lead-main-panel .slds-dropdown,
+.lead-main-panel .slds-listbox,
+.lead-main-panel .slds-listbox__option,
+.lead-main-panel .slds-listbox__option .slds-media__body {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+}
+.lead-main-panel .slds-listbox__option:hover,
+.lead-main-panel .slds-listbox__option:focus,
+.lead-main-panel .slds-listbox__option.slds-has-focus {
+    background-color: #1f3550 !important;
+    color: #ffffff !important;
+}
+
+/* ____GenAI: the SELECTED option (the one showing the checkmark, e.g.
+   "Individual") and the option currently under keyboard/mouse focus were
+   still turning white - these use the SLDS "is-selected"/"has-focus"
+   modifier classes and the "aria-selected"/"aria-checked" states rather than
+   plain :hover, so the hover-only rule above did not cover them. Also
+   covering the checkmark icon's svg fill so the tick stays visible on the
+   navy background. Scoped to this panel only - no selection logic changed____ */
+.lead-main-panel .slds-listbox__option.slds-is-selected,
+.lead-main-panel .slds-listbox__option[aria-selected="true"],
+.lead-main-panel .slds-listbox__option[aria-checked="true"],
+.lead-main-panel .slds-listbox__option:active {
+    background-color: #1f3550 !important;
+    color: #ffffff !important;
+}
+.lead-main-panel .slds-listbox__option .slds-icon,
+.lead-main-panel .slds-listbox__option .slds-icon use,
+.lead-main-panel .slds-listbox__option svg {
+    fill: #ffffff !important;
+}
+/* .lmv2-main .slds-modal__content { */
+.lead-main-panel .slds-modal__content {
+
+    width: 100%;
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+/* labels rendered by lightning-input/-combobox above the fields.
+   These base components render their label inside their own shadow root, so a
+   plain class selector from here cannot reach it - the custom properties above
+   do the real work. This rule stays as a fallback for any label markup that is
+   NOT shadow-encapsulated (e.g. plain HTML labels used elsewhere in this cmp). */
+.lead-main-panel .slds-form-element__label,
+.lead-main-panel label {
+color: #ffffff !important;
+}
+
+/* override the shared cssLibrary ".highlight-required" cream box (Date of Birth /
+   Loan Amount wrapper) so it blends with the rest of the dark form - visual only */
+.lead-main-panel .highlight-required {
+background-color: transparent !important;
+margin: 0.5rem 0;
+}
+
+.lead-main-panel .highlight-required label {
+font-weight: 500;
+color: #ffffff !important;
+}
+
+/* ____GenAI: 2-column field grid for Basic Information / Additional Details.
+   Wraps the existing fields (no fields added/removed/renamed, no handlers or
+   required/disabled bindings touched) so they flow 2-per-row once enough are
+   visible, matching the requested reference layout. Buttons, status/message
+   banners, and helper-text lines still span the full row via the selectors
+   below so they don't get squeezed into a half-width cell.____ */
+.lmv2-fields-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 1.5rem;
+    row-gap: 0.25rem;
+    align-items: start;
+}
+
+/* the DOB/Loan Amount wrapper loses its own box so its children (which would
+   otherwise be stacked inside a single grid cell) become direct grid items
+   and take part in the 2-column flow like every other field */
+.lmv2-fields-grid .highlight-required {
+    display: contents;
+}
+
+.lmv2-fields-grid > .button-container,
+.lmv2-fields-grid > .verification-status,
+.lmv2-fields-grid > .message,
+.lmv2-fields-grid > .lmv2-full-row {
+    grid-column: 1 / -1;
+}
+
+
+/* Only Home shown on the initial/basic-information screen */
+.lmv2-full-row > .home-card {
+    width: 180px;
+    margin: 10px auto 0 auto !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    text-align: center !important;
+}
+
+.lmv2-full-row > .home-card .lead-action-icon {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    margin: 0 auto 10px auto !important;
+}
+
+.lmv2-full-row > .home-card .lead-action-title {
+    margin: 0 auto !important;
+    text-align: center !important;
+}
+
+.lmv2-full-row > .home-card .lead-action-desc {
+    margin: 6px auto 0 auto !important;
+    text-align: center !important;
+}
+@media (max-width: 900px) {
+    .lmv2-fields-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.custom-input {
+    --lwc-colorTextLabel: red; /* Changes label text color */
+    --lwc-formLabelFontSize: 1rem; /* Changes label font size */
+}
+
+/* ____GenAI: host-level spacing only for the box->line conversion below - the
+   actual border removal/underline is injected as a real global <style> tag
+   from leadManagementV2.js (colormethod/renderedCallback), because scoped
+   component CSS cannot reach the "slds-input"/"slds-combobox__input" markup
+   living inside lightning-input/lightning-combobox's own internals. See the
+   injected "lmv2-line-input-style" block in the JS file for the actual rule.
+   Kept here only so the host element lays out as its own block row____ */
+.lead-main-panel lightning-input,
+.lead-main-panel lightning-combobox {
+    display: block;
+}
+
+/* the required-field asterisk should stay visually distinct but still readable
+   on the dark background instead of the low-contrast pink/red used before */
+.lead-main-panel .slds-form-element__label .slds-required,
+.lead-main-panel .highlight-required .slds-required {
+color: #ff6b6b !important;
+}
+
+/* header title block */
+/* .lmv2-main .header-section {
+background: transparent;
+border: none;
+padding: 0 0 0.5rem 0;
+text-align: left;
+} */
+.lead-main-panel .header-section {
+    background: transparent;
+    border: none;
+    padding: 0 0 1rem 0;
+    text-align: center;
+}
+.lead-main-panel .header-title {
+    color: #ffffff !important;
+    font-weight: 800;
+    font-size: 1.6rem;
+    text-align: center;
+}
+
+/* .lmv2-main .header-title {
+color: #ffffff !important;
+font-weight: 700;
+text-align: left;
+} */
+
+.lead-main-panel .slds-modal__content {
+background: transparent;
+}
+
+/* buttons */
+/* ____GenAI: Next/Continue/Start Application (all share the "save-button"
+   class) re-colored from green to solid purple per explicit request
+   (reference image), to match the app's purple accent used elsewhere
+   (stepper circles, scrollbar thumb, etc). Only color/border changed -
+   label, click handler, and every other button on this screen untouched____ */
+.lead-main-panel .save-button.slds-button_brand,
+.lead-main-panel .slds-button_brand.save-button {
+background-color: #8b5cf6;
+border-color: #8b5cf6;
+border-radius: 6px;
+padding: 0.6rem 1.5rem;
+font-weight: 600;
+color: #ffffff;
+}
+
+.lead-main-panel .save-button.slds-button_brand:hover {
+background-color: #7c3aed;
+border-color: #7c3aed;
+}
+
+/* ____GenAI: Previous button re-colored from solid red to the dark/
+   purple-outline look per explicit request (reference image) - transparent
+   dark background with a purple border, matching the reference screenshot.
+   Only color/border on this button changed - label, click handler, and
+   every other button on this screen are untouched____ */
+.lead-main-panel .previous-button.slds-button_brand {
+background-color: #16283f;
+border: 1px solid #8b5cf6;
+border-radius: 6px;
+color: #ffffff;
+padding: 0.6rem 1rem;
+}
+
+.lead-main-panel .previous-button.slds-button_brand:hover {
+background-color: #1f3550;
+border-color: #a855f7;
+}
+
+.lead-main-panel.disabled-button.slds-button_brand {
+background-color: #1b1b2b;
+border-color: rgba(139, 92, 246, 0.2);
+opacity: 0.6;
+border-radius: 6px;
+}
+
+.lead-main-panel .button-container {
+gap: 0.75rem;
+margin-top: 1.5rem;
+}
+
+/* ____GenAI: removes the outer purple border/glow only while the AI Sales
+   Insight card is the active view (aiSalesInsightHomeLoanCmp has its own
+   card borders, so the outer panel border doubled up around it). Every other
+   screen keeps ".lead-main-panel.form-container.border-field"'s original
+   border/box-shadow untouched - "!important" is required only because this
+   selector must override that more specific 3-class rule for this one state____ */
+.lead-main-panel.lmv2-ai-insight-active {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* verification status / helper text stays legible on dark bg */
+.lead-main-panel .verification-status,
+.lead-main-panel .verified-text {
+color: #7fdca4;
+}
+
+.lead-main-panel .message {
+color: #e8edf5;
+}
+
+/* ---------------- vertical progress stepper (right rail) ---------------- */
+
+/* .lmv2-stepper {
+flex: 0 0 320px;
+background-color: #0a1524;
+padding: 2.5rem 1.75rem;
+display: flex;
+flex-direction: column;
+border-left: 1px solid #1d2f45;
+} */
+.lmv2-stepper {
+    width: 100%;
+    box-sizing: border-box;
+
+    background-color: #0a1524;
+
+    padding: 2.5rem 1rem 2.5rem 0.75rem;
+
+    display: flex;
+    flex-direction: column;
+
+    border-right: none;
+}
+
+/* ---------------- scrollbar-style separator (between stepper and form) ---------------- */
+.lmv2-scrollbar-separator {
+    width: 22px;
+    box-sizing: border-box;
+    background-color: #0a1524;
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    padding: 2.5rem 0;
+}
+
+.lmv2-scrollbar-track {
+    width: 10px;
+    flex: 1 1 auto;
+    background-color: rgba(139, 92, 246, 0.08);
+    border: 1px solid rgba(139, 92, 246, 0.18);
+    border-radius: 999px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 4px 0;
+    box-sizing: border-box;
+}
+
+.lmv2-scrollbar-arrow {
+    width: 0;
+    height: 0;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    opacity: 0.7;
+}
+
+.lmv2-scrollbar-arrow_up {
+    border-bottom: 5px solid #a855f7;
+    margin-bottom: 6px;
+}
+
+.lmv2-scrollbar-arrow_down {
+    border-top: 5px solid #a855f7;
+    margin-top: 6px;
+}
+
+.lmv2-scrollbar-thumb {
+    width: 8px;
+    flex: 1 1 auto;
+    max-height: 120px;
+    background: linear-gradient(180deg, #7c3aed 0%, #a855f7 100%);
+    border-radius: 999px;
+    box-shadow: 0 0 8px rgba(124, 58, 237, 0.5);
+}
+
+@media (max-width: 768px) {
+    .lmv2-scrollbar-separator {
+        display: none;
+    }
+}
+
+/* .lmv2-step {
+display: flex;
+align-items: flex-start;
+gap: 1rem;
+position: relative;
+} */
+
+.lmv2-step {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    position: relative;
+    width: 100%;
+    cursor: pointer;
+}
+   .lmv2-step-content {
+    padding-bottom: 2.25rem;
+    min-width: 0;
+}
+
+.lmv2-step-marker {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+.lmv2-step-circle {
+width: 2.25rem;
+height: 2.25rem;
+min-width: 2.25rem;
+border-radius: 50%;
+display: flex;
+align-items: center;
+justify-content: center;
+font-weight: 700;
+font-size: 0.95rem;
+border: 2px solid #33455e;
+color: #6b7c94;
+background-color: #0e1c30;
+}
+
+.lmv2-step-circle_active {
+background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+border-color: #a855f7;
+color: #ffffff;
+box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.25);
+}
+
+.lmv2-step-circle_completed {
+background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+border-color: #a855f7;
+color: #ffffff;
+}
+
+.lmv2-step-circle_pending {
+background-color: #0e1c30;
+border-color: #33455e;
+color: #55647c;
+}
+
+.lmv2-step-connector {
+width: 2px;
+flex: 1 1 auto;
+min-height: 2.5rem;
+background-color: #33455e;
+margin: 0.25rem 0;
+}
+
+.lmv2-step-connector_completed {
+background-color: #a855f7;
+}
+
+.lmv2-step-connector_pending {
+background-color: #33455e;
+}
+
+.lmv2-step-connector_hidden {
+visibility: hidden;
+}
+
+.lmv2-step-content {
+padding-bottom: 2.25rem;
+}
+
+.lmv2-step-title {
+font-size: 1rem;
+font-weight: 700;
+margin-bottom: 0.25rem;
+color: #55647c;
+}
+
+.lmv2-step-title_active,
+.lmv2-step-title_completed {
+color: #ffffff;
+}
+
+.lmv2-step-desc {
+font-size: 0.8rem;
+color: #55647c;
+line-height: 1.35;
+margin: 0;
+max-width: 15.5rem;
+}
+
+.lmv2-step-content:has(.lmv2-step-title_active) .lmv2-step-desc,
+.lmv2-step-content:has(.lmv2-step-title_completed) .lmv2-step-desc {
+color: #a9b6c9;
+}
+
+/* small screens: stack stepper below the form instead of side-by-side */
+/* @media (max-width: 768px) {
+.lmv2-layout {
+    flex-direction: column;
+}
+.lmv2-stepper {
+    flex: 1 1 auto;
+    border-left: none;
+    border-top: 1px solid #1d2f45;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding: 1.5rem 1rem;
+}
+.lmv2-step {
+    flex: 1 1 45%;
+}
+
+
+} */
+@media (max-width: 768px) {
+
+    .lmv2-layout {
+        grid-template-columns: 1fr;
+        row-gap: 1rem;
+    }
+
+    .lmv2-stepper {
+        border-right: none;
+        border-bottom: 1px solid rgba(139, 92, 246, 0.35);
+
+        flex-direction: row;
+        flex-wrap: wrap;
+
+        padding: 1.5rem 1rem;
+    }
+
+    .lmv2-step {
+        width: 50%;
+    }
+
+    .lmv2-right-components {
+        padding: 0 1rem 1rem 1rem;
+    }
+
+    .lead-main-panel.form-container.border-field {
+        padding: 1.5rem 1rem;
+    }
+
+    .lead-main-panel .slds-modal__content {
+        max-width: 100%;
+    }
+}
+.lmv2-right-components {
+    width: 100%;
+    min-width: 0;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 1.25rem;
+
+    align-self: start;
+
+    padding: 1.5rem 1rem 1.5rem 0;
+    box-sizing: border-box;
+}
+.lmv2-child-component {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+
+    background-color: #0e1c30;
+    border: 1px solid #1d2f45;
+    border-radius: 0.75rem;
+
+    overflow: visible;
+}
+/* ===== DARK COMBOBOX DROPDOWN / HOVER ===== */
+
+.lead-main-panel {
+    --slds-g-color-surface-1: #16283f;
+    --slds-g-color-surface-2: #16283f;
+    --slds-g-color-surface-container-1: #16283f;
+    --slds-g-color-surface-container-2: #1f3550;
+
+    --slds-g-color-neutral-base-100: #16283f;
+    --slds-g-color-neutral-base-95: #1f3550;
+    --slds-g-color-neutral-base-90: #1f3550;
+
+    --slds-g-color-on-surface-1: #ffffff;
+    --slds-g-color-on-surface-2: #ffffff;
+}
+/* =========================================================
+   COMPACT LEAD ACTIONS
+   Matches the compact reference design
+   ========================================================= */
+
+.lead-action-container {
+    width: 100%;
+    max-width: 660px;
+    margin: 1.75rem auto 0;
+
+    /* ____GenAI: switched from a fixed 3-column grid to a centered flex row
+       per explicit request - with only the Discard Lead card currently active
+       in the markup (Home/Hot cards remain commented out), the 3-column grid
+       was pinning that single card into the first column (left-aligned)
+       instead of centering it in the panel. Flex + justify-content:center
+       centers whatever card(s) are present without touching any card's own
+       markup, icon, handler, or styling____ */
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+
+    box-sizing: border-box;
+}
+
+
+/* ================= CARD ================= */
+
+.lead-action-card {
+    height: 122px;
+    min-height: 122px;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0.65rem;
+    box-sizing: border-box;
+
+    background: rgba(14, 28, 48, 0.65);
+
+    border-radius: 12px;
+
+    transition: all 0.2s ease;
+}
+
+/* ================= HOME ================= */
+
+.home-card {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.home-card:hover,
+.home-card:focus,
+.home-card:focus-within,
+.home-card:active {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+/* ================= HOT ================= */
+
+.hot-card {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.hot-card:hover,
+.hot-card:focus,
+.hot-card:focus-within,
+.hot-card:active {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+/* ================= DISCARD ================= */
+
+.discard-card {
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.discard-card:hover,
+.discard-card:focus,
+.discard-card:focus-within,
+.discard-card:active {
+    border: none !important;
+    box-shadow: none !important;
+    background: transparent !important;
+}
+
+
+
+/* ================= ICON BOX ================= */
+
+.lead-action-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 11px;
+
+    margin: 0 auto 0.55rem auto;
+
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+
+/* Keep all action text perfectly aligned */
+.lead-action-title {
+    margin: 0 !important;
+    min-height: 19px;
+
+    color: #ffffff !important;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.2;
+
+    text-align: center;
+    cursor: pointer;
+}
+
+
+.lead-action-desc {
+    margin: 0.3rem 0 0 !important;
+    min-height: 17px;
+
+    color: #8fa1b8 !important;
+    font-size: 0.7rem;
+    line-height: 1.2;
+
+    text-align: center;
+}
+
+
+/* HOME ICON */
+
+.home-icon {
+    background: rgba(99, 102, 241, 0.18);
+    border: 1px solid #6366f1;
+
+    --slds-c-icon-color-foreground: #a5b4fc;
+    --slds-c-icon-color-foreground-default: #a5b4fc;
+}
+
+
+/* HOT ICON */
+
+.hot-icon {
+    background: rgba(34, 197, 94, 0.14);
+    border: 1px solid #22c55e;
+
+    --slds-c-icon-color-foreground: #4ade80;
+    --slds-c-icon-color-foreground-default: #4ade80;
+}
+
+
+/* DISCARD ICON */
+
+/* ================= DISCARD ICON ================= */
+
+/* ================= DISCARD ICON ================= */
+
+.discard-icon {
+    width: 48px;
+    height: 48px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    /* background: #8e1a31 !important;
+    border: 1px solid #3a0303 !important; */
+    background: #16283f !important;
+    border: 1px solid #23364f !important;
+    border-radius: 11px;
+
+    margin: 0 auto 0.55rem auto;
+    box-sizing: border-box;
+}
+
+/* RED CROSS - NO PINK */
+.discard-icon lightning-icon {
+    --slds-c-icon-color-foreground: #ffffff !important;
+    --slds-c-icon-color-foreground-default: #ffffff !important;
+    --sds-c-icon-color-foreground: #ffffff !important;
+    --sds-c-icon-color-foreground-default: #ffffff !important;
+}
+
+
+/* ================= TEXT ================= */
+
+.lead-action-title {
+    margin: 0;
+
+    color: #ffffff;
+
+    font-size: 0.95rem;
+    font-weight: 700;
+
+    line-height: 1.2;
+
+    text-align: center;
+    cursor: pointer;
+}
+
+.lead-action-desc {
+    margin: 0.25rem 0 0;
+
+    color: #8fa1b8;
+
+    font-size: 0.7rem;
+    line-height: 1.2;
+
+    text-align: center;
+}
+
+
+/* ================= DISABLED ================= */
+
+.disabled-action {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.disabled-text {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+
+/* ================= MOBILE ================= */
+
+@media (max-width: 700px) {
+
+    .lead-action-container {
+        max-width: 100%;
+        gap: 0.75rem;
+    }
+
+    .lead-action-card {
+        height: 115px;
+        min-height: 115px;
+    }
+}
+.discard-card .lead-action-title {
+    margin: 0 !important;
+    min-height: 19px;
+
+    color: #ffffff !important;
+    font-size: 0.95rem;
+    font-weight: 700;
+    line-height: 1.2;
+    text-align: center;
+}
+
+.discard-card .lead-action-desc {
+    margin: 0.3rem 0 0 !important;
+    min-height: 17px;
+
+    color: #8fa1b8 !important;
+    font-size: 0.7rem;
+    line-height: 1.2;
+    text-align: center;
+}

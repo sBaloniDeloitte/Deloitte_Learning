@@ -1,0 +1,42 @@
+/* Header Styling */
+.custom-header {
+    background-color: #e6f2ff;
+}
+
+.custom-header th {
+    color: #0b5cab;
+    font-weight: 600;
+    text-align: center;
+    border: 1px solid #d8dde6;
+}
+
+/* Full Table Border */
+.custom-table {
+    border: 1px solid #d8dde6;
+}
+
+.custom-table td {
+    border: 1px solid #d8dde6;
+    padding: 6px;
+}
+
+/* Alternate Row Color */
+.custom-table tbody tr:nth-child(even) {
+    background-color: #f4f9ff;
+}
+
+/* Hover Effect */
+.custom-table tbody tr:hover {
+    background-color: #eef4ff;
+}
+
+/* Total Row Styling */
+.total-row {
+    background-color: #d8eaff;
+    font-weight: 600;
+}
+
+/* Center Action Column */
+.action-cell {
+    text-align: center;
+}

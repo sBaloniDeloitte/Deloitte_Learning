@@ -1,0 +1,149 @@
+<template>
+    <lightning-card>
+        <div class="slds-p-around_small">
+            <lightning-layout multiple-rows="true">
+                <lightning-layout-item size="3" medium-device-size="4" padding="around-small">
+                    <lightning-input
+                        label="Loan Reference"
+                        type="text"
+                        value={applicationName}
+                        disabled="true">
+                    </lightning-input>
+                </lightning-layout-item>
+
+                <template for:each={ocrCaptureFields} for:item="data">
+                    <lightning-layout-item key={data.fieldName} size="3" medium-device-size="4" padding="around-small">
+                        <lightning-input
+                            key={data.fieldName}
+                            label={data.label}
+                            type={data.type}
+                            value={data.fieldValue}
+                            max={todayDate}
+                            onchange={handleInputChange}
+                            data-field={data.fieldName}
+                            disabled={data.disabled}>
+                        </lightning-input>
+                    </lightning-layout-item>
+                </template>
+            </lightning-layout>
+        </div>
+
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+            <thead>
+                <tr>
+                    <th>Receipt Number</th>
+                    <th>Builder Demand</th>
+                    <th>Paid Amount</th>
+                    <th>Receipt Date</th>
+                    <th>Remarks</th>
+                    <th>Upload File</th>
+                    <th>Preview</th>
+                    <template if:true={isOcrEditable}><th>Operation</th></template>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={steps} for:item="step" for:index="index">
+                    <tr key={step.index}>
+                        <td>{step.index}</td>
+                        <td>
+                            <label style="color:red; font-weight:bold; position: absolute; right: 0; top: 0;">*</label>
+                            <lightning-input type="number" value={step.builderDemand}
+                                onchange={handleStepChange}
+                                data-index={index}
+                                data-field="builderDemand" step="0.01"
+                                disabled={step.disabled} variant="label-hidden">
+                            </lightning-input>
+                        </td>
+                        <td>
+                            <label style="color:red; font-weight:bold; position: absolute; right: 0; top: 0;">*</label>
+                            <lightning-input type="number" value={step.paidAmount}
+                                onchange={handleStepChange}
+                                data-index={index}
+                                data-field="paidAmount" step="0.01"
+                                disabled={step.disabled} variant="label-hidden">
+                            </lightning-input>
+                        </td>
+                        <td>
+                            <!--<label style="color:red; font-weight:bold; position: absolute; right: 0; top: 0;">*</label>-->
+                            <lightning-input type="date" value={step.receiptDate}
+                                onchange={handleStepChange}
+                                data-index={index}
+                                data-field="receiptDate"
+                                disabled={step.disabled} variant="label-hidden">
+                            </lightning-input>
+                        </td>
+                        <td>
+                            <!--<label style="color:red; font-weight:bold; position: absolute; right: 0; top: 0;">*</label>-->
+                            <lightning-input type="text" value={step.remarks}
+                                onchange={handleStepChange}
+                                data-index={index}
+                                data-field="remarks"
+                                disabled={step.disabled} variant="label-hidden">
+                            </lightning-input>
+                        </td>
+                        <!-- <td>
+                            <lightning-input type="file"
+                                onchange={handleFileChange}
+                                data-index={index}
+                                disabled={step.disabled}>
+                            </lightning-input>
+                        </td> -->
+                        <td data-label="Prospecting" class="uploadFileView" style="text-align: center; vertical-align: middle;">
+                            <div style="display: flex; justify-content: center; align-items: center;">
+                                <lightning-file-upload
+                                    variant="label-hidden"
+                                    name="fileUploader"
+                                    data-id={index}
+                                    onuploadfinished={handleUploadFinished}
+                                    class="file-upload-input"
+                                    data-record-id={index}
+                                    disabled={step.disabled}
+                                    multiple>
+                                </lightning-file-upload>
+                                <!-- accept={acceptedFormats} -->
+                            </div>
+                        </td>
+                        <td data-label="Close Date">
+                            <table class="slds-table slds-scrollable_x">
+                                <tbody>
+                                    <template for:each={step.files} for:item="iterFile">
+                                        <tr style="background: #f2f2f2; border-color: white;" key={iterFile.contentDocId}>
+                                            <td style="max-width: 200px; white-space: normal; word-wrap: break-word; overflow-wrap: break-word;">
+                                                <a href="javascript:void(0);" data-id={iterFile.contentDocId} onclick={handlePreview}>
+                                                    {iterFile.fileName}
+                                                </a>
+                                            </td>
+                                            <td style="text-align: center; padding: revert-layer;">
+                                                <lightning-icon 
+                                                    icon-name="utility:preview" 
+                                                    data-id={iterFile.contentDocId} 
+                                                    alternative-text="preview" 
+                                                    class="lightning-icon-hover" 
+                                                    title="Doc Preview" 
+                                                    onclick={handlePreview}
+                                                    size="small">
+                                                </lightning-icon>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </td>
+                        <template if:true={isOcrEditable}>
+                            <td>
+                                <lightning-button label='Edit' onclick={handleEditRow} data-index={index} disabled={isDisable} class="slds-m-right_x-small"></lightning-button>
+                                <lightning-button label="Add" onclick={handleAddRow} data-index={index} disabled={step.disabledAddBtn}></lightning-button><!--disabled={step.disabled}-->
+                                <lightning-button label="Delete" onclick={handleDeleteRow} data-index={index} disabled={isDisable} class="slds-m-left_x-small"></lightning-button>
+                            </td>
+                        </template>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+        <template if:true={isOcrEditable}>
+            <div class="slds-m-top_medium">
+                <lightning-button label="Save" onclick={handleSave} disabled={isDisable}></lightning-button>
+            </div>
+        </template>
+    </lightning-card>
+</template>

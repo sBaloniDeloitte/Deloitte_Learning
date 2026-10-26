@@ -1,0 +1,225 @@
+<template>
+    <span class="styleContainer"></span>
+
+    <lightning-card>
+        <template if:false={isOneView}>
+            <template if:true={approvalData.showApprovalButtons}>
+                <div style="padding: 10px 15px 10px 15px;">
+                    <div class="slds-grid slds-wrap slds-gutters">
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                            <lightning-combobox class="material-input-field" name="approvalType" label="Select Approval Type" value={selectedApprovalType} disabled={approvalData.disableApprovalType}
+                                placeholder="Select Approval Type" options={approvalTypeOptions} onchange={handleApprovalTypeChange}>
+                            </lightning-combobox>
+                        </div>
+
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                            <lightning-combobox class="material-input-field" name="levelType" label="Select Approver Level" value={selectedApprovalLevel} placeholder="Select Level" 
+                                options={approvalLevelOptions} required="true" onchange={handleApprovalLevelChange} disabled={approvalData.disableApproverLevel}>
+                            </lightning-combobox>
+                            <!-- Udaan Approver -->
+                            <template if:true={showUdaanApprover}>
+                                <div style="margin-top:10px;">
+                                    <lightning-combobox
+                                        label="Udaan Approver Name"
+                                        placeholder="Select Approver"
+                                        options={udaanApproverOptions}
+                                        value={selectedApproverId}
+                                        onchange={handleUdaanApproverChange}>
+                                    </lightning-combobox>
+                                </div>
+                            </template>
+                        </div>
+
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">
+                            <table style="width: 100%;">
+                                <tr>
+                                    <td style="padding-top: 21px; padding-left: 10px;">
+                                        <template if:true={approvalData.showRecommendButton}>
+                                            <button class="SaveButton slds-button slds-button_brand"
+                                                style="font-size: 12.5px;width: 140px;background-color: var(--dt-header-bg);color: #ffffff;border-color: var(--dt-border);font-weight: 500;"
+                                                data-name="Recommended" onclick={handleAction} onfocus={stopPropogation} onblur={stopPropogation}>Submit
+                                            </button>
+                                        </template>
+                                        
+                                        <template if:false={approvalData.isAssignedToUser}>
+                                            <button class="SaveButton slds-button slds-button_brand"
+                                                style="font-size: 12.5px;width: 140px;background-color: var(--dt-positive);color: #ffffff;border-color: var(--dt-border);font-weight: 500;"
+                                                data-name="AssignToMe" onclick={handleAction} onfocus={stopPropogation} onblur={stopPropogation}>Assign To Me
+                                            </button>
+                                        </template>
+
+                                        <template if:true={approvalData.isAssignedToUser}>
+                                            <template if:true={approvalData.showApproveButton}>
+                                                <button class="SaveButton slds-button slds-button_brand"
+                                                    style="font-size: 12.5px;width: 140px;background-color: var(--dt-positive);color: #ffffff;border-color: var(--dt-border);font-weight: 500;"
+                                                    data-name="Approv" onclick={handleAction} onfocus={stopPropogation} onblur={stopPropogation}>Approve
+                                                </button>
+                                            </template>
+
+                                            <template if:true={approvalData.showHoldButton}>
+                                                <button class="SaveButton slds-button slds-button_brand"
+                                                    style="font-size: 12.5px;width: 140px;background-color: var(--dt-negative);color: #ffffff;border-color: var(--dt-border);font-weight: 500;"
+                                                    data-name="Hold" onclick={handleAction} onfocus={stopPropogation} onblur={stopPropogation}>Hold
+                                                </button>
+                                            </template>
+
+                                            <template if:true={approvalData.showUnholdButton}>
+                                                <button class="SaveButton slds-button slds-button_brand"
+                                                    style="font-size: 12.5px;width: 140px;background-color: var(--dt-negative);color: #ffffff;border-color: var(--dt-border);font-weight: 500;"
+                                                    data-name="UnHold" onclick={handleAction} onfocus={stopPropogation} onblur={stopPropogation}>Unhold
+                                                </button>
+                                            </template>
+
+                                            <template if:true={approvalData.showRejectButton}>
+                                                <button class="SaveButton slds-button slds-button_brand"
+                                                    style="font-size: 11px;width: 140px;background-color: var(--dt-negative);color: #ffffff;border-color: var(--dt-border);font-weight: 500;"
+                                                    data-name="Reject" onclick={handleAction} onfocus={stopPropogation} onblur={stopPropogation}>Reject
+                                                </button>
+                                            </template>
+                                        </template>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </template>
+        </template>
+        
+        <!-- Multiproduct reconotes -->
+         
+        <div style="padding: 5px 15px 0 15px;">
+            <lightning-tabset>
+                <template for:each={approvalData.products} for:item="prod">
+                    <lightning-tab key={prod.productId} label={prod.productName} style="border: solid 1px #ddd;">
+                        <div style="padding: 10px 10px 0 10px;">
+                            <template if:false={isOneView}>
+                                <template if:true={approvalData.showApprovalButtons}>
+                                    <div class="custom-div">
+                                        <p style="font-size: 106%; color: #ffffff;font-weight: bold;text-align: left;padding-bottom:1%">
+                                            Recommendation Notes (Kindly do not enter the following combination of special characters '%%- and &&-'.)
+                                        </p>
+
+                                        <lightning-input-rich-text name="Comments" onfocus={stopPropogation} value={prod.prodComment} data-name="description" 
+                                            data-productid={prod.productId} onchange={handleCommentChange} max-length="131072" onblur={saveDraft}
+                                            share-with-entity-id={recordId}>
+                                        </lightning-input-rich-text>
+
+                                        <div style="padding-top: 15px; max-width: 250px;">
+                                            <button class="SaveButton slds-button slds-button_brand"
+                                                style="font-size: 11px;width: 140px;background-color: var(--dt-positive);color: #ffffff;border-color: var(--dt-border);font-weight: 500;"
+                                                data-name="saveDraft" data-productid={prod.productId} onclick={handleAction}>Save Draft
+                                            </button>
+                                        </div>
+                                    </div>
+                                </template>
+                            </template>
+
+                            <template if:true={prod.showApprovalHistory}>
+                                <p style="font-size: 106%; color: #ffffff; font-weight: bold; padding: 25px 0 10px 0;text-align: left;">Approval History</p>
+                                <div class="slds-scrollable_y card-div" style="overflow: auto; padding:1%; border-color: var(--dt-border);">
+                                    <template for:each={prod.statusHistory} for:item="iterObj">
+                                        <div key={iterObj.timeStamp} class="slds-m-bottom_small wrapped-content" style="padding-bottom: 12px; border-bottom: solid 1px #ddd;">
+                                            <table style="width: 100%;">
+                                                <tr>
+                                                    <td style="width: 85px; font-weight: 700;">Timestamp</td>
+                                                    <td>:&nbsp;
+                                                        <lightning-formatted-date-time value={iterObj.timeStamp} year="numeric" month="numeric"
+                                                            day="numeric" hour="2-digit" minute="2-digit">
+                                                        </lightning-formatted-date-time>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: 700;">User</td>
+                                                    <td>: {iterObj.user}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: 700;">Status</td>
+                                                    <td>: {iterObj.status}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: 700;">Type</td>
+                                                    <td>: {iterObj.approvalType}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="font-weight: 700;" valign="top">Remarks</td>
+                                                    <td>
+                                                        <div style="float: left;">:&nbsp;</div>
+                                                        <div style="float: left;">
+                                                            <lightning-formatted-rich-text value={iterObj.remarks}></lightning-formatted-rich-text>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </lightning-tab>
+                </template>
+            </lightning-tabset>
+        </div>
+        
+        <!-- Multiproduct reconotes -->
+        
+        <template if:true={errorModal}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container" style="min-width: 80%;">
+
+                    <header class="slds-modal__header" style="background-color: var(--dt-header-bg); font-weight:500;">
+                        <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Please review the following errors</h2>
+                    </header>
+
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <template for:each={errorLst} for:item="listVariable" for:index="index">
+                            <div key={listVariable}>
+                                {listVariable}
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="slds-modal__footer"
+                        style="background-color: var(--dt-header-bg);border-radius: 0px 0px 5px 5px;text-align: center;min-height: 30px;">
+
+                        <button class="slds-button slds-button_brand previous-button" style="width: 140px;background-color: var(--dt-negative);color: #ffffff;font-weight: 500;"
+                            onclick={hideModalBox}>Cancel
+                        </button>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+        <template if:true={modalVisibility}>
+            <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+                <div class={cssContainer}>
+                    <header class="slds-modal__header header-section">
+                        <div class="slds-text-align_center">
+                            <h2 class="slds-text-heading_medium slds-hyphenate header-title">Confirmation Required</h2>
+                        </div>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="confirm-body1">
+                        <div style="padding: 10px; text-align: center;">
+                            Proceeding will {actionMessage} and refresh the screen. Do you wish to continue?
+                        </div>
+                    </div>
+                    <footer class="footer-section">
+                        <div class="slds-align_absolute-center button-container">
+                            <button class="slds-button slds-button_brand previous-button" onclick={handleNo}>No</button>
+                            <button class="slds-button slds-button_brand continue-button" onclick={handleYes}>Yes</button>
+                        </div>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+
+        <template lwc:if={isLoading}>
+            <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+            </lightning-spinner>
+        </template>
+        
+    </lightning-card>
+</template>

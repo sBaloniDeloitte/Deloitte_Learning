@@ -1,0 +1,101 @@
+<template>
+    <!-- Spinner -->
+    <template if:true={spinnerRun}>
+        <section role="dialog" tabindex="-1"
+                 class="slds-modal slds-fade-in-open"
+                 style="z-index:900003;">
+            <lightning-spinner></lightning-spinner>
+        </section>
+    </template>
+
+    <div class="slds-p-horizontal_medium slds-scrollable_x" style="overflow-x:auto;">
+
+        <template if:true={showTable}>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right">
+
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th scope="col"
+                            style="text-align:center; background-color:#5bb6e3; color:black; font-weight:500; padding:10px;">
+                            <div class="sticky-column slds-truncate" title="Document Type">Document Type</div>
+                        </th>
+
+                        <th scope="col"
+                            style="text-align:center; background-color:#5bb6e3; color:black; font-weight:500; padding:10px;">
+                            <div class="sticky-column slds-truncate" title="Upload">Upload</div>
+                        </th>
+
+                        <th scope="col"
+                            style="text-align:center; background-color:#5bb6e3; color:black; font-weight:500; padding:10px;">
+                            <div class="sticky-column slds-truncate" title="Uploaded Files">Uploaded Files</div>
+                        </th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr class="slds-hint-parent">
+
+                        <td style="text-align:center;">
+                            <div style="max-width:200px; white-space:normal; word-wrap:break-word;">
+                                {documentName}
+                            </div>
+                        </td>
+
+                        <td style="text-align:center;">
+                            <lightning-file-upload
+                                variant="label-hidden"
+                                name="fileUploader"
+                                data-id={documentId}
+                                onuploadfinished={handleFileChange}
+                                accept=".pdf,.jpg,.jpeg,.png"
+                                multiple="false">
+                            </lightning-file-upload>
+                        </td>
+
+                        <td>
+                            <template if:true={firstFile}>
+                                <table class="slds-table">
+                                    <tbody>
+                                        <tr style="background:#f2f2f2;">
+                                            <td style="max-width:200px; white-space:normal;">
+                                                <a href="javascript:void(0);"
+                                                   data-url={firstFile.downloadUrl}
+                                                   onclick={handlePreview}>
+                                                   {firstFile.name}
+                                                </a>
+                                            </td>
+
+                                            <td style="text-align:center;">
+                                                <lightning-icon
+                                                    icon-name="utility:preview"
+                                                    data-url={firstFile.downloadUrl}
+                                                    title="Preview"
+                                                    size="small"
+                                                    onclick={handlePreview}>
+                                                </lightning-icon>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </template>
+                        </td>
+
+                    </tr>
+                </tbody>
+
+            </table>
+        </template>
+
+    <template if:true={showPreview}> 
+                            <div class="preview-header slds-m-top_medium slds-m-bottom_medium" style="display: flex; flex-direction: column; align-items: flex-start; font-weight: bold; font-size: 1.6em; margin-bottom: 10px;">
+                                 <lightning-icon icon-name="utility:close" alternative-text="Close" size="medium" onclick={handleClosePreview} class="close-icon" style="cursor: pointer;"></lightning-icon>
+                                 <span>Previewing:<lightning-icon icon-name="utility:download" data-url={contentDocLink}
+                                         alternative-text="Download" 
+                                        title="Download" class="lightning-icon-hover" 
+                                        size="small" onclick={handleDownload}>
+                                    </lightning-icon> </span>
+                            </div>
+                            <iframe src={filePreviewUrl} class="content-viewer" style="width: 100%; height: 90vh; border: 1px solid #ccc; box-sizing: border-box;"></iframe>
+                        </template>
+    </div>
+</template>

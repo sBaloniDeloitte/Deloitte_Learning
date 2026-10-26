@@ -1,0 +1,153 @@
+<template>
+    <lightning-card>
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+        </template>
+            <template if:true={directorDetailsToBeShown}>
+                <template if:true={showAddButton}>
+                    <div>
+                        <button class="save-button add-director-btn slds-button slds-button_brand slds-m-right_medium"
+                        onclick={showAddDirectorModal}>Add Director's Details</button>
+                    </div>
+                </template>
+
+                <div class="slds-box slds-m-around_small" style="overflow: auto;">
+                    <table
+                        class="table-class slds-box slds-table slds-table_bordered slds-table_cell-buffer slds-table_striped">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">Director Name</th>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">Director's DIN Number
+                                </th>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">Percentage of
+                                    Shareholding</th>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">Director Designation
+                                </th>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">Date of Appointment
+                                </th>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">Address Section</th>
+                                <template if:true={isSalesOrCreditStage}>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Edit</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Delete</th>
+                                </template>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={details} for:item="detail">
+                                <tr key={detail.Id}>
+                                    <td class="tdBorderHeader" style="text-align: center;">{detail.Director_Name__c}
+                                    </td>
+                                    <td class="tdBorderHeader" style="text-align: center;">
+                                        {detail.Director_DIN_Number__c}</td>
+                                    <td class="tdBorderHeader" style="text-align: center;">
+                                        {detail.Percentage_of_Shareholding__c}</td>
+                                    <td class="tdBorderHeader" style="text-align: center;">
+                                        {detail.Director_Designation__c}</td>
+                                    <td class="tdBorderHeader" style="text-align: center;">
+                                        {detail.Date_of_Appointment__c}</td>
+                                    <td class="tdBorderHeader" style="text-align: center;">{detail.Address_Section__c}
+                                    </td>
+                                    <template if:true={isSalesOrCreditStage}>
+                                        <td class="tdBorderHeader" style="text-align: center;">
+                                            <lightning-icon size="small" icon-name="utility:edit" variant="brand"
+                                                title="Edit Detail" data-id={detail.Id} onclick={handleEdit}
+                                                class="grey-utility-icon">
+                                            </lightning-icon>
+                                        </td>
+                                        <td class="tdBorderHeader" style="text-align: center;">
+                                            <lightning-icon size="small" icon-name="utility:delete" variant="brand"
+                                                title="Delete Detail" data-id={detail.Id} data-name={detail.Id}
+                                                onclick={handleDelete} class="red-utility-icon">
+                                            </lightning-icon>
+                                        </td>
+                                    </template>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+                <template if:true={showAddRefModal}>
+                    <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                        aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                        <div class="slds-modal__container">
+                            <header class="slds-modal__header header-section">
+                                <div class="slds-text-align_center">
+                                    <h2 class="slds-text-heading_medium slds-hyphenate header-title">
+                                        New Director's Details</h2>
+                                </div>
+                            </header>
+                            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                <template for:each={screenFieldList} for:item="item">
+                                    <template if:true={item.isPicklist}>
+                                        <lightning-combobox key={item.Id} style="width:100%;"
+                                            label={item.Field_Label__c} placeholder="Select Picklist"
+                                            name={item.Field_Type__c} data-label={item.Storage_Field__c}
+                                            options={item.picklistOptions} data-id={item.Storage_Field__c}
+                                            onfocusout={handleInputChange} value={item.value}
+                                            data-name={item.Storage_Field__c} required={item.Is_Mandatory__c}
+                                            disabled={item.Is_Disabled__c}>
+                                        </lightning-combobox>
+                                    </template>
+                                    <template if:false={item.isPicklist}>
+                                        <lightning-layout-item size="12" key={item.Id}
+                                            style="padding-left: 1%; padding-right: 1%; padding-top:1%">
+
+                                            <template if:true={item.isDate}>
+                                                <lightning-input style="width:100%;" type="date"
+                                                    label={item.Field_Label__c} value={item.value}
+                                                    required={item.Is_Mandatory__c} data-id={item.Storage_Field__c}
+                                                    data-label={item.Storage_Field__c} data-name={item.Storage_Field__c}
+                                                    onfocusout={handleInputChange} disabled={item.Is_Disabled__c}>
+                                                </lightning-input>
+                                            </template>
+
+                                            <template if:false={item.isDate}>
+                                                <lightning-input style="width:100%;" type={item.Field_Type__c}
+                                                    label={item.Field_Label__c} value={item.value}
+                                                    required={item.Is_Mandatory__c} data-id={item.Storage_Field__c}
+                                                    data-label={item.Storage_Field__c} data-name={item.Storage_Field__c}
+                                                    onfocusout={handleInputChange} disabled={item.Is_Disabled__c}
+                                                    max-length={item.Maximum_Length__c} checked={item.value}>
+                                                </lightning-input>
+                                            </template>
+                                        </lightning-layout-item>
+                                    </template>
+                                </template>
+                                <footer class="slds-modal__footer">
+                                    <template if:true={isSaving}>
+                                        <div class="slds-align_absolute-center">
+                                            <lightning-spinner alternative-text="Saving" size="small">
+                                            </lightning-spinner>
+                                        </div>
+                                    </template>
+                                    <template if:false={isSaving}>
+                                        <template if:true={isEditDetail}>
+                                            <div class="slds-align_absolute-center button-container">
+                                                <button class="slds-button slds-button_neutral wave-button"
+                                    onclick={hideAddDirectorModal}>Cancel</button>
+                                                <button class="slds-button slds-button_neutral save-button"
+                                    onclick={editDirectorDetails}>Edit Details</button>
+                                            </div>
+                                        </template>
+                                        <template if:false={isEditDetail}>
+                                            <div class="slds-align_absolute-center button-container">
+                                                <button class="slds-button slds-button_neutral wave-button"
+                                    onclick={hideAddDirectorModal}>Cancel</button>
+                                                <button class="slds-button slds-button_neutral save-button"
+                                    onclick={addDirectorDetails}>Add Details</button>
+                                            </div>
+                                        </template>
+                                    </template>
+                                </footer>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="slds-backdrop slds-backdrop_open"></div>
+                </template>
+            </template>
+            <template if:false={directorDetailsToBeShown}>
+                <h2>Director Details are not required. Please proceed ahead.</h2>
+            </template>
+        
+    </lightning-card>
+</template>

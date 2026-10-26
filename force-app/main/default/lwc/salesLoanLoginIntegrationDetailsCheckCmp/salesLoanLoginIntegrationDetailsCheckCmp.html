@@ -1,0 +1,312 @@
+<template>
+    <template if:false={calledCredit}>
+        <lightning-card>
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+            </template>
+
+            <template if:true={showIntegrationData}>
+                <div class="slds-scrollable slds-m-around_small kyc-table-wrap">
+                    <table
+                        class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped slds-m-around_small"
+                        style="table-layout: fixed;">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th scope="col" style="text-align: center; border: 2px solid black;"
+                                    class="tdBorderHeader">Activity Name</th>
+                                <th scope="col" style="text-align: center; border: 2px solid black;"
+                                    class="tdBorderHeader">Applicant Name</th>
+                                <th scope="col" style="text-align: center; border: 2px solid black;"
+                                    class="tdBorderHeader">Status</th>
+                                <template if:false={hideActions}>
+                                    <th scope="col" style="text-align:center; border:2px solid black;"
+                                        class="tdBorderHeader">Action</th>
+                                </template>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={data} for:item="record">
+                                <template for:each={record.applicantWrappers} for:item="applicant">
+                                    <tr key={applicant.applicantId}>
+                                        <template if:true={applicant.isFirst}>
+                                            <td rowspan={record.applicantWrappers.length}
+                                                style="text-align: center; border: 2px solid black; font-weight: bold;">
+                                                <!-- {record.activityName} -->
+                                                {record.label}
+                                            </td>
+                                        </template>
+                                        <td style="text-align: center; border: 2px solid black;">
+                                            {applicant.applicantName}</td>
+                                        <td style="text-align: center; border: 2px solid black;">
+                                            <template if:true={applicant.isSuccess}>
+                                                Verification Successful
+                                            </template>
+                                            <template if:false={applicant.isSuccess}>
+                                                Unable to Verify
+                                            </template>
+                                        </td>
+
+                                        <template if:false={hideActions}>
+                                            <td style="text-align: center; border: 2px solid black;">
+                                                <template if:true={applicant.isSuccess}>
+                                                    <lightning-icon icon-name="utility:success" size="small"
+                                                        variant="success" alternative-text="Verified"></lightning-icon>
+                                                </template>
+                                                <template if:false={applicant.isSuccess}>
+                                                    <lightning-icon icon-name="action:reset_password" size="xx-small"
+                                                        onclick={rehitApi} data-masterid={record.masterDataId}
+                                                        class="reload-icon custom-icon" alternative-text="Re-hit API"
+                                                        variant="bare" data-id={applicant.applicantId}
+                                                        data-name={record.activityName}></lightning-icon>
+                                                </template>
+                                            </td>
+                                        </template>
+                                    </tr>
+                                </template>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
+        </lightning-card>
+    </template>
+
+    <!-- <template if:true={calledCredit}>
+        <lightning-card>
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+            </template>
+    
+            <template if:true={showIntegrationData}>
+                <lightning-accordion allow-multiple-sections-open class="slds-m-around_small">
+                    <template for:each={data} for:item="record">
+                        <template for:each={record.applicantWrappers} for:item="applicant">
+                            <lightning-accordion-section key={applicant.applicantId} name={applicant.applicantId} label={applicant.applicantName}>
+                                <div style="margin-bottom: 10px; margin-top: 10px; font-size: 14px; font-weight: bold;">
+                                    PAN validation status :
+                                </div>
+                                <c-sales-login-pan-validation-response-cmp record-id={recordId} login-checklist={loginCheck}
+                                                applicant-id={applicant.applicantId}>
+                                </c-sales-login-pan-validation-response-cmp>
+                                <template for:each={groupedApplicants} for:item="applicant">
+                                    <template if:true={applicant.hasVisibleRecords}>
+                                        <lightning-accordion>
+                                            <lightning-accordion-section key={applicant.applicantId}
+                                                                        name={applicant.applicantId}
+                                                                        label={applicant.applicantName}>
+                                                <div style="margin-bottom: 10px; margin-top: 10px; font-size: 14px; font-weight: bold;">
+                                                    KYC API's validation status :
+                                                </div>
+                                                <div class="slds-box slds-box_xx-small slds-scrollable_y" style="max-height: 300px;">
+                                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped" style="table-layout: fixed;">
+                                                        <thead>
+                                                            <tr>
+                                                                <th style="text-align: center;">Activity Name</th>
+                                                                <th style="text-align: center;">Document Type</th>
+                                                                <th style="text-align: center;">Status</th>
+                                                                <th style="text-align: center;">Action</th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <template for:each={applicant.records} for:item="rec">
+                                                                <tr key={rec.masterDataId}>
+                                                                    <td style="text-align: center;">{rec.activityName}</td>
+                                                                    <td style="text-align: center;">{rec.label}</td>
+                                                                    <td style="text-align: center;">
+                                                                        <template if:true={rec.isSuccess}>Verification Successful</template>
+                                                                        <template if:false={rec.isSuccess}>Unable to Verify</template>
+                                                                    </td>
+                                                                    <td style="text-align: center;">
+                                                                        <template if:true={rec.isSuccess}>
+                                                                            <lightning-icon icon-name="utility:success" size="small" variant="success" alternative-text="Verified"></lightning-icon>
+                                                                        </template>
+                                                                        <template if:false={rec.isSuccess}>
+                                                                            <lightning-icon
+                                                                                icon-name="action:reset_password"
+                                                                                size="xx-small"
+                                                                                onclick={rehitApi}
+                                                                                data-masterid={rec.masterDataId}
+                                                                                data-id={applicant.applicantId}
+                                                                                data-name={rec.activityName}
+                                                                                class="reload-icon custom-icon"
+                                                                                alternative-text="Re-hit API"
+                                                                                variant="bare">
+                                                                            </lightning-icon>
+                                                                        </template>
+                                                                    </td>
+                                                                </tr>
+                                                            </template>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </lightning-accordion-section>
+                                        </lightning-accordion>
+                                    </template>
+                                </template>
+                            </lightning-accordion-section>
+                        </template>
+                    </template>
+                </lightning-accordion>
+            </template>
+        </lightning-card>
+    </template> -->
+
+    <!-- <template if:true={calledCredit}>
+        <lightning-card>
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+            </template>
+
+            <template if:true={showIntegrationData}>
+                <lightning-accordion allow-multiple-sections-open class="slds-m-around_small">
+                    <template for:each={groupedApplicants} for:item="applicant">
+                        <template if:true={applicant.hasVisibleRecords}>
+                            <lightning-accordion-section key={applicant.applicantId}
+                                                        name={applicant.applicantId}
+                                                        label={applicant.applicantName}>
+
+                                <div style="margin-bottom: 10px; margin-top: 10px; font-size: 14px; font-weight: bold;">
+                                    PAN validation status :
+                                </div>
+                                <c-sales-login-pan-validation-response-cmp
+                                    record-id={recordId}
+                                    login-checklist={loginCheck}
+                                    applicant-id={applicant.applicantId}>
+                                </c-sales-login-pan-validation-response-cmp>
+
+                                <div style="margin-bottom: 10px; margin-top: 10px; font-size: 14px; font-weight: bold;">
+                                    KYC API's validation status :
+                                </div>
+                                <div class="slds-box slds-box_xx-small slds-scrollable_y" style="max-height: 300px;">
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped" style="table-layout: fixed;">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align: center;">Activity Name</th>
+                                                <th style="text-align: center;">Document Type</th>
+                                                <th style="text-align: center;">Status</th>
+                                                <th style="text-align: center;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template for:each={applicant.records} for:item="rec">
+                                                <tr key={rec.masterDataId}>
+                                                    <td style="text-align: center;">{rec.activityName}</td>
+                                                    <td style="text-align: center;">{rec.label}</td>
+                                                    <td style="text-align: center;">
+                                                        <template if:true={rec.isSuccess}>Verification Successful</template>
+                                                        <template if:false={rec.isSuccess}>Unable to Verify</template>
+                                                    </td>
+                                                    <td style="text-align: center;">
+                                                        <template if:true={rec.isSuccess}>
+                                                            <lightning-icon icon-name="utility:success" size="small" variant="success" alternative-text="Verified"></lightning-icon>
+                                                        </template>
+                                                        <template if:false={rec.isSuccess}>
+                                                            <lightning-icon
+                                                                icon-name="action:reset_password"
+                                                                size="xx-small"
+                                                                onclick={rehitApi}
+                                                                data-masterid={rec.masterDataId}
+                                                                data-id={applicant.applicantId}
+                                                                data-name={rec.activityName}
+                                                                class="reload-icon custom-icon"
+                                                                alternative-text="Re-hit API"
+                                                                variant="bare">
+                                                            </lightning-icon>
+                                                        </template>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </lightning-accordion-section>
+                        </template>
+                    </template>
+                </lightning-accordion>
+            </template>
+        </lightning-card>
+    </template> -->
+
+    <template if:true={calledCredit}>
+        <lightning-card>
+            <template if:true={isLoading}>
+                <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+            </template>
+
+            <template if:true={showIntegrationData}>
+                <lightning-accordion allow-multiple-sections-open class="slds-m-around_small">
+                    <template for:each={groupedApplicants} for:item="applicant">
+                        <lightning-accordion-section key={applicant.sectionKey} name={applicant.sectionKey}
+                            label={applicant.applicantName}>
+
+                            <!-- PAN validation -->
+                            <div style="margin-bottom: 10px; margin-top: 10px; font-size: 14px; font-weight: bold;">
+                                PAN validation status :
+                            </div>
+                            <c-sales-login-pan-validation-response-cmp record-id={recordId} login-checklist={loginCheck}
+                                applicant-id={applicant.applicantId}>
+                            </c-sales-login-pan-validation-response-cmp>
+
+                            <!-- KYC section (only if records are present) -->
+                            <template if:true={applicant.records.length}>
+                                <div style="margin-bottom: 10px; margin-top: 10px; font-size: 14px; font-weight: bold;">
+                                    KYC API's validation status :
+                                </div>
+                                <div class="slds-box slds-box_xx-small slds-scrollable_y kyc-table-wrap" style="max-height: 300px;">
+                                    <table
+                                        class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped"
+                                        style="table-layout: fixed;">
+                                        <thead>
+                                            <tr>
+                                                <th style="text-align: center;">Activity Name</th>
+                                                <!-- <th style="text-align: center;">Document Type</th> -->
+                                                <th style="text-align: center;">Status</th>
+                                                <template if:false={hideActions}>
+                                                    <th style="text-align: center;">Action</th>
+                                                </template>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template for:each={applicant.records} for:item="rec">
+                                                <tr key={rec.rowKey}>
+                                                    <!-- <td style="text-align: center;">{rec.activityName}</td> -->
+                                                    <td style="text-align: center;">{rec.label}</td>
+                                                    <td style="text-align: center;">
+                                                        <template if:true={rec.isSuccess}>Verification
+                                                            Successful</template>
+                                                        <template if:false={rec.isSuccess}>Unable to Verify</template>
+                                                    </td>
+                                                    <template if:false={hideActions}>
+                                                    <td style="text-align: center;">
+                                                        <template if:true={rec.isSuccess}>
+                                                            <lightning-icon icon-name="utility:success" size="small"
+                                                                variant="success" alternative-text="Verified">
+                                                            </lightning-icon>
+                                                        </template>
+                                                        <template if:false={rec.isSuccess}>
+                                                            <lightning-icon icon-name="action:reset_password"
+                                                                size="xx-small" onclick={rehitApi}
+                                                                data-masterid={rec.masterDataId}
+                                                                data-id={applicant.applicantId}
+                                                                data-name={rec.activityName}
+                                                                class="reload-icon custom-icon"
+                                                                alternative-text="Re-hit API" variant="bare">
+                                                            </lightning-icon>
+                                                        </template>
+                                                    </td>
+                                                    </template>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </template>
+
+                        </lightning-accordion-section>
+                    </template>
+                </lightning-accordion>
+            </template>
+        </lightning-card>
+    </template>
+
+</template>

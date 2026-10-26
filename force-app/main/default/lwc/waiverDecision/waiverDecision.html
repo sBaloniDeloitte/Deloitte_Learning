@@ -1,0 +1,98 @@
+<template>
+    <div class="decision-container">
+        <template if:true={waivers.length}>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr>
+                        <th>Waiver ID</th>
+                        <th>Requested By</th>
+                        <th>Requested From</th>
+                        <th>Remarks</th>
+                        <!--   <th>Latest Remarks History</th> -->
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={waivers} for:item="waiver">
+                        <tr key={waiver.Id}>
+                            <td>{waiver.Name}</td>
+                            <td>{waiver.Waiver_Requested_By__c}</td>
+                            <td>{waiver.Waiver_Requested_From__c}</td>
+                            <td>{waiver.Remarks__c}</td>
+                            <!--   <td>{waiver.Latest_Remarks_History__c}</td> -->
+                            <td>{waiver.Status__c}</td>
+                            <td>
+                                <lightning-button label="View" variant="neutral" onclick={handleView}
+                                    data-id={waiver.Id}>
+                                </lightning-button>
+                            </td>
+                        </tr>
+
+                        <!-- ✅ use precomputed detailKey -->
+                        <template if:true={waiver.isSelected}>
+                            <tr key={waiver.detailKey}>
+                                <td colspan="6">
+                                    <div class="detail-box">
+                                        <h3 class="detail-header">Waiver Details</h3>
+                                        <p><b>Name:</b> {waiver.Name}</p>
+
+                                        <div class="tabs">
+                                            <button class={approveTabClass} data-tab="approve" onclick={handleTabClick}>Approve</button>
+                                            <button class={rejectTabClass} data-tab="reject" onclick={handleTabClick}>Reject</button>
+                                            <button class={submitTabClass} data-tab="submit" onclick={handleTabClick}>Submit</button>
+                                        </div>
+
+                                        <div class="tab-content">
+                                            <template if:true={isApproveTab}>
+                                                <p>You chose to Approve this waiver.</p>
+                                                <lightning-button disabled={showSubmitTab} label="Confirm Approve" class="slds-p-top_x-small"
+                                                    variant="brand" onclick={handleApprove}></lightning-button>
+                                            </template>
+
+                                            <template if:true={isRejectTab}>
+                                                <p>You chose to Reject this waiver.</p>
+                                                <lightning-textarea label="Reason" value={remarks} class="slds-p-bottom_x-small"
+                                                    onchange={handleRemarksChange}></lightning-textarea>
+                                                <lightning-button disabled={showSubmitTab} 
+                                                    label="Confirm Reject" variant="destructive" onclick={handleReject}>
+                                                </lightning-button>
+                                            </template>
+
+                                            <template if:true={isSubmitTab}>
+
+                                                <template lwc:if={isAbleToReassign}>
+                                                    <div class="form-row">
+                                                        <!-- <label class="form-label">Waiver Requested From</label> -->
+                                                        <lightning-combobox label="Waiver Requested From" name="waiverFrom" value={waiverFrom}
+                                                            options={waiverFromOptions} onchange={handleChange}
+                                                            class="form-input slds-p-bottom_x-small">
+                                                        </lightning-combobox>
+                                                    </div>
+                                                </template>
+
+                                                <p>You chose to Submit this waiver.</p>
+                                                <lightning-button disabled={isSubmitDisabled} label="Confirm Submit" class="slds-p-top_x-small"
+                                                    variant="success" onclick={handleSubmit}></lightning-button>
+                                                <template if:true={showApproveRejectTabs}>
+                                                    <p class="slds-text-color_error slds-m-top_x-small">
+                                                        This waiver has already been submitted.
+                                                    </p>
+                                                </template>
+                                            </template>
+
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+                    </template>
+                </tbody>
+            </table>
+        </template>
+
+        <template if:false={waivers.length}>
+            <p>No waiver records found.</p>
+        </template>
+    </div>
+</template>

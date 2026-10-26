@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+	<apiVersion>64.0</apiVersion>
+	<description>This is LWC component for OCR Details tab in Loan Application record</description>
+	<isExposed>true</isExposed>
+	<targets>
+		<target>lightning__RecordPage</target>
+	</targets>
+</LightningComponentBundle>

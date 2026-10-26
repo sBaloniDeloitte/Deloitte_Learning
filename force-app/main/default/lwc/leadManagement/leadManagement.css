@@ -1,0 +1,48 @@
+@import "c/cssLibrary";
+/* makes the section scroll instead of clipping the dropdown */
+.form-scroll {
+max-height: 70vh; /* tune as you like, or use the JS below to auto-calc */
+overflow-y: auto; /* adds the vertical scrollbar */
+padding-right: .25rem; /* keeps content clear of the scrollbar */
+overscroll-behavior: contain;
+scrollbar-gutter: stable; /* avoids layout jump when scrollbar appears */
+}
+
+/* helps the combobox menu stack above neighbors inside the scroll area */
+.z-fix {
+position: relative;
+z-index: 1;
+  
+}
+
+/* relax layout containment so overflow works reliably in flexipages/console */
+
+.combowrapper  {
+   lightning-combobox::part(dropdown overlay) {
+   /* max-height: 150px;
+    overflow-y: scroll;*/
+    .slds-dropdown-trigger_click .slds-dropdown, .slds-dropdown-trigger_click:hover .slds-dropdown, .slds-dropdown-trigger--click .slds-dropdown, .slds-dropdown-trigger--click:hover .slds-dropdown {
+                        display: none;
+                        overflow-y: scroll;
+                        max-height: 150px;
+                    }
+}
+}
+.page-wrapper {
+position: relative;
+min-height: 100vh; /* cover full viewport height */
+}
+
+/* full screen overlay */
+.spinner-overlay {
+position: fixed;
+top: 0;
+left: 0;
+width: 100vw;
+height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+background-color: rgba(0, 0, 0, 0.2); /* light dim */
+z-index: 9999; /* above everything in the page */
+}

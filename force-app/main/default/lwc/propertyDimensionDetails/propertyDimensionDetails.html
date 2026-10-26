@@ -1,0 +1,127 @@
+<template>
+    <lightning-card title="Dimension & Boundaries Details">
+        <div class="slds-p-around_small">
+
+            <!-- DIMENSION TABLE -->
+            <h3 class="section-title">
+                Dimension of Property (For Land & Building, Offices & Shops)
+            </h3>
+
+            <table class="custom-table slds-table slds-table_cell-buffer">
+                <thead class="custom-header">
+                    <tr>
+                        <th>Description</th>
+                        <th>North</th>
+                        <th>East</th>
+                        <th>West</th>
+                        <th>South</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={dimensionRows} for:item="row">
+                        <tr key={row.Id}>
+                            <td>{row.Description_Dimension_of_Property__c}</td>
+                            <td>
+                                <lightning-input type="text" 
+                                    value={row.North__c}
+                                    data-id={row.Id}
+                                    data-field="North__c"
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="text" 
+                                    value={row.East__c}
+                                    data-id={row.Id}
+                                    data-field="East__c"
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="text" 
+                                    value={row.West__c}
+                                    data-id={row.Id}
+                                    data-field="West__c"
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="text" 
+                                    value={row.South__c}
+                                    data-id={row.Id}
+                                    data-field="South__c"
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+
+            <!-- BOUNDARY TABLE -->
+            <h3 class="section-title slds-m-top_medium">
+                Boundaries Details
+            </h3>
+
+            <table class="custom-table slds-table slds-table_cell-buffer">
+                <thead class="custom-header">
+                    <tr>
+                        <th>Description</th>
+                        <th>North</th>
+                        <th>East</th>
+                        <th>West</th>
+                        <th>South</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={boundaryRows} for:item="row">
+                        <tr key={row.Id}>
+                            <td>{row.Description_Dimension_of_Property__c}</td>
+                            <td>
+                                <lightning-input type="text" 
+                                    value={row.North__c}
+                                    data-id={row.Id}
+                                    data-field="North__c"
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="text" 
+                                    value={row.East__c}
+                                    data-id={row.Id}
+                                    data-field="East__c"
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="text" 
+                                    value={row.West__c}
+                                    data-id={row.Id}
+                                    data-field="West__c"
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </td>
+                            <td>
+                                <lightning-input type="text" 
+                                    value={row.South__c}
+                                    data-id={row.Id}
+                                    data-field="South__c"
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+
+            <div class="slds-m-top_medium slds-text-align_right">
+                <lightning-button
+                    label="Save"
+                    variant="brand"
+                    onclick={handleSave}>
+                </lightning-button>
+            </div>
+
+        </div>
+    </lightning-card>
+</template>

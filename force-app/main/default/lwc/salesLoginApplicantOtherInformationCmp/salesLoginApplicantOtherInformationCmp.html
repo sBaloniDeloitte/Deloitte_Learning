@@ -1,0 +1,54 @@
+<template>
+
+      <!-- Progress Bar -->
+      <div class="slds-box slds-theme_default progress-container slds-scrollable_x" style="margin-top:1%">
+        <div class="progress-bar">
+            <template for:each={processedStages} for:item="stage" for:index="index">
+                <div key={stage.name} class="progress-step">
+                    
+                    <!-- Connector Line -->
+                    <template if:true={stage.showLine}>
+                        <div class="connector"></div>
+                    </template>
+
+                    <!-- Stage Icon -->
+                    <template if:true={stage.isCompleted}>
+                        <div class="icon-wrapper icon-wrapper_completed">
+                            <lightning-icon icon-name="utility:check" size="x-small" variant="inverse"
+                                alternative-text="Completed"></lightning-icon>
+                        </div>
+                    </template>
+                    <template if:false={stage.isCompleted}>
+                        <div class="icon-wrapper icon-wrapper_incomplete">
+                            <span class="blocked-icon">
+                                <span class="slds-assistive-text">Incomplete</span>
+                            </span>
+                        </div>
+                    </template>
+
+                    <!-- Stage Name -->
+                    <div class="slds-text-align_center">
+                        <p class="stage-name">{stage.name}</p>
+                    </div>
+                </div>
+            </template>
+        </div>
+    </div>
+    <div class="container accordian" style="border-radius: 5px; border: 1px solid; margin: 8px 5px 1px 10px;">
+        <lightning-accordion  active-section-name={activeSection}>
+            <template for:each={actualStage} for:item="stage">
+                <lightning-accordion-section key={stage.name} style="background-color: white; font-weight:500"   name={stage.name} label={stage.name} 
+                    onclick={handleAccordionClick}>
+                   
+                    <template if:true={rerenderCmp}>
+                        <c-sales-loan-login-generic-screen-cmp passed-screen-name={passedScreenName} record-id={recordId} form-identifier={formName} active-section={activeSection}    current-app-seq={stage.sequence} onrefreshmenucmpfinal={handleRefreshCmpFinal} onrefreshmenucmp={handleRefreshCmp} onhighlightactivescreen={handleHighLightScreen} hide-next={appOtherDetails}></c-sales-loan-login-generic-screen-cmp>
+                    </template>
+                </lightning-accordion-section>
+            </template>
+        </lightning-accordion>
+    </div>
+
+
+
+    
+</template>

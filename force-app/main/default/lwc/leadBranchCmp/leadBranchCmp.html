@@ -1,0 +1,50 @@
+<!--
+    @description : Static "Branch" card - search and pick the assigned
+                    branch (dark/purple theme aligned with leadManagementV2 /
+                    leadPriorityCmp / leadScoreCmp / leadDispositionCmp).
+    @author       : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <div class="lb-container">
+
+        <div class="lb-header">
+            <lightning-icon icon-name="utility:company" size="small" variant="inverse" class="lb-header-icon"></lightning-icon>
+            <div class="lb-header-text">
+                <div class="lb-header-title">Branch</div>
+                <div class="lb-header-subtitle">Based on the suggested pincode the nearest suggested branch is {branchList.name} </div>
+            </div>
+        </div>
+
+        <div class="lb-body">
+            <div class="lb-search-wrapper">
+                <lightning-icon icon-name="utility:search" size="x-small" class="lb-search-icon"></lightning-icon>
+                <input
+                    type="text"
+                    class="lb-search-input"
+                    placeholder="Search branch..."
+                    value={searchTerm}
+                    oninput={handleSearchChange} />
+            </div>
+
+            <div class="lb-branch-list">
+                <template for:each={filteredBranches} for:item="branch">
+                    <div key={branch.id} class={branch.cssClass} data-name={branch.name} onclick={handleBranchClick}>
+                        <lightning-icon icon-name="utility:company" size="x-small" class="lb-branch-icon"></lightning-icon>
+                        <span class="lb-branch-name">{branch.name}</span>
+                        <template if:true={branch.isSelected}>
+                            <span class="lb-branch-selected-pill">
+                                <lightning-icon icon-name="utility:check" size="xx-small" class="lb-branch-selected-icon"></lightning-icon>
+                                Selected
+                            </span>
+                        </template>
+                    </div>
+                </template>
+
+                <template if:true={noResults}>
+                    <p class="lb-no-results">No branches found.</p>
+                </template>
+            </div>
+        </div>
+
+    </div>
+</template>

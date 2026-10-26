@@ -1,0 +1,53 @@
+<template>
+    <lightning-accordion class="example-accordion">
+        <lightning-accordion-section name="SanctionLetter" label="Sanction Letter">
+            <div class="slds-m-around_medium">
+                <div class="table-container">
+
+                    <div class="bsa-page">
+                        <div style="margin-left: 15px;">
+                            <template if:true={displayGenerateSanctionLetter}>
+                                <template if:true={isEditableUser}>
+                                    <div class="slds-m-top_medium slds-text-align_left">
+                                        <button class="slds-button slds-button_brand save-button" onclick={handleGensancLett}>Generate</button>
+                                    </div>
+                                </template>
+                            </template>
+                        </div>
+                    </div>
+                    
+                    <template if:true={isLoading}>
+                        <div class="slds-spinner_container">
+                            <lightning-spinner alternative-text="Generating PDF" size="medium"></lightning-spinner>
+                        </div>
+                    </template>
+                    <!-- Error Message -->
+                    <template if:true={errorMessage}>
+                        <div class="slds-text-color_error slds-m-top_medium">
+                            {errorMessage}
+                        </div>
+                    </template>
+                    <template if:true={showMessage}>
+                        <div class="slds-text-color_error slds-m-top_medium">
+                            {infoMessage}
+                        </div>
+                    </template>
+
+                    <!-- Render PDF in the same page -->
+                    <template if:false={displayGenerateSanctionLetter}>
+                        <template if:true={isEditableUser}>
+                            <div class="slds-m-top_medium slds-text-align_left">
+                                <button class="slds-button slds-button_brand save-button" onclick={handleRegenerateSanctionLetter}>Re-Generate</button>
+                            </div>
+                        </template>
+                        <template if:false={showMessage}>
+                            <div class="slds-m-top_medium">
+                                <iframe src={pdfUrl} width="100%" height="500px"></iframe>
+                            </div>
+                        </template>
+                    </template>
+                </div>
+            </div>
+        </lightning-accordion-section>
+    </lightning-accordion>
+</template>

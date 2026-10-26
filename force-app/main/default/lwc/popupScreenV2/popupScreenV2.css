@@ -1,0 +1,231 @@
+/* _______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________ */
+@import "c/cssLibrary";
+
+/* ── Dark theme tokens (matching "Sourcing Branch" reference design) ────── */
+:host {
+    --pop-bg-page:      #0d0d17;
+    --pop-card-bg:      #171728;
+    --pop-card-border:  rgba(139, 92, 246, 0.18);
+    --pop-accent-start: #7c3aed;
+    --pop-accent-end:   #a855f7;
+    --pop-text-title:   #ffffff;
+    --pop-text-sub:     #9ca3af;
+    --pop-text-body:    #d1d5db;
+    --pop-radius-lg:    16px;
+
+    display: block;
+    width: 100%;
+    position: relative;
+}
+
+/* ── Centered overlay behavior WITHOUT pushing surrounding page content ──
+   .slds-modal itself stays fixed + full-viewport so it centers the dialog
+   like a true modal and never displaces other components in normal flow.
+   It is fully transparent — only .modal-inner (shrink-wrapped to the
+   dialog's own size) paints anything, so the dimmed backdrop below is
+   confined to the dialog card's footprint, not the whole screen. ── */
+.slds-modal {
+    position: fixed !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+
+    background: transparent !important;
+    margin: 0 !important;
+    padding: 0 !important;
+
+    z-index: 9000 !important;
+}
+
+.modal-inner {
+    position: relative;
+    width: 100% !important;
+    height: auto !important;
+    min-height: 0 !important;
+    z-index: 1;
+
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+}
+/* 
+.slds-backdrop {
+    position: absolute !important;
+    inset: 0;
+    z-index: -1;
+} */
+
+.header-section {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background: transparent !important;
+    border-bottom: 1px solid var(--pop-card-border);
+    border-radius: var(--pop-radius-lg) var(--pop-radius-lg) 0 0;
+}
+/* =========================================================
+   COLD LEAD + LEAD CLOSURE + SAVE DISPOSITION POPUP
+   HEADER
+   ========================================================= */
+
+.custom-popup-header {
+    background: linear-gradient(90deg, #2563eb 0%, #23449a 100%) !important;
+    border-bottom: 1px solid #23449a !important;
+    color: #ffffff !important;
+    border-radius: 16px 16px 0 0 !important;
+    padding: 20px !important;
+}
+
+.custom-popup-header .header-title {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+}
+
+.custom-popup-footer {
+    background: linear-gradient(90deg, #2563eb 0%, #23449a 100%) !important;
+    border-top: 1px solid #23449a !important;
+    border-radius: 0 0 16px 16px !important;
+    min-height: 45px !important;
+    padding: 10px 20px !important;
+}
+.closure-remarks {
+    z-index: 9999;
+}
+
+/* ── Modal container / content — force dark background over SLDS white ── */
+.slds-modal__container {
+    background: var(--pop-card-bg) !important;
+    border-radius: var(--pop-radius-lg) !important;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35) !important;
+
+    overflow: hidden !important;
+
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: calc(100vh - 4rem) !important;
+
+    margin: 0 auto !important;
+    padding: 0 !important;
+
+    width: 70% !important;
+    max-width: 60rem !important;
+
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.slds-modal__content {
+    background: var(--pop-card-bg) !important;
+    color: var(--pop-text-title) !important;
+}
+
+/* .slds-backdrop {
+    background: var(--pop-bg-page);
+    opacity: 0.75;
+} */
+.slds-backdrop.slds-backdrop_open {
+    position: fixed !important;
+    inset: 0 !important;
+    z-index: 0 !important;
+    background: rgba(13, 13, 23, 0.70) !important;
+    backdrop-filter: blur(6px) !important;
+    -webkit-backdrop-filter: blur(6px) !important;
+}
+
+/* .modal-inner {
+    position: relative;
+    width: 100%;
+    z-index: 1;
+} */
+/* ── Header title text ───────────────────────────────────────────────── */
+.header-title {
+    color: var(--pop-text-title) !important;
+}
+
+/* ── Force generic text elements inside the modal to white ─────────── */
+.slds-modal__container h2,
+.slds-modal__container h3,
+.slds-modal__container p,
+.slds-modal__container span,
+.slds-modal__container label,
+.slds-modal__container li,
+.slds-modal__container b {
+    color: var(--pop-text-title);
+}
+
+/* ── Form field labels (combobox / input / textarea) — force white ──── */
+.slds-modal__container lightning-combobox,
+.slds-modal__container lightning-input,
+.slds-modal__container lightning-textarea {
+    --slds-c-input-label-color: var(--pop-text-title);
+    --sds-c-input-label-color: var(--pop-text-title);
+    --lwc-colorTextLabel: var(--pop-text-title);
+}
+
+.slds-modal__container .slds-form-element__label {
+    color: var(--pop-text-title) !important;
+}
+
+.slds-modal__container .slds-list_dotted li {
+    color: var(--pop-text-body);
+}
+/* FORM FIELD LABELS */
+lightning-combobox,
+lightning-input,
+lightning-textarea {
+    --slds-c-input-label-color: #ffffff !important;
+    --sds-c-input-label-color: #ffffff !important;
+    --lwc-colorTextLabel: #ffffff !important;
+}
+
+lightning-textarea {
+    --slds-c-textarea-label-color: #ffffff !important;
+    --sds-c-textarea-label-color: #ffffff !important;
+}
+/* ================================
+   POPUP ACTION BUTTONS
+   ================================ */
+
+.cold-lead-popup-footer,
+.lead-closure-popup-footer,
+.disposition-popup-footer {
+    background-color: #16283f !important;
+    border-top: 1px solid #33455e !important;
+}
+
+/* CANCEL - RED */
+.cancel-button {
+    background-color: #e02424 !important;
+    border-color: #e02424 !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+.cancel-button:hover,
+.cancel-button:focus {
+    background-color: #c81f1f !important;
+    border-color: #c81f1f !important;
+    color: #ffffff !important;
+}
+
+/* SAVE - GREEN */
+.save-button {
+    background-color: #16a34a !important;
+    border-color: #16a34a !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+.save-button:hover,
+.save-button:focus {
+    background-color: #15803d !important;
+    border-color: #15803d !important;
+    color: #ffffff !important;
+}
+
+/* __________________________GenAI: Generated code ends here______________________________ */

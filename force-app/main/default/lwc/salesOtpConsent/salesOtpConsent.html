@@ -1,0 +1,452 @@
+<template>
+    <!-- <div class="slds-box"> -->
+        <template if:true={checkSpinner}>
+            <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+        <!-- <div style="overflow-x: auto;"> -->
+            <template if:true={isDesktop}>
+                <div style="max-height: 350px;">
+                    <div class="slds-m-around_x-small slds-scrollable" style="border-radius: 5px; border: solid 1px;">
+                        <template if:true={custOptions}>
+                            <template for:each={custOptions} for:item="applicant" for:index="index">
+                                <div key={applicant.recordApplicationId}>
+                                    <div lwc:if={leadId} class="instruction-box">
+                                        {applicant.applicantName}
+                                    </div> 
+                                    <div lwc:else class="instruction-box" >
+                                        {applicant.applicantName} ({applicant.applicantType})
+                                    </div>
+                                    <template if:true={showdropdown}>
+                                            <lightning-combobox
+                                                name="actionSelect"
+                                                label="Select Mode"
+                                                placeholder="Select Mode"
+                                                value={selectedAction}
+                                                options={dropdownOptions}
+                                                data-index={index}
+                                                onchange={handleActionChange}
+                                                disabled={isDropdownDisabled}
+                                                class={comboboxClass}
+                                            ></lightning-combobox>
+                                    </template>
+                                   <template if:true={showtable}>
+    <!-- SLDS grid centers children horizontally; vertical centering is optional -->
+    <div class="slds-grid slds-grid_align-center slds-grid_vertical-align-center slds-m-top_medium">
+        <div class="slds-col">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered compact-table slds-scrollable_y"
+                   role="grid">
+                <thead>
+                    <tr class="slds-line-height_reset instruction-table">
+                        <th scope="col">Consent</th>
+                        <th scope="col">Mobile Number</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={custOptions} for:item="item">
+                        <tr key={item.recordApplicationId}>
+                            <td scope="row" style="font-weight: bold">
+                                <template if:true={item.otpVerified}>
+                                    <lightning-icon 
+                                        icon-name="action:approval" 
+                                        alternative-text="Verified"
+                                        title="Consent Verified" 
+                                        size="x-small">
+                                    </lightning-icon>
+                                </template>
+                            </td>
+                            <td>
+                                <template if:true={item.otpVerified}>
+                                    <div class="slds-text-color_success slds-text-body_regular">
+                                        {item.originalMobileNumber}
+                                    </div>
+                                </template>
+                                <template if:false={item.otpVerified}>
+                                    <div class="slds-text-body_regular">
+                                        {item.originalMobileNumber}
+                                    </div>
+                                </template>
+                            </td>
+                            <td>
+                                <template if:true={item.otpVerified}>
+                                    <div class="slds-text-color_success slds-text-body_regular">
+                                        {item.email}
+                                    </div>
+                                </template>
+                                <template if:false={item.otpVerified}>
+                                    <div class="slds-text-body_regular">
+                                        {item.email}
+                                    </div>
+                                </template>
+                            </td>
+                            <td >
+                                
+
+                                <template if:true={item.otpVerified}>
+                                    <div class="slds-text-color_success slds-text-body_regular">
+                                        {item.displayStatus}
+                                    </div>
+                                </template>
+                                <template if:false={item.otpVerified}>
+                                    <div class="slds-text-body_regular">
+                                        {item.displayStatus}
+                                    </div>
+                                </template>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>                                 
+<template if:false={loginChecklist}>
+                                       
+                                            <template if:true={showSendConsent}>
+                                                <template if:false={isMobile}>
+                                                    <template if:false={isConsentDisabled}>
+                                                    <div class="andcontainer">
+                                                        <button onclick={handleSendConsentLink} style="margin-right: 8px;" class="slds-button  previous-button">{sendconsentLink}</button>
+                                                    </div>
+                                                    </template>
+                                                </template>
+                                            </template>
+                                       
+                                             <template if:true={showConsentverify}>
+                                                <template if:false={isMobile}>
+                                                <div style="text-align: center;margin-bottom: 10px;">
+                                                <template if:true={resendlinks}>
+                                                <template if:false={isConsentDisabled}>
+                                                <button style="margin-right: 8px;width: 130px; margin-top: 20px;" class="slds-button  previous-button">Resend Link</button>
+                                                </template>
+                                                </template>
+                                                <button style="margin-right: 8px;width: 130px; margin-top: 20px;" class="slds-button  previous-button" onclick={verifiyconsentcode}>Verify</button>
+                                                </div>
+                                                </template>
+                                            </template>
+                                       
+                                        
+                                           
+                                    </template>
+                                    
+                                </div>
+                            </template>
+                        </template>
+                    </div>
+                    <div class="slds-m-around_x-small slds-scrollable" style="border-radius: 5px; border: solid 1px; margin-top: 20px; max-height: 150px; max-width: 100%; overflow-y: auto;"> <!--  color:#9bbf56 -->
+                        <c-loan-acknowledge-page record-id={loanApplicationId} lead-id={leadId} applicant-id={applicantDetId} show-consent="Not Required"></c-loan-acknowledge-page>
+                    </div>  
+                </div>
+            </template>
+            <template if:true={isMobile}>
+                <template if:true={custOptions}>
+                    <template for:each={custOptions} for:item="applicant" for:index="index">
+                        <div key={applicant.recordApplicationId}>
+                            <!-- Customer Name Section -->
+                            <div lwc:if={leadId} class="instruction-box" >
+                                        {applicant.applicantName}
+                            </div> 
+                            <div lwc:else class="instruction-box">
+                                {applicant.applicantName} ({applicant.applicantType})
+                            </div>
+                            <!-- Dropdown Menu Section -->
+                            <!-- <div style="margin-bottom: 1rem;"></div> -->
+                            <template if:true={showdropdown}>
+                                <lightning-combobox
+                                    name="actionSelect"
+                                    label="Select Mode"
+                                    placeholder="Select Mode"
+                                    value={selectedAction}
+                                    options={dropdownOptions}
+                                    data-index={index}
+                                    onchange={handleActionChange}
+                                    disabled={isDropdownDisabled}
+                                    class={comboboxClass}
+                                ></lightning-combobox>
+                        </template>
+                            <template if:true={showtable}>
+                                <div class="mobile-table-scroll" style="margin-top: 20px;">
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered compact-table">
+                                        <thead>
+                                            <tr class="slds-line-height_reset instruction-table">
+                                                <th scope="col">Consent</th>
+                                                <th scope="col">Mobile Number</th>
+                                                <th scope="col">Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template for:each={custOptions} for:item="item">
+                                                <tr key={item.recordApplicationId}>
+                                                    <td scope="row" style="font-weight: bold">
+                                                        <template if:true={item.otpVerified}>
+                                                            <lightning-icon 
+                                                                icon-name="action:approval" 
+                                                                alternative-text="Verified"
+                                                                title="Consent Verified" 
+                                                                size="x-small" 
+                                                            >
+                                                            </lightning-icon>
+                                                        </template>
+                                                    </td>
+                                                    <td>
+                                                        <template if:true={item.otpVerified}>
+                                                            <div style="color: green;">{item.mobileNumber}</div>    
+                                                        </template>
+                                                        <template if:false={item.otpVerified}>
+                                                            <div> {item.mobileNumber}</div>
+                                                        </template>
+                                                    </td>
+                                                    <td>
+                                                        <template if:true={item.otpVerified}>
+                                                            <div style="color: green;">{item.displayStatus}</div>  
+                                                        </template>
+                                                        <template if:false={item.otpVerified}>
+                                                        <div>{item.displayStatus}</div>
+                                                        </template>
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </template>
+                            <!-- Additional space below the dropdown -->
+                            <!-- <div style="margin-bottom: 1rem;"></div> -->
+                        </div>
+                    </template>
+                </template>
+            </template>
+        <!-- </div> -->
+        <template if:false={loginChecklist}>
+            <template if:true={showSendOtp}>
+                <template if:false={isMobile}>
+                    <div class="andcontainer">
+                        <template if:false={otpsended}>
+                            <button  onclick={callSendOTP} style="margin-right: 0px;width:117px" class="slds-button  previous-button">{sendOtpLabel}</button>
+                        </template>
+                        <template if:true={otpsended}>
+                            <template if:true={showTimer}>
+                                <button  onclick={callSendOTP} style="background-color: lightgrey;color: #113451;width: 117px;"  disabled={showTimer} class="slds-button  previous-button">{sendOtpLabel}</button>
+                            </template>
+                            <template if:false={showTimer}>
+                                <button  onclick={callSendOTP} style="width: 117px;" class="slds-button  previous-button">{sendOtpLabel}</button>
+                            </template>
+                        </template>
+                    </div>
+                        <template if:true={showTimer}>
+                            <div class="timer-textdesktop">Resend OTP in {timerValue}</div>
+                        </template>
+                </template>
+                <template if:true={isMobile}>
+                    <lightning-layout multiple-rows="false" horizontal-align="center" vertical-align="center">
+                        <!-- Send OTP Button -->
+                        <lightning-layout-item size="6" padding="around-small">
+                            <template if:false={otpsended}>
+                            <button style="width: 100%; font-size: 0.8rem;" 
+                                    class="slds-button  previous-button" 
+                                    onclick={callSendOTP}>
+                                {sendOtpLabel}
+                            </button>
+                        </template>
+                        <template if:true={otpsended}>
+                            <template if:true={showTimer}>
+                            <button style="width: 100%; font-size: 0.8rem;background-color: lightgrey;color: #113451;"
+                                    class="slds-button  previous-button" disabled={showTimer}
+                                    onclick={callSendOTP}>
+                                {sendOtpLabel}
+                            </button>
+                        </template>
+                        <template if:false={showTimer}>
+                            <button style="width: 100%; font-size: 0.8rem;" 
+                                    class="slds-button  previous-button" 
+                                    onclick={callSendOTP}>
+                                {sendOtpLabel}
+                            </button>
+                        </template>
+                        </template>
+                            <!-- Timer (only visible when showTimer is true) -->
+                            <template if:true={showTimer}>
+                                <p class="timer-text">Resend OTP in {timerValue}</p>
+                            </template>
+                        </lightning-layout-item>
+                        <!-- Change Mode Button -->
+                        <lightning-layout-item size="6" padding="around-small">
+                            <!--<button style="width: 100%; font-size: 0.5rem;" 
+                                    class="slds-button  previous-button" 
+                                    onclick={ChangeMode}>
+                                {changemodebutton}
+                            </button>-->
+                            <template if:true={showTimer}>
+                                <p class="timer-textwhite">Resend OTP in {timerValue}</p>
+                            </template>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </template>
+            
+            </template>
+            <template if:true={showSendConsent}>
+                <!-- <template if:false={isMobile}>
+                    <div class="andcontainer">
+                        <button onclick={SendConsentLink} style="margin-right: 8px;width: 172px;" class="slds-button  previous-button">{sendconsentLink}</button> 
+                    </div>
+                </template> -->
+                <template if:true={isMobile}>
+                    <div style="text-align: center;">
+                        <lightning-layout multiple-rows="false" horizontal-align="left" vertical-align="center">
+                            <lightning-layout-item size="6" padding="none">
+                                <button style="width: 100%;"
+                                        class="slds-button  previous-button" 
+                                        onclick={handleSendConsentLink}>
+                                    {sendconsentLink}
+                                </button>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="6" padding="none">
+                                <!--<button style="width: 100%;" 
+                                        class="slds-button  previous-button" 
+                                        onclick={ChangeMode}>
+                                    {changemodebutton}
+                                </button>-->
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>  
+                    <div class="slds-m-around_x-small slds-scrollable" style="border-radius: 5px; border: solid 1px; margin-top: 20px; max-height: 150px; max-width: 100%; overflow-y: auto;"> <!--  color:#9bbf56 -->
+                        <c-loan-acknowledge-page record-id={loanApplicationId} lead-id={leadId} applicant-id={applicantDetId} show-consent="Not Required"></c-loan-acknowledge-page>
+                    </div>  
+                </template>
+            </template>
+                    
+            <template if:true={sendOtpButtons}>
+                <div style="text-align: center;">
+                    <template if:false={isMobile}>
+                    <lightning-layout>
+                        <lightning-layout-item size="4" padding="around-small"></lightning-layout-item>
+                        <lightning-layout-item size="4" padding="around-small">
+                            <lightning-input type="text" placeholder="Enter OTP" value={enteredOtp} onchange={handleOtpChange} max-length="6"></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="4" padding="around-small"></lightning-layout-item>
+                    </lightning-layout>
+                </template>
+                    <template if:true={isMobile}>
+                <lightning-layout>
+                    <lightning-layout-item size="3" padding="around-small"></lightning-layout-item>
+                    <lightning-layout-item size="6" padding="around-small">
+                        <lightning-input placeholder="Enter OTP" value={enteredOtp} onchange={handleOtpChange} max-length="6"></lightning-input> <!-- type="number" -->
+                    </lightning-layout-item>
+                    <lightning-layout-item size="3" padding="around-small"></lightning-layout-item>
+                </lightning-layout>
+            </template>
+                <lightning-layout>
+                    <lightning-layout-item size="3" padding="around-small"></lightning-layout-item>
+                      <template if:false={isMobile}> 
+                        <lightning-layout-item size="6" padding="around-small">
+                        <template if:true={disableVerifyOtp}>
+                        <button  style="background-color: lightgrey;color: #113451;width:66%;" class="slds-button  previous-button" onclick={initiateVerifyOtp} disabled={disableVerifyOtp}>Verify OTP</button>
+                        </template>
+                         <template if:false={disableVerifyOtp}>
+                            <button style="width:66%;" class="slds-button  previous-button" onclick={initiateVerifyOtp} disabled={disableVerifyOtp}>Verify OTP</button>
+                         </template>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="3" padding="around-small"></lightning-layout-item>
+                    </template>
+                    <template if:true={isMobile}> 
+                        <lightning-layout-item size="6" padding="around-small">
+                        <template if:true={disableVerifyOtp}>
+                        <button  style="background-color: lightgrey;color: #113451;width:101%;" class="slds-button  previous-button" onclick={initiateVerifyOtp} disabled={disableVerifyOtp}>Verify OTP</button>
+                        </template>
+                         <template if:false={disableVerifyOtp}>
+                            <button style="width:101%;" class="slds-button  previous-button" onclick={initiateVerifyOtp} disabled={disableVerifyOtp}>Verify OTP</button>
+                         </template>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="3" padding="around-small"></lightning-layout-item>
+                    </template>
+                </lightning-layout>
+                <lightning-layout>
+                    <lightning-layout-item size="12" padding="around-small">
+                        <span><i>{label.otpMsg}</i></span>
+                    </lightning-layout-item>
+                </lightning-layout>
+            </div>
+            </template>
+            <template if:true={showConsentverify}>
+                <!-- <template if:false={isMobile}>
+                <div style="text-align: center;">
+                   <template if:true={resendlinks}>
+                   <button style="margin-right: 8px;width: 130px; margin-top: 20px;" class="slds-button  previous-button" onclick={SendConsentLink}>Resend Link</button>
+                </template>
+                   <button style="margin-right: 8px;width: 130px; margin-top: 20px;" class="slds-button  previous-button" onclick={verifiyconsentcode}>Verify</button>
+                 </div>
+                </template> -->
+                <template if:true={isMobile}>
+                    <lightning-layout multiple-rows="false" horizontal-align="center" vertical-align="center">
+                        <template if:true={resendlinks}>
+                            <lightning-layout-item size="5" padding="none">
+                                <button style="width: 100%; font-size: 86%;" class="slds-button  verify-button">
+                                    Resend Link
+                                </button>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="1" padding="none"></lightning-layout-item>
+                        </template>
+                        <lightning-layout-item size="5" padding="left-small">
+                            <button style="width: 100%; font-size: 80%;" class="slds-button  verify-button" onclick={verifiyconsentcode}>
+                                Verify
+                            </button>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                     <div class="slds-m-around_x-small slds-scrollable" style="border-radius: 5px; border: solid 1px; margin-top: 20px; max-height: 150px; max-width: 100%; overflow-y: auto;"> <!--  color:#9bbf56 -->
+                        <c-loan-acknowledge-page record-id={loanApplicationId} lead-id={leadId} applicant-id={applicantDetId} show-consent="Not Required"></c-loan-acknowledge-page>
+                    </div>  
+                </template>
+            </template>
+            <div class="andcontainertwo" style="margin: top 10px;">
+                <template if:true={isMobile}>
+                    <template if:true={showPreviousButton}>
+                    <!--<button type="button" style="width: 100px;margin-right:0px;" class="slds-button  previous-button" onclick={previousAction}>Previous</button>-->
+                    <!-- <button type="button" style="width: 150px;font-size:14px;" class="slds-button  save-button" onclick={validateSaveAndNext}>{saveandnext}</button> -->
+                    </template> 
+                    <template if:true={showNextButton}>
+                        <button type="button" style="width: 150px;" class="slds-button  save-button" onclick={nextAction}>Next</button>
+                    </template>
+                </template>
+                <template if:false={isMobile}>
+                    <!-- <button type="button" style="width: 117px;margin-right:0px;" class="slds-button  previous-button" onclick={previousAction}>Previous</button> -->
+                    <!-- <template if:true={showBureauHealthButton}>
+                        <button type="button" style="width: 150px;" class="slds-button  save-button" onclick={validateSaveAndNext}>{saveandnext}</button>
+                    </template> -->
+                    <template if:true={showNextButton}>
+                        <button type="button" style="width: 150px;" class="slds-button  save-button" onclick={nextAction}>Next</button>
+                    </template>
+                </template>
+                
+            </div>
+        </template>
+        <template if:true={showConsentModal}>
+    <!-- Backdrop wrapper -->
+    <div class="custom-modal-backdrop">
+        <div class="custom-modal-container">
+            
+            <!-- Header -->
+            <header class="slds-modal__header modal-header">
+<h2 class="slds-text-heading_medium slds-hyphenate header-title">Consent Confirmation</h2>
+            </header>
+
+            <!-- Body -->
+            <div class="slds-modal__content slds-p-around_medium custom-modal-content">
+                <p>Are you sure you want to send the consent link?</p>
+            </div>
+
+            <!-- Footer -->
+            <footer class="slds-modal__footer modal-footer">
+                <div class="slds-align_absolute-center button-container">
+               <button class="slds-button slds-button_brand no-button" onclick={handleNo}>No</button>
+<button class="slds-button slds-button_brand save-button" onclick={SendConsentLink}>Yes</button>
+                </div>
+            </footer>
+        </div>
+            </div>
+        </template>
+        
+      <!-- </div> -->
+    <!-- <div class="slds-backdrop slds-backdrop_open"></div> -->
+</template>

@@ -1,0 +1,121 @@
+<template>
+    <div class="custom-card">
+        <div class="custom-card-header">
+            <h2 class="custom-card-title">Create Waiver</h2>
+        </div>
+        <div class="form-container slds-p-around_medium">
+            <div class="slds-grid slds-wrap slds-gutters_medium">
+
+                <!-- Waiver Requested For -->
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3 field-item">
+                    <label class="form-label"><abbr class="required-asterisk" title="required">*</abbr>Waiver Requested For</label>
+                    <select class="form-input themed-select" name="waiverFor" value={waiverFor} onchange={handleChange}>
+                        <template for:each={waiverForOptions} for:item="option">
+                            <option key={option.value} value={option.value}>{option.label}</option>
+                        </template>
+                    </select>
+                </div>
+
+                <!-- Search Report -->
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3 field-item">
+                    <label class="form-label">Search Report</label>
+                    <select class="form-input themed-select" name="searchReport" value={selectedRecordId} onchange={handleSearchChange}>
+                        <option value="">Select Legal Record</option>
+                        <template for:each={searchOptions} for:item="option">
+                            <option key={option.value} value={option.value}>{option.label}</option>
+                        </template>
+                    </select>
+                </div>
+
+                <!-- Waiver Requested By -->
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3 field-item">
+                    <label class="form-label"><abbr class="required-asterisk" title="required">*</abbr>Waiver Requested By</label>
+                    <select class="form-input themed-select" name="waiverBy" value={waiverBy} onchange={handleChange}>
+                        <template for:each={waiverByOptions} for:item="option">
+                            <option key={option.value} value={option.value}>{option.label}</option>
+                        </template>
+                    </select>
+                </div>
+
+                <!-- Waiver Requested From -->
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3 field-item">
+                    <label class="form-label"><abbr class="required-asterisk" title="required">*</abbr>Waiver Requested From</label>
+                    <select class="form-input themed-select" name="waiverFrom" value={waiverFrom} onchange={handleChange}>
+                        <option value="">Select an Option</option>
+                        <template for:each={waiverFromOptions} for:item="option">
+                            <option key={option.value} value={option.value}>{option.label}</option>
+                        </template>
+                    </select>
+                </div>
+
+                <!-- Remarks: same field-item shape as the selects above, sharing the
+                     3-per-row grid instead of its own full-width row. -->
+               <!-- <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-3 field-item">
+                    <label class="form-label">Remarks</label>
+                    <lightning-input
+                        
+                        name="remarks"
+                        value={remarks}
+                        placeholder="Enter remarks"
+                        onchange={handleChange}
+                        maxlength="255"
+                        class="form-input remarks-input">
+                    </lightning-input>
+                </div> -->
+
+                <!-- Latest Remarks History -->
+                <div class="slds-col slds-size_1-of-1 field-item" if:true={isShowHistoryField}>
+                    <label class="form-label">Latest Remarks History</label>
+                    <lightning-button 
+                        label="View"
+                        variant="neutral"
+                        onclick={handleViewRemarks}
+                        class="slds-m-top_small">
+                    </lightning-button>
+                </div>
+            </div>
+
+            <!-- Buttons -->
+            <div class="button-row slds-m-top_medium">
+                <button
+                    class="slds-button slds-button_neutral slds-m-right_small wave-button"
+                    onclick={handleCancel}>
+                    Cancel
+                </button>
+
+                <button
+                    class="slds-button slds-button_brand initiate-button"
+                    onclick={handleSubmit}>
+                    Submit
+                </button>
+            </div>
+        </div>
+        <!-- //Added on 10-11-2025 -->
+        <template if:true={isOpenWaiver}>
+            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+                        <lightning-icon icon-name="utility:close"
+                        alternative-text="close"
+                        variant="inverse"
+                        size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                </header>
+            
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                        <h3 class="detail-header">Waiver Detail</h3>
+                                        <p><b>History:</b> {waiverName}</p>
+                </div>
+
+                <footer class="slds-modal__footer">
+                    <button class="slds-button slds-button_neutral" onclick={hideModalBox}>Cancel</button>
+                </footer>
+            </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </div>
+
+</template>

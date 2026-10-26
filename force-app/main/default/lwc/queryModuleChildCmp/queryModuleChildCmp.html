@@ -1,0 +1,281 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 04-02-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <span class="styleContainer"></span>
+    <section role="dialog" tabindex="-1" style="margin-left:0%;width: 100%;max-width: 100%;" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+        <div class={cssContainer}>
+            <header class="slds-modal__header header-section">
+                <div class="slds-text-align_center">
+                    <h2 slot="title" style="font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px" class="slds-text-heading_medium slds-hyphenate">Assign Query</h2>
+                </div>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                <div class="datatable-container">
+                    <lightning-combobox if:false={fcu} label="Query Type" required value={selectedQueryType} options={queryTypeOptions}
+                        onchange={handleQueryTypeChange}>
+                    </lightning-combobox>
+
+                    <template if:true={showQueryCategory}>
+                        <lightning-combobox required label="Query category" value={selectedQueryCategory}
+                            options={queryCategoryOptions} onchange={handleQueryCategoryChange}>
+                        </lightning-combobox>
+                    </template>
+
+                    <template if:true={showdocumentChecklist}>
+                        <!-- <div class="slds-m-vertical_medium">
+                            <div class="slds-grid slds-wrap slds-m-horizontal_small">
+                                <div class="slds-col slds-size_3-of-12 slds-m-horizontal_x-small dropdowncust" onfocusout={closeDropDown}>
+                                    <lightning-input label="Branch" type="search" onfocus={handleFocus} 
+                                        onchange={handleDocumentSearch} class="dropdown_id-2">
+                                    </lightning-input>
+                                    <div if:true={documentChecklist} class="slds-dropdown slds-dropdown_length-5 slds-dropdown_fluid"
+                                        role="listbox" style="position: absolute;width: 24.6%;left: 13.6%;">
+                                        <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                            <template for:each={documentChecklist} for:item="option">
+                                                <li key={option.value} data-value={option.value} role="presentation" class="slds-listbox__item">
+                                                    <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small " role="option">
+                                                        <span class="slds-media__figure slds-listbox__option-icon">
+                                                            <lightning-input type="radio" name="documentSelection"
+                                                                value={option.value} onchange={handleDocumentSelection}>
+                                                            </lightning-input>
+                                                        </span>
+                                                        <span class="slds-media__body">
+                                                            <span class="slds-truncate" title={option.label}>
+                                                                {option.label}
+                                                            </span>
+                                                        </span>
+                                                    </div>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+                        
+                        <div onfocusout={closeDropDown}>
+                            <lightning-input if:false={fcu} type="text" id="searchDocument" placeholder="Type to search..."
+                                label="Search Document" value={searchTerm} onchange={handleDocumentSearch} onfocus={handleFocus}
+                                class="slds-combobox__input" style="margin-bottom: 0px;">
+                            </lightning-input>
+                            <template if:true={showDropdown}>
+                                <div class="dropdown-container" if:true={showDropdown}>
+                                    <div class="slds-dropdown slds-dropdown_length-10 slds-dropdown_fluid dropdown-container"
+                                        style="width: 92%;margin-top:-0.99%;margin-left: -2%;">
+                                        <ul class="slds-listbox slds-listbox_vertical">
+                                            <template for:each={documentChecklist} for:item="option">
+                                                <li key={option.value} class="slds-listbox__item" style="height: 36px;">
+                                                    <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small">
+                                                        <span class="slds-media__figure slds-listbox__option-icon">
+                                                            <lightning-input type="radio" name="documentSelection" value={option.value} onclick={handleDocumentSelection} data-id={option.value}>
+                                                            </lightning-input>
+                                                        </span>
+                                                        <span class="slds-media__body">
+                                                            <span class="slds-truncate" title={option.label}>{option.label}</span>
+                                                        </span>
+                                                    </div>
+                                                </li>
+                                            </template>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                    <template if:true={showApplicants}>
+                        <div class="slds-scrollable_y" style="overflow: auto;">
+                            <table class="slds-table slds-table_cell-buffer slds-no-row-hover" style="border-collapse: collapse; border: none;">
+                                <template for:each={applicantOptions} for:item="applicantrecords">
+                                    <tr key={applicantrecords.userId} style="border: none;">
+                                        <td style="width: 5%; border: none;"></td>
+                                        <td style="width: 95%; border: none;">
+                                            <label style="display: flex; align-items: center;">
+                                                <lightning-input type="checkbox" data-id={applicantrecords.userId} data-docid={dmId}
+                                                    data-name={applicantrecords.userId} label={applicantrecords.userName} onchange={handleselectapplicant}
+                                                    class="applicant-checkbox">
+                                                </lightning-input>
+                                            </label>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </table>
+                            <button class="save-button slds-button slds-button_brand"
+                            style="border: none"
+                            onclick={handleSave}>Add</button>
+                        </div>
+                    </template>
+                   <template if:true={isAddedDocListNotEmpty}>
+                        <template if:true={selectedDocument}>
+                            <span class="styleContainer"></span>
+                            <div class="table-container" style="margin-top: 10px;"> <!-- display: unset;s -->
+                                <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                                    <thead>
+                                        <tr>
+                                            <th class="slds-size_3-of-12">Document Name</th>
+                                            <th class="slds-size_2-of-12">Requirement Level</th>
+                                            <th class="slds-size_2-of-12">Select Users</th>
+                                            <th class="slds-size_2-of-12">Select Queue</th>
+                                            <th  class="slds-size_2-of-12">Remarks</th>
+                                            <th class="slds-size_1-of-12">Preview</th>
+                                            <th class="slds-size_1-of-12">Delete</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={addedDocList} for:item="iter">
+                                            <tr key={iter.value}>
+                                                <td class="slds-size_4-of-12">{iter.label}</td>
+                                                <td class="slds-size_2-of-12">{iter.requirementLevel}</td>
+                                                <td class="slds-size_2-of-12">
+                                                    <template if:true={showMultiSelect}>
+                                                        <c-generic-multi-picklist-selector 
+                                                            data-id={iter.docId} 
+                                                            required="true"
+                                                            options={requestedFromUsers} 
+                                                            onselectedvalueschange={handleRequestFromUsersDoc}>
+                                                        </c-generic-multi-picklist-selector>
+                                                    </template>
+                                                </td>
+                                                <td class="slds-size_2-of-12">
+                                                    <template if:true={showMultiSelect}>
+                                                        <c-generic-multi-picklist-selector 
+                                                        data-id={iter.docId}  required="true"
+                                                        options={queueFromOpportunity} onselectedvalueschange={handleDocQueueChange}>
+                                                    </c-generic-multi-picklist-selector>
+                                                    </template>
+                                                </td>
+                                                <td class="slds-size_2-of-12">
+                                                    <lightning-textarea 
+                                                    type="text" 
+                                                    data-id={iter.docId} 
+                                                    value={docremarks}
+                                                    onchange={handleInputChange}>
+                                                </lightning-textarea>
+                                                </td>
+                                                <td class="slds-size_1-of-12">
+                                                    <template if:true={iter.showPreview}>
+                                                        <div class="uploaded-view">
+                                                            <lightning-button-icon 
+                                                                icon-name="utility:preview"
+                                                                alternative-text="Preview Available" 
+                                                                onclick={handlePreview}
+                                                                data-id={iter.docContentId} 
+                                                                class="uploaded-view"
+                                                                style="color: green;">
+                                                            </lightning-button-icon>
+                                                        </div>
+                                                    </template>
+                                                    <template if:false={iter.showPreview}>
+                                                        <lightning-file-upload variant="label-hidden" name="fileUploader" accept={acceptedFormats}
+                                                            data-id={iter.docId} onuploadfinished={handleFileUpload} class="file-upload-input">
+                                                        </lightning-file-upload>
+                                                    </template>
+                                                </td>
+                                                <td class="slds-size_1-of-12">
+                                                    <template if:true={iter.disabledDelete}>
+                                                        <lightning-icon 
+                                                            icon-name="utility:delete" 
+                                                            alternative-text="Delete"
+                                                            title="Delete Document" 
+                                                            class="icon-action delete-icon"
+                                                            disabled>
+                                                        </lightning-icon>
+                                                    </template>
+                                                    <template if:false={iter.disabledDelete}>
+                                                        <lightning-icon 
+                                                            icon-name="utility:delete" 
+                                                            alternative-text="Delete"
+                                                            title="Delete Document" 
+                                                            class="icon-action delete-icon"
+                                                            data-id={iter.docId} 
+                                                            onclick={handleDelete}>
+                                                        </lightning-icon>
+                                                    </template>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>                        
+                        </template>
+                    </template>
+                    <lightning-input required label="Requested by User" value={currentUserName} disabled
+                        class="requested-by-input">
+                    </lightning-input>
+
+                    <div if:false={showdocumentChecklist}>
+                        <template if:true={showMultiSelect}>
+                            <c-generic-multi-picklist-selector label="Select User" required=true showpills="true"
+                                options={requestedFromUsers} onselectedvalueschange={handleRequestFromUsers}>
+                            </c-generic-multi-picklist-selector>
+                        </template>
+                    </div>
+                    <div if:false={showdocumentChecklist}>
+                        <template if:true={showMultiSelect}>
+                            <c-generic-multi-picklist-selector label="Select Queue" required="true" showpills="true"
+                            options={queueFromOpportunity} onselectedvalueschange={handleQueueChange}>
+                        </c-generic-multi-picklist-selector>
+                        </template>
+                        
+                    </div>
+
+                    <div if:false={showdocumentChecklist} class={remarksContainerClass}>
+                        <label class="slds-form-element__label" for="remarks-native-textarea">
+                            <abbr class="slds-required" title="required">*</abbr>Remarks
+                        </label>
+                        <div class="slds-form-element__control">
+                            <textarea id="remarks-native-textarea" class="slds-textarea remarks-native-textarea"
+                                required value={remarks} oninput={handleRemarksChange} onblur={handleRemarksBlur}></textarea>
+                        </div>
+                        <template if:true={showRemarksError}>
+                            <div class="slds-form-element__help">Complete this field.</div>
+                        </template>
+                    </div>
+
+                    <lightning-input label="Status" value={status} disabled class="status-input">
+                    </lightning-input>
+
+                   
+                        <!-- <div class="editable-field" contenteditable="true" 
+                            onblur={handleBlur} 
+                            data-field="documentName">
+                        </div> -->
+                  
+                    <!-- <template if:false={showQueryCategory}>
+                        <span class="styleContainer"></span>
+                        <template if:false={showUpload}>
+                            <lightning-button-icon icon-name="utility:upload"
+                            alternative-text="Upload" onclick={handleUploadFinished} 
+                            class="uploaded-view" style="color: green;"></lightning-button-icon>
+                        </template>
+
+
+                    </template> -->
+                </div>
+            </div>
+            <footer class="footer-section">
+                <div class="slds-align_absolute-center button-container">
+                    <button class="slds-button slds-button_brand close-button"  onclick={handleCloseModal}>Cancel</button>
+                    <template for:each={buttonTrackers} for:item="buttonTracker">
+                        <button key={buttonTracker.name} value={buttonTracker.value} class={buttonTracker.buttonClass}
+                            onclick={updateRecordStatus}>
+                            {buttonTracker.name}
+                        </button>
+                    </template>
+                </div>
+            </footer>
+        </div>
+    </section>
+    <!-- <div class="slds-p-around_medium" id="content-body">
+            
+
+        </div> -->
+
+        <!-- FOOTER -->
+       
+ 
+</template>

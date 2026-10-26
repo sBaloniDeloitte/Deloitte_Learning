@@ -1,0 +1,320 @@
+<template>
+    
+    <div style="width: 100%; min-height: 100px; background-color: white; margin-top: 5px;">
+        <lightning-layout horizontal-align="space" multiple-rows="true">
+            <lightning-layout-item flexibility="auto" size="6" style="padding-top: 0; padding-bottom: 0;" padding="around-small">
+                <lightning-input 
+                    type="text"
+                    label="Project Name"
+                    value={projectName}
+                    class="required_class"
+                    required="true"
+                    name="Project Name"
+                    onchange={onChangeInput}>
+                </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item flexibility="auto" size="6" style="padding-top: 0; padding-bottom: 0;" padding="around-small">
+                <c-search-lookup required="true" selected-id={selectedPincodeId}
+                    selected-name={selectedPincodename} placeholder="Search pincode"
+                    show-label="true"
+                    label="Pincode"
+                    object-name="Pincode_Master__c"
+                    return-fields="['Id','Name','Town_and_Post_Office__c','City__r.Name','Is_Pincode_Servicable__c']"
+                    onlookupselected={handleSelectedPincode}
+                    onlookupdeselected={handleUnselectPincode}>
+                </c-search-lookup>
+            </lightning-layout-item>
+            <lightning-layout-item flexibility="auto" size="12" style="padding-top: 0; padding-bottom: 0;" padding="around-small">
+                <table>
+                    <tr>
+                        <td style="vertical-align: middle; padding-top: 10px; width: 250px;">
+                            <button class="slds-button slds-button_brand initiate-button" style="width: 210px;" onclick={showProjectModal}>
+                                <lightning-icon class="slds-p-right_small" icon-name="utility:search" variant="inverse" size="x-small"></lightning-icon>
+                                Check Project Suggestion
+                            </button>
+                        </td>
+                        <td style="vertical-align: middle; padding-top: 10px;">
+                            Selected Project: <b>[{selectedProjectId}] {selectedProjectName}</b>
+                        </td>
+                    </tr>
+                </table>
+            </lightning-layout-item>
+            <lightning-layout-item flexibility="auto" size="6" style="padding-top: 0; padding-bottom: 0;" padding="around-small">
+                <lightning-input 
+                    type="text"
+                    label="LAN Id"
+                    value={lanId}
+                    class="required_class"
+                    required="true"
+                    name="LAN Id"
+                    onchange={onChangeInput}>
+                </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item flexibility="auto" size="6" style="padding-top: 0; padding-bottom: 0;" padding="around-small">
+                <lightning-input 
+                    type="text"
+                    label="Main Applicant Name"
+                    value={mainApplicantName}
+                    class="required_class"
+                    required="true"
+                    name="Main Applicant Name"
+                    onchange={onChangeInput}>
+                </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item flexibility="auto" size="6" style="padding-top: 0; padding-bottom: 0;" padding="around-small">
+                <lightning-combobox 
+                    label="Area Type"
+                    name="Area Type"
+                    placeholder="Area Type"
+                    options={areaTypeOptions}
+                    onchange={onChangeInput}
+                    value={selectedAreaType}
+                    class="required_class"
+                    required="true">
+                </lightning-combobox>
+            </lightning-layout-item>
+            <lightning-layout-item flexibility="auto" size="6" style="padding-top: 0; padding-bottom: 0;" padding="around-small">
+                <lightning-input 
+                    type="text"
+                    label="Floor No"
+                    value={floorNo}
+                    class="required_class"
+                    required="true"
+                    name="Floor No"
+                    onchange={onChangeInput}>
+                </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item flexibility="auto" size="6" style="padding-top: 0; padding-bottom: 0;" padding="around-small">
+                <lightning-input 
+                    type="number"
+                    label="Area"
+                    value={area}
+                    class="required_class"
+                    required="true"
+                    name="Area"
+                    max-length="6"
+                    step="1"
+                    onchange={onChangeInput}>
+                </lightning-input>
+            </lightning-layout-item>
+            <lightning-layout-item flexibility="auto" size="6" style="padding-top: 0; padding-bottom: 0;" padding="around-small">
+                <lightning-combobox 
+                    label="Configuration"
+                    name="Configuration"
+                    placeholder="Configuration"
+                    options={configurationOptions}
+                    onchange={onChangeInput}
+                    value={selectedConfiguration}
+                    class="required_class"
+                    required="true">
+                </lightning-combobox>
+            </lightning-layout-item>
+            <lightning-layout-item flexibility="auto" size="6" style="padding-top: 0; padding-bottom: 0;" padding="around-small">
+                    <lightning-file-upload
+                        style="font-size: 12px; display: table-cell;"
+                        label="Cost Sheet"
+                        name="Cost Sheet"
+                        accept=".JPEG,.jpg,.png,.pdf"
+                        record-id={recordId}
+                        class="required_class"
+                        required="true"
+                        onuploadfinished={handleUploadFinished}>
+                    </lightning-file-upload>
+
+                    <template lwc:if={costSheetUploaded}>
+                        <div style="display: table-cell; width: 57px; text-align: right;">
+                            <div style="display: table-cell;"></div>
+                            <lightning-button-icon 
+                                name="Cost Sheet"
+                                size="small"
+                                icon-name="utility:preview" 
+                                variant="brand" 
+                                title="View"
+                                class="green-utility-icon"
+                                style="padding: 0 3px;"
+                                onclick={viewDocument}>
+                            </lightning-button-icon>
+                            <lightning-button-icon 
+                                style="display: inline-block; padding-top: 11px;"
+                                size="small"
+                                icon-name="utility:delete" 
+                                variant="brand" 
+                                title="Delete"
+                                class="red-utility-icon"
+                                name="Cost Sheet"
+                                onclick={deleteDocument}>
+                            </lightning-button-icon>
+                        </div>
+                    </template>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" size="6" style="padding-top: 0; padding-bottom: 0;" padding="around-small">
+                    <lightning-file-upload
+                        style="font-size: 12px; display: table-cell;"
+                        label="Architecture Cert"
+                        name="Architecture Cert"
+                        accept=".JPEG,.jpg,.png,.pdf"
+                        record-id={recordId}
+                        class="required_class"
+                        required="true"
+                        onuploadfinished={handleUploadFinished}>
+                    </lightning-file-upload>
+
+                    <template lwc:if={architectCertUploaded}>
+                        <div style="display: table-cell; width: 57px; text-align: right;">
+                            <div style="display: table-cell;"></div>
+                            <lightning-button-icon 
+                                name="Architecture Cert"
+                                size="small"
+                                icon-name="utility:preview" 
+                                variant="brand" 
+                                title="View"
+                                class="green-utility-icon"
+                                style="padding: 0 3px;"
+                                onclick={viewDocument}>
+                            </lightning-button-icon>
+                            <lightning-button-icon 
+                                style="display: inline-block; padding-top: 11px;"
+                                size="small"
+                                icon-name="utility:delete" 
+                                variant="brand" 
+                                title="Delete"
+                                class="red-utility-icon"
+                                name="Architecture Cert"
+                                onclick={deleteDocument}>
+                            </lightning-button-icon>
+                        </div>
+                    </template>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" size="6" style="padding-top: 0; padding-bottom: 0;" padding="around-small">
+                    <lightning-file-upload
+                        style="font-size: 12px; display: table-cell;"
+                        label="Upload Image"
+                        name="Upload Image"
+                        accept=".JPEG,.jpg,.png,.pdf"
+                        record-id={recordId}
+                        class="required_class"
+                        required="true"
+                        onuploadfinished={handleUploadFinished}>
+                    </lightning-file-upload>
+
+                    <template lwc:if={imageUploaded}>
+                        <div style="display: table-cell; width: 57px; text-align: right;">
+                            <div style="display: table-cell;"></div>
+                            <lightning-button-icon 
+                                name="Upload Image"
+                                size="small"
+                                icon-name="utility:preview" 
+                                variant="brand" 
+                                title="View"
+                                class="green-utility-icon"
+                                style="padding: 0 3px;"
+                                onclick={viewDocument}>
+                            </lightning-button-icon>
+                            <lightning-button-icon 
+                                style="display: inline-block; padding-top: 11px;"
+                                size="small"
+                                icon-name="utility:delete" 
+                                variant="brand" 
+                                title="Delete"
+                                class="red-utility-icon"
+                                name="Upload Image"
+                                onclick={deleteDocument}>
+                            </lightning-button-icon>
+                        </div>
+                    </template>
+                </lightning-layout-item>
+                <lightning-layout-item flexibility="auto" size="6" style="padding-top: 0; padding-bottom: 0;" padding="around-small">
+
+                </lightning-layout-item>
+        </lightning-layout>
+    </div>
+
+    <template if:true={showPreviewPopup}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container width-80" style="padding: 1% 0 !important;">
+                <header class="slds-modal__header header-section">
+                    <div class="slds-text-align_center">
+                        <h2 class="slds-text-heading_medium slds-hyphenate header-title">{previewPopupTitle}</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" style="text-align: center;" id="previewModel">
+                    <template lwc:if={showImagePreview}>
+                        <img src={docUrl} title="" style="max-width: 100%; height: auto;" />
+                    </template>
+                    <template lwc:if={showPdfPreview}>
+                        <iframe src={docUrl} width="100%" height="350px" frameborder="0"></iframe>
+                    </template>
+                </div>
+                <footer class="footer-section">
+                    <div class="slds-align_right button-container">
+                        <button class="slds-button slds-button_brand cancel-button" onclick={closePreviewModal}>Close</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+    <template if:true={showProjectPopup}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container width-80">
+                <header class="slds-modal__header header-section">
+                    <div class="slds-text-align_center">
+                        <h2 class="slds-text-heading_medium slds-hyphenate header-title">Available Projects</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" style="text-align: center;" id="projectModel">
+                    <div style="border: solid 1px gray; margin-top: 10px;">
+                        <div style="overflow: auto;">
+                            <table class="slds-table" style="width: 100%;">
+                                <thead>
+                                    <tr class="sticky">
+                                        <th style="width: 65px;"></th>
+                                        <th style="width: 100px;">Project Id</th>
+                                        <th style="min-width: 250px;">Project Name</th>
+                                        <th style="width: 130px;">City</th>
+                                        <th style="width: 180px;">Locality</th>
+                                        <th style="width: 180px;">Location</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template if:true={showNoRecordFound}>
+                                        <tr>
+                                            <td colspan="6" style="text-align: center; height: 35px;">No record found!</td>
+                                        </tr>
+                                    </template>
+                                    <template if:false={showNoRecordFound}>
+                                        <template for:each={projectList} for:item="item">
+                                            <tr key={item.projectId}>
+                                                <td>
+                                                    <button class="slds-button slds-button_brand initiate-button" style="width: 50px;" data-projectid={item.projectId}
+                                                    data-projectname={item.projectName} onclick={handleProjectSelection}>Select</button>
+                                                </td>
+                                                <td>{item.projectId}</td>
+                                                <td>{item.projectName}</td>
+                                                <td>{item.city}</td>
+                                                <td>{item.locality}</td>
+                                                <td>{item.location}</td>
+                                            </tr>
+                                        </template>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+                <footer class="footer-section">
+                    <div class="slds-align_right button-container">
+                        <button class="slds-button slds-button_brand cancel-button" onclick={closeProjectModal}>Close</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+    <template lwc:if={isLoading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+        </lightning-spinner>
+    </template>
+</template>

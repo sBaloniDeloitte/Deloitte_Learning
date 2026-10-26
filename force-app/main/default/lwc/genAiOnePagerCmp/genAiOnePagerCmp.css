@@ -1,0 +1,14 @@
+th.tableCss {
+    color: white !important;
+    background-color: #5bb6e3 !important;
+}
+.status-combobox {
+    background-color: #014486;
+}
+.status-combobox .slds-combobox__input {
+    background-color: #014486;
+}
+.not-eligible-icon {
+    --slds-c-icon-color-foreground: #1b96ff;
+    --slds-c-icon-color-foreground-default: #1b96ff;
+}

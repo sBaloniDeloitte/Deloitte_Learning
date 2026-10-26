@@ -1,0 +1,87 @@
+<template>
+    <template if:true={showModal}>
+
+        <!-- modal start -->
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container reject-loan-modal-container">
+                <div class="slds-modal__header header-div">
+                    <button class="slds-button slds-button_icon reject-loan-close-btn" title="Close"
+                            aria-label="Close" onclick={handleClose}>
+                        <lightning-icon icon-name="utility:close" alternative-text="Close" size="x-small" variant="inverse"></lightning-icon>
+                    </button>
+                    <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate">Reject Loan Application</h1>
+                </div>
+
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+
+                    <lightning-layout-item size="6" padding="around-small" small-device-size="12" medium-device-size="6"
+                        large-device-size="6">
+                        <!-- <lightning-dual-listbox name="reasons"
+                            label="Select reasons for rejecting loan"
+                            source-label="Available"
+                            selected-label="Selected"
+                            field-level-help="Select reasons for rejecting"
+                            options={reasonPicklist}
+                        
+                            onchange={handleChange}
+                    
+                        required></lightning-dual-listbox> -->
+
+                        <lightning-dual-listbox name="Select reasons for rejecting loan" class="reject-reasons-listbox"
+                            label="Select reasons for rejecting loan" source-label="Available" selected-label="Selected"
+                            field-level-help="Select your reasons" options={reasonPicklist} onchange={handleChange}
+                            required></lightning-dual-listbox>
+                        <!--
+                        <lightning-combobox label="Select reasons for rejecting loan" value={selectedOptions} required
+                            options={reasonPicklist} onchange={handleChange}>
+                        </lightning-combobox>-->
+
+                    </lightning-layout-item>
+
+                    <lightning-layout-item size="12" padding="around-small" small-device-size="1" medium-device-size="6"
+                        large-device-size="6">
+                        <div class="slds-form-element__control">
+                            <!-- <lightning-textarea name="detailedRejectionReason" onchange={handleChangeReason}  value="" placeholder="Detailed Rejection Reason" label="Detailed Rejection Reason"  required></lightning-textarea> -->
+                            <label class="rejection-label">
+                                <abbr class="slds-required" title="required">*</abbr>
+                                Detailed Rejection Reason
+                            </label>
+
+                            <textarea class="rejection-textarea-native" name="detailedRejectionReason"
+                                onchange={handleChangeReason} placeholder="Detailed Rejection Reason" required>
+                            </textarea>
+                        </div>
+
+                    </lightning-layout-item>
+                    <!--
+                    <template if:false={showbox}>
+                        <lightning-datatable
+                        key-field="id"
+                        data={data}
+                        columns={columns}
+                        hide-checkbox-column="true"
+                        >
+                       </lightning-datatable>
+                    </template>
+                    -->
+                </div>
+
+
+                <div class="slds-modal__footer footer-section">
+                    <div class="slds-align_absolute-center button-container">
+                        <button class="slds-button slds-button_brand previous-button previous-style-btn"
+                            aria-label="Cancel and close" onclick={handleClose}>Cancel</button>
+                        <button class="slds-button slds-button_brand continue-button start-app-style-btn"
+                            onclick={handleSave}>Save</button>
+                    </div>
+
+
+                </div>
+            </div>
+        </section>
+        <!-- <div class="slds-backdrop slds-backdrop--open" id="backdrop"></div> -->
+
+
+    </template>
+</template>

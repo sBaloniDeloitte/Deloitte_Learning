@@ -1,0 +1,200 @@
+@import "c/cssLibrary";
+
+.custom-border {
+    border: 2px solid black;
+    padding: 1rem;
+    border-radius: 5px;
+}
+.custom-width {
+    width: 30%;
+}
+.combobox-container {
+    display: flex;
+    justify-content: center;
+}
+
+.instruction-text {
+    color: red;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.form-container {
+    background-color: white;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.upload-instruction {
+    font-size: 14px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.save-button,
+.previous-button,
+.green-button {
+    padding: 8px;
+    border: none;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 140px;
+    border-radius: 4px;
+}
+.save-button {
+    background-color: #9bbf56;
+}
+.previous-button {
+    background-color: #dc387e;
+}
+.green-button {
+    background-color: #9bbf56;
+}
+
+/* === Button Group Alignment === */
+.button-group {
+    display: flex;
+    justify-content: flex-end; 
+    margin-top: 20px;
+}
+
+.sticky {
+    background-color: skyblue;
+    color: white;
+    font-weight: bold;
+}
+
+.table-container {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.layout-border {
+    border: 2px solid #150101;
+    padding: 10px;
+    border-radius: 30px;
+}
+.form-container,
+.table-container {
+    border: 1px solid #150101;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.fixed-table {
+    width: 100%;
+    table-layout: fixed;
+}
+.col-width {
+    width: 200px;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+.fixed-button {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    padding: 10px;
+    text-align: center;
+    border-top: 1px solid #ccc;
+}
+
+.andcontainers {
+    text-align: left;
+    font-weight: bold;
+    margin-top: 5%;
+    margin-bottom: 14px;
+}
+
+.password-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+.eye-icon {
+    position: absolute;
+    right: 4%;
+    top: 66%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+.manual-eye-icon {
+    position: absolute;
+    right: 4%;
+    top: 58%;
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+.hidden-icon {
+    display: none;
+}
+
+.uploaded-file-name {
+    background-color: lightgrey;
+    font-weight: 500;
+    padding: 4px 8px;
+    margin: 4px 0;
+    border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    /* Stack layout items */
+    .slds-size_6-of-12,
+    .slds-size_12-of-12,
+    lightning-layout-item[size="6"],
+    lightning-layout-item[size="12"] {
+        width: 100% !important;
+        flex: 0 0 100%;
+    }
+
+    .form-container {
+        padding: 12px;
+    }
+
+    .layout-border {
+        padding: 10px;
+        border-radius: 15px;
+    }
+
+    .upload-instruction {
+        font-size: 12px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    /* Make inputs full width */
+    lightning-combobox,
+    lightning-input,
+    lightning-file-upload {
+        width: 100%;
+    }
+
+    .save-button,
+    .previous-button,
+    .green-button {
+        width: 100%;
+        margin-top: 8px;
+    }
+
+    .combobox-container {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .uploaded-file-name {
+        font-size: 12px;
+    }
+}

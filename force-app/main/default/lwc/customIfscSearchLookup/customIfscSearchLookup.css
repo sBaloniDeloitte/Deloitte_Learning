@@ -1,0 +1,38 @@
+.lookup-container {
+    position: relative;
+}
+
+.dropdown {
+    position: relative;
+    z-index: 5;
+    width: 100%;
+}
+
+.custom-width {
+    width: 100%;
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid #d8dde6;
+    border-radius: 0.25rem;
+    background: white;
+}
+
+.custom-item {
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #e0e0e0;
+    cursor: pointer;
+}
+
+.custom-item:last-child {
+    border-bottom: none;
+}
+.floating-dropdown {
+    position: fixed;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    max-height: 200px;
+    /* overflow-y: auto; */
+    z-index: 100000;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}

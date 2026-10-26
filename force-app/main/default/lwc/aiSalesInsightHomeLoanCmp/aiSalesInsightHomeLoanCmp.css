@@ -1,0 +1,295 @@
+/* ================================================================
+   AI Sales Insight - Home Loan (individual applicant) - static card
+   Dark/purple theme aligned with leadManagementV2 (LMV2) design.
+   ================================================================ */
+
+.aisi-container {
+    background-color: #0a1524;
+    padding: 1.5rem 2rem;
+    border-radius: 0.75rem;
+    box-sizing: border-box;
+    /* ____GenAI: widened from a fixed 480px cap to fill the space that the
+       outer lead-main-panel border used to bound, now that the outer border
+       is removed for this view - the panel's own padding (2rem 2.25rem)
+       keeps this slightly narrower than that former border. Further widened
+       (720px -> 1100px) plus the font-size increases below, per explicit
+       request to match the wider/larger reference screenshot. No card's
+       internal layout/content/handlers changed____ */
+    max-width: 1100px;
+    width: 100%;
+    margin: 0 auto;
+    color: #e8edf5;
+    font-family: inherit;
+}
+.aisi-map-frame-wrapper {
+    width: 100%;
+    height: 280px;
+    overflow: hidden;
+    border-radius: 0 0 12px 12px;
+}
+
+lightning-map {
+    display: block;
+    width: 100%;
+    height: 280px;
+}
+/* ================= HEADER ================= */
+
+.aisi-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.9rem;
+    margin-bottom: 1.5rem;
+    text-align: center;
+}
+
+.aisi-header-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.25);
+    flex-shrink: 0;
+}
+
+.aisi-header-text {
+    text-align: left;
+}
+
+/* ____GenAI: header/body/button font sizes increased throughout this file to
+   match the larger reference screenshot, alongside the width increase above.
+   No copy/content changed, only size____ */
+.aisi-title {
+    margin: 0;
+    font-size: 1.0rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.aisi-subtitle {
+    margin: 0.2rem 0 0 0;
+    font-size: 0.95rem;
+    color: #8fa1b8;
+}
+
+/* ================= CARD ================= */
+
+.aisi-card {
+    background-color: #0e1c30;
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.12);
+    padding: 1.1rem 1.1rem;
+    margin-bottom: 1.1rem;
+    box-sizing: border-box;
+}
+
+.aisi-summary {
+    margin: 0 0 0.9rem 0;
+    font-size: 1.05rem;
+    line-height: 1.5;
+    color: #e8edf5;
+}
+
+.aisi-summary strong {
+    color: #ffffff;
+}
+
+/* ================= NEXT BEST ACTION ================= */
+
+.aisi-next-action {
+    background-color: #16283f;
+    border-left: 4px solid #8b5cf6;
+    border-radius: 6px;
+    padding: 0.85rem 1.1rem;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #cfd8e6;
+}
+
+.aisi-next-action strong {
+    color: #ffffff;
+}
+
+/* ================= LOCATION LABEL ================= */
+
+.aisi-location-label {
+    margin: 0 0 0.6rem 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #a855f7;
+}
+
+/* ================= MAP PANEL ================= */
+
+.aisi-map-panel {
+    border: 1px solid #33455e;
+    border-radius: 8px;
+    background-color: #0a1524;
+    overflow: hidden;
+}
+
+.aisi-map-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.7rem 1rem;
+    background-color: #16283f;
+    border-bottom: 1px solid #33455e;
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.aisi-map-tabs {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #0e1c30;
+    border-bottom: 1px solid #33455e;
+}
+
+.aisi-map-tab {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #8fa1b8;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    cursor: default;
+}
+
+.aisi-map-tab_active {
+    color: #ffffff;
+    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+}
+
+.aisi-map-frame-wrapper {
+    width: 100%;
+    height: 280px;
+    background-color: #0a1524;
+}
+
+.aisi-map-frame {
+    width: 100%;
+    height: 100%;
+    border: none;
+    display: block;
+}
+
+/* ================= SALES AGENT ACTION POINTS ================= */
+
+.aisi-action-heading {
+    margin: 0 0 1rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.aisi-action-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.aisi-action-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+}
+
+.aisi-action-text {
+    font-size: 1rem;
+    line-height: 1.5;
+    color: #cfd8e6;
+}
+
+.aisi-action-text strong {
+    color: #ffffff;
+}
+
+.action-icon {
+    width: 32px;
+    height: 32px;
+    min-width: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 0.05rem;
+}
+
+.action-icon_success {
+    background-color: #1e7e42;
+}
+
+.action-icon_people {
+    background-color: #b8860b;
+}
+
+.action-icon_warning {
+    background-color: #b45309;
+}
+
+.action-icon_forward {
+    background-color: #8b5cf6;
+}
+
+/* ================= FOOTER BUTTONS ================= */
+
+.aisi-footer {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 0.25rem;
+}
+
+.aisi-btn {
+    border: none;
+    border-radius: 999px;
+    padding: 0.75rem 1.8rem;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.aisi-btn_primary {
+    background-color: #8b5cf6;
+}
+
+.aisi-btn_primary:hover {
+    background-color: #7c3aed;
+}
+
+.aisi-btn-icon {
+    margin-right: 0.15rem;
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media (max-width: 480px) {
+    .aisi-container {
+        max-width: 100%;
+        padding: 1rem;
+    }
+
+    .aisi-header {
+        justify-content: flex-start;
+    }
+}

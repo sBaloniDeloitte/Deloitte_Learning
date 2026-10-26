@@ -1,0 +1,10 @@
+<template>
+    <template if:false={isHLRelated}>
+      <c-hl_covenants-detail-form record-id={recordId}></c-hl_covenants-detail-form>
+
+    </template>
+    <template if:true={isHLRelated}>
+        <c-covenants-detail-form_hl record-id={recordId}></c-covenants-detail-form_hl>
+    </template>
+    
+</template>

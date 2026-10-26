@@ -1,0 +1,83 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+.navy-card {
+    background: #0f1c3f;
+    border: 1px solid #0f1c3f;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+}
+
+.navy-card:last-child {
+    margin-bottom: 0;
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: linear-gradient(90deg, #071331 0%, #0b2a72 45%, #1256d1 100%);
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #1f2d55;
+    cursor: pointer;
+}
+
+.section-chevron {
+    --sds-c-icon-color-foreground-default: #ffffff;
+}
+
+.section-title {
+    color: #ffffff;
+}
+
+.section-body {
+    background-color: #0f1c3f;
+    padding: 1rem 1.5rem;
+}
+
+.fields-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 2.5rem;
+}
+
+.fields-column {
+    display: flex;
+    flex-direction: column;
+}
+
+.field-row {
+    padding: 0.55rem 0;
+    border-bottom: 1px solid #1f2d55;
+}
+
+.fields-column .field-row:last-child {
+    border-bottom: none;
+}
+
+.field-label {
+    color: #b7c2de;
+    font-size: 0.75rem;
+    margin-bottom: 0.15rem;
+}
+
+.field-value {
+    color: #ffffff;
+    font-size: 0.8125rem;
+    word-break: break-word;
+}
+
+.field-row a {
+    color: #4db8ff;
+    font-weight: 600;
+    font-size: 0.8125rem;
+    text-decoration: none;
+}
+
+.field-row a:hover {
+    color: #7ecbff;
+    text-decoration: underline;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

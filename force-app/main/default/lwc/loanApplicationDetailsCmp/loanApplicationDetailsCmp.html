@@ -1,0 +1,43 @@
+<!--_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________-->
+<template>
+    <template for:each={sections} for:item="section">
+        <div class="navy-card" key={section.key}>
+            <div class="section-header" data-section={section.sectionName} onclick={toggleSection}>
+                <lightning-icon icon-name={section.iconName} size="x-small" class="section-chevron"></lightning-icon>
+                <span class="section-title">{section.sectionName}</span>
+            </div>
+
+            <div class={section.bodyClass}>
+                <div class="fields-grid">
+                    <div class="fields-column">
+                        <template for:each={section.leftFields} for:item="field">
+                            <div class="field-row" key={field.key}>
+                                <div class="field-label">{field.label}</div>
+                                <template if:true={field.isLink}>
+                                    <a href="#" data-id={field.recordId} data-object={field.objectApiName} onclick={handleLinkClick}>{field.value}</a>
+                                </template>
+                                <template if:false={field.isLink}>
+                                    <div class="field-value">{field.value}</div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="fields-column">
+                        <template for:each={section.rightFields} for:item="field">
+                            <div class="field-row" key={field.key}>
+                                <div class="field-label">{field.label}</div>
+                                <template if:true={field.isLink}>
+                                    <a href="#" data-id={field.recordId} data-object={field.objectApiName} onclick={handleLinkClick}>{field.value}</a>
+                                </template>
+                                <template if:false={field.isLink}>
+                                    <div class="field-value">{field.value}</div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </template>
+</template>
+<!--__________________________GenAI: Generated code ends here______________________________-->

@@ -1,0 +1,70 @@
+<template>
+    <template if:true={hasApplicableCampaigns}>
+        <lightning-card title="Applicable Offers" icon-name="standard:campaign">
+            <div class="slds-m-around_medium">
+
+                <template if:true={showViewButton}>
+                    <lightning-button
+                        label="View Applicable Offers"
+                        variant="brand" 
+                        onclick={handleShowOffersClick} disabled={isLoading}>
+                    </lightning-button>
+                </template>
+
+                <template if:true={showCloseButton}>
+                    <lightning-button
+                        label="Close List"
+                        variant="neutral"
+                        onclick={handleCloseOffersClick}
+                        disabled={isSaving}>
+                    </lightning-button>
+                </template>
+
+                <template if:true={isLoading}>
+                    <div class="slds-m-top_medium">
+                        <lightning-spinner alternative-text="Loading..." size="medium"></lightning-spinner>
+                    </div>
+                </template>
+
+                <template if:true={error}>
+                    <div class="slds-notify slds-notify_alert slds-theme_alert-texture slds-theme_error slds-m-top_medium" role="alert">
+                        {error}
+                    </div>
+                </template>
+
+                <template if:true={showOfferListContainer}> 
+                    <div class="slds-m-top_medium"> 
+                        <lightning-datatable
+                            key-field="Id"
+                            data={offers}
+                            columns={columns}
+                            max-row-selection={datatableMaxRows}
+                            onrowselection={handleRowSelection}
+                            selected-rows={selectedRows}>
+                        </lightning-datatable>
+                    </div>
+
+                    <template if:true={showApplyButton}>
+                        <div class="slds-m-top_medium">
+                            <lightning-button
+                                label="Apply Selected Offer" 
+                                variant="brand-outline"
+                                onclick={handleApplyOffer} 
+                                disabled={isSaving}>
+                            </lightning-button>
+
+                            <lightning-button
+                                label="Remove Offer"
+                                variant="destructive-text"
+                                onclick={handleRemoveOffer}
+                                disabled={disableRemoveButton}
+                                class="slds-m-left_small">
+                            </lightning-button>
+                        </div>
+                    </template>
+                </template>
+
+            </div> 
+        </lightning-card>
+    </template>
+</template>

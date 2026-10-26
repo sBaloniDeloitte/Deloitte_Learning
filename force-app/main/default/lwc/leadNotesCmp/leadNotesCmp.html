@@ -1,0 +1,55 @@
+<!--
+    @description : Static "Notes" popup - conversation & follow-up updates
+                    for a Home Loan lead (dark navy/purple theme aligned
+                    with leadCustomHeader).
+    @author       : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <div class="notes-backdrop" onclick={handleClose}></div>
+
+    <div class="notes-modal" onclick={handleModalClick}>
+
+        <div class="notes-modal-header">
+            <div class="notes-modal-title-wrap">
+                <div class="notes-modal-title">Notes</div>
+                <div class="notes-modal-subtitle">Conversation &amp; follow-up updates</div>
+            </div>
+            <button class="notes-close-btn" type="button" onclick={handleClose} aria-label="Close">
+                <lightning-icon icon-name="utility:close" size="x-small" variant="inverse"></lightning-icon>
+            </button>
+        </div>
+
+        <div class="notes-modal-body">
+
+            <div class="notes-input-wrapper">
+                <textarea
+                    class="notes-textarea"
+                    placeholder="Add a note... e.g. Spoke to the applicant, he'll send the salary slip by Friday"
+                    value={noteText}
+                    oninput={handleNoteChange}
+                    maxlength={maxLength}>
+                </textarea>
+            </div>
+
+            <div class="notes-actions-row">
+                <span class="notes-char-count">{charCount}</span>
+                <div class="notes-actions-buttons">
+                    <button class="notes-btn notes-btn_clear" type="button" onclick={handleClear} disabled={isClearDisabled}>Clear</button>
+                    <button class="notes-btn notes-btn_save" type="button" onclick={handleSave} disabled={isSaveDisabled}>Save Note</button>
+                </div>
+            </div>
+
+            <div class="notes-list">
+                <template for:each={notes} for:item="note">
+                    <div key={note.id} class="notes-list-item">
+                        <div class="notes-item-author">{note.author}</div>
+                        <div class="notes-item-date">{note.date}</div>
+                        <div class="notes-item-text">{note.text}</div>
+                    </div>
+                </template>
+            </div>
+
+        </div>
+
+    </div>
+</template>

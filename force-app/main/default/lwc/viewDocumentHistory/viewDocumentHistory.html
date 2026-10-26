@@ -1,0 +1,110 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 02-13-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <span class="styleContainer"></span>
+    <!-- <template if:true={modalVisibility}> -->
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Meaningful description of the modal content"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="min-width: 60%;">
+                <header class="slds-modal__header" style="background-color: #5bb6e3; font-weight:500;">
+                    <div class="slds-text-align_center">
+                        <h2 style="font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px"
+                            class="slds-text-heading_medium slds-hyphenate">Document History</h2>
+                    </div>
+                </header>
+                <template if:true={modalVisibility}>
+                    <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless" 
+                    id="confirm-body" style="min-height: 30% !important; overflow-y: auto; max-height: 80vh;">
+                    <lightning-layout  style="margin-bottom: 20px;" horizontal-align="end">
+                        <lightning-layout-item size="3">
+                            <lightning-combobox 
+                                name="timestamp" 
+                                label="Sort by Timestamp" 
+                                placeholder="Select Sorting Order"
+                                options={timestampOptions} 
+                                value={selectedTimestamp} 
+                                onchange={handleTimestampChange}>
+                            </lightning-combobox>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    
+                <template for:each={documentHistory} for:item="iter">
+                    <div key={iter.Id} style="margin-bottom: 20px;">
+                        <!-- Table for each document -->
+                        <table class="slds-table slds-table_bordered slds-border_right slds-border_left">
+                            <thead style="position: sticky; top: 0; z-index: 2; background: white;">
+                                <tr>
+                                    <th scope="col" style="background-color: #5bb6e3; color: white; border: 1px solid black;" 
+                                    class="slds-size_1-of-12 slds-m-top_x-small">
+                                    Version Number
+                                </th>
+                                    <th scope="col" style="background-color: #5bb6e3; color: white; border: 1px solid black;" 
+                                        class="slds-size_2-of-12 slds-m-top_x-small">
+                                        Uploaded By
+                                    </th>
+                                    <th scope="col" style="background-color: #5bb6e3; color: white; border: 1px solid black;" 
+                                        class="slds-size_2-of-12 slds-m-top_x-small">
+                                        Timestamp
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <td class="slds-size_1-of-12">
+                                    <div class="slds-truncate slds-cell-wrap" style="overflow: auto;">
+                                        {iter.versionNumber}
+                                    </div>
+                                </td>
+                                        <td class="slds-size_2-of-12">
+                                            <div class="slds-truncate slds-cell-wrap" style="overflow: auto;">
+                                                {iter.uploadedby}
+                                            </div>
+                                        </td>
+                                        <td class="slds-size_2-of-12">
+                                            <div class="slds-truncate slds-cell-wrap" style="overflow: auto;">
+                                                {iter.timestamp}
+                                            </div>
+                                        </td>
+                            </tbody>
+                        </table>
+                        <!-- Preview for each document -->
+                            <div style="text-align: center; padding: 15px 10px; margin-top: 10px;">
+                                <div style="border: solid 1px #ddd; min-height: inherit;">
+                                    <template lwc:if={iter.showImage}>
+                                        <img src={iter.imageUrl} title="" style="max-width: 100%; height: auto;" />
+                                    </template>
+                                    <template lwc:elseif={iter.showPdf}>
+                                        <iframe src={iter.pdfUrl} style="width: 100%; height: 65vh; border: none;"></iframe>
+                                    </template>
+                                    <template lwc:else>
+                                        <div style="text-align: center; font-size: 20px; margin-top: 30vh;">
+                                            No preview available for this document!
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                    </div>
+                </template>
+                    </div>
+                </template>
+                <template if:false={modalVisibility}>
+                    <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless" style="text-align: center; padding: 10px; border: solid 1px #000000;">
+                        No history records found!
+                    </div>
+                </template>
+                <footer class="slds-modal__footer" style="border: revert;">
+                    <div class="slds-align_absolute-center">
+                        <button class="cancel-button slds-button slds-button_brand"
+                            style="border:none" onclick={handleClose}>Close</button>
+                        <!-- <button class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color: #113451;color: white;border-color: #113451;font-weight: 500;" onclick={handleSave}>Create</button> -->
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+    <!-- </template> -->
+</template>

@@ -1,0 +1,209 @@
+<template>
+    <template if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </template>
+    <template lwc:if={isError}>  
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+            <thead>
+                <tr>
+                    <th scope="col">S.no</th>
+                    <th scope="col">Error Message</th>
+                </tr>
+            </thead>
+            <tbody>            
+                <template for:each={errorData} for:item="item">
+                    <tr key={item.Id}>
+                        <td>{item.Id}</td>
+                        <td>{item.Message}</td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>    
+    
+    </template>
+    <!-- <template if:true={showReassignPopup}>
+         <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+                <div class={cssContainer}>
+                    <header class="slds-modal__header header-section">
+                        <div class="slds-text-align_center">
+                            <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">Assign User</h2>
+                        </div>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id">
+                      Reassignment is required for this case for {nextProfileNeeded} user.
+Once the reassignment is completed, please send it back for further processing.
+
+                                     <lightning-radio-group name="radioGroup3" label="Select New Assignee" options={assigneeoptions}
+                                    value={newAssignee} onchange={handleAssigneeChange} message-when-value-missing="Please select assignee" required type="radio">
+                                </lightning-radio-group>
+                                     
+                        
+                    </div>
+                    <footer class="footer-section">
+                        <div class="slds-align_absolute-center button-container">
+                            <button class="slds-button slds-button_brand close-button" onclick={closeModel}>Cancel</button>
+                         
+                            <button class="slds-button slds-button_brand save-button" onclick={reassignRecord}>Confirm Assignment</button>
+                            
+                        </div>
+                    </footer>
+                </div>
+            </section>
+   
+          
+    </template> -->
+    <template if:true={showReassignPopup}>
+    <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+        <div class={cssContainer}>
+            <header class="slds-modal__header header-section">
+                <button class="slds-button slds-button_icon home-quick-action-close-btn" title="Close"
+                        aria-label="Close" onclick={closeModel}>
+                    <lightning-icon icon-name="utility:close" alternative-text="Close" size="x-small" variant="inverse"></lightning-icon>
+                </button>
+                <div class="slds-text-align_center">
+                    <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">Assign User</h2>
+                </div>
+            </header>
+
+            <div class="slds-modal__content slds-p-around_medium" id="modal-content-id">
+                The system was unable to find the appropriate stage owner. Kindly select and try again.
+
+                <lightning-radio-group name="radioGroup3" 
+                    label="Select New Assignee"
+                    options={assigneeoptions}
+                    value={newAssignee}
+                    onchange={handleAssigneeChange}
+                    message-when-value-missing="Please select assignee"
+                    required
+                    type="radio">
+                </lightning-radio-group>
+            </div>
+
+            <footer class="footer-section">
+                <div class="slds-align_absolute-center button-container">
+                    <button class="slds-button slds-button_brand close-button" onclick={closeModel}>Cancel</button>
+                    <button class="slds-button slds-button_brand save-button" onclick={reassignRecord}>Confirm Assignment</button>
+                </div>
+            </footer>
+        </div>
+    </section>
+</template>
+    <template if:true={modalVisibility}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class={cssContainer}>
+                <header class="slds-modal__header header-section">
+                    <button class="slds-button slds-button_icon home-quick-action-close-btn" title="Close"
+                            aria-label="Close" onclick={handleNo}>
+                        <lightning-icon icon-name="utility:close" alternative-text="Close" size="x-small" variant="inverse"></lightning-icon>
+                    </button>
+                    <div class="slds-text-align_center">
+                        <h2 class="slds-text-heading_medium slds-hyphenate header-title">Confirmation Screen</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="confirm-body">
+                    <div style="padding: 10px; text-align: center;">
+                        <template if:true={showMarkAsCompleteHelpText}>
+                            Are you sure you want to mark it as complete?
+                        </template>
+                        <template if:false={showMarkAsCompleteHelpText}>
+                            Are you sure you want to send back to previous stage?
+                        </template>
+                    </div>
+                    <lightning-textarea
+                        label="Remarks"
+                        value={remarks}
+                        required
+                        onchange={handleRemarksChange}
+                        class="remarks-textarea slds-m-top_medium"
+                    ></lightning-textarea>
+                </div>
+                <footer class="footer-section">
+                    <div class="slds-align_absolute-center button-container">
+                        <button class="slds-button slds-button_brand previous-button" onclick={handleNo}>No</button>
+                        <button class="slds-button slds-button_brand continue-button" onclick={handleProceed}>Yes</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+    </template>
+
+     <template if:true={showQueryScreen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class={cssContainer}>
+                <header class="slds-modal__header header-section">
+                    <button class="slds-button slds-button_icon home-quick-action-close-btn" title="Close"
+                            aria-label="Close" onclick={handleNo}>
+                        <lightning-icon icon-name="utility:close" alternative-text="Close" size="x-small" variant="inverse"></lightning-icon>
+                    </button>
+                    <div class="slds-text-align_center">
+                        <h2 class="slds-text-heading_medium slds-hyphenate header-title">Query Screen</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="query-body">
+                    <div style="padding: 10px; text-align: center;">
+                        <p>{query}</p>
+                    </div>
+                </div>
+                <footer class="footer-section">
+                    <div class="slds-align_absolute-center button-container">
+                        <button class="slds-button slds-button_brand previous-button" onclick={handleNo}>Resolve Query</button>
+                        <button class="slds-button slds-button_brand continue-button" onclick={handleProceed}>Proceed</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+    </template>
+
+    <template if:true={errorModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class={cssContainer}>
+                <header class="slds-modal__header header-section">
+                    <button class="slds-button slds-button_icon home-quick-action-close-btn" title="Close"
+                            aria-label="Close" onclick={hideModalBox}>
+                        <lightning-icon icon-name="utility:close" alternative-text="Close" size="x-small" variant="inverse"></lightning-icon>
+                    </button>
+                    <div class="slds-text-align_center">
+                        <h2 class="slds-text-heading_medium slds-hyphenate header-title">Missing Steps/Data</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <template for:each={errorLst} for:item="listVariable" for:index="index">
+                        <div style="color: red;" key={listVariable}>
+                            {listVariable.index}: {listVariable.value}
+                        </div>
+                    </template>
+                </div>
+                <footer class="footer-section">
+                    <div class="slds-align_absolute-center button-container">
+                        <button class="slds-button slds-button_brand previous-button" onclick={hideModalBox}>Cancel</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+    </template>
+     <template if:true={showMovetoCreditError}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class={cssContainer}>
+               <header class="slds-modal__header header-section">
+                  <button class="slds-button slds-button_icon home-quick-action-close-btn" title="Close"
+                          aria-label="Close" onclick={hideModalCreditSendback}>
+                      <lightning-icon icon-name="utility:close" alternative-text="Close" size="x-small" variant="inverse"></lightning-icon>
+                  </button>
+                  <div class="slds-text-align_center">
+                    <h2 id="modal-heading-02" class="slds-text-heading_medium slds-hyphenate header-title">Missing Steps/Data</h2>
+                  </div>
+               </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                    <p>Kindly send back the loan to credit stage since a duplicate customer is caught</p>
+                </div>
+                <footer class="footer-section">
+                    <div class="slds-align_absolute-center button-container">
+                        <button class="slds-button slds-button_brand previous-button" onclick={hideModalCreditSendback}>Cancel</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+    </template>
+           
+
+</template>

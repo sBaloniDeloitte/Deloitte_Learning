@@ -1,0 +1,450 @@
+<template>
+    <template if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </template>
+    <div>
+        <template if:false={disabledCmp}>
+        <template lwc:if={showTriggerPD}>
+        <template if:true={telePD}>
+            <div>
+                <button class="save-button tele-pd-trigger-btn slds-button slds-button_brand" onclick={triggerTPD} disabled={isDisabledInitiation}>Trigger Tele PD</button>
+                <button class="cancel-button slds-button slds-button_brand" onclick={hanldeRefresh}>Refresh</button>
+            </div>
+        </template>
+        <template if:false={telePD}>
+            <div>
+                <button class="save-button video-pd-trigger-btn slds-button slds-button_brand" onclick={triggerVPD} disabled={isDisabledInitiation}>Trigger Video PD</button>
+    
+            </div>
+        </template>
+        </template>
+        </template>
+        
+        <template if:true={showTable}>
+            <div class="slds-scrollable_x" style="overflow: initial;padding: 20px 0px;">
+                <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right custom-table" style=" border-color: black">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black" scope="col" colspan="1">
+                                Applicant Name				
+                            </th>
+                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black" scope="col" colspan="1">
+                                Applicant Type						
+                            </th>
+                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black;"
+                            scope="col" colspan="1">
+                                Customer Type
+                            </th>
+                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black;"
+                            scope="col" colspan="1">
+                                Customer Profile
+                            </th>
+                            <template if:false={telePD}>
+                                <th style="text-align: center; background-color: skyblue; color: black; border-color: black" scope="col" colspan="1">
+                                    Documents of VPD					
+                                </th>
+                            </template>
+                            <!--
+                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black" scope="col" colspan="1">
+                                CM Disposition					
+                            </th>-->
+                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black" scope="col" colspan="1">
+                                Status						
+                            </th>
+                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black" scope="col" colspan="1">
+                                    Initiation Time						
+                            </th>
+                            <template if:true={telePD}>
+                                <th style="text-align: center; background-color: skyblue; color: black; border-color: black" scope="col" colspan="1">
+                                    Call Status						
+                                </th>
+                                
+                                <th style="text-align: center; background-color: skyblue; color: black; border-color: black" scope="col" colspan="1">
+                                    Completion Time						
+                                </th>
+                                <th style="text-align: center; background-color: skyblue; color: black; border-color: black" scope="col" colspan="1">
+                                    Call Duration						
+                                </th>
+                            </template>
+                            <template if:false={telePD}>
+                                <th style="text-align: center; background-color: skyblue; color: black; border-color: black" scope="col" colspan="1">
+                                    Join Chat						
+                                </th>
+                            
+                                <th style="text-align: center; background-color: skyblue; color: black; border-color: black" scope="col" colspan="1">
+                                    Re-trigger					
+                                </th>
+                            </template>
+                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black" scope="col" colspan="1">
+                                Call Recording					
+                            </th>
+                            <template if:true={showTriggerPD}>
+                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black;"
+                            scope="col" colspan="1">
+                                Edit
+                            </th>
+                            </template>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+                        <template for:each={applicantInformation} for:item="record">
+                            <tr key={record.applicantId}>
+                                <td style=" border-color: black">{record.applicantName}</td>
+                                <td style=" border-color: black">{record.applicantType}</td>
+                                <td style=" border-color: black">{record.customerType}</td>
+                                <td style=" border-color: black">{record.customerProfile}</td>
+                                
+                                <template if:false={record.enableNotes}> 
+                                    <td style=" border-color: black">
+                                                                           
+                                    </td>
+                                </template> 
+                                <template if:false={telePD}>                                
+                                    <td style=" border-color: black">
+                                        <lightning-icon icon-name="action:preview" data-id={record.applicationVerificationId} alternative-text="Event" title="Event" onclick={viewImage} size="small"></lightning-icon>
+                                        
+                                    </td>
+                                </template>
+                                <!--
+                                <td style=" border-color: black">
+                                    <lightning-combobox name="progress" label="Status" value={record.cmdisposition} data-id={record.verifId} disabled={hideButton}
+                                        placeholder="Select Disposition" options={dispositionOptionsForTele} variant="label-hidden" onchange={handleDispChange}>
+                                    </lightning-combobox>
+                                </td>-->
+                                <td style=" border-color: black">{record.pdStatus}</td>
+                                <td style=" border-color: black">
+                                        <lightning-formatted-date-time value={record.startTime} year="numeric" month="numeric" day="numeric" hour="2-digit"
+                                        minute="2-digit"></lightning-formatted-date-time>
+                                    </td>
+                                <template if:true={telePD}>
+                                    <td style=" border-color: black">
+                                        {record.callstatus}
+                                    </td>
+                                    <td style=" border-color: black">
+                                        <lightning-formatted-date-time value={record.endTime} year="numeric" month="numeric" day="numeric" hour="2-digit"
+                                        minute="2-digit" ></lightning-formatted-date-time>
+                                        
+                                    </td>
+                                    <td style=" border-color: black">
+                                        {record.callDuration}
+                                    </td>
+                                </template>
+                                <template if:false={telePD}>
+                                    <td style=" border-color: black">
+                                        <template if:false={disabledCmp}>
+                                        <template if:true={showTriggerPD}>
+                                        <a href= {record.joinChat} target="_blank"> 
+                                            <button class="save-button slds-button slds-button_brand" disabled={hideButton} onclick={joinChat}>Click here to join</button>
+                                        </a>
+                                        </template>
+                                        </template>
+                                    </td>
+                                
+                                    <td style=" border-color: black">
+                                        <template if:false={disabledCmp}>
+                                        <template if:true={showTriggerPD}>
+                                            <button class="save-button slds-button slds-button_brand" disabled={hideButton} data-id={record.applicantId} onclick={resendLink}>Re-trigger</button>
+                                        </template>
+                                        </template>
+                                    </td>
+                                </template>
+                                <template if:true={telePD}>
+
+                                    
+                                <td style=" border-color: black">
+                                    <template if:true={record.isCompleted}>
+                                        <a href={record.audioCallRecordings}>Click here to download</a>
+                                    </template>
+                                    <template if:false={record.isCompleted}>
+                                        
+                                    </template>
+                                    
+                                    
+                                </td>
+                                </template>
+                                <template if:false={telePD}>
+                                    <td style=" border-color: black">
+                                        <button class="save-button slds-button slds-button_brand" disabled={hideButton} data-id={record.applicantId} onclick={getCallRecording}>Get Call Recording</button>
+                                        <!--{record.videoCallRecordings}-->
+                                    </td>
+                                </template>
+                                <template if:true={showTriggerPD}>
+                                <td style=" border-color: black">
+                                    <template if:false={disabledCmp}>
+                                    <lightning-icon data-id={record.applicationVerificationId} icon-name="utility:edit" alternative-text="Edit Document" title="EDIT" size="x-small" onclick={handleNavigateToForm} style="cursor: pointer;" ></lightning-icon>
+                                        </template>
+                                </td>
+                                </template>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+        
+
+
+
+    </div>
+    <template if:true={isShowModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open pd-trigger-modal">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                    title="Close" onclick={hideModalBox}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                        size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <header class="slds-modal__header header-section">
+                    <div class="slds-text-align_center">
+                        <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">
+                           Trigger Video PD</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col slds-size_2-of-12">
+        
+                        </div>
+                        <div class="slds-col slds-size_8-of-12">
+                            <div class="filter-drop">
+                                <lightning-combobox value={applicantValue} options={options} onchange={handleApplicantChange}
+                                    class="validate" label="Select Applicant" placeholder="Select Applicant" variant="label-inline"></lightning-combobox>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_2-of-12">
+        
+                        </div>
+                    </div>
+
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="6" class="slds-p-around_medium">
+                            <lightning-input type="text" name="name" value={applicantName} label="Name" disabled></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="6" class="slds-p-around_medium">
+                            <lightning-input type="text" name="cmEmail" value={cmEmail} label="CM Email" disabled></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="6" class="slds-p-around_medium">
+                            <lightning-input type="text" name="mobileNumber" value={applicantMobileNumber} label="Mobile Number" disabled></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="6" class="slds-p-around_medium">
+                            <lightning-input type="text" name="applicantEmail" value={applicantEmail} label="Applicant Email" onchange={handleApplicantEmail}></lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+                </div>
+
+                <footer class="slds-modal__footer footer-section">
+                    <div class="slds-align_absolute-center button-container">
+                        <button class="slds-button slds-button_neutral save-button"
+                            onclick={handleInitiate}>Initiate</button>
+                        <button class="slds-button slds-button_neutral cancel-button"
+                            onclick={hideModalBox}>Cancel</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={isShowModalTPD}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open pd-trigger-modal">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                    title="Close" onclick={hideModalBoxTPD}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                        size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <header class="slds-modal__header header-section">
+                    <div class="slds-text-align_center">
+                        <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">
+                           Trigger Tele PD</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-2">
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col slds-size_2-of-12">
+        
+                        </div>
+                        <div class="slds-col slds-size_8-of-12">
+                            <div class="filter-drop">
+                                <lightning-combobox value={applicantValue} options={options} onchange={handleApplicantChange}
+                                    class="validate" label="Select Applicant" placeholder="Select Applicant" variant="label-inline"></lightning-combobox>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_2-of-12">
+        
+                        </div>
+                    </div>
+
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="6" class="slds-p-around_medium">
+                            <lightning-input type="text" name="name" value={applicantName} label="Name" disabled></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="6" class="slds-p-around_medium">
+                            <lightning-input type="text" name="mobileNumberapplicant" value={applicantMobileNumber} label="Mobile Number" onchange={handleApplicantMobileChange} disabled></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="6" class="slds-p-around_medium">
+                            <lightning-input type="text" name="cmName"  value={cmName} label="CM Name" disabled></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="6" class="slds-p-around_medium">
+                            <lightning-input type="text" name="mobileNumberCM" value={cmMobileNumber} label="Mobile Number" onchange={handleCMMobileChange} disabled></lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+                </div>
+
+                <footer class="slds-modal__footer footer-section">
+                    <div class="slds-align_absolute-center button-container">
+                        <button class="slds-button slds-button_neutral save-button"
+                            onclick={handleInitiateTPD}>Initiate</button>
+                        <button class="slds-button slds-button_neutral cancel-button"
+                            onclick={hideModalBoxTPD}>Cancel</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={showPDNotes}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container ">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                    title="Close" onclick={hidePDNotes}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                        size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <header class="slds-modal__header " style="background-color: skyblue;">
+                    <div class="slds-text-align_center">
+                        <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">
+                           Enter PD Notes</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium large-textarea" id="modal-content-id-3" >
+                    <!-- <div class="large-textarea">
+                        <lightning-textarea label="Enter some text" variant="label-hidden" value={pdNotes} 
+                        onchange={handlePDNotes}></lightning-textarea>
+                    </div> -->
+                    <table class=" custom-table"
+                        style=" border-color: black">
+                        <tbody>
+                            <td >
+                                <lightning-textarea label="Enter some text" variant="label-hidden" value={pdNotes} 
+                                    onchange={handlePDNotes}></lightning-textarea>
+                            </td>
+                        </tbody>
+                    </table>
+                    
+
+                </div>
+
+                <footer class="slds-modal__footer footer-section">
+                    <div class="slds-align_absolute-center button-container">
+                        <button class="slds-button slds-button_neutral save-button"
+                            onclick={savePDNotes}>Save</button>
+                        <button class="slds-button slds-button_neutral cancel-button"
+                            onclick={hidePDNotes}>Cancel</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    
+    <template if:true={showImages}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+                <header class="slds-modal__header header-section">
+                    <div class="slds-text-align_center">
+                        <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">View Image</h2>
+                    </div>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium" id="confirm-body">
+                    <!-- add child component here -->
+
+                    <div style="padding: 10px; text-align: center;">
+                        <div style="margin-top: 2%;">
+                            <div class="content-container" style="height: 300px;">
+                                <template if:true={pdfUrl}>
+                                    <iframe src={pdfUrl} class="content-viewer"
+                                        style="border: 1px solid #000000; height:70%; width:70%; margin-bottom: 5px;"></iframe>
+                                </template>
+                                <template if:true={imageUrl}>
+                                    <div class="scrollable">
+                                        <img src={imageUrl} alt="Document Image" class="content-viewer"
+                                            style="border: 1px solid #000000; margin-bottom: 5px;" />
+                                    </div>
+                                </template>
+                                <div>{documentName}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="footer-section">
+                    <div class="slds-align_absolute-center button-container">
+                        <template if:true={showNextButton}>
+                        <button class="slds-button slds-button_brand previous-button" onclick={handlePrevious} style="margin-right: 10px;"
+                            disabled={previous}>Previous</button>
+                        <button class="slds-button slds-button_brand continue-button" onclick={handleNext} style="margin-right: 10px;"
+                            disabled={disableNext}>Next</button>
+                        </template>
+                        <button class="slds-button slds-button_brand previous-button" style="margin-right: 10px;"
+                            onclick={handleClose}>Close</button>
+                            <button class="slds-button slds-button_brand previous-button"
+                            onclick={handledelete}>Delete</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+
+        <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+    </template>
+
+    <template if:true={showDocs}>
+        <span class="styleContainer"></span>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Meaningful description of the modal content"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="min-width: 60%;">
+                <header class="slds-modal__header" style="background-color: #5bb6e3; font-weight:500;">
+                    <div class="slds-text-align_center">
+                        <h2 style="font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px"
+                            class="slds-text-heading_medium slds-hyphenate">Video PD Documets</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless" 
+                 style="min-height: 30% !important; overflow-y: auto; max-height: 80vh;">
+                    <template for:each={videoPDDocuments} for:item="iter">
+                        <div key={iter.Id} style="margin-bottom: 20px;">
+                            <div style="text-align: center; padding: 15px 10px; margin-top: 10px;">
+                                <div style="border: solid 1px #ddd; min-height: inherit;">
+                                    <template if:true={iter.isPDF}>
+                                        <iframe src={iter.documentUrl} style="width: 100%; height: 65vh; border: none;"></iframe>
+                                    </template>
+                                    <template if:false={iter.isPDF}>
+                                        <img src={iter.documentUrl} title="" style="max-width: 100%; height: auto;" />
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+                <footer class="slds-modal__footer" style="border: revert;">
+                    <div class="slds-align_absolute-center">
+                        <button class="cancel-button slds-button slds-button_brand"
+                            style="border:none" onclick={handleDocViewClose}>Close</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+    </template>    
+</template>

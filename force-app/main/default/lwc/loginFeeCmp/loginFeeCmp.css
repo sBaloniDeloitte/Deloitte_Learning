@@ -1,0 +1,224 @@
+@import "c/cssLibrary";
+
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+
+:host {
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+}
+
+.slds-form-element__label {
+    color: #ffffff !important;
+}
+
+/* ---------- General Box ---------- */
+.custom-border {
+    border: 2px solid black;
+    padding: 1rem;
+    border-radius: 5px;
+}
+
+/* ---------- Buttons ---------- */
+.previous-button, .green-button {
+    padding: 0px 8px;
+    border: none;
+    display: inline-block;
+    text-align: center;
+    color: #ffffff;
+    background-color: #1467eb  !important;
+    border-color: #1467eb;
+    align-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 140px;
+    font-weight: 600;
+}
+
+.save-button {
+    padding: 0px 8px;
+    border: none;
+    border-radius: 8px;
+    display: inline-block;
+    text-align: center;
+    color: white;
+    background-color: #7c3aed !important;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    align-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-image 0.2s ease;
+    width: 110px !important;
+
+}
+
+.green-button {
+    background-color: #1467eb;
+    border-color: #1467eb;
+}
+
+/* ---------- Align "Next" Button to Right ---------- */
+.next-button-container {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 1rem;
+}
+
+/* ---------- Center Align "Initiate API" Button ---------- */
+.fixed-button {
+    position: sticky;
+    bottom: 0;
+    /* background: white; */
+    padding: 10px;
+    text-align: center; /* ✅ Center the Initiate API button */
+    border-top: 1px solid #ccc;
+}
+
+/* Prevent Initiate API button from stretching full width */
+.fixed-button .save-button,
+.fixed-button .previous-button,
+.fixed-button .green-button {
+    width: auto !important;
+}
+
+/* ---------- Table ---------- */
+.sticky {
+    background-color: skyblue;
+    color: white;
+    font-weight: bold;
+}
+
+.table-container {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+/* ---------- Password Field Icons ---------- */
+.password-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+.eye-icon, .manual-eye-icon {
+    position: absolute;
+    right: 4%;
+    cursor: pointer;
+    transform: translateY(-50%);
+}
+
+.eye-icon {
+    top: 66%;
+}
+
+.manual-eye-icon {
+    top: 58%;
+}
+
+/* ---------- Responsive (Mobile) ---------- */
+@media (max-width: 600px) {
+    lightning-layout-item {
+        padding: 0 !important;
+        width: 100% !important;
+        max-width: 100% !important;
+        flex-basis: 100% !important;
+    }
+
+    lightning-layout {
+        flex-direction: column;
+    }
+
+    lightning-input, lightning-combobox {
+        width: 100% !important;
+        min-width: 0;
+    }
+
+    .save-button, .previous-button, .green-button {
+        width: 100% !important;
+        margin-bottom: 0.75rem;
+        font-size: 1rem;
+    }
+
+    .fixed-button {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+        padding: 15px;
+        z-index: 100;
+        text-align: center; /* ✅ still center in mobile */
+    }
+
+    .next-button-container {
+        justify-content: flex-end;
+        padding: 15px;
+    }
+
+    .table-container {
+        max-height: 200px;
+        padding: 5px;
+    }
+
+    table.slds-table {
+        font-size: 14px;
+        width: 100% !important;
+        table-layout: auto !important;
+    }
+
+    th, td {
+        white-space: normal !important;
+        word-wrap: break-word !important;
+    }
+
+    legend {
+        font-size: 1.1rem;
+    }
+
+    .custom-border, .form-container, .table-container {
+        padding: 0.75rem !important;
+    }
+
+    .eye-icon, .manual-eye-icon {
+        right: 5%;
+        top: 50% !important;
+        transform: translateY(-50%);
+        width: 20px;
+        height: 20px;
+    }
+
+    .spinner-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.3); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999; 
+}
+.mobile-button-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    position: static;
+    left: auto;
+    bottom: auto;
+    z-index: auto;
+    padding: 0;
+    margin-top: 12px;
+}
+.mobile-button-stack .slds-button {width: 100%;}
+@media (min-width: 769px) {
+    .mobile-button-stack {
+        display: none;
+    }
+}
+}

@@ -1,0 +1,73 @@
+<!--_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________-->
+<template>
+  <!-- Fill the quick-action body -->
+  <template if:true={isModalOpen}>
+    <!-- Rebuilt as a self-contained slds-modal (same pattern already used by
+         loanReassignmentScreen / rejectLoanApplicationCmp / homeQuickAction) instead
+         of <lightning-modal-header/-body/-footer>, which only render their intended
+         overlay/backdrop when the component is opened via LightningModal.open() -
+         this component extends plain LightningElement, so those tags were rendering
+         as flat inline content with no modal chrome at all. Same fields, same
+         handleAssign/handleCancel logic - only the wrapping markup changed. -->
+    <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+      <div class="slds-modal__container assign-cm-modal-container">
+        <header class="slds-modal__header header-section">
+          <button class="slds-button slds-button_icon assign-cm-close-btn" title="Close"
+                  aria-label="Close" onclick={handleCancel}>
+            <lightning-icon icon-name="utility:close" alternative-text="Close" size="x-small" variant="inverse"></lightning-icon>
+          </button>
+          <div class="slds-text-align_center">
+            <h2 class="slds-text-heading_medium slds-hyphenate header-title">Assign to Credit Manager?</h2>
+          </div>
+        </header>
+
+        <div class="slds-modal__content slds-p-around_medium" id="assign-cm-content">
+          <div style="padding:1rem; text-align:center;">
+            Do you really want to reassign this loan to the account's Credit Manager?
+          </div>
+          <template if:true={isLoading}>
+            <div class="assign-cm-loading-overlay">
+              <lightning-spinner alternative-text="Assigning..." size="small" variant="brand"></lightning-spinner>
+            </div>
+          </template>
+        </div>
+
+        <footer class="slds-modal__footer footer-section">
+          <div class="slds-align_absolute-center button-container">
+            <button class="slds-button slds-button_brand previous-button" onclick={handleCancel}>Cancel</button>
+            <button class="slds-button slds-button_brand continue-button" onclick={handleAssign}>Yes, Assign</button>
+          </div>
+        </footer>
+      </div>
+    </section>
+
+    <template if:true={showValidation}>
+      <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open assign-cm-validation-modal">
+        <div class="slds-modal__container assign-cm-modal-container assign-cm-validation-container">
+          <header class="slds-modal__header header-section">
+            <button class="slds-button slds-button_icon assign-cm-close-btn" title="Close"
+                    aria-label="Close" onclick={closeValidationModal}>
+              <lightning-icon icon-name="utility:close" alternative-text="Close" size="x-small" variant="inverse"></lightning-icon>
+            </button>
+            <div class="slds-text-align_center">
+              <h2 class="slds-text-heading_medium slds-hyphenate header-title">Validation</h2>
+            </div>
+          </header>
+
+          <div class="slds-modal__content slds-p-around_medium">
+            <template for:each={validationMessages} for:item="msg">
+              <div key={msg} class="assign-cm-validation-item">- {msg}</div>
+            </template>
+          </div>
+
+          <footer class="slds-modal__footer footer-section">
+            <div class="slds-align_absolute-center button-container">
+              <button class="slds-button slds-button_brand previous-button" onclick={closeValidationModal}>Close</button>
+            </div>
+          </footer>
+        </div>
+      </section>
+    </template>
+  </template>
+</template>
+<!--__________________________GenAI: Generated code ends here______________________________-->

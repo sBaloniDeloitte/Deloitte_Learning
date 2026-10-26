@@ -1,0 +1,167 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+
+:host {
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+    /* Same dark palette as creditFIInitiationCmp.css so this table matches the Field Investigation accordion theme */
+    --pan-panel-bg: #1c2238;
+    --pan-field-bg: #16283f;
+    --pan-accent: #1467eb;
+    --pan-border: #2a2f45;
+}
+
+.slds-form-element__label {
+    color: #ffffff !important;
+}
+
+.tdBorderHeader{
+    color: #ffffff;height:20px;border: 1px solid var(--pan-border);padding-left: 1%;
+}
+.table-header {
+    background-color: var(--pan-accent);
+}
+
+/* Table theme matched EXACTLY to the "Documents" tab data table
+   (documentProcessingScreen.css ".scroll-container"/".doc-table") -
+   #0a1524 outer backdrop, #0e1c30 table surface (header + body), #33455e
+   borders on every cell, 18px rounded corners on the outer cells only,
+   left-aligned bold white header text, 13px body text, #16283f row-hover
+   highlight - replacing the previous blue-header (#1467eb)/black-border
+   theme so this table shares the same visual language as Documents. */
+.pan-table-wrap {
+    background-color: #0a1524 !important;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.pan-table-wrap .slds-table {
+    width: 100%;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    background-color: #0e1c30 !important;
+    border: 1px solid #33455e !important;
+    border-radius: 18px;
+    overflow: hidden;
+    color: #ffffff;
+}
+
+.pan-table-wrap .slds-table th,
+.pan-table-wrap .slds-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.pan-table-wrap .slds-table thead tr th {
+    background-color: #0e1c30 !important;
+    background-image: none !important;
+    border-right: 1px solid #33455e !important;
+    border-bottom: 1px solid #33455e !important;
+    border-color: #33455e !important;
+    color: #ffffff !important;
+    font-weight: bold !important;
+    font-size: 12.5px;
+    letter-spacing: 0.2px;
+    padding: 12px 10px !important;
+    text-align: left !important;
+    box-shadow: none !important;
+    vertical-align: middle;
+}
+
+.pan-table-wrap .slds-table thead tr:first-child th:first-child {
+    border-top-left-radius: 18px;
+}
+
+.pan-table-wrap .slds-table thead tr:first-child th:last-child {
+    border-top-right-radius: 18px;
+}
+
+.pan-table-wrap .slds-table tbody tr td {
+    background-color: #0e1c30 !important;
+    border-right: 1px solid #33455e !important;
+    border-bottom: 1px solid #33455e !important;
+    border-color: #33455e !important;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: left !important;
+    padding: 12px 10px !important;
+    vertical-align: middle;
+}
+
+.pan-table-wrap .slds-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 18px;
+}
+
+.pan-table-wrap .slds-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 18px;
+}
+
+.pan-table-wrap .slds-table tbody tr:hover td {
+    background-color: #16283f !important;
+}
+.andcontainers{
+    text-align: left;
+    font-weight: bold;
+    margin-top: 5%;
+    margin-bottom: 14px;
+}
+
+.positive { color: #9bbf56; font-weight: bold; }
+.negative { color: red; font-weight: bold; }
+
+/* Positive CTA (Next) - #7c3aed fill, no border, 8px radius. */
+.SaveButton {
+    background-color: #7c3aed !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* Positive CTA (Validate PAN) - lightning-button renders in its own
+   shadow root, so the brand color has to be set via SLDS styling hooks
+   (same technique already used in fcuAccordionCmp.save-fields-button). */
+.button-green lightning-button {
+    --slds-c-button-brand-color-background: #1467eb;
+    --sds-c-button-brand-color-background: #1467eb;
+    --slds-c-button-brand-color-background-hover: #1257c9;
+    --sds-c-button-brand-color-background-hover: #1257c9;
+    --slds-c-button-brand-color-background-active: #1257c9;
+    --sds-c-button-brand-color-background-active: #1257c9;
+    --slds-c-button-brand-color-border: #1467eb;
+    --sds-c-button-brand-color-border: #1467eb;
+    --slds-c-button-brand-text-color: #ffffff;
+    --sds-c-button-brand-text-color: #ffffff;
+    --slds-c-button-radius-border: 8px;
+    --sds-c-button-radius-border: 8px;
+}
+
+/* th, td {
+    padding: 8px;
+} */
+
+.success-banner {
+    width: 79%;
+    min-height: 66px;
+    margin: 12px auto;
+    padding: 18px 24px;
+    border: 1px solid #ffffff;
+    border-radius: 14px;
+    background: #041833;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.success-icon {
+    --sds-c-icon-color-foreground-default: #7c3aed;
+    flex-shrink: 0;
+}
+
+.success-message {
+    color: #ffffff;
+    text-align: left;
+}

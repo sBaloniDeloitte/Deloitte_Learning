@@ -1,0 +1,190 @@
+@import 'c/cssLibrary';
+
+.header-section{
+	padding: 12px;
+}
+
+.header-title {
+	font-size:22px; 
+}
+
+.required-field::before {
+    content: "*";
+    color: red;
+    margin-left:2px
+}
+
+:host {
+    display: block;
+    background-color: #071628;
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-text-color: #ffffff;
+    
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-color-border: #33455e;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: #16283f;
+    --slds-c-listbox-color-background: #16283f;
+    
+    --slds-c-listbox-option-color-background: #16283f;
+    --slds-c-listbox-option-color-background-hover: #1b304d;
+    --slds-c-listbox-option-color-background-focus: #1b304d;
+    --slds-c-listbox-option-color-background-selected: #1b304d;
+    
+    --slds-c-listbox-option-text-color: #ffffff;
+    --slds-c-listbox-option-text-color-hover: #ffffff;
+    --slds-c-listbox-option-text-color-focus: #ffffff;
+    --slds-c-listbox-option-text-color-selected: #ffffff;
+
+    --slds-c-combobox-item-color-text: #ffffff;
+    --slds-c-combobox-item-color-text-hover: #ffffff;
+    --slds-c-combobox-item-color-text-focus: #ffffff;
+
+    --slds-c-listbox-item-text-color: #ffffff;
+    --slds-c-listbox-item-text-color-hover: #ffffff;
+    --slds-g-color-neutral-base-10: #ffffff;
+}
+
+.slds-listbox__option:hover{
+    background-color: #16283f;
+    color: white;
+}
+
+.slds-listbox__option[aria-selected="true"],
+.slds-listbox__option[aria-selected="true"] .slds-media__body,
+.slds-listbox__option[aria-selected="true"] .slds-truncate {
+    color: #ffffff !important;
+}
+
+lightning-card {
+    --slds-c-card-color-background: #071628;
+    --slds-c-card-color-border: #071628;
+}
+
+.slds-table {
+    width: 100%;
+    border-collapse: separate;
+    border-radius: 8px;
+    border: 1px solid white;
+    overflow: hidden;
+    background: #1b304d;
+}
+
+.slds-table thead th {
+    background: #1b304d !important;
+    color: #ffffff !important;
+
+    font-weight: 700;
+    font-size: 15px;
+
+    border-right: 1px solid #ffffff !important;
+    border-bottom: 1px solid #ffffff !important;
+
+    text-align: center;
+}
+
+.slds-table tbody td {
+    background: #1b304d !important;
+    color: #ffffff !important;
+
+    border-right: 1px solid #ffffff !important;
+    border-bottom: 1px solid #ffffff !important;
+}
+
+/* .slds-table th:first-child,
+.slds-table td:first-child {
+    border-left: none !important;
+}
+
+.slds-table th:last-child,
+.slds-table td:last-child {
+    border-right: none !important;
+}
+
+.slds-table thead th {
+    border-top: none !important;
+}
+
+.slds-table tbody tr:last-child td {
+    border-bottom: none !important;
+} */
+
+.slds-table tbody tr:hover td {
+    background-color: #17345c !important;
+
+    border-top: 1px solid #ffffff !important;
+    border-bottom: 1px solid #ffffff !important;
+}
+
+lightning-input,
+lightning-combobox {
+    --slds-c-input-color-background: #16283f;
+}
+
+lightning-input:hover,
+lightning-combobox:hover {
+    --slds-c-input-color-background: #16283f;
+}
+
+lightning-input::part(input),
+lightning-combobox::part(input) {
+    background-color: #16283f !important;
+    color: white !important;
+    border-color: #33455e !important;
+}
+
+.slds-modal__content,
+.slds-modal__footer {
+    background: #071628 !important;
+    color: white !important;
+}
+
+.cancel-button {
+    background-color: #16283f;
+    border :1px solid #16283f;
+}
+
+.slds-modal__header {
+    background: linear-gradient(
+        135deg,
+        #001a5e 0%, #003087 55%, #004db3 100%) !important;
+    border-bottom: 1px solid #33455e !important;
+}
+
+.slds-modal__header h2 {
+    color: #ffffff !important;
+}
+
+/* Modal scrollbar */
+
+.slds-modal__content {
+    scrollbar-width: thin;
+    scrollbar-color: #2a3f5f #0A1524;
+}
+
+/* Chrome / Edge / Safari */
+
+.slds-modal__content::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+.slds-modal__content::-webkit-scrollbar-track {
+    background: #0A1524;
+    border-radius: 6px;
+}
+
+.slds-modal__content::-webkit-scrollbar-thumb {
+    background: #2a3f5f;
+    border-radius: 6px;
+    border: 2px solid #0A1524;
+}
+
+.slds-modal__content::-webkit-scrollbar-thumb:hover {
+    background: #3b5578;
+}
+
+.slds-modal__content::-webkit-scrollbar-corner {
+    background: #0A1524;
+}

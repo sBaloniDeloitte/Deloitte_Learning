@@ -1,0 +1,175 @@
+<template>
+    <template if:true={showModal}>
+        <lightning-accordion allow-multiple-sections-open active-section-name={activeSection}>
+            <lightning-accordion-section name="Reference Documents" label='Reference Documents' class={classAccordion} style="background-color: white;">
+    
+                <template if:false={isMobile}>
+                    <div class="slds-p-horizontal_medium">
+                        <template if:true={showTable}>
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right" aria-label="Example table of Opportunities with vertical borders">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="" scope="col" style="text-align: center; background-color: #5bb6e3; color: black; font-weight: 500; padding: 10px">
+                                        <div class="sticky-column slds-truncate" title="Close Date">Document Name</div>
+                                    </th>
+                                    <th class="" scope="col" style="text-align: center; background-color: #5bb6e3; color: black; font-weight: 500; padding: 10px">
+                                        <div class="sticky-column slds-truncate" title="Close Date">Uploaded Files</div>
+                                    </th>
+                                    <th class="" scope="col" style="text-align: center; background-color: #5bb6e3; color: black; font-weight: 500; padding: 10px">
+                                        <div class="sticky-column slds-truncate" title="Close Date">View Document</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={docChecklist} for:item="document" for:index="index">
+                                    <tr style="background: #f2f2f2; border-color: white;" key={document.docId} class="slds-hint-parent">
+                                        
+                                        <!-- Document Name -->
+                                        <td data-label="Document Name">
+                                            <div title={document.name} style="white-space: break-spaces;">{document.name}</div>
+                                        </td>
+                                        <!-- File Names Column -->
+                                        <td data-label="File Name">
+                                            <table>
+                                                <tbody>
+                                                    <template for:each={document.uploadedFiles} for:item="iterFile">
+                                                        <tr key={iterFile.contentDocId}>
+                                                            <td style="padding: 0.51rem 0; text-align: center; flex: 1; margin-right: 1rem; max-width: 200px; white-space: normal; word-wrap: break-word; overflow-wrap: break-word;">
+                                                                <a href="javascript:void(0);"
+                                                                data-id={iterFile.contentDocId}
+                                                                data-url={iterFile.contentDocLink}
+                                                                onclick={handlePreview}>
+                                                                    {iterFile.fileName}
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </td>
+
+                                        <!-- Preview Icon Column -->
+                                        <td data-label="Preview">
+                                            <table>
+                                                <tbody>
+                                                    <template for:each={document.uploadedFiles} for:item="iterFile">
+                                                        <tr key={iterFile.contentDocId}>
+                                                            <td style="padding: 0.25rem 0; text-align: center;">
+                                                                <lightning-icon 
+                                                                    icon-name="utility:preview"
+                                                                    data-id={iterFile.contentDocId}
+                                                                    data-url={iterFile.contentDocLink}
+                                                                    alternative-text="Preview"
+                                                                    title="Preview"
+                                                                    class="lightning-icon-hover"
+                                                                    size="small"
+                                                                    onclick={handlePreview}>
+                                                                </lightning-icon>
+                                                            </td>
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                        </template>
+                        
+                        <template if:true={showPreview}> 
+                            <div class="preview-header slds-m-top_medium slds-m-bottom_medium" style="display: flex; flex-direction: column; align-items: flex-start; font-weight: bold; font-size: 1.6em; margin-bottom: 10px;">
+                                 <lightning-icon icon-name="utility:close" alternative-text="Close" size="medium" onclick={handleClosePreview} title="Close Preview" class="close-icon" style="cursor: pointer;"></lightning-icon>
+                                 <span>Previewing: </span>
+                            </div>
+                            <iframe src={filePreviewUrl} class="content-viewer" style="width: 100%; height: 90vh; border: 1px solid #ccc; box-sizing: border-box;"></iframe>
+                        </template>
+                    </div>
+                </template>
+                <template if:true={isMobile}>
+                    <div class="slds-p-horizontal_medium slds-scrollable_x">
+                        <template if:true={showTable}>
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right" aria-label="Example table of Opportunities with vertical borders">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th class="" scope="col" style="text-align: center; background-color: #5bb6e3; color: black; font-weight: 500; padding: 10px">
+                                            <div class="sticky-column" style="white-space:break-spaces;" title="Close Date">Document Name</div>
+                                        </th>
+                                        <th class="" scope="col" style="text-align: center; background-color: #5bb6e3; color: black; font-weight: 500; padding: 10px">
+                                            <div class="sticky-column slds-truncate" title="Close Date">Uploaded Files</div>
+                                        </th>
+                                        <th class="" scope="col" style="text-align: center; background-color: #5bb6e3; color: black; font-weight: 500; padding: 10px">
+                                            <div class="sticky-column slds-truncate" title="Close Date">View Document</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={docChecklist} for:item="document" for:index="index">
+                                        <tr style="background: #f2f2f2; border-color: white;" key={document.docId} class="slds-hint-parent">
+                                            
+                                            <!-- Document Name -->
+                                            <td data-label="Document Name">
+                                                <div title={document.name} style="white-space: break-spaces;">{document.name}</div>
+                                            </td>
+                                            <!-- File Names Column -->
+                                            <td data-label="File Name">
+                                                <table>
+                                                    <tbody>
+                                                        <template for:each={document.uploadedFiles} for:item="iterFile">
+                                                            <tr key={iterFile.contentDocId}>
+                                                                <td style="padding: 0.51rem 0; text-align: center; flex: 1; margin-right: 1rem; max-width: 200px; white-space: normal; word-wrap: break-word; overflow-wrap: break-word;">
+                                                                    <a href="javascript:void(0);"
+                                                                    data-id={iterFile.contentDocId}
+                                                                    data-url={iterFile.contentDocLink}
+                                                                    onclick={handlePreview}>
+                                                                        {iterFile.fileName}
+                                                                    </a>
+                                                                </td>
+                                                            </tr>
+                                                        </template>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+
+                                            <!-- Preview Icon Column -->
+                                            <td data-label="Preview">
+                                                <table>
+                                                    <tbody>
+                                                        <template for:each={document.uploadedFiles} for:item="iterFile">
+                                                            <tr key={iterFile.contentDocId}>
+                                                                <td style="padding: 0.25rem 0; text-align: center;">
+                                                                    <lightning-icon 
+                                                                        icon-name="utility:preview"
+                                                                        data-id={iterFile.contentDocId}
+                                                                        data-url={iterFile.contentDocLink}
+                                                                        alternative-text="Preview"
+                                                                        title="Preview"
+                                                                        class="lightning-icon-hover"
+                                                                        size="small"
+                                                                        onclick={handlePreview}>
+                                                                    </lightning-icon>
+                                                                </td>
+                                                            </tr>
+                                                        </template>
+                                                    </tbody>
+                                                </table>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </template>
+                        <template if:true={showPreview}> 
+                            <div class="preview-header slds-m-top_medium slds-m-bottom_medium" style="display: flex; flex-direction: column; align-items: flex-start; font-weight: bold; font-size: 1.6em; margin-bottom: 10px;">
+                                 <lightning-icon icon-name="utility:close" alternative-text="Close" size="medium" onclick={handleClosePreview} title="Close Preview" class="close-icon" style="cursor: pointer;"></lightning-icon>
+                                 <span>Previewing: </span>
+                            </div>
+                            <iframe src={filePreviewUrl} class="content-viewer" style="width: 100%; height: 90vh; border: 1px solid #ccc; box-sizing: border-box;"></iframe>
+                        </template>
+                    </div>    
+                </template>
+    
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </template>
+</template>

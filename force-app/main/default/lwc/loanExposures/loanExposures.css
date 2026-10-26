@@ -1,0 +1,134 @@
+:host {
+
+    --slds-c-card-color-background: #0a1730;
+
+    --slds-c-card-color-background-header: #0d1b3e;
+
+    --slds-c-card-text-color: #ffffff;
+
+    --slds-c-card-text-color-header: #ffffff;
+
+    background-color: #0a1730;
+
+    display: block;
+
+}
+
+
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin-top: 10px;
+
+    background-color: #0a1730;
+
+    border: 1px solid #ffffff;
+    border-radius: 8px;
+
+    overflow: hidden;
+}
+
+
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background-color: #0a1730 !important;
+    border: none;
+}
+
+
+th {
+    background-color: #1b304d !important;
+    color: #ffffff !important;
+
+    font-weight: 700;
+    font-size: 15px;
+
+    padding: 6px 12px;
+    text-align: center;
+
+    border-right: 1px solid #ffffff !important;
+    border-bottom: 1px solid #ffffff !important;
+}
+
+
+
+td {
+    background-color: #10213f !important;
+    color: #ffffff !important;
+
+    padding: 10px 12px;
+    text-align: center;
+
+    border-right: 1px solid #ffffff !important;
+    border-bottom: 1px solid #ffffff !important;
+}
+
+th:last-child,
+td:last-child {
+    border-right: none !important;
+}
+
+tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+thead tr:first-child th:first-child {
+    border-top-left-radius: 8px;
+}
+
+thead tr:first-child th:last-child {
+    border-top-right-radius: 8px;
+}
+
+tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+}
+
+tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
+}
+
+/* th:first-child,
+td:first-child {
+    border-left: none !important;
+}
+
+th:last-child,
+td:last-child {
+    border-right: none !important;
+}
+
+thead th {
+    border-top: none !important;
+}
+
+tbody tr:last-child td {
+    border-bottom: none !important;
+} */
+
+tr:nth-child(even) td {
+
+    background-color: #14284d !important;
+
+}
+
+tbody tr:hover td {
+    background-color: #17345c !important;
+
+    border: 1px solid #ffffff !important;
+}
+
+lightning-card {
+    --slds-c-card-color-background: #0a1730;
+    --slds-c-card-color-border: #33455e;
+}
+
+th {
+    font-family:Arial, sans-serif; 
+    font-size:13px;
+    font-weight: bold;
+    text-align: center;
+}

@@ -1,0 +1,44 @@
+@import "c/cssLibrary";
+
+/*
+ * Match the FCU / Hunter / PD action panel background to the
+ * Field Investigation accordion (creditFIInitiationCmp --fi-page-bg: #12172b),
+ * so all "Application Verification" accordion sections look visually consistent.
+ */
+.card-div {
+    background-color: #12172b;
+    border-radius: 5px;
+    padding: 12px;
+}
+
+/* Positive CTAs (Recommend for FCU, Initiate Hunter, Initiate PD) -
+   #7c3aed fill, no border, 8px radius. */
+.save-button {
+    background-color: #7c3aed !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* "Recommend for FCU" only - scoped override on top of the shared
+   ".save-button" class (also used by Initiate Hunter/PD, which are left
+   untouched) so only this button's fill/border change to #1467eb. */
+.fcu-recommend-btn {
+    background-color: #1467eb !important;
+    border: 1px solid #1467eb !important;
+}
+
+/* "Initiate Hunter" only - same scoped override pattern as
+   ".fcu-recommend-btn" above. */
+.hunter-initiate-btn {
+    background-color: #1467eb !important;
+    border: 1px solid #1467eb !important;
+}
+
+/* "Initiate PD" (Personal Discussion) only - same scoped override
+   pattern as the other buttons above. */
+.pd-initiate-btn {
+    background-color: #1467eb !important;
+    border: 1px solid #1467eb !important;
+}

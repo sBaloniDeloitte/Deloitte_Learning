@@ -1,0 +1,276 @@
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </template>
+    <div class="slds-m-around_medium combobox-container">
+        <lightning-combobox label="Select Method" value={selectedMethod} options={methodOptions}
+            onchange={handleMethodChange} class={getClassByDeviceType} disabled={isFieldDisable}>
+        </lightning-combobox>
+    </div>
+
+    <template if:true={showData}>
+        <lightning-layout multiple-rows class="layout-border">
+            <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                <div class="form-container slds-box slds-theme_default custom-border">
+                    <lightning-combobox value={applicantValue} options={options} onchange={handleApplicantChange}
+                        class="validate" label="Select Applicant" placeholder="Select Applicant"
+                        style="padding: 0px 10px;"></lightning-combobox>
+                    <template if:true={isApplicantSeleted}>
+                        <lightning-layout multiple-rows>
+
+                            <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                                <lightning-input type="text" value={panNumber} label="PAN" disabled></lightning-input>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                                <lightning-input type="text" value={dob} label="DOB" disabled></lightning-input>
+                            </lightning-layout-item>
+                            <template if:false={isDataPresent}>
+                                <template if:false={isManual}>
+                                    <lightning-layout-item size="12" medium-device-size="6"
+                                        class="slds-p-around_x-small">
+
+                                    </lightning-layout-item>
+
+
+                                </template>
+                                <template if:true={isManual}>
+                                    <lightning-layout-item size="12" medium-device-size="6"
+                                        class="slds-p-around_x-small">
+                                        <lightning-file-upload label="Attach File" name="fileUploader"
+                                            accept={acceptedFormats} record-id={recordId}
+                                            onuploadfinished={handleUploadFinished}>
+                                        </lightning-file-upload>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item size="12" medium-device-size="6"
+                                        class="slds-p-around_x-small">
+                                        <lightning-input type="text" value={password}
+                                            label="Enter Password (If applicable)"></lightning-input>
+                                    </lightning-layout-item>
+                                </template>
+                                <lightning-layout-item size="12" medium-device-size="12" class="slds-p-around_x-small">
+                                    <div style="text-align: center;">
+                                        
+                                        <template if:false={hideButton}>
+                                        <button class="slds-button slds-button_neutral save-button"
+                                onclick={handleInitiate}>Initiate</button>
+                                </template>
+                                    </div>
+                                </lightning-layout-item>
+                            </template>
+                        </lightning-layout>
+                    </template>
+                </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+                <div style="text-align: center;color: red;font-size: 13px;font-weight: 500;padding: 5px;">{msg}</div>
+                <template if:true={docPresent}>
+                    <div class="form-container slds-box slds-theme_default custom-border">
+                        
+                        <div class="header-div">
+                            <span class="span-div">
+                            Name : {applicantname}
+                        </span>
+                            <span>
+                            Download : <lightning-button 
+                                    icon-name="utility:download"
+                                    alternative-text="Download" 
+                                    onclick={handleDownload} 
+                                    data-id={contentId} 
+                                    variant="base">
+                                </lightning-button>
+                        </span>
+                        </div>
+                    </div>
+                </template>
+
+                <template if:true={hasItrvInfo}>
+                    <template for:each={itrvInfoList} for:item="info">
+                        <lightning-layout-item key={info._key} size="12" padding="around-small">
+                            <div class="form-container slds-box slds-theme_default custom-border">
+                                <!-- =========== Sub-card 1: ITRV Details =========== -->
+                                <div class="sub-card">
+                                    <div class="section-title">ITRV Details</div>
+                                    <div class="section-subtitle">Personal &amp; Transaction Details</div>
+
+                                    <div class="slds-p-horizontal_small slds-m-bottom_small slds-scrollable_x">
+                                        <table
+                                            class="slds-table slds-table_cell-buffer slds-table_fixed-layout itr-table">
+                                            <colgroup>
+                                                <col class="label-col" />
+                                                <col class="value-col" />
+                                            </colgroup>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">PAN</th>
+                                                    <td class="value-cell">{info.personalInfo.pan}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Name</th>
+                                                    <td class="value-cell">{info.personalInfo.name}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Address</th>
+                                                    <td class="value-cell">{info.personalInfo.address}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Status</th>
+                                                    <td class="value-cell">{info.personalInfo.status}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Aadhaar No</th>
+                                                    <td class="value-cell">{info.personalInfo.adhaarNumber}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- =========== Sub-card 2: ITRV Information =========== -->
+                                <div class="sub-card">
+                                    <div class="section-title">ITRV Information</div>
+
+                                    <div class="slds-p-horizontal_small slds-m-bottom_small slds-scrollable_x">
+                                        <table
+                                            class="slds-table slds-table_cell-buffer slds-table_fixed-layout itr-table">
+                                            <colgroup>
+                                                <col class="label-col" />
+                                                <col class="value-col" />
+                                            </colgroup>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Assessment Year</th>
+                                                    <td class="value-cell">{info.assessmentYear}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Form Number</th>
+                                                    <td class="value-cell">{info.formNumber}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Original Or Revised</th>
+                                                    <td class="value-cell">{info.originalOrRevised}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Designation Of AO</th>
+                                                    <td class="value-cell">{info.designationOfAO}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Acknowledgement Number</th>
+                                                    <td class="value-cell">{info.acknowledgementNumber}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Date Of Submission</th>
+                                                    <td class="value-cell">{info.dateOfSubmission}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- =========== Sub-card 3: Income Details =========== -->
+                                <div class="sub-card">
+                                    <div class="section-title">Income Details</div>
+
+                                    <div class="slds-p-horizontal_small slds-m-bottom_small slds-scrollable_x">
+                                        <table
+                                            class="slds-table slds-table_cell-buffer slds-table_fixed-layout itr-table">
+                                            <colgroup>
+                                                <col class="label-col" />
+                                                <col class="value-col" />
+                                            </colgroup>
+                                            <tbody>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Financial Year</th>
+                                                    <td class="value-cell">{info.financialYear}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Current Year Loss</th>
+                                                    <td class="value-cell">{info.incomeDetail.currentYearLoss}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Gross Total Income</th>
+                                                    <td class="value-cell">{info.incomeDetail.grossTotalIncome}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Deductions Under Chapter 6A</th>
+                                                    <td class="value-cell">{info.incomeDetail.deductionsUnderChapter6A}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Total Income</th>
+                                                    <td class="value-cell">{info.incomeDetail.totalIncome}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Net Tax Payable</th>
+                                                    <td class="value-cell">{info.incomeDetail.netTaxPayable}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Interest Payable</th>
+                                                    <td class="value-cell">{info.incomeDetail.interestPayable}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Total Tax &amp; Interest Payable
+                                                    </th>
+                                                    <td class="value-cell">
+                                                        {info.incomeDetail.totalTaxAndInterestPayable}</td>
+                                                </tr>
+
+                                                <!-- Taxes Paid -->
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Advance Tax</th>
+                                                    <td class="value-cell">{info.incomeDetail.taxesPaid.advanceTax}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">TDS</th>
+                                                    <td class="value-cell">{info.incomeDetail.taxesPaid.tds}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">TCS</th>
+                                                    <td class="value-cell">{info.incomeDetail.taxesPaid.tcs}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Self Assessment Tax</th>
+                                                    <td class="value-cell">
+                                                        {info.incomeDetail.taxesPaid.selfAssessmentTax}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Total Tax Paid</th>
+                                                    <td class="value-cell">{info.incomeDetail.taxesPaid.totalTaxPaid}
+                                                    </td>
+                                                </tr>
+
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Tax Payable</th>
+                                                    <td class="value-cell">{info.incomeDetail.taxPayable}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Refund</th>
+                                                    <td class="value-cell">{info.incomeDetail.refund}</td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Agriculture</th>
+                                                    <td class="value-cell">{info.incomeDetail.exemptIncome.agriculture}
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <th scope="row" class="label-cell">Others</th>
+                                                    <td class="value-cell">{info.incomeDetail.exemptIncome.others}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </lightning-layout-item>
+                    </template>
+                </template>
+
+
+
+            </lightning-layout-item>
+        </lightning-layout>
+    </template>
+    <iframe if:true={iframeSrc} src={iframeSrc} style="display:none;"></iframe>
+
+</template>

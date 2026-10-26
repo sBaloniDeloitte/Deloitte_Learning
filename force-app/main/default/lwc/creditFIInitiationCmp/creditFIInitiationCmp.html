@@ -1,0 +1,554 @@
+<template>
+
+    <template if:true={genericInitiate}>
+       <!-- "Enable Internal FI" toggle removed for the Vendor PD usage only
+            (mainPdCmp renders this component with is-vendor-p-d="true"
+            directly below the "Tele PD" sub-accordion) - the other usages
+            of this shared component (Initiate FI, popupScreen/popupScreenV2)
+            still show the toggle unchanged. -->
+       <template if:false={showVendorPD}>
+       <div class="toggle-container" style="margin-bottom: 1rem; background: #16283f; color: white">
+    <label class={labelClass}>{buttonLabel}</label>
+    <lightning-input 
+        type="toggle" 
+        onchange={handleInterFIToggle} 
+        checked={isInterFIToggled}
+        message-toggle-active="Active"
+        message-toggle-inactive="Inactive"
+        class="toggle-input">
+    </lightning-input>
+    </div>
+    </template>
+        <!-- ____GenAI: Generated code starts here - lightning-accordion /
+             lightning-accordion-section replaced with a hand-built accordion.
+             The base component renders its header inside its own fully
+             encapsulated shadow root in this org - neither SLDS custom-property
+             styling hooks nor external CSS overrides could repaint it (verified
+             by deploying twice and hard-refreshing, zero visual change both
+             times). Plain divs driven by the existing `activeSection` state
+             have no such boundary to cross.____ -->
+        <div class="accordion-container custom-pd-accordion" style="background-color: #16283f;">
+
+            <div class="custom-pd-section">
+                <div class="custom-pd-header" data-name="initiation" onclick={handleSectionToggle}>
+                    <lightning-icon icon-name={initiationSectionIcon} size="x-small" class="custom-pd-icon"></lightning-icon>
+                    <span class="custom-pd-title">{sectionHeader}</span>
+                </div>
+            <template if:true={isInitiationSectionOpen}>
+            <div class="custom-pd-body">
+                <!-- <div class="table-container"> -->
+                    <lightning-layout style="padding-bottom:1%;">
+                        <lightning-layout-item size="7" style="color : white;">
+                            <template if:false={showVendorPD}>
+                               {initiateMessage}
+                            </template> 
+                             <template if:false={disabledCmp}>
+                            <template if:true={showVendorPD}>
+                                <div lwc:if={DisplayVendorPD}>
+                                    <button class="initiate-button vendor-pd-initiate-btn slds-button slds-button_brand" onclick={handleOpenConfModalPD} disabled={isDisableInitiation}>Initiate Vendor PD</button>
+                                </div> 
+                            </template>
+                            </template>          
+                        </lightning-layout-item>
+                        <lightning-layout-item size="5" class="fi-header-actions" style="text-align: right; color: white;">
+                            <template if:false={disabledCmp}>
+                            <template if:false={showVendorPD}>
+                                <template if:false={isInterFIToggled}>
+                                <template if:false={userHavePsFcuSamplerPermissionSet}>
+                                <template if:false={isDisableInitiation}>
+                                    <button class="slds-button slds-button_brand initiate-button" onclick={handleOpenConfModal} disabled={isDisableInitiation}>Initiate</button>
+                                    <button class="slds-button slds-button_brand wave-button" onclick={handleConsentWaiverForAll} disabled={isDisableInitiation}>Waive</button>
+                                </template>
+                                </template>
+                            </template> 
+                            <template if:true={isInterFIToggled}>
+                                <template if:false={userHavePsFcuSamplerPermissionSet}>
+                                <template if:false={isDisableInitiation}>
+                                    <button class="slds-button slds-button_brand initiate-button" onclick={internalFI} disabled={isDisableInitiation}>Initiate</button>
+                                    <!-- <button class="slds-button slds-button_brand wave-button" onclick={handleConsentWaiverForAll} disabled={isDisableInitiation}>Waive</button> -->
+                                </template>
+                                </template>
+                            </template>            
+                            <!-- </template> -->
+                           <lightning-button-icon
+                            icon-name="utility:refresh"
+                            alternative-text="Refresh"
+                            title="Refresh"
+                            onclick={handleRefresh}
+                            class="slds-m-left_small"
+                            size="medium">
+                        </lightning-button-icon>
+                            </template>
+                       </template>     
+                        </lightning-layout-item>
+                    </lightning-layout>
+
+                    <div class="fi-table-wrapper">
+                    <table class="slds-table">
+                        <thead>
+                            <tr>
+                                <template if:false={isInterFIToggled}>
+                                <th style="width: 1%; background-color: #1467eb;border-color: #33455e; color: black;" rowspan="2">
+                                    <lightning-input type="checkbox" variant="label-hidden" style="margin-left: var(--lwc-spacingXSmall,0.5rem);" 
+                                        onchange={selectallcheckboxes} data-id="mainToggle">
+                                    </lightning-input>
+                                </th>
+                                </template>
+                                <template if:true={isInterFIToggled}>
+                                <th style="width: 1%; background-color: #1467eb;border-color: #33455e; color: black;" rowspan="2">
+                                    <lightning-input type="checkbox" variant="label-hidden" style="margin-left: var(--lwc-spacingXSmall,0.5rem);" 
+                                        onchange={selectallcheckboxes} data-id="mainToggle" disabled="True">
+                                    </lightning-input>
+                                </th>
+                                </template>
+                            
+                                <th scope="col" style="width: 8%;background-color: #1467eb;border-color: #33455e; color: white;" rowspan="2">
+                                    Name
+                                </th>
+                                <th scope="col"  style="width: 10%; background-color: #1467eb;border-color: #33455e;color: white;" rowspan="2">
+                                    Address
+                                </th>
+                                <template if:true={showVendorPD}>
+                                    <th scope="col"  style="width: 10%;background-color: #1467eb;border-color: #33455e;color: white;" rowspan="2">
+                                        Director/ Partner
+                                    </th>
+                                </template>
+                                <template if:false={showVendorPD}>
+                                    <th scope="col" style="width:6%;background-color: #1467eb;border-color: #33455e;color: white;" rowspan="2">
+                                        Visit Type
+                                    </th>
+                                    <th scope="col" style="width: 6%;background-color: #1467eb;border-color: #33455e;color: white;" rowspan="2">
+                                        Waiver Status
+                                    </th>
+                                    <th scope="col" style="width: 6%;background-color: #1467eb;border-color: #33455e;color: white;" rowspan="2">
+                                        Waived By
+                                    </th>
+                                </template>
+                                <template if:false={showVendorPD}>
+                                    <th scope="col" style="width: 12%;background-color: #1467eb;border-color: #33455e;color: white;" rowspan="2">
+                                        Remarks
+                                    </th>
+                                </template>
+                                <template if:true={showVendorPD}>
+                                    <th scope="col" style="width: 12%;background-color: #1467eb;border-color: #33455e;color: white;" rowspan="2">
+                                        Initiation Remarks
+                                    </th>
+                                </template>
+                                
+                                <!-- <th scope="col" style="width: 8%;">
+                                    Upload
+                                </th> -->
+                                <th scope="col" style="width: 10%;background-color: #1467eb;border-color: #33455e;color: white;" rowspan="2">
+                                    Assigned To
+                                </th>
+                                <template if:false={showVendorPD}>
+                                    <th scope="col" style="width: 6%;background-color: #1467eb;border-color: #33455e;color: white;" rowspan="2">
+                                        CM Disposition
+                                    </th>
+                                    <th scope="col" style="width: 10%;background-color: #1467eb;border-color: #33455e;color: white;" rowspan="2">
+                                        CM Remarks
+                                    </th>
+                                    <th scope="col" style="width: 6%;background-color: #1467eb;border-color: #33455e;color: white;" rowspan="2">
+                                        Visit Number
+                                    </th>
+                                </template>
+                                <template if:true={showVendorPD}>
+                                    <th scope="col" style="width: 6%;background-color: #1467eb;border-color: #33455e;color: white;" rowspan="2">
+                                        Disposition
+                                    </th>
+                                    <th scope="col" style="width: 10%;background-color: #1467eb;border-color: #33455e;color: white;" rowspan="2">
+                                        CM Remarks
+                                    </th>
+                                    <th scope="col" style="width: 6%;background-color: #1467eb;border-color: #33455e;color: white;" rowspan="2">
+                                        PD Link
+                                    </th>
+                                </template>
+                                
+                                <th scope="col" style="width: 6%;background-color: #1467eb;border-color: #33455e;color: white;" rowspan="2">
+                                    Status
+                                </th>
+                                <template if:false={showVendorPD}>
+                                    <th scope="col" style="width: 6%;background-color: #1467eb;border-color: #33455e;color: white;" rowspan="2">
+                                        Report Status
+                                    </th>
+                                </template>
+                                <template if:false={showVendorPD}>
+                                    <th scope="col" colspan="2" style="width: 12%;background-color: #1467eb;border-color: #33455e;color: white;">
+                                        Date
+                                    </th>
+                                </template>
+                                <template if:true={showVendorPD}>
+                                    <th scope="col" colspan="2" style="width: 12%;background-color: #1467eb;border-color: #33455e;color: white;">
+                                        Initiated Date
+                                    </th>
+                                </template>
+                                <template if:true={showVendorPD}>
+                                    <th scope="col" colspan="2" style="width: 12%;background-color: #1467eb;border-color: #33455e;color: white;">
+                                        Edit
+                                    </th>
+                                </template>
+                            </tr>
+                            <template if:false={showVendorPD}>
+                                <tr>
+                                    <th scope="col" style="width: 5%;background-color: #1467eb;border-color: #33455e;color: white;">
+                                        Initiated Date
+                                    </th>
+                                    <th scope="col" style="width: 5%;background-color: #1467eb;border-color: #33455e;color: white;">
+                                        Closed Date
+                                    </th>
+                                </tr>
+                            </template>
+                        </thead>
+                        <tbody>
+                            <template for:each={applicableVisitTable} for:item="customer" for:index="index">
+                                <template if:false={customer.isPaleColour}>
+                                    <tr key={customer.addressId}>
+                                        <td style=" border-color: #ffffff">
+                                            <lightning-input type="checkbox" variant="label-hidden" style="margin-left: var(--lwc-spacingXSmall,0.5rem);"
+                                                checked={customer.selected}     
+                                                onchange={selectIndividualCheckbox} data-id="toggle"
+                                                data-name={customer.addressId} disabled={customer.isVistiInitated}>
+                                            </lightning-input>
+                                        </td>
+                                        <td style="text-align: center;border-color: #ffffff;"> <b>{customer.applicantName}</b> <br>
+                                            ({customer.applicantType})</td>
+                                        <td style="text-align: center;border-color: #ffffff;"> <b>{customer.addressType}</b>:
+                                            {customer.addressValue}</td>
+                                            
+                                        <template if:true={showVendorPD}>
+                                            <td style=" border-color: #ffffff">
+                                                <template if:true={customer.isDirectorReq}>
+                                                    <template if:true={customer.isVistiInitated}>
+                                                        <lightning-input type="text" variant="label-hidden"
+                                                            value={customer.selectedDirectorName} disabled="true"></lightning-input>
+                                                    </template>
+                                                    <template if:false={customer.isVistiInitated}>
+        
+        
+                                                        <c-search-user-picker options={customer.directorList}
+                                                            param-id={customer.applicantId} value={customer.selectedDirector}
+                                                            param-name={customer.addressType} index={index}
+                                                            select-option={selectOption} is-selected="true"
+                                                            selected-val={customer.selectedDirectorName}
+                                                            disabled={customer.isVistiInitated} onselect={handleDirectorAssignee}>
+                                                        </c-search-user-picker>
+                                                    </template>
+                                                </template>
+                                                <template if:false={customer.isDirectorReq}>
+                                                        <!-- <b>Ishi</b>: 
+                                                        Director -->
+                                                </template>
+                                            </td>                                         
+                                        </template>
+                                        <template if:false={showVendorPD}>
+                                            <td style=" border-color: #ffffff"> {customer.recordTypeName}</td>
+                                            <td style=" border-color: #ffffff">{customer.waiverFlag}</td>
+                                            <td style=" border-color: #ffffff">{customer.waivedBy}</td>
+                                        </template>
+                                        
+                                        <td style=" border-color: #ffffff">
+                                            <textarea class="dark-textarea" value={customer.remarks}
+                                                maxlength="255" onchange={handleRemarksChange}
+                                                data-id={customer.addressId} disabled={customer.isVistiInitated}></textarea>
+                                        </td>
+                                        
+                                        <td style=" border-color: #ffffff;width: 25%;">
+                                            <template if:true={customer.isVistiInitated}>
+                                                <lightning-input type="text" variant="label-hidden"
+                                                    value={customer.selectedAssigneeName} disabled="true"></lightning-input>
+                                            </template>
+                                            <template if:false={customer.isVistiInitated}>
+                                                 <template if:false={isInterFIToggled}>
+                                                <c-search-user-picker options={customer.asigneeList}
+                                                    param-id={customer.applicantId} value={customer.selectedAssignee}
+                                                    param-name={customer.addressType} index={index}
+                                                    select-option={selectOption} is-selected="true"
+                                                    selected-val={customer.selectedAssigneeName}
+                                                    disabled={customer.isVistiInitated} onselect={handleAssignee}>
+                                                </c-search-user-picker>
+                                            </template>
+                                            <template if:true={isInterFIToggled}>
+                                                <c-search-user-picker options={customer.internalList}
+                                                    param-id={customer.applicantId} 
+                                                    param-name={customer.addressType} index={index}
+                                                    select-option={selectOption} is-selected="true"
+                                                    disabled={customer.isVistiInitated} onselect={handleInternal}>
+                                                </c-search-user-picker>
+                                            </template>
+                                            </template>
+                                        </td>
+                                        <td style=" border-color: #ffffff"> {customer.creditManagersDesposition}</td>
+                                        <td style=" border-color: #ffffff"> {customer.creditRemarks}</td>
+                                        <td style=" border-color: #ffffff"> <div class="slds-truncate" title="4/14/2015"><a data-id={customer.fiId} onclick={navigateToRecord}>{customer.fiName}</a></div></td>
+                                        <td style=" border-color: #ffffff"> {customer.fiStatus}</td>
+                                        <template if:false={showVendorPD}>
+                                            <td style=" border-color: #ffffff">{customer.fiStage}</td>
+                                        </template>                                        
+                                        <td style=" border-color: #ffffff">{customer.initiatedOn}</td>
+                                        <template if:false={showVendorPD}>
+                                            <td style=" border-color: #ffffff">{customer.completionDate}</td>
+                                        </template>  
+                                        <template if:true={showVendorPD}>
+                                            <td style=" border-color: #ffffff">
+                                                <!--<lightning-icon data-id={customer.fiId} icon-name="utility:edit" alternative-text="Edit Document" title="EDIT" size="x-small" onclick={navigateToRecord} style="cursor: pointer;" ></lightning-icon> -->
+                                            </td>
+                                            <td style=" border-color: #ffffff">
+                                                 <template if:false={disabledCmp}>
+                                                <lightning-icon data-id={customer.fiId} icon-name="utility:edit" alternative-text="Edit Document" title="EDIT" size="x-small" onclick={navigateToRecord} style="cursor: pointer;" ></lightning-icon> 
+                                                </template>
+                                            </td>
+                                        </template>                                      
+                                    </tr>
+                                </template>
+                                <template if:true={customer.isPaleColour}>
+                                    <tr key={customer.addressId} style="background: cornsilk;">
+                                        <td style="padding-left: .9%;border-color: #33455e">
+                                            <lightning-input checked={customer.selected} type="checkbox" label=""
+                                                onchange={selectIndividualCheckbox} data-id="toggle"
+                                                data-name={customer.addressId} disabled={customer.isVistiInitated}>
+                                            </lightning-input>
+                                        </td>
+                                        <td style="text-align: center;border-color: #33455e"> <b>{customer.applicantName}</b> <br>
+                                            ({customer.applicantType})</td>
+                                        <td style="text-align: center;border-color: #33455e"> <b>{customer.addressType}</b> :
+                                            {customer.addressValue}</td>
+                                        <td style=" border-color: #33455e"> {customer.recordTypeName}</td>
+                                        <td style=" border-color: #33455e">{customer.waiverFlag}</td>
+                                        <td style=" border-color: #33455e">{customer.waivedBy}</td>
+                                        <td style=" border-color: #33455e">
+                                            <textarea class="dark-textarea" value={customer.remarks}
+                                                maxlength="10000" onchange={handleRemarksChange}
+                                                data-id={customer.addressId} disabled={customer.isVistiInitated}></textarea>
+                                        </td>
+                                        
+                                        <td style=" border-color: #33455e">
+                                            <template if:true={customer.isVistiInitated}>
+                                                <lightning-input type="text" variant="label-hidden"
+                                                    value={customer.selectedAssigneeName} disabled="true"></lightning-input>
+                                            </template>
+                                            <template if:false={customer.isVistiInitated}>
+                                                <template if:false={isInterFIToggled}>
+                                                <c-search-user-picker options={customer.asigneeList}
+                                                    param-id={customer.applicantId} value={customer.selectedAssignee}
+                                                    param-name={customer.addressType} index={index}
+                                                    select-option={selectOption} is-selected="true"
+                                                    selected-val={customer.selectedAssigneeName}
+                                                    disabled={customer.isVistiInitated} onselect={handleAssignee}>
+                                                </c-search-user-picker>
+                                            </template>
+                                            <template if:true={isInterFIToggled}>
+                                                <c-search-user-picker options={customer.internalList}
+                                                    param-id={customer.applicantId} 
+                                                    param-name={customer.addressType} index={index}
+                                                    select-option={selectOption} is-selected="true"
+                                                    disabled={customer.isVistiInitated} onselect={handleInternal}>
+                                                </c-search-user-picker>
+                                            </template>
+                                            </template>
+                                        </td>
+                                        <td style=" border-color: #33455e"> {customer.creditManagersDesposition}</td>
+                                        <td style=" border-color: #33455e"> {customer.creditRemarks}</td>
+                                        <td style=" border-color: #33455e"> <div class="slds-truncate" title="4/14/2015"><a data-id={customer.fiId} onclick={navigateToRecord}>{customer.fiName}</a></div></td>
+                                        <td style=" border-color: #33455e"> {customer.fiStatus}</td>
+                                        <td style=" border-color: #33455e">{customer.fiStage}</td>
+                                        <td style=" border-color: #33455e">{customer.initiatedOn}</td>
+                                        <td style=" border-color: #33455e">{customer.completionDate}</td>
+                                        
+                                    </tr>
+                                </template>
+                            </template>
+                        </tbody>
+                    </table>
+                    </div>
+                <!-- </div> -->
+            </div>
+            </template>
+            </div>
+
+            <template if:false={showVendorPD}>
+                <div class="custom-pd-section">
+                    <div class="custom-pd-header" data-name="investigation" onclick={handleSectionToggle}>
+                        <lightning-icon icon-name={investigationSectionIcon} size="x-small" class="custom-pd-icon"></lightning-icon>
+                        <span class="custom-pd-title">Field Investigation History</span>
+                    </div>
+                    <template if:true={isInvestigationSectionOpen}>
+                    <div class="custom-pd-body">
+                        <!-- <c-initiated-record-table object-name="Field Investigation" records={investigations}
+                            is-table-loaded={showFITable}></c-initiated-record-table> -->
+
+                        <c-show-record-table record-id={recordId} process-name="Initiated FI" theme="skyblue"></c-show-record-table>
+                    </div>
+                    </template>
+                </div>
+                <div class="custom-pd-section">
+                    <div class="custom-pd-header" data-name="investigation" onclick={handleSectionToggle}>
+                        <lightning-icon icon-name={investigationSectionIcon} size="x-small" class="custom-pd-icon"></lightning-icon>
+                        <span class="custom-pd-title">Field Investigation Audit Trail</span>
+                    </div>
+                    <template if:true={isInvestigationSectionOpen}>
+                    <div class="custom-pd-body">
+                        <c-verification-history  record-id={recordId} object-api-name ={objectName}></c-verification-history>
+                    </div>
+                    </template>
+                </div>
+            </template>
+
+        </div>
+        <!-- ____GenAI: Generated code ends here____ -->
+    </template>
+
+    <template if:true={ShowLoader}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </template>
+   
+    <template lwc:if={openWaiverModal}>
+        <c-confirmation-screen confirm-message={confirmationMessage} open-waiver-modal={openWaiverModal} negative-label="No" positive-label="Yes"
+            onnegativeclick={closeWaiverModal} onpositiveclick={updateWaiver}>
+        </c-confirmation-screen>
+    </template>
+
+    <template lwc:if={openModal}>
+        <template lwc:if={isHLProduct}>
+        <c-confirmation-screen key={openModal} open-modal={openModal} open-waiver-modal={openWaiverModal} confirm-message={confirmationMessage} negative-label="No" positive-label="Yes"
+            onnegativeclick={closeModal} onpositiveclick={handleInitateAllSelected} selected-initate-address={fiListToBeInitated}>
+        </c-confirmation-screen>
+        </template>
+        <template lwc:else>
+        <c-confirmation-screen confirm-message={confirmationMessage} negative-label="No" positive-label="Yes"
+            onnegativeclick={closeModal} onpositiveclick={handleInitateAllSelected}>
+        </c-confirmation-screen>
+        </template>
+    </template>
+
+    <template lwc:if={openModalPD}>
+        <c-confirmation-screen confirm-message={confirmationMessage} negative-label="No" positive-label="Yes"
+            onnegativeclick={closeModalPD} onpositiveclick={handleInitatePD}>
+        </c-confirmation-screen>
+    </template>
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+
+        <div class={cssContainer}>
+
+            <div class="slds-modal__container">
+
+                <header class="slds-modal__header header-section">
+
+                    <div class="slds-text-align_center">
+
+                        <h2 class="slds-text-heading_medium slds-hyphenate header-title">Verification Details</h2>
+
+                    </div>
+
+                </header>
+
+                
+
+                <div class="slds-modal__content slds-p-around_medium" id="confirm-body">
+
+                    <label class="slds-form-element__label" style="color:#ffffff;">Remarks</label>
+
+                    <textarea class="dark-textarea"
+
+                        value={remarks}
+
+                        onchange={handleRemarksChange}
+
+                        required
+
+                    ></textarea>
+
+
+
+                    <div class="slds-grid slds-grid_vertical-align-center slds-p-top_medium">
+
+                        <!-- File Upload -->
+                        <lightning-file-upload
+                            label="Upload File"
+                            name="fileUploader"
+                            record-id={selectedRecordId}
+                            onuploadfinished={handleUploadFinished}
+                            multiple="false"
+                            required
+                            accept=".png,.jpeg,.jpg,.pdf,"
+                        ></lightning-file-upload>
+
+                        <!-- Spacer -->
+                        <div class="slds-col slds-size_1-of-4"></div>
+
+                        <!-- Report Status Combobox -->
+                        <div class="slds-col slds-size_1-of-4">
+                            <lightning-combobox
+                                label="Report Status"
+                                value={reportStatus}
+                                options={statusOptions}
+                                onchange={handleReportStatusChange}
+                                required
+                            ></lightning-combobox>
+                        </div>
+
+                    </div>
+
+                </div>
+
+                
+
+                <footer class="footer-section">
+
+                    <div class="slds-align_absolute-center button-container">
+
+                        <button class="slds-button slds-button_brand cancel-button" onclick={closeModal}>Cancel</button>
+
+                        <button class="slds-button slds-button_brand save-button" onclick={handleSubmit}>Submit</button>
+
+                    </div>
+
+                </footer>
+
+            </div>
+
+        </div>
+
+    </section>
+
+    <div class="slds-backdrop slds-backdrop_open"></div>
+
+</template>
+
+
+        <!-- <template if:true={isModalOpen}>
+            <section role="dialog" class="slds-modal slds-fade-in-open">
+                <div class={cssContainer}>
+            <div class="slds-modal__container" >
+                <header class="slds-modal__header">
+                <h2 class="slds-modal__title">Verification Details</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                <lightning-textarea
+                    label="Remarks"
+                    value={remarks}
+                    onchange={handleRemarksChange}
+                    required
+                ></lightning-textarea>
+
+                <lightning-file-upload
+                    record-id={selectedRecordId}
+                    onuploadfinished={handleUploadFinished}
+                    multiple="false"
+                    required
+                ></lightning-file-upload>
+                </div>
+                <footer class="slds-modal__footer">
+                <button class="slds-button slds-button_brand cancel-button" onclick={closeModal}>Cancel</button>
+                <button class="slds-button slds-button_brand save-button" onclick={handleSubmit} disabled={isSubmitDisabled}>Submit</button>
+                </footer>
+            </div>
+            </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template> -->
+        
+
+    <input type="file" accept="image/*" capture="environment" onchange={handleUpload} class="hidden-input" />
+
+</template>

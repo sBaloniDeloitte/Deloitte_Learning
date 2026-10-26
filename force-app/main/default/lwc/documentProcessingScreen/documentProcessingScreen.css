@@ -1,0 +1,1087 @@
+/* ==========================================================
+   ROOT VARIABLES
+========================================================== */
+
+:host {
+    --color-positive: #4CAF50;
+    --color-negative: #db2929;
+    --color-progress: #1589ee;
+    --color-secondary: #8d29db;
+
+    --color-bg: #0a1524;
+    --color-surface: #0e1c30;
+    --color-surface-light: #16283f;
+
+    --color-text: #ffffff;
+    --color-text-secondary: #8a99b3;
+
+    --color-border: #33455e;
+
+    --radius-sm: 8px;
+    --radius-md: 12px;
+    --radius-lg: 18px;
+
+    --shadow-sm: 0 2px 10px rgba(0,0,0,.20);
+    --shadow-md: 0 12px 30px rgba(0,0,0,.25);
+
+    --slds-g-color-neutral-base-95: #16283f;
+    --slds-g-color-border-base-1: #16283f;
+    --slds-c-button-color-background: #16283f;
+    --dt-gradient: linear-gradient(135deg, rgb(0, 77, 179) 0%, rgb(0, 48, 135) 55%, rgb(0, 26, 94) 100%);
+}
+
+/* ==========================================================
+   MAIN CONTAINER
+========================================================== */
+
+.cssContainer {
+    background: var(--color-bg);
+    min-height: 100vh;
+    padding: 20px;
+    overflow: visible !important;
+}
+
+/* ==========================================================
+   LABELS
+========================================================== */
+
+.slds-form-element__label {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* ==========================================================
+   BOXES
+========================================================== */
+
+.slds-box {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    overflow: visible !important;
+}
+
+/* ==========================================================
+   FILTER CARD
+========================================================== */
+
+/* Shared outer wrapper for the toolbar (.filter-card) and the table
+   (.scroll-container) - both are direct children of this container and
+   are forced to the exact same width/box-sizing/margin below, so their
+   left/right edges are pixel-identical instead of relying on two
+   independently-set-up sibling elements to happen to match. */
+.doc-processing-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.doc-processing-container > .filter-card,
+.doc-processing-container > .scroll-container {
+    width: 100%;
+    box-sizing: border-box;
+    margin: 0 !important;
+    flex: 0 0 auto;
+}
+
+/* Frame (background/border/radius/padding) matched to the ".scroll-container"
+   table wrapper below it, so the "Add Documents"/"Download as Zip" buttons
+   row and the Search/Category/Customer field row read as the SAME card
+   as the data table instead of a narrower, differently-rounded panel
+   sitting above it - same #0a1524 backdrop, same #33455e border, same
+   18px radius, same 1rem/1.5rem padding, so both blocks' left/right
+   edges line up exactly. */
+.filter-card {
+    background: var(--color-bg);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: 1rem 1.5rem;
+    min-height: auto;
+}
+
+/* Fully reverted to the original plain SLDS grid behavior - the earlier
+   "display: grid; grid-template-columns: 3fr 1fr 1fr 1fr" fix assigned
+   columns by fixed POSITION (1st track always 3fr, 2nd/3rd/4th always
+   1fr), which only works while all 4 items are always present in that
+   exact order. The button-row div is conditionally rendered
+   (if:false={isSalesStage} / if:true={isNotOpsAuthor}); whenever it's
+   hidden, the Search field shifted into the wide 3fr track meant for
+   the buttons, throwing the three dropdown columns out of their
+   original order/proportions. This restores the exact original rule
+   (flex-wrap: wrap on the platform .slds-grid flex display) that was
+   present before any of this session's layout edits. */
+.filter-card.slds-grid {
+    flex-wrap: wrap;
+}
+
+.filter-card .slds-col {
+    padding-left: 12px;
+    padding-right: 12px;
+    overflow: visible;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+/* Edge-padding fix WITHOUT touching .filter-card's own margin: a
+   negative margin on .filter-card.slds-grid was tried first, but that
+   class lives on the SAME element that also carries the outer
+   width-matching rule (.doc-processing-container > .filter-card {
+   width:100%; margin:0 !important; }) - pulling that element's own
+   margin negative widens its bordered/backgrounded box itself beyond
+   the table's width instead of just repositioning inner content,
+   breaking the "exact same width" requirement.
+   Removing the edge padding on whichever column is actually first/last
+   (adapts automatically since the button-row column is conditionally
+   rendered - unlike a fixed grid-template-columns track assignment,
+   :first-child/:last-child always tracks whatever DOM is actually
+   present) instead makes the row's VISIBLE content start/end flush
+   with .filter-card's own 1.5rem padding - the same edge the table's
+   content sits flush against inside .scroll-container - while leaving
+   .filter-card's outer border box untouched. */
+.filter-card.slds-grid > .slds-col:first-child {
+    padding-left: 0 !important;
+}
+
+.filter-card.slds-grid > .slds-col:last-child {
+    padding-right: 0 !important;
+}
+
+/* ==========================================================
+   FILTER FIELDS
+========================================================== */
+
+.filter-field {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    position: relative;
+    z-index: 11;
+}
+
+.filter-label {
+    color: white;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 2px;
+}
+
+.search-field,
+.category-field,
+.customer-field {
+    width: 100%;
+    min-width: 0;
+    max-width: 100%;
+}
+
+.filter-field lightning-input,
+.filter-field lightning-combobox {
+    width: 100%;
+    display: block;
+}
+
+/* ==========================================================
+   INPUTS / COMBOBOXES
+========================================================== */
+
+.filter-card lightning-input,
+.filter-card lightning-combobox {
+    --slds-c-input-color-background: transparent;
+    --slds-c-input-color-background-focus: transparent;
+    --slds-c-input-color-background-active: transparent;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: transparent;
+    --slds-c-input-color-border-focus: transparent;
+
+    --slds-c-combobox-color-background: transparent;
+    --slds-c-combobox-color-background-focus: transparent;
+    --slds-c-combobox-color-background-active: transparent;
+    --slds-c-combobox-text-color: #ffffff;
+
+    --slds-c-combobox-input-color-background: transparent;
+    --slds-c-combobox-input-color-background-focus: transparent;
+    --slds-c-combobox-input-color-background-active: transparent;
+
+    --slds-c-listbox-color-background: #101d32;
+    --slds-c-combobox-listbox-color-background: #101d32;
+    --sds-c-combobox-listbox-color-background: #101d32;
+}
+
+/* Underline-only shape, matching the reference design (no surrounding
+   box - only a bottom border). lightning-combobox does NOT draw its
+   border via the CSS border property: it paints an inset box-shadow on
+   the internal .slds-combobox__input node, and that node is not
+   reachable via ::part(). The box-shadow must be reset to none first,
+   or the boxed look persists regardless of any border rules added
+   alongside it. lightning-input exposes its native input via
+   ::part(input), where a plain border reset is sufficient. Background
+   stays transparent so the existing component background is untouched -
+   only the field's own shape changes from boxed to underlined. */
+.filter-card lightning-input::part(input) {
+    background-color: transparent !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 0 !important;
+    border-bottom: 1px solid #2b4ca8 !important;
+    box-shadow: none !important;
+    padding: 6px 0 8px 0 !important;
+}
+
+.filter-card lightning-combobox .slds-combobox__input {
+    background-color: transparent !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 0 !important;
+    border-bottom: 1px solid #2b4ca8 !important;
+    box-shadow: none !important;
+    padding: 6px 24px 8px 0 !important;
+}
+
+.filter-card lightning-input::part(input):focus,
+.filter-card lightning-input::part(input):active {
+    background-color: transparent !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-bottom: 1px solid #60a5fa !important;
+    box-shadow: none !important;
+}
+
+.filter-card lightning-combobox .slds-combobox__input:focus,
+.filter-card lightning-combobox .slds-combobox__input:active {
+    background-color: transparent !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-bottom: 1px solid #60a5fa !important;
+    box-shadow: none !important;
+}
+
+.filter-card .slds-form-element__control {
+    border: none !important;
+    padding-bottom: 0;
+}
+
+/* Dropdown/listbox panel that opens on click — options background matched
+   to the page/component background (var(--color-bg): #0a1524) instead of
+   the field's own #101d32 tone, per Category/Customer dropdown request.
+   Hover/focus/checked states keep a lighter shade so options stay
+   distinguishable while open. */
+.filter-card lightning-combobox {
+    /* The listbox/options panel is rendered inside lightning-combobox's own
+       shadow DOM, so ancestor class selectors (.slds-listbox__option etc.)
+       cannot reach it — only inherited CSS custom properties cross that
+       boundary. The dedicated --slds-c-combobox-option-* hooks below are
+       not consistently honored by the base component for the RESTING
+       (non-hover) option background, which is why options still rendered
+       white. Overriding the underlying SLDS2 global neutral-base surface
+       tokens (which the listbox's own internal CSS reads for its default
+       background) is what actually fixes the resting color. */
+    --slds-g-color-neutral-base-100: var(--color-bg);
+    --slds-g-color-neutral-base-95: var(--color-bg);
+    /* Same shadow-piercing issue as the background: the option LABEL text
+       is drawn by the base component using the global "on-light-surface"
+       neutral text ramp, not the --slds-c-combobox-option-text-color hook
+       (which isn't honored here either). Overriding neutral-base-10 (the
+       near-black default text tone) to white is what actually changes
+       the option label color now that the surface behind it is dark. */
+    --slds-g-color-neutral-base-10: #ffffff;
+    --slds-c-combobox-listbox-color-background: var(--color-bg);
+    --sds-c-combobox-listbox-color-background: var(--color-bg);
+    --slds-c-combobox-option-color-background: var(--color-bg);
+    --sds-c-combobox-option-color-background: var(--color-bg);
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #16283f;
+    --slds-c-combobox-option-color-background-focus: #16283f;
+}
+
+.filter-card lightning-combobox .slds-dropdown,
+.filter-card lightning-combobox .slds-listbox,
+.filter-card lightning-combobox .slds-listbox_vertical {
+    background-color: var(--color-bg) !important;
+    border: 1px solid #2b4ca8 !important;
+}
+
+.filter-card lightning-combobox .slds-listbox__option,
+.filter-card lightning-combobox .slds-listbox__item {
+    background-color: var(--color-bg) !important;
+    color: #ffffff !important;
+}
+
+.filter-card lightning-combobox .slds-listbox__option:hover,
+.filter-card lightning-combobox .slds-listbox__option:focus,
+.filter-card lightning-combobox .slds-listbox__option_term.slds-has-focus,
+.filter-card lightning-combobox .slds-listbox__option.slds-has-focus {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+}
+
+.filter-card lightning-combobox .slds-listbox__option .slds-media__body,
+.filter-card lightning-combobox .slds-listbox__option .slds-truncate {
+    color: #ffffff !important;
+}
+
+.filter-card lightning-combobox .slds-listbox__option[aria-checked="true"] {
+    background-color: #16283f !important;
+}
+
+/* ==========================================================
+   BUTTONS
+========================================================== */
+
+/* Positive CTA (Save/Add) - #7c3aed fill, no border, 8px radius. */
+.save-button,
+.add-doc-button {
+    background: #7c3aed !important;
+    color: white !important;
+    border: none !important;
+    border-radius: 8px;
+
+    width: 190px;
+    height: 60px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow: 0 8px 18px rgba(124,58,237,.35);
+
+    transition: all .25s ease;
+}
+
+.save-button:hover,
+.add-doc-button:hover {
+    transform: translateY(-2px);
+}
+
+/* Negative CTA (Cancel/Close) - #16283f fill, 1px solid #7c3aed border, 8px radius. */
+.cancel-button {
+    background: #16283f !important;
+    color: white !important;
+    border: 1px solid #7c3aed !important;
+    border-radius: 8px;
+    font-weight: 700;
+}
+
+/* "Add Documents" / "Download as Zip" - matched to the "Add Applicant"
+   button in salesLoginApplicantInformationCmp (part of the
+   loanLoginParentCmp component family): flat solid blue #1467eb fill on
+   the standard slds-button_brand shape (no pill radius, no gradient),
+   white text. Kept as its own class (rather than reusing .save-button)
+   so the unrelated "Confirm" button in the document-picker modal, which
+   still uses .save-button, is not affected by this restyle. */
+.doc-action-btn {
+    background-color: #1467eb !important;
+    background-image: none !important;
+    border-color: #1467eb !important;
+    border: none !important;
+    border-radius: 8px;
+    box-shadow: none;
+    color: rgb(236, 225, 225) !important;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.doc-action-btn:hover {
+    background-color: #1467eb !important;
+    border-color: #1467eb !important;
+}
+
+/* ==========================================================
+   TABLE CONTAINER
+   Matched to the Collateral & Covenants tab's table wrapper
+   (sanctionConditionConvenantsCmp.css ".slds-scrollable_x") so the
+   Documents tab table shares the same dark-navy panel, rounded corners
+   and spacing.
+========================================================== */
+
+/* Border moved HERE (outer wrapper) instead of on .doc-table itself -
+   .doc-table sits inset by this wrapper's own 1.5rem padding, so a
+   border on the table alone renders 24px narrower on each side than
+   .filter-card's border (which sits flush on .filter-card's own outer
+   edge, since .filter-card has no separate padded wrapper around its
+   content). That mismatch is what made the toolbar's bordered box look
+   bigger/wider than the table's. Putting the border on this wrapper
+   instead - at the same outer edge as .filter-card's border - makes
+   both bordered frames exactly the same size. .doc-table's own outer
+   border is removed below to avoid doubling the frame; its internal
+   cell borders (border-right/border-bottom on td/th) are untouched. */
+.scroll-container {
+    background-color: var(--color-bg) !important;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border) !important;
+    box-shadow: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+/* ==========================================================
+   DOCUMENT TABLE
+   Full theme matched to the Collateral & Covenants tab's table
+   (sanctionConditionConvenantsCmp.css ".slds-scrollable_x table / th /
+   td" + corner-radius rules) - solid blue header, dark-navy panel body,
+   rounded corners on the outer cells only, applied here via the
+   .doc-table scope instead of :host so it doesn't leak into other
+   tables on the page.
+========================================================== */
+
+.doc-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border) !important;
+    background-color: var(--color-surface) !important;
+    margin: 0;
+    color: #ffffff;
+}
+
+/* Without table-layout: fixed, the browser can size each thead column
+   independently from the matching tbody column when cell content length
+   varies row to row - this is what was causing the header and body
+   columns to visually drift out of alignment, not a text-align mismatch
+   (that was already fixed and correct). Fixed layout forces every column
+   in a row to share the same width as the column directly above/below it. */
+.doc-table th,
+.doc-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Header - solid blue fill matched exactly to the Collateral & Covenants
+   table header (sanctionConditionConvenantsCmp.css ".slds-scrollable_x th":
+   background-color var(--dt-header-bg) #1467eb, white text). */
+.table-header {
+    /* background-color: #1467eb !important; */
+    background-image: none !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    font-size: 12.5px;
+    letter-spacing: 0.2px;
+    padding: 12px 10px;
+    height: 58px;
+    box-sizing: border-box;
+    text-align: left;
+    border-right: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: none !important;
+}
+
+/* The "Select" header cell stacks the "Select" label above its
+   select-all checkbox (lightning-input renders as a block-level custom
+   element by default), which stretched the WHOLE header row taller than
+   every body row. Force the checkbox to sit inline with the label
+   instead of on its own line, so the header row height matches the body
+   row height. */
+.table-header {
+    display: table-cell;
+    white-space: nowrap;
+    vertical-align: middle;
+}
+
+.table-header lightning-input {
+    display: inline-block;
+    vertical-align: middle;
+    margin: 0;
+}
+
+.doc-table thead,
+.doc-table thead tr,
+.doc-table thead th {
+    color: #ffffff !important;
+    font-weight: bold;
+    text-align: left;
+    box-shadow: none !important;
+    background-image: none !important;
+    border-color: var(--color-border);
+}
+
+.doc-table thead tr:first-child th:first-child {
+    border-top-left-radius: var(--radius-lg);
+}
+
+.doc-table.slds-table thead tr th {
+    background-color: var(--color-surface) !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    border-color: var(--color-border);
+    text-align: left;
+}
+
+.doc-table thead tr:first-child th:last-child {
+    border-top-right-radius: var(--radius-lg);
+}
+
+.doc-table td {
+    padding: 12px 10px;
+    color: #ffffff !important;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: left !important;
+    border: 1px solid var(--color-border) !important;
+    background-color: var(--color-surface) !important;
+    vertical-align: middle;
+}
+
+.doc-table tbody tr {
+    background-color: var(--color-surface) !important;
+    transition: background-color 0.2s ease;
+}
+
+.doc-table tbody td {
+    background-color: var(--color-surface) !important;
+    color: #ffffff !important;
+    font-weight: normal;
+    text-align: left !important;
+}
+
+/* .doc-table.slds-table tbody tr td (2 classes + 3 type selectors) is
+   specific enough to beat cssLibrary.css's global
+   ".slds-table thead tr th, .slds-table tbody tr td { text-align: center; }"
+   rule, which is what was keeping body cell content centered while the
+   header text already sat left-aligned - the mismatch reported. */
+.doc-table.slds-table tbody tr td {
+    background-color: var(--color-surface) !important;
+    border: 1px solid var(--color-border) !important;
+    font-weight: normal;
+    text-align: left !important;
+}
+
+.doc-table tbody td div,
+.doc-table tbody td span {
+    color: #ffffff !important;
+    font-size: 13px;
+    font-weight: 400;
+}
+
+/* Rounded corners on the outer body cells only - matched to the
+   Collateral & Covenants table's corner treatment
+   (sanctionConditionConvenantsCmp.css ".slds-scrollable_x tbody
+   tr:last-child td:first-child / td:last-child"). */
+.doc-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: var(--radius-lg);
+}
+
+.doc-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: var(--radius-lg);
+}
+
+/* Row hover - same #16283f highlight used across the dark-theme tables,
+   so both tables feel identical. */
+.doc-table tbody tr:hover td,
+.doc-table tbody tr:hover th {
+    background-color: #16283f !important;
+}
+
+.slds-table.doc-table tbody tr:hover > td,
+.slds-table.doc-table tbody tr:hover > th {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+}
+
+
+/* ==========================================================
+   FILE NAME
+========================================================== */
+
+.file-name-highlight {
+    color: #8d29db;
+    font-weight: 700;
+}
+
+.slds-text-color_success {
+    color: #56d47d !important;
+    font-weight: 600;
+}
+
+/* ==========================================================
+   SELECT DOCUMENTS MODAL (scoped restyle)
+   Matches the blue-gradient dark modal convention used in
+   salesLoginAadharDetailsCmp (:host .slds-modal__container / header /
+   footer). Scoped to .select-doc-* classes added only on the
+   "Select Documents" checklist modal (opened by handleAddDocs) so the
+   Split View modal - which shares .modal-header-custom / .split-footer /
+   .save-button / .cancel-button with it - is left untouched.
+========================================================== */
+
+.select-doc-container {
+    /* background-color: #0e1c30 !important; */
+    border-radius: 12px;
+    /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5); */
+    overflow: hidden;
+    /* Required so the loading spinner (lightning-spinner has no
+       .slds-spinner_container wrapper in the markup) positions itself
+       relative to THIS modal instead of falling back to the viewport,
+       where it was covering/blocking the entire page while loading. */
+    position: relative;
+}
+
+/* Scoped to ".select-doc-container .select-doc-header" (rather than the
+   bare ".select-doc-header" class) so this reliably wins over
+   ".modal-header-custom" (also present on this same header element,
+   defined later in this file) - both were fighting at equal specificity,
+   with ".modal-header-custom" winning by source order and flattening the
+   gradient/padding meant for this modal specifically. Matched to the
+   "Add Aadhar Details Manually" reference popup: solid blue banner,
+   rounded top corners, generous padding, bold centered white title. */
+.select-doc-container .select-doc-header {
+    background-image: var(--dt-gradient) !important;
+    background-color: transparent !important;
+    border-bottom: none !important;
+    border-top-left-radius: 12px !important;
+    border-top-right-radius: 12px !important;
+    padding: 18px 24px !important;
+}
+
+.select-doc-container .select-doc-header h2 {
+    color: #ffffff !important;
+    font-size: 18px !important;
+    font-weight: 700 !important;
+    margin: 0 !important;
+}
+
+.select-doc-container .slds-modal__content {
+    background-color: #0e1c30 !important;
+    color: #ffffff;
+}
+
+.select-doc-container lightning-combobox {
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+    --slds-c-combobox-listbox-color-background: #16283f;
+    --sds-c-combobox-listbox-color-background: #16283f;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background: #16283f;
+    --sds-c-combobox-option-color-background: #16283f;
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+    --slds-c-combobox-option-color-background-focus: #1f3550;
+    --slds-c-combobox-label-color: #ffffff;
+    /* The dropdown/options panel is rendered inside lightning-combobox's
+       own shadow DOM - ancestor class selectors cannot reach it, and the
+       dedicated --slds-c-combobox-option-* hooks above are not
+       consistently honored by the base component for the RESTING
+       (non-hover) option background, which is why the panel still
+       rendered white. Overriding the underlying SLDS2 global neutral-base
+       surface tokens (which the listbox's own internal CSS reads for its
+       default background) is what actually fixes the resting color -
+       same fix already applied to ".filter-card lightning-combobox" in
+       this file. */
+    --slds-g-color-neutral-base-100: #16283f;
+    --slds-g-color-neutral-base-95: #16283f;
+    --slds-g-color-neutral-base-10: #ffffff;
+}
+
+.select-doc-container lightning-combobox .slds-dropdown,
+.select-doc-container lightning-combobox .slds-listbox,
+.select-doc-container lightning-combobox .slds-listbox_vertical {
+    background-color: #16283f !important;
+    border: 1px solid #33455e !important;
+}
+
+.select-doc-container lightning-combobox .slds-listbox__option,
+.select-doc-container lightning-combobox .slds-listbox__item {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+}
+
+.select-doc-container lightning-combobox .slds-listbox__option:hover,
+.select-doc-container lightning-combobox .slds-listbox__option:focus,
+.select-doc-container lightning-combobox .slds-listbox__option_term.slds-has-focus,
+.select-doc-container lightning-combobox .slds-listbox__option.slds-has-focus {
+    background-color: #1f3550 !important;
+    color: #ffffff !important;
+}
+
+.select-doc-container lightning-combobox .slds-listbox__option .slds-media__body,
+.select-doc-container lightning-combobox .slds-listbox__option .slds-truncate {
+    color: #ffffff !important;
+}
+
+.select-doc-container lightning-combobox .slds-listbox__option[aria-checked="true"] {
+    background-color: #1f3550 !important;
+}
+
+.select-doc-container .doc-category-header {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.2px;
+    padding: 10px 0 6px;
+    border-bottom: 1px solid #33455e;
+    margin-bottom: 6px;
+}
+
+.select-doc-container lightning-input {
+    --slds-c-checkbox-color-background: #16283f;
+    --slds-c-checkbox-color-border: #33455e;
+    --slds-c-checkbox-label-color: #ffffff;
+}
+
+/* Scoped to ".select-doc-container .select-doc-footer" for the same
+   reason as the header above - matched to the "Add Aadhar Details
+   Manually" reference popup's footer band: same blue banner as the
+   header, rounded bottom corners, generous padding around the button
+   row. Button colors themselves are untouched (kept via .select-doc-
+   close-btn / .select-doc-confirm-btn, defined further below). */
+.select-doc-container .select-doc-footer {
+    background-image: var(--dt-gradient) !important;
+    background-color: transparent !important;
+    border-top: none !important;
+    border-bottom-left-radius: 12px !important;
+    border-bottom-right-radius: 12px !important;
+    padding: 16px 24px !important;
+}
+
+.select-doc-container .select-doc-footer .slds-align_absolute-center {
+    gap: 12px;
+}
+
+/* Negative CTA (Close) - #16283f fill, 1px solid #7c3aed border, pill radius.
+   Height reduced 10% from the prior 1.98rem line-height baseline
+   (1.98 * 0.9 = 1.782rem) - button height is driven entirely by
+   line-height since there is no vertical padding on this class. */
+.select-doc-close-btn {
+    background: #16283f !important;
+    color: #eeecf0 !important;
+    border: 1px solid #a855f7 !important;
+    border-radius: 8px !important;
+    width: auto !important;
+    height: auto !important;
+    padding: 0 20px;
+    line-height: 1.782rem;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: none !important;
+}
+
+.select-doc-close-btn:hover {
+    background: #1f3550 !important;
+    transform: none;
+}
+
+/* Positive CTA (Confirm) - #7c3aed fill, no border, pill radius matching the
+   reference screenshot's rounded Close/Next button pair. Height reduced 10%
+   from the prior 1.98rem line-height baseline (1.98 * 0.9 = 1.782rem) -
+   button height is driven entirely by line-height since there is no
+   vertical padding on this class. */
+.select-doc-confirm-btn {
+    background: #a855f7 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    width: auto !important;
+    height: auto !important;
+    padding: 0 22px;
+    line-height: 1.782rem;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.5) !important;
+}
+
+.select-doc-confirm-btn:hover {
+    background: #9333ea !important;
+    transform: translateY(-1px);
+}
+
+/* ==========================================================
+   MODAL
+========================================================== */
+
+.modal-header-custom {
+    background: #1467eb !important;
+
+    color: #ffffff !important;
+
+    border-bottom: 1px solid var(--color-border);
+
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+}
+
+.modal-header-custom h2 {
+    color: #ffffff !important;
+}
+
+.slds-modal__content {
+    background: var(--color-surface);
+    color: white;
+}
+
+.split-view-header {
+
+    color: #ffffff !important;
+
+    font-size: 18px;
+
+    font-weight: 700;
+}
+
+
+.applicant-summary {
+
+    background: var(--color-surface);
+
+    border: 1px solid var(--color-border);
+
+    border-radius: 10px;
+
+    padding: 12px;
+
+    margin: 10px;
+
+    color: #ffffff;
+}
+/* ==========================================================
+   RESPONSIVE
+========================================================== */
+
+@media (max-width: 768px) {
+
+    .doc-processing-container {
+        gap: 0.75rem;
+    }
+
+    .filter-card.slds-grid {
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0.75rem;
+        /* Columns already go to 0 padding below on mobile, so the -12px
+           gutter-compensation margin from the desktop rule must be
+           reset here too - otherwise the row would be pulled 12px
+           past the container edge with nothing left to cancel it out. */
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    .custom-mobile-row {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .filter-card .slds-col,
+    .slds-grid .slds-col {
+        width: 100% !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+        margin-bottom: 0;
+    }
+
+    .filter-field {
+        min-width: 100%;
+    }
+}
+
+/* ==========================================================
+   SPLIT VIEW MODAL
+========================================================== */
+
+.split-modal {
+    position: fixed !important;
+    z-index: 10500 !important;
+}
+
+.split-container {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(0,0,0,.35);
+}
+.applicant-summary {
+    background: var(--color-surface);
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    padding: 12px;
+    color: white;
+}
+
+.split-card {
+    background: var(--color-surface) !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: 12px;
+    box-shadow: none;
+    color: white;
+}
+.split-content {
+    background: var(--color-bg);
+    color: white;
+}
+
+.split-modal .slds-modal__content {
+    z-index: 10502 !important;
+}
+
+.slds-backdrop_open {
+    /* z-index: 10499 !important; */
+}
+.slds-button_icon-border-filled {
+    /* Zero out the SLDS/SLDS2 design-token variables the base button reads
+       for its own hover/focus states first - some SLDS2 button
+       implementations read these via var() with no !important in their own
+       rule, but still win over a later plain-property override if the
+       token itself resolves at a more specific selector. Setting the
+       tokens themselves closes that gap on top of the hard overrides below. */
+    --slds-c-button-icon-color-background-hover: transparent;
+    --sds-c-button-icon-color-background-hover: transparent;
+    --slds-c-button-color-background-hover: transparent;
+    --sds-c-button-color-background-hover: transparent;
+    --slds-c-icon-color-background-hover: transparent;
+    --slds-c-button-icon-color-border-hover: #4a5e87;
+    --sds-c-button-icon-color-border-hover: #4a5e87;
+    --slds-c-button-shadow-focus: none;
+    --sds-c-button-shadow-focus: none;
+    --slds-c-button-icon-shadow-focus: none;
+    -webkit-tap-highlight-color: transparent;
+    background: transparent !important;
+    background-color: transparent !important;
+    background-image: none !important;
+    border: 1px solid #4a5e87 !important;
+    border-radius: 8px !important;
+    color: #dce4f2 !important;
+    width: 34px;
+    height: 34px;
+    box-shadow: none !important;
+    outline: none !important;
+    transition: none !important;
+}
+
+/* No hover/focus/active effect at all — every interaction state is forced
+   back to the exact resting look (no background change, no border-color
+   change, no glow/box-shadow/outline ring) for the "View" (Split View)
+   icon button in the Actions column. */
+.slds-button_icon-border-filled:hover,
+.slds-button_icon-border-filled:focus,
+.slds-button_icon-border-filled:active,
+.slds-button_icon-border-filled:focus-visible {
+    background: transparent !important;
+    background-color: transparent !important;
+    border: 1px solid #4a5e87 !important;
+    color: #dce4f2 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    transform: none !important;
+}
+c-upload-view-delete-document {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.split-footer {
+    background: var(--color-surface) !important;
+    border-top: 1px solid var(--color-border) !important;
+    padding: 16px !important;
+}
+
+/* Footer action alignment: Previous stays on the left as a navigation
+   action, Close + Next are grouped together on the right so they read
+   as one action cluster instead of three evenly-spread columns. */
+.split-footer-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 12px;
+}
+.split-footer-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+.split-footer-btn {
+    min-width: 110px;
+}
+
+/* Positive CTA (Next) - #7c3aed fill, no border, 8px radius. */
+.next-btn {
+    --slds-c-button-brand-color-background: #7c3aed;
+    --sds-c-button-brand-color-background: #7c3aed;
+    --slds-c-button-brand-color-border: #7c3aed;
+    --sds-c-button-brand-color-border: #7c3aed;
+    --slds-c-button-brand-text-color: #ffffff;
+    --sds-c-button-brand-text-color: #ffffff;
+    --slds-c-button-brand-color-background-hover: #6b21d1;
+    --sds-c-button-brand-color-background-hover: #6b21d1;
+    --slds-c-button-brand-color-border-hover: #6b21d1;
+    --sds-c-button-brand-color-border-hover: #6b21d1;
+    --slds-c-button-radius-border: 8px;
+    --sds-c-button-radius-border: 8px;
+}
+/* Negative CTA (Close) - #16283f fill, 1px solid #7c3aed border, 8px radius. */
+.close-btn {
+    --slds-c-button-neutral-color-background: #16283f;
+    --sds-c-button-neutral-color-background: #16283f;
+    --slds-c-button-neutral-color-border: #7c3aed;
+    --sds-c-button-neutral-color-border: #7c3aed;
+    --slds-c-button-text-color: #ffffff;
+    --sds-c-button-text-color: #ffffff;
+    --slds-c-button-neutral-color-background-hover: #1f3550;
+    --sds-c-button-neutral-color-background-hover: #1f3550;
+    --slds-c-button-neutral-color-border-hover: #7c3aed;
+    --sds-c-button-neutral-color-border-hover: #7c3aed;
+    --slds-c-button-radius-border: 8px;
+    --sds-c-button-radius-border: 8px;
+}
+/* Remaining CTA (Previous) - blue. Markup uses variant="brand", so the
+   styling hooks must target the *brand* button tokens (not neutral) -
+   the neutral hooks are never read by a brand-variant button, which is
+   why the override wasn't taking effect.
+   Two more gaps closed here:
+   1. disablePrev is true on the first document (currentIndex <= 0), and
+      a disabled lightning-button reads separate "-disabled" tokens, not
+      the resting background token above - so the button rendered its
+      default disabled grey with no visible blue until navigated past
+      the first document. The -disabled hooks below keep it blue (at
+      reduced opacity, matching standard disabled affordance) in that
+      state too.
+   2. Both the "slds" and "sds" custom-property prefixes are set, same
+      dual-prefix pattern already used by .slds-button_icon-border-filled
+      in this file, since not every lightning-button build in this org
+      consistently honors only one prefix. */
+.previous-btn {
+    --slds-c-button-brand-color-background: #1467eb;
+    --sds-c-button-brand-color-background: #1467eb;
+    --slds-c-button-brand-color-border: #1467eb ;
+    --sds-c-button-brand-color-border: #7c3aed;
+    --slds-c-button-brand-text-color: #ffffff;
+    --sds-c-button-brand-text-color: #ffffff;
+    --slds-c-button-brand-color-background-hover: #1f3550;
+    --sds-c-button-brand-color-background-hover: #1f3550;
+    --slds-c-button-brand-color-border-hover: #7c3aed;
+    --sds-c-button-brand-color-border-hover: #7c3aed;
+    --slds-c-button-brand-color-background-disabled: #16283f;
+    --sds-c-button-brand-color-background-disabled: #16283f;
+    --slds-c-button-brand-color-border-disabled: #7c3aed;
+    --sds-c-button-brand-color-border-disabled: #7c3aed;
+    
+    --slds-c-button-radius-border: 8px;
+    --sds-c-button-radius-border: 8px;
+    opacity: 1 !important;
+}
+
+/* NOTE: an earlier duplicate block that re-declared .filter-label /
+   .search-field / .category-field / .customer-field with a wrapper-level
+   border-bottom (instead of resetting the combobox's own inset
+   box-shadow) used to live here. It was removed - it conflicted with the
+   single underline-only rule set above (lines ~195-269): its own
+   border-bottom on the wrapper DIV created a second line below the
+   still-boxed input/combobox, and its larger label margin-bottom (8px)
+   pushed the label away from the field instead of close to it. The
+   fix above already owns both the box removal (box-shadow reset on
+   .slds-combobox__input) and the underline; nothing further is needed
+   here. */

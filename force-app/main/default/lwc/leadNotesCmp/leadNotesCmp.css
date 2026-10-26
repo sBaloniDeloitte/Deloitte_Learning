@@ -1,0 +1,222 @@
+/* ================================================================
+   Notes popup - conversation & follow-up updates - static card.
+   Dark navy/purple theme aligned with leadCustomHeader gradient.
+   ================================================================ */
+:host {
+    --dt-border: #33455e;
+}
+.notes-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(10, 15, 30, 0.65);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 9000;
+    
+}
+
+.notes-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 92%;
+    max-width: 620px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    background-color: #0a1524;
+    border-radius: 0.75rem;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+    z-index: 9001;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+/* ================= HEADER ================= */
+
+.notes-modal-header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 1.1rem 1.5rem;
+    /* background: linear-gradient(90deg, #0a1830 0%, #1b6fd6 100%); */
+    /* background-image: linear-gradient(135deg, rgb(0, 26, 94) 0%, rgb(0, 48, 135) 55%, rgb(0, 77, 179) 100%) !important;
+    border-bottom: 1px solid var(--dt-border); */
+    
+    background: linear-gradient(135deg, #4c2b82 0%, #351d68 100%);
+    border-color: #a855f7;
+    box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.35);
+
+    flex-shrink: 0;
+}
+
+.notes-modal-title-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.notes-modal-title {
+    font-size: 1.35rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.notes-modal-subtitle {
+    font-size: 0.85rem;
+    color: #d5caff;
+    margin-top: 0.15rem;
+}
+
+.notes-close-btn {
+    flex-shrink: 0;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: none;
+    background-color: rgba(255, 255, 255, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.15s ease;
+}
+
+.notes-close-btn:hover {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* ================= BODY ================= */
+
+.notes-modal-body {
+    padding: 1.25rem 1.5rem 1.5rem 1.5rem;
+    overflow-y: auto;
+    flex: 1 1 auto;
+}
+
+.notes-input-wrapper {
+    margin-bottom: 0.75rem;
+}
+
+.notes-textarea {
+    width: 100%;
+    min-height: 60px;
+    resize: vertical;
+    box-sizing: border-box;
+    background-color: #16283f;
+    border: 1px solid #33455e;
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.9rem;
+    font-family: inherit;
+    color: #ffffff;
+    outline: none;
+    transition: border-color 0.15s ease;
+}
+
+.notes-textarea:focus {
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.35);
+}
+
+.notes-textarea::placeholder {
+    color: #8fa1b8;
+}
+
+.notes-actions-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1.25rem;
+}
+
+.notes-char-count {
+    font-size: 0.75rem;
+    color: #ffffff;
+}
+
+.notes-actions-buttons {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.notes-btn {
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    font-family: inherit;
+    padding: 0.55rem 1.3rem;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.15s ease;
+}
+
+/* ____GenAI: Clear button re-colored to the dark-navy/purple-outline look
+   (same convention as the "Previous" button in leadManagementV2.css) ____ */
+.notes-btn_clear {
+    background-color: #16283f;
+    border: 1px solid #8b5cf6;
+    color: #ffffff;
+}
+
+.notes-btn_clear:hover {
+    background-color: #1f3550;
+    border-color: #a855f7;
+}
+
+/* ____GenAI: Save Note button re-colored to solid purple (same convention
+   as the "Start Application"/"Continue" buttons in leadManagementV2.css) ____ */
+.notes-btn_save {
+    background-color: #7c3aed;
+    border-color: #7c3aed;
+    color: #ffffff;
+}
+
+.notes-btn_save:hover {
+    background-color: #7c3aed;
+    border-color: #7c3aed;
+}
+
+.notes-btn_save:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ================= NOTES LIST ================= */
+
+.notes-list {
+    border-top: 1px solid #23364f;
+}
+
+.notes-list-item {
+    padding: 1rem 0;
+    border-bottom: 1px solid #23364f;
+}
+
+.notes-list-item:last-child {
+    border-bottom: none;
+}
+
+.notes-item-author {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.notes-item-date {
+    font-size: 0.75rem;
+    color: #8fa1b8;
+    margin: 0.1rem 0 0.5rem 0;
+}
+
+.notes-item-text {
+    font-size: 0.85rem;
+    color: #ffffff;
+    line-height: 1.45;
+}

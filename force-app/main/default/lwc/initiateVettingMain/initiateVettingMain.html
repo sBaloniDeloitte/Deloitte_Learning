@@ -1,0 +1,345 @@
+<template>
+    <template if:true={spinnerRun}>
+        <section role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open" style="z-index: 900003;">
+            <div class="slds-modal__container">
+                <div class="slds-spinner--brand slds-spinner slds-spinner--medium" role="alert">
+                    <span class="slds-assistive-text">Loading...</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+        </section> 
+    </template>
+    <span class="styleContainer" ></span>
+    <template lwc:if={profile.Admin}>
+        <template if:true={modalVisibility}>
+            <div class="overlay slds-scrollable" style="height: 640px;">
+                <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container" style="min-width: 75%;">
+                            <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                                <lightning-icon icon-name="utility:close"
+                                alternative-text="close"
+                                variant="error"
+                                size="small"></lightning-icon>
+                                <span class="slds-assistive-text">Close</span>
+                            </button>
+                        <div class="slds-modal__content slds-p-around_small">
+                            <lightning-card>
+                                <lightning-tabset style="position: sticky;top: 0;background: #0e1c30;z-index: 4;" class="tabStick" variant="scoped">
+                                    <lightning-tab label="Recommend Documents" class="tabStick">
+                                        <c-fcu-initiation-cmp record-id={recordId} profile={profile} onchangescreeningstatus={handleScreeningStatusChange} onshowsampling={handleShowSampling} ondontshowsampling={handleDontShowSampling}></c-fcu-initiation-cmp>
+                                    </lightning-tab>
+                                    <lightning-tab label="Recommend Profile" class="tabStick">
+                                        <c-fcu-profile-sampling record-id={recordId} profile={profile} fromcredit="true" onchangescreeningstatus={handleScreeningStatusChange}></c-fcu-profile-sampling>
+                                    </lightning-tab>
+                                    <lightning-tab label={sendToSamplerHeader} class="tabStick">
+                                        <c-fcusendto-sampler-cmp record-id={recordId} show-sampling={showSampling} onupdatecount={wiredDocuments}></c-fcusendto-sampler-cmp>
+                                    </lightning-tab>
+                                    <lightning-tab label="Initiated FCU" class="tabStick">
+                                        <c-fcusendto-sampler-cmp record-id={recordId} show-sampling={showSampling} is-initiated-sampling-screen="true"></c-fcusendto-sampler-cmp>
+                                    </lightning-tab>
+                                </lightning-tabset>
+                            </lightning-card>
+                        </div>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open"></div>
+            </div>
+        </template>
+    </template>
+    <template lwc:elseif={profile.Sampler}>
+        <template if:true={modalVisibility}>
+            <!-- <lightning-card> -->
+                <lightning-layout class="slds-p-around_small">
+                    <lightning-layout-item size="6">
+                        <lightning-card>
+                            <lightning-tabset class="tabStick" variant="scoped">
+                                <lightning-tab label="Sample Documents" id="subtab-1" class="tabStick2">
+                                    <c-fcu-initiation-cmp record-id={recordId} onchangescreeningstatus={handleScreeningStatusChange} onshowsampling={handleShowSampling} ondontshowsampling={handleDontShowSampling}></c-fcu-initiation-cmp>
+                                </lightning-tab>
+                                <lightning-tab label="Sample Profile" id="subtab-2" class="tabStick2">
+                                    <c-fcu-profile-sampling record-id={recordId} onchangescreeningstatus={handleScreeningStatusChange}></c-fcu-profile-sampling>
+                                </lightning-tab>
+                                <lightning-tab label={sendToSamplerHeader} id="subtab-4" class="tabStick3">
+                                    <c-fcusendto-sampler-cmp record-id={recordId} show-sampling={showSampling} onupdatecount={wiredDocuments}></c-fcusendto-sampler-cmp>
+                                </lightning-tab>
+                                <lightning-tab label="Initiated FCU" id="subtab-5" class="tabStick3">
+                                  <c-fcusendto-sampler-cmp record-id={recordId} show-sampling={showSampling} is-initiated-sampling-screen="true"></c-fcusendto-sampler-cmp>
+                                </lightning-tab>
+                                <lightning-tab label="Initiated Hunter" id="subtab-6" class="tabStick3">
+                                    <lightning-button-icon 
+                                        icon-name="utility:refresh" 
+                                        alternative-text="Refresh" 
+                                        size="small" 
+                                        onclick={handleRefresh}
+                                        class="slds-m-around_small">
+                                    </lightning-button-icon>
+                                    <template if:true={isHunterInitiated}>
+                                        <p style="color: red;text-align:center">Hunter Is Initiated</p>
+                                        <table class="hunter-response-table" style="width: 60%; text-align: center; margin-top: 10px;margin-left:auto;margin-right:auto">
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="2" class="hunter-response-header">
+                                                    <b>Hunter Response</b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;"><b>Match</b></td>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;">{hunterMatch}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;"><b>Decision</b></td>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;">{hunterDecision}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;"><b>Sampler's Decision</b></td>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;">{samplerDecision} </td>
+                                                </tr>
+                                                <td style="padding: 5px;text-align:center;width: 50px;">
+                                                    <b>Hunter Website</b>
+                                                </td>
+                                                <td style="padding: 5px;text-align:center;width: 50px;">
+                                                    <a href="https://www.mchsi.wapp.hunter.uk.experian.com/Hunter/Signin.aspx?Locale=en-GB" target="_blank">Click Here</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 5px;text-align:center;width: 50px;"><b>File uploaded by Sampler</b></td>
+                                                <td>
+                                                    <template if:true={fileUploaded}>
+                                                        <c-upload-view-delete-document 
+                                                            doc-detail-id={hunterAttachmentId}
+                                                            content-doc-id={contentDocumentId} 
+                                                            show-upload={showupload}
+                                                            show-view={showview}
+                                                            show-delete={showdelete} 
+                                                            show-retake={showretake} 
+                                                            show-location={showlocation}
+                                                            file-type={contentFileType}
+                                                            doc-name={documentName}>
+                                                        </c-upload-view-delete-document>
+                                                    </template>
+                                                    <template if:false={fileUploaded}>
+                                                        <p style="text-align: center;">  No file uploaded.</p>
+                                                    </template>
+                                                </td>
+                                            </tr>
+                                                <tr>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;"><b>Sampler's Comment</b></td>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;"> {samplerRemarks}</td>
+                                                </tr>
+                                            </tbody>
+                                            </table>
+                                    </template>
+                                    <template if:true={isHunterNotInitiated}>
+                                        <p style="color: red;text-align:center">Hunter Is Yet To Be Initiated</p>
+                                        <table class="hunter-response-table" style="width: 60%; text-align: center; margin-top: 10px;margin-left:auto;margin-right:auto">
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="2" class="hunter-response-header">
+                                                    <b>Hunter Response</b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;"><b>Match</b></td>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;">{hunterMatch}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;"><b>Decision</b></td>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;">{hunterDecision}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;"><b>Sampler's Decision</b></td>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;">{samplerDecision} </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;">
+                                                        <b>Hunter Website</b>
+                                                    </td>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;">
+                                                        <a href="https://www.mchsi.wapp.hunter.uk.experian.com/Hunter/Signin.aspx?Locale=en-GB" target="_blank">Click Here</a>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                            </table>
+                                    </template>
+                                    <template if:true={isHunterRejected}>
+                                        <p style="color: red;text-align:center">Hunter Is Not Accepted By Sampler</p>
+                                        <table class="hunter-response-table" style="width: 60%; text-align: center; margin-top: 10px;margin-left:auto;margin-right:auto">
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="2" class="hunter-response-header">
+                                                    <b>Hunter Response</b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;"><b>Match</b></td>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;">{hunterMatch}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;"><b>Decision</b></td>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;">{hunterDecision}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;"><b>Sampler's Decision</b></td>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;">{samplerDecision} </td>
+                                                </tr>
+                                                <td style="padding: 5px;text-align:center;width: 50px;">
+                                                    <b>Hunter Website</b>
+                                                </td>
+                                                <td style="padding: 5px;text-align:center;width: 50px;">
+                                                    <a href="https://www.mchsi.wapp.hunter.uk.experian.com/Hunter/Signin.aspx?Locale=en-GB" target="_blank">Click Here</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 5px;text-align:center;width: 50px;"><b>File uploaded by Sampler</b></td>
+                                                <td>
+                                                    <template if:true={fileUploaded}>
+                                                        <c-upload-view-delete-document 
+                                                            doc-detail-id={hunterAttachmentId}
+                                                            content-doc-id={contentDocumentId} 
+                                                            show-upload={showupload}
+                                                            show-view={showview}
+                                                            show-delete={showdelete} 
+                                                            show-retake={showretake} 
+                                                            show-location={showlocation}
+                                                            file-type={contentFileType}
+                                                            doc-name={documentName}>
+                                                        </c-upload-view-delete-document>
+                                                    </template>
+                                                    <template if:false={fileUploaded}>
+                                                        <p style="text-align: center;">  No file uploaded.</p>
+                                                    </template>
+                                                </td>
+                                            </tr>
+                                                <tr>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;"><b>Sampler's Comment</b></td>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;"> {samplerRemarks}</td>
+                                                </tr>
+                                            </tbody>
+                                            </table>
+                                    </template>
+                                    <template if:true={isHunterDecision}>
+                                        
+                                        <table class="hunter-response-table" style="width: 60%; text-align: center; margin-top: 10px;margin-left:auto;margin-right:auto">
+                                            <tbody>
+                                                <tr>
+                                                    <td colspan="2" class="hunter-response-header">
+                                                    <b>Hunter Response</b>
+                                                    </td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;"><b>Match</b></td>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;">{hunterMatch}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;"><b>Decision</b></td>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;">{hunterDecision}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;"><b>Sampler's Decision</b></td>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;">{samplerDecision} </td>
+                                                </tr>
+                                                <td style="padding: 5px;text-align:center;width: 50px;">
+                                                    <b>Hunter Website</b>
+                                                </td>
+                                                <td style="padding: 5px;text-align:center;width: 50px;">
+                                                    <a href="https://www.mchsi.wapp.hunter.uk.experian.com/Hunter/Signin.aspx?Locale=en-GB" target="_blank">Click Here</a>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding: 5px;text-align:center;width: 50px;"><b>File uploaded by Sampler</b></td>
+                                                <td>
+                                                    <template if:true={fileUploaded}>
+                                                        <c-upload-view-delete-document 
+                                                            doc-detail-id={hunterAttachmentId}
+                                                            content-doc-id={contentDocumentId} 
+                                                            show-upload={showupload}
+                                                            show-view={showview}
+                                                            show-delete={showdelete} 
+                                                            show-retake={showretake} 
+                                                            show-location={showlocation}
+                                                            file-type={contentFileType}
+                                                            doc-name={documentName}>
+                                                        </c-upload-view-delete-document>
+                                                    </template>
+                                                    <template if:false={fileUploaded}>
+                                                        <p style="text-align: center;">  No file uploaded.</p>
+                                                    </template>
+                                                </td>
+                                            </tr>
+                                                <tr>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;"><b>Sampler's Comment</b></td>
+                                                    <td style="padding: 5px;text-align:center;width: 50px;"> {samplerRemarks}</td>
+                                                </tr>
+                                            </tbody>
+                                            </table>
+                                        <br/>
+                                        <div class="slds-text-align_center">
+                                            <p style="color: red;text-align:Center"><b>Please take hunter decision</b></p><br/>
+                                            <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={handleReject}>Not Clear</button>
+                                            <button class="save-button slds-button slds-button_brand slds-m-left_small" onclick={handleApprove}>Clear</button>
+                                        </div>
+                                    </template>
+                                    <!-- Modal for clear option -->
+                                    <template if:true={isApproveModalOpen}>
+                                        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                                            <div class="slds-modal__container">
+                                                <header class="slds-modal__header" style="background: #1467eb">
+                                                    <h2 class="slds-text-heading_medium" style="color:#ffffff;">Clear hunter decision?</h2>
+                                                </header>
+                                                <div class="slds-modal__content slds-p-around_medium">
+                                                    <lightning-input label="Comment" value={comment} onchange={handleCommentChange} maxlength="255" required="true"></lightning-input>
+                                                    <lightning-file-upload 
+                                                    label="Upload File" 
+                                                    name="file" 
+                                                    accept={acceptedFormats} 
+                                                    onuploadfinished={handleFileUpload}
+                                                    data-id={recordId}></lightning-file-upload>
+                                                </div>
+                                                <footer class="slds-modal__footer" style="background: #12172b">
+                                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={HcloseModal} >Cancel</button>
+                                                    <button class="save-button slds-button slds-button_brand slds-m-left_small" onclick={handleApproveSubmit} >Submit</button>
+                                                </footer>
+                                            </div>
+                                        </section>
+                                        <div class="slds-backdrop slds-backdrop_open"></div>
+                                    </template>
+
+                                    <!-- Modal for reject option -->
+                                    <template if:true={isModalOpen}>
+                                        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+                                            <div class="slds-modal__container">
+                                                <header class="slds-modal__header" style="background: #1467eb">
+                                                    <h2 class="slds-text-heading_medium" style="color:#ffffff;">Flag hunter decision?</h2>
+                                                </header>
+                                                <div class="slds-modal__content slds-p-around_medium">
+                                                    <lightning-input label="Comment" value={comment} onchange={handleCommentChange} maxlength="255" required="true"></lightning-input>
+                                                    <lightning-file-upload 
+                                                    label="Upload File" 
+                                                    name="file" 
+                                                    accept={acceptedFormats} 
+                                                    onuploadfinished={handleFileUpload}
+                                                    data-id={recordId}></lightning-file-upload>
+                                                </div>
+                                                <footer class="slds-modal__footer" style="background: #12172b">
+                                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={HcloseModal} >Cancel</button>
+                                                    <button class="save-button slds-button slds-button_brand slds-m-left_small" onclick={handleRejectSubmit} >Submit</button>
+                                                </footer>
+                                            </div>
+                                        </section>
+                                        <div class="slds-backdrop slds-backdrop_open"></div>
+                                    </template>
+                                </lightning-tab>
+                            </lightning-tabset>
+                        </lightning-card>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="6">
+                        <lightning-card>
+                            <c-vetting-documents-cmp record-id={recordId}></c-vetting-documents-cmp>
+                        </lightning-card>
+                    </lightning-layout-item>
+                </lightning-layout>
+            <!-- </lightning-card> -->
+        </template>
+    </template>
+</template>

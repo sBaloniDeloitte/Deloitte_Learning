@@ -1,0 +1,58 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-11-2024
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:false={showleadpage}>
+        <div class="container port-home-container">
+            <div lwc:if={showBulkImportBtn} class="slds-grid slds-gutters">
+                
+                <!--<div class="slds-col slds-size_3-of-12">
+                    <template lwc:if={showBulkImportBtn}>
+                        <div class="pointer" >
+                            <img src={LeadReportICON} class="icon-center" title={iconTitle} onclick={showModalBoxExport} />
+                            <p class="text-center">Export Lead</p>
+                        </div>
+                    </template>
+                </div>-->
+                <div class="slds-col slds-size_4-of-12" >
+                    <div lwc:if={showDownloadButton} class="pointer">
+                        <img src={bulkLeadImport} class="icon-center" title={iconTitle} onclick={downloadSampleCSV} />
+                        <p class="text-center">Download CSV format</p>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_4-of-12" >
+                    <div class="pointer">
+                        <img src={NewLeadIcon} class="icon-center" title={iconTitle} onclick={showModalBox} />
+                        <p class="text-center">{buttonText}</p>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_4-of-12">
+                    <template lwc:if={showExportBtn}>
+                        <div class="pointer" >
+                            <img src={bulkLeadImport} class="icon-center" title={iconTitle} onclick={openbulkImport} />
+                            <p class="text-center">Bulk Import Lead</p>
+                        </div>
+                    </template>
+                </div>
+            </div>
+            <div lwc:else style="text-align:center;">
+                
+                    <div class="pointer">
+                        <img src={NewLeadIcon} class="icon-center" title={iconTitle} onclick={showModalBox} />
+                        <p class="text-center">{buttonText}</p>
+                    </div>
+                
+            </div>
+        </div>
+    </template>
+    <!-- <template if:true={showleadpage}>
+        <c-lead-management-v2 oncloselead={closeLead}></c-lead-management-v2>
+    </template> -->
+    <template if:true={bulkImports}>
+        <c-bulk-upsert-record-screen oncloseevent={handlebulkClose}></c-bulk-upsert-record-screen>
+    </template>
+</template>

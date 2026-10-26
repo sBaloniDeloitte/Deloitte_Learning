@@ -1,0 +1,16 @@
+<template>
+    <template lwc:if={isLoading}>
+        <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+    </template>
+    <template lwc:else>
+        <template if:false={hideButton}>
+            <template if:false={isNotEditable}>
+                <div class="slds-p-left_small">
+                    <button class="slds-button slds-button_brand save-button" onclick={fetchDuplicateCustomers}>Check Dedupe</button>
+                </div>
+            </template>
+        </template>
+       <c-de-duplication-screen-cmp record-id ={recordId} > </c-de-duplication-screen-cmp>    
+       </template>
+ 
+</template>

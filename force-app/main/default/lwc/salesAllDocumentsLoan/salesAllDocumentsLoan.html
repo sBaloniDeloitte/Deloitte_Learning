@@ -1,0 +1,420 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 06-06-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={showDedupeSpinner}>
+    <lightning-spinner alternative-text="Loading" size="medium" class={spinnerClass} variant="base" data-text="Please wait while we check duplicate customer"></lightning-spinner>
+    </template>
+    <template if:true={isloading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </template>
+
+    <!--
+    <template if:true={modalVisibility}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Meaningful description of the modal content"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="min-width: 60%;">
+                <header class="slds-modal__header" style="background-color: #5bb6e3; color:white;font-weight:500;">
+                    <div class="slds-text-align_center">
+                        <h2 slot="title"
+                            style="font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px"
+                            class="slds-text-heading_medium slds-hyphenate">Add New Document</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless " id="confirm-body2"
+                    style="min-height: 30% !important;">
+                    <template if:true={loandocument}>
+                        <c-search-lookup label="Documents" show-label="true" required="true"
+                            placeholder="Search Documents" object-name="Document_Master__c"  selected-id={selectedId}
+                            return-fields="['Id','Name']" search-fields="['Name']" 
+                            onlookupselected={handleSelectDocument} filter-criteria={requirementFilter}
+                            onlookupdeselected={handleldeselectDocument} disabled={isFieldDisable}></c-search-lookup>
+                    </template>
+
+                    <template if:true={applicantDocument}>
+                        <c-search-lookup label="Documents" show-label="true" required="true"
+                            placeholder="Search Documents" object-name="Document_Master__c"  selected-id={selectedId}
+                            return-fields="['Id','Name']" search-fields="['Name']"  filter-criteria={requirementFilter}
+                            onlookupselected={handleSelectDocument}
+                            onlookupdeselected={handleldeselectDocument} disabled={isFieldDisable}></c-search-lookup>
+                    </template>
+                    <br>
+                    <div>
+                        <button class="save-button slds-button slds-button_brand"
+                            style="border: none"
+                            onclick={handlesave}>Add</button>
+                    </div>
+                    <template if:true={createdRecordsVisibility}>
+                        <div style="padding-top: 3%;">
+                            <p slot="title" style="font-size:14px; font-style: italic; color: #113451;">New Documents.</p>
+                            <table
+                                class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <th class="" scope="col" style="width: 10%; text-align: center;">
+                                            <div class="slds-truncate" title="Serial No.">Sr No.</div>
+                                        </th>
+                                        <th class="" scope="col" style="width: 25%; text-align: center;">
+                                            <div class="slds-truncate" title="Serial No.">Applicable For</div>
+                                        </th>
+                                        <th class="" scope="col" style="width: 25%; text-align: center;">
+                                            <div class="slds-truncate" title="Serial No.">Applicants</div>
+                                        </th>
+                                        <th class="" scope="col" style="width: 30%; text-align: center;">
+                                            <div class="slds-truncate" title="Serial No.">Document Name</div>
+                                        </th>
+                                        <th class="" scope="col" style="width: 10%; text-align: center;">
+                                            <div class="slds-truncate" title="Serial No.">Actions</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <template for:each={createdNewDocTable} for:item="record">
+                                    <tbody key={record.id}>
+                                        <td style="width: 10%;text-align:centre">{record.no}</td>
+                                        <td style="width: 25%;text-align:centre;">{record.reqLevel}</td>
+                                        <td style="width: 25%;text-align:centre;">{record.custName}</td>
+                                        <td style="width: 30%;text-align:centre;">{record.name}</td>
+                                        <td style="width: 10%;text-align:centre;">                                                    
+                                            <c-upload-view-delete-document 
+                                            doc-detail-id={record.id}
+                                            content-doc-id={record.contentId} 
+                                            show-upload={record.showUpload}
+                                            show-view={record.showView}
+                                            show-delete={record.showDelete} 
+                                            show-retake={record.showRetake} 
+                                            show-location={record.showLocation}
+                                            lattitude={record.lattitude}
+                                            longitude={record.longitude}
+                                            file-type={record.fileType}
+                                            doc-name={record.docName}
+                                            name={processObject}
+                                            onrecallmethod={getDoccheckImageUploadedstatus}>
+                                        </c-upload-view-delete-document>
+                                    </td>
+                                    </tbody>
+                                </template>
+                            </table>
+                        </div>
+                    </template>
+                </div>
+                <footer class="slds-modal__footer" style="border: revert;">
+                    <div class="slds-align_absolute-center">
+                        <button class="cancel-button slds-button slds-button_brand"
+                            style="border:none" onclick={handleClose}>Close</button>
+                        <button class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color: #113451;color: white;border-color: #113451;font-weight: 500;" onclick={handleSave}>Create</button> 
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+    </template>
+    -->
+    <template if:true={applicantPickValOptions}>
+        <template if:false={loginChecklist}>
+            <!--
+            <lightning-accordion  onclick={handleaccordianClick}>
+                <template for:each={applicantPickValOptions} for:item="applicant">
+                    <lightning-accordion-section key={applicant.value} name={applicant.value} label={applicant.label}>
+                        -->
+                        <c-sales-document-cmp record-id={recordId} login-checklist={loginChecklist} app-id={defaultApplicantId} loan={notloan} onchecklistupdated={reload}   onupdatedapplicants ={updateApplicantsDedupe} is-disabled={isFieldDisable} ></c-sales-document-cmp>
+            
+            <!--
+            <lightning-accordion onclick={handleaccordianClick}>
+                <lightning-accordion-section name="DocumentDetails" label="List View Of Documents">
+                        
+                        lightning-layout style="margin-top: 20px;" horizontal-align="start">
+                            <div class="save-button slds-button slds-button_brand slds-float_left"  style="border:none">
+                                <button class="save-button slds-button slds-button_brand " data-applicant-id={applicant.value} style="border: none;" onclick={addDocument} disabled={isFieldDisable}>
+                                    Add Document 
+                                </button>
+                            </div>
+                        </lightning-layout
+                </lightning-accordion-section>
+                -->
+
+                <!--
+                <lightning-accordion-section  name={loanapplication} label={loanapplication}>
+                    <c-sales-document-cmp record-id={recordId} loan={loan} login-checklist={loginChecklist} is-disabled={isFieldDisable}></c-sales-document-cmp>
+                    
+                    <lightning-layout style="margin-top: 20px;" horizontal-align="start">
+                        <div class="save-button slds-button slds-button_brand slds-float_left"  style="border:none">
+                            <button class="save-button slds-button slds-button_brand " style="border: none;" onclick={addDocument} disabled={isFieldDisable}>
+                                Add Document 
+                            </button>
+                        </div>
+                    </lightning-layout> 
+                    
+                </lightning-accordion-section>
+            
+            </lightning-accordion>
+
+            -->
+        </template>
+        <template if:true={loginChecklist}>
+            <!--
+            <lightning-accordion allow-multiple-sections-open active-section-name={openSections} onclick={handleaccordianClick}>
+                <template if:true={openAccordian}>
+                    <template for:each={applicantPickValOptions} for:item="applicant">
+                        <lightning-accordion-section key={applicant.value} name={applicant.value} label={applicant.label}>
+                            -->
+                            <c-sales-document-cmp record-id={recordId} login-checklist={loginChecklist} app-id={applicant.value} loan={notloan} onchecklistupdated={reload} is-disabled={isFieldDisable}></c-sales-document-cmp>
+                            <!--
+            <lightning-accordion onclick={handleaccordianClick}>
+                <lightning-accordion-section name="DocumentDetails" label="List View Of Documents">
+                                      
+                    </lightning-accordion-section>
+            </lightning-accordion>
+
+            -->
+
+            <!--
+
+                    <lightning-accordion-section  name={loanapplication} label={loanapplication}>
+                        <c-sales-document-cmp record-id={recordId} loan={loan} login-checklist={loginChecklist} is-disabled={isFieldDisable}></c-sales-document-cmp>                
+                    </lightning-accordion-section>
+
+                    -->
+        </template>
+               
+       
+    </template>
+    <template if:false={loginChecklist}>
+        <div class="andcontainer slds-text-align_right" style="margin-top: 1%;">
+            <button class="save-button slds-button slds-button_brand" style="border: none;"
+                onclick={nextButton} disabled={isFieldDisable}>Next</button>
+        </div>
+    </template>
+    <template if:false={applicantPickValOptions}>
+        <p style="text-align: center; font-style: italic; color: gray;">No Applicants Found</p>
+    </template>
+    <template if:true={showMissingDocs}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Missing Documents"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="min-width: 90%;">
+                <header class="slds-modal__header" style="background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%); color:white;font-weight:500;">
+                    <div class="slds-text-align_center">
+                        <h2 style="font-size:15px; font-weight: bold; margin: 5px 0;"
+                            class="slds-text-heading_medium">
+                            Address and document validation screen
+                        </h2>
+                    </div>
+                </header>
+    
+                <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless"
+                    id="confirm-body7" style="min-height: 30% !important; background-color: #16283f;">
+                    <template if:true={groupedDocs}>
+                        <div class="slds-scrollable_x" style="background-color: #16283f;">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                            <thead>
+                                <!-- <tr class="slds-line-height_rseset">
+                                    <th colspan="4"  scope="col">
+                                        <div class="slds-truncate" title="Missing Document Type">Missing Document/Address</div>
+                                    </th>
+                                </tr> -->
+                                <tr class="slds-line-height_reset">
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="Applicant Name">Customer Name</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="Applicant Name">Customer Type</div>
+                                    </th>
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="Applicant Name">Missing  Document Category</div>
+                                    </th>
+                                    <!-- <th scope="col">
+                                        <div class="slds-truncate" title="Applicant Name">Customer Profile</div>
+                                    </th> -->
+                                    <th scope="col">
+                                        <div class="slds-truncate" title="Applicant Name">Missing Address Category/Document</div>
+                                    </th>
+                                    <!-- <th scope="col">
+                                        <div class="slds-truncate" title="Missing Document Type">Document category where one or more documents are missing</div>
+                                    </th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={groupedDocs} for:item="group">
+                                    <!-- <template for:each={group.documents} for:item="doc">
+                                        <tr key={group.applicant}>
+                                            <td>
+                                                <div class="slds-truncate" title={group.applicant}>{group.applicant}</div>
+                                            </td>
+                                            <td>
+                                                <div class="slds-truncate" title={doc}>{doc}</div>
+                                            </td>
+                                        </tr>
+                                    </template> -->
+                                    <tr key={group.documentDetailId}>
+                                        <td>
+                                            <div class="slds-truncate" title={group.applicantName}>{group.applicantName}</div>
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate" title={group.customerType}>{group.applicanttype}</div>
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate" title={group.applicantProfile}>{group.documentType}</div>
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate" title={group.missingparam}>{group.missingparam}</div>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                        </div>
+                    </template>
+                    <template if:false={groupedDocs}>
+                        <p class="slds-text-color_weak slds-m-around_medium">No missing documents found.</p>
+                    </template>
+                </div>
+    
+                <footer class="slds-modal__footer" style="background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%); border: revert;">
+                    <div class="slds-align_absolute-center">
+                        <button class="cancel-button slds-button slds-button_brand" style="border: none; background-color: #16283f; border-color: #16283f;"
+                            onclick={handleCloseDoc}>Close</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+    </template>
+   <template if:true={showMissingFields}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Missing Documents"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="min-width: 90%;">
+                <header class="slds-modal__header" style="background-color: #5bb6e3; color:white;font-weight:500;">
+                    <div class="slds-text-align_center">
+                        <h2 style="font-size:15px; font-weight: bold; margin: 5px 0;"
+                            class="slds-text-heading_medium">
+                            Missing Information
+                        </h2>
+                    </div>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless" id="confirm-body"
+                    style="min-height: 30% !important;">
+                    <template if:true={errorMsg}>
+                        <div style="font-size:14px">
+                            The following documents contain addresses without a specified Address Type. Please either complete the address information by selecting an appropriate Address Type, or unselect the document.
+                            <br />
+                        </div>
+                    </template>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                        <thead>
+                            <!-- <tr class="slds-line-height_rseset">
+                                    <th colspan="4"  scope="col">
+                                        <div class="slds-truncate" title="Missing Document Type">Missing Document/Address</div>
+                                    </th>
+                                </tr> -->
+                            <tr class="slds-line-height_reset">
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Applicant Name">Customer Name</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Applicant Name">Document Name</div>
+                                </th>
+                                <th scope="col">
+                                    <div class="slds-truncate" title="Applicant Name">Missing Fields</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={errorfield} for:item="group">
+                                <tr key={group.applicantName}>
+                                    <td>
+                                        <div class="slds-truncate" title={group.applicantName}>{group.applicantName}
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="slds-truncate" title={group.customerType}>{group.documentName}</div>
+                                    </td>
+                                    <td>
+                                        <div class="slds-truncate" title={group.applicantProfile}>{group.missingFields}
+                                        </div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+
+                <footer class="slds-modal__footer" style="border: revert;">
+                    <div class="slds-align_absolute-center">
+                        <button class="cancel-button slds-button slds-button_brand" style="border: none;"
+                            onclick={handleClosefields} >Close</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+    </template>
+    <template if:true={errorModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="min-width: 80%;">
+                <header class="slds-modal__header" style="background-color: skyblue; font-weight:500;">
+                    <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Please review the
+                        following errors</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <template for:each={errorLst} for:item="listVariable" for:index="index">
+                        <div style="color: red;" key={listVariable}>
+                            {listVariable}
+                        </div>
+                    </template>
+                </div>
+                <div class="slds-modal__footer"
+                    style="background-color: skyblue;border-radius: 0px 0px 5px 5px;text-align: center;min-height: 30px;">
+                    <button class="slds-button slds-button_brand previous-button"
+                        style="width: 140px;background-color: #dc387e;font-weight: 500;"
+                        onclick={hideModalBox}>Cancel</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <template if:true={errorModalAddressMissing}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="min-width: 80%;">
+                <header class="slds-modal__header" style="background-color: skyblue; font-weight:500;">
+                    <h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate">Please review the
+                        following errors</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-3">
+                    <template for:each={errorLstAddressMissing} for:item="listVariable" for:index="index">
+                        <div style="color: red;" key={listVariable}>
+                            {listVariable.errorMsg}
+                        </div>
+                    </template>
+                </div>
+                <div class="slds-modal__footer"
+                    style="background-color: skyblue;border-radius: 0px 0px 5px 5px;text-align: center;min-height: 30px;">
+                    <button class="slds-button slds-button_brand previous-button"
+                        style="width: 140px;background-color: #dc387e;font-weight: 500;"
+                        onclick={hideModalBoxAddress}>Cancel</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    
+    
+    
+    
+
+    <!-- <template if:false={loginChecklist}>
+        <div class="andcontainer slds-text-align_right" style="margin-top: 1%;">
+            <button class="save-button slds-button slds-button_brand" style="border: none;"
+                onclick={nextButton} disabled={isFieldDisable}>Next</button>
+        </div>
+    </template> -->
+    <template if:false={applicantPickValOptions}>
+        <p style="text-align: center; font-style: italic; color: gray;">No Applicants Found</p>
+    </template>
+</template>

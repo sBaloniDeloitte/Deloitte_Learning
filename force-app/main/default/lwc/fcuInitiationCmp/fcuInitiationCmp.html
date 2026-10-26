@@ -1,0 +1,825 @@
+<template>
+    <template if:true={spinnerRun}>
+        <section role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open"
+            style="z-index: 900003;">
+            <div class="slds-modal__container">
+                <div class="slds-spinner--brand slds-spinner slds-spinner--medium" role="alert">
+                    <span class="slds-assistive-text">Loading...</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+        </section>
+    </template>
+    <template if:true={isTableVisible}>
+        <div class="content slds-scrollable-x">
+            <div class="slds-scrollable-x slds-scrollable-y external-events slds-scrollable"
+                style="max-height: calc(100vh - 5rem);">
+                <table
+                    class="slds-table slds-table_cell-buffer slds-table_fixed-layout slds-table_bordered slds-table_col-bordered slds-table slds-table_cell-buffer slds-table_bordered slds-scrollable-x slds-scrollable-y doc-table-css"
+                    style="overflow-y: scroll; overflow-x: scroll;width: 100%;" border="2">
+                    <thead>
+                        <tr class="slds-line-height_reset" style="width:2px; word-wrap:break-word;">
+                            <th class="slds-text-title_caps tableCss" scope="col" style="width:6%;background: #111d30;color:#ffffff;">
+                                <div class="slds-truncate" style="text-align: center;" title="Name">Sr. No.</div>
+                            </th>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                                style="width:20%;background: #111d30;color:#ffffff;">
+                                <div style="text-align: center;" title="Applicant Type">Document Name
+                                </div>
+                            </th>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                                style="width:20%;background: #111d30;color:#ffffff;">
+                                <div style="text-align: center;" title="Status">Screening Status</div>
+                            </th>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                                style="width:20%;background: #111d30;color:#ffffff;">
+                                <div style="text-align: center;" title="Status">Verification Status</div>
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={alldocuments} for:item="rec" for:index="index">
+                            <tr class="slds-line-height_reset" key={rec.docChecklistId}>
+                                <td scope="row" class="tableCss" style="width:4px; word-wrap:break-word;">
+                                    <div class="slds-truncate slds-cell-wrap" style="text-align: center;">{rec.docCount}
+                                    </div>
+                                </td>
+                                <td scope="row" class="tableCss" style="width:2px; word-wrap:break-word;">
+                                    <!-- <div class="slds-truncate slds-cell-wrap"
+                                    style="cursor: pointer; text-decoration: underline;" 
+                                    onclick={handleDocChangeClick} 
+                                    data-id={rec.docContentId}>
+                                    {rec.docName}
+                                    </div> -->
+                                    <a href="javascript:void(0);" class="slds-truncate slds-cell-wrap"
+                                        style="cursor: pointer; text-decoration: underline;color: #7db2ff"
+                                        onclick={handleDocChangeClick} data-id={rec.docContentId}>
+                                        {rec.docName}
+                                    </a>
+                                </td>
+
+                                <td scope="row" class="tableCss" style="text-align: center;">
+                                    <template if:false={rec.fcuinitiated}>
+                                        <div class=" slds-cell-wrap" style="text-align: center;">{rec.screeningstatus}
+                                        </div>
+                                    </template>
+                                    <template if:true={rec.fcuinitiated}>
+                                        <div class="slds-truncate slds-cell-wrap" style="text-align: center;">FCU
+                                            initiated
+                                        </div>
+                                    </template>
+                                </td>
+                                <td scope="row" class="tableCss" style="text-align: center;">
+                                    <div class="slds-cell-wrap" style="text-align: center;">
+                                        <!--{rec.Status}-->
+                                        {rec.screeningstatus}
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+
+                    </tbody>
+                </table>
+                <footer class="slds-modal__footer slds-align_absolute-center slds-m-top_medium slds-m-top_xx-small"
+                    style="border: revert;background: #0a1524;">
+                    <button class="cancel-button slds-button slds-button_brand" onclick={handleBackConfirmationTab}>Back</button>
+                </footer>
+            </div>
+        </div>
+    </template>
+    <template if:false={isTableVisible}>
+        <template if:true={modalVisibility}>
+            <template if:false={isVendor}>
+                <template if:true={show5level}>
+                    <lightning-layout>
+                        <lightning-layout-item size="1">
+
+                        </lightning-layout-item>
+                        <lightning-layout-item size="2">
+                            <div class="slds-align_absolute-center">
+                                <template if:true={showApplicationSuccess}>
+                                    <lightning-icon icon-name="utility:success" size="small" variant="success"
+                                        alternative-text="complete" style="cursor: pointer;"
+                                        onclick={handleShowApplicationLevel}></lightning-icon>
+                                </template>
+                                <template if:false={showApplicationSuccess}>
+                                    <lightning-icon icon-name="utility:error" size="small" variant="error"
+                                        alternative-text="incomplete" style="cursor: pointer;"
+                                        onclick={handleShowApplicationLevel}></lightning-icon>
+                                </template>
+                            </div>
+                            <div class="line slds-align_absolute-center"></div>
+                            <div class="slds-text-align_center">
+                                <p style="color: #ffffff; font-weight: 500; margin-top: 5px; font-size:12px">Application
+                                    level documents</p>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="2">
+                            <div class="slds-align_absolute-center">
+                                <template if:true={showApplicantSuccess}>
+                                    <lightning-icon icon-name="utility:success" size="small" variant="success"
+                                        alternative-text="complete" style="cursor: pointer;"
+                                        onclick={handleApplicantLevel}></lightning-icon>
+                                </template>
+                                <template if:false={showApplicantSuccess}>
+                                    <lightning-icon icon-name="utility:error" size="small" variant="error"
+                                        alternative-text="incomplete" style="cursor: pointer;"
+                                        onclick={handleApplicantLevel}></lightning-icon>
+                                </template>
+                            </div>
+                            <div class="line slds-align_absolute-center"></div>
+                            <div class="slds-text-align_center">
+                                <p style="color: #ffffff; font-weight: 500; margin-top: 5px; font-size:12px">Applicant
+                                    level documents</p>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="2">
+                            <div class="slds-align_absolute-center">
+                                <lightning-icon icon-name="utility:error" size="small" variant="error"
+                                    alternative-text="incomplete"></lightning-icon>
+                            </div>
+                            <div class="line slds-align_absolute-center"></div>
+                            <div class="slds-text-align_center">
+                                <p style="color: #ffffff; font-weight: 500; margin-top: 5px;">Co-applicant level
+                                    documents</p>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="2">
+                            <div class="slds-align_absolute-center">
+                                <lightning-icon icon-name="utility:error" size="small" variant="error"
+                                    alternative-text="incomplete"></lightning-icon>
+                            </div>
+                            <div class="line slds-align_absolute-center"></div>
+                            <div class="slds-text-align_center">
+                                <p style="color: #ffffff; font-weight: 500; margin-top: 5px;">Guarantor level documents
+                                </p>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="2">
+                            <div class="slds-align_absolute-center">
+                                <template if:true={showCollateralSuccess}>
+                                    <lightning-icon icon-name="utility:success" size="small" variant="success"
+                                        alternative-text="complete" style="cursor: pointer;"
+                                        onclick={handleCollateralLevel}></lightning-icon>
+                                </template>
+                                <template if:false={showCollateralSuccess}>
+                                    <lightning-icon icon-name="utility:error" size="small" variant="error"
+                                        alternative-text="incomplete" style="cursor: pointer;"
+                                        onclick={handleCollateralLevel}></lightning-icon>
+                                </template>
+                            </div>
+                            <div class="slds-text-align_center">
+                                <p style="color: #113451; font-weight: 500; margin-top: 5px;">Collateral level documents
+                                </p>
+                            </div>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="1">
+
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </template>
+                <template if:false={show5level}>
+                    <div class="slds-float_left"
+                        style="display: flex;align-content: center;color:#DC387E">
+                        <lightning-button-icon icon-name="utility:rows" alternative-text="Documents" size="medium"
+                            onclick={handleMenuClick} class="slds-m-right_small" style="margin-right: 0px;">
+                        </lightning-button-icon>
+                    </div>
+                    <div class="slds-align_absolute-center" style="display: flex;align-content: center;">
+                        <lightning-combobox name="Select Category" label="Select Category" value={value}
+                            placeholder="Select Category" options={picklistOptions} onchange={handleChange}
+                            class="slds-p-around_small comboBox" style="margin-left: -23%">
+                        </lightning-combobox>
+                        <lightning-combobox name="Select Document" label="Select Document" value={value}
+                            placeholder="Select Document" options={filteredDocumentsAsPerCategory}
+                            onchange={handleDocChange} class="slds-p-around_small comboBox">
+                        </lightning-combobox>
+                    </div>
+
+                    <lightning-layout>
+                        <template if:true={showApplicationLevel}>
+                            <lightning-layout-item size={showSize}>
+                                <div class="slds-align_absolute-center">
+                                    <template if:true={showApplicationSuccess}>
+                                        <lightning-icon icon-name="utility:success" size="small" variant="success"
+                                            alternative-text="complete" style="cursor: pointer;"
+                                            onclick={handleShowApplicationLevel}></lightning-icon>
+                                    </template>
+                                    <template if:false={showApplicationSuccess}>
+                                        <lightning-icon icon-name="utility:error" size="small" variant="error"
+                                            alternative-text="incomplete" style="cursor: pointer;"
+                                            onclick={handleShowApplicationLevel}></lightning-icon>
+                                    </template>
+                                </div>
+                                <template if:true={showApplicationLevelLine}>
+                                    <div class="line slds-align_absolute-center"></div>
+                                </template>
+                                <div class="slds-text-align_center">
+                                    <p style="color: #113451; font-weight: 500; margin-top: 5px; font-size:12px">
+                                        Application level documents</p>
+                                </div>
+                            </lightning-layout-item>
+                        </template>
+                        <template if:true={showApplicantLevel}>
+                            <lightning-layout-item size={showSize}>
+                                <div class="slds-align_absolute-center">
+                                    <template if:true={showApplicantSuccess}>
+                                        <lightning-icon icon-name="utility:success" size="small" variant="success"
+                                            alternative-text="complete" style="cursor: pointer;"
+                                            onclick={handleApplicantLevel}></lightning-icon>
+                                    </template>
+                                    <template if:false={showApplicantSuccess}>
+                                        <lightning-icon icon-name="utility:error" size="small" variant="error"
+                                            alternative-text="incomplete" style="cursor: pointer;"
+                                            onclick={handleApplicantLevel}></lightning-icon>
+                                    </template>
+                                </div>
+                                <template if:true={showApplicantLevelLine}>
+                                    <div class="line slds-align_absolute-center"></div>
+                                </template>
+                                <div class="slds-text-align_center">
+                                    <p style="color: #113451; font-weight: 500; margin-top: 5px;font-size:12px">
+                                        Applicant level documents</p>
+                                </div>
+                            </lightning-layout-item>
+                        </template>
+                        <template if:true={showCollateralLevel}>
+                            <lightning-layout-item size={showSize}>
+                                <div class="slds-align_absolute-center">
+                                    <template if:true={showCollateralSuccess}>
+                                        <lightning-icon icon-name="utility:success" size="small" variant="success"
+                                            alternative-text="complete" style="cursor: pointer;"
+                                            onclick={handleCollateralLevel}></lightning-icon>
+                                    </template>
+                                    <template if:false={showCollateralSuccess}>
+                                        <lightning-icon icon-name="utility:error" size="small" variant="error"
+                                            alternative-text="incomplete" style="cursor: pointer;"
+                                            onclick={handleCollateralLevel}></lightning-icon>
+                                    </template>
+                                </div>
+                                <template if:true={showCollateralLevelLine}>
+                                    <div class="line slds-align_absolute-center"></div>
+                                </template>
+                                <div class="slds-text-align_center">
+                                    <p style="color: #113451; font-weight: 500; margin-top: 5px;font-size:12px">
+                                        Collateral level documents</p>
+                                </div>
+                            </lightning-layout-item>
+                        </template>
+                    </lightning-layout>
+                </template>
+            </template>
+
+            <!-- <template if:true={showSentToSmapler}>
+            <div class="slds-align_absolute-center" style="padding-top: 2%;">
+                <button class="slds-button slds-button_neutral slds-float_right" style="font-size: 11px;width: 140px;background-color: #113451;color: white;border-color: black;font-weight: 500;" onclick={sentToSampler}>Send for sampling</button>
+            </div>
+        </template> -->
+
+            <div class="slds-text-align_center">
+
+                <p slot="title"
+                    style="text-decoration: underline; font-size:12px; font-weight: bold; margin-top: 11px; margin-bottom: 11px"
+                    class="slds-text-title_bold">{levelHeader}</p>
+
+                <p style="font-style: italic; font-size:11px; margin-bottom: 11px" class="slds-text-title_bold">
+                    Documents pending for decision - {completedcount}</p>
+            </div>
+
+            <div class="slds-text-align_center">
+                <lightning-layout>
+                    <lightning-layout-item size="2">
+
+                    </lightning-layout-item>
+                    <lightning-layout-item size="8">
+                        <table
+                            class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right document-status-table"
+                            style="background-color:#0e1c30;">
+                            <tr style="border:#33455e; width:fit-content">
+                                <td
+                                    style="width: 50%; word-wrap: break-word; white-space: normal; border: solid; border-width: 1px; border-color:#33455e; background-color:#0e1c30;">
+                                    <p slot="title" style="font-size:11px; color: #ffffff;" class="slds-text-title_bold">
+                                        Name of the document</p>
+                                </td>
+                                <template if:true={currentDocOwner}>
+                                    <td
+                                        style="width: 50%; word-wrap: break-word; white-space: normal; border: solid; border-width: 1px; border-color:#33455e; background-color:#0e1c30;">
+                                        <p slot="title" style="font-size:11px; color: #ffffff;">{currentDocName}
+                                            ({currentDocOwner})</p>
+                                    </td>
+                                </template>
+                                <template if:false={currentDocOwner}>
+                                    <td
+                                        style="width: 50%; word-wrap: break-word; white-space: normal; border: solid; border-width: 1px; border-color:#33455e; background-color:#0e1c30;">
+                                        <p slot="title" style="font-size:11px; color: #ffffff;">{currentDocName}</p>
+                                    </td>
+                                </template>
+                            </tr>
+                            <tr style="border:#33455e; width:fit-content">
+                                <td
+                                    style="width: 50%; word-wrap: break-word; white-space: normal; border: solid; border-width: 1px; border-color:#33455e; background-color:#0e1c30;">
+                                    <p slot="title" style="font-size:11px; color: #ffffff;" class="slds-text-title_bold">
+                                        Verification status</p>
+                                </td>
+                                <td
+                                    style="width: 50%; word-wrap: break-word; white-space: normal; border: solid; border-width: 1px; border-color:#33455e; background-color:#0e1c30;">
+                                    <p slot="title" style="font-size:11px; color: #ffffff;">{currentScreenigStatus}</p>
+                                </td>
+                            </tr>
+                            <tr style="border:#33455e; width:fit-content">
+                                <td
+                                    style="width: 50%; word-wrap: break-word; white-space: normal; border: solid; border-width: 1px; border-color:#33455e; background-color:#0e1c30;">
+                                    <p slot="title" style="font-size:11px; color: #ffffff;" class="slds-text-title_bold">
+                                        Screening status</p>
+                                </td>
+                                <td
+                                    style="width: 50%; word-wrap: break-word; white-space: normal; border: solid; border-width: 1px; border-color:#33455e; background-color:#0e1c30;">
+                                    <template if:false={currentfcuinitiated}>
+                                        <p slot="title" style="font-size:11px; color: #ffffff;">{currentScreenigStatus}</p>
+                                    </template>
+                                    <template if:true={currentfcuinitiated}>
+                                        <p slot="title" style="font-size:11px; color: #ffffff;">FCU initiated</p>
+                                    </template>
+                                </td>
+                            </tr>
+                            <template lwc:if={setRemarks}>
+                                <tr style="border:#33455e; width:fit-content">
+                                    <td
+                                        style="width: 50%; word-wrap: break-word; white-space: normal; border: solid; border-width: 1px; border-color:#33455e; background-color:#0e1c30;">
+                                        <p slot="title" style="font-size:11px; color: #ffffff;"
+                                            class="slds-text-title_bold">Remarks</p>
+                                    </td>
+                                    <td
+                                        style="width: 50%; word-wrap: break-word; white-space: normal; border: solid; border-width: 1px; border-color:#33455e; background-color:#0e1c30;">
+                                        <p slot="title" style="font-size:11px; color: #ffffff;">{setRemarks}</p>
+                                    </td>
+                                </tr>
+                            </template>
+                           
+                                <!-- <template for:each={queries} for:item="field" lwc:if={queries} for:index="index">
+                                    <tr style="border:#000000; width:fit-content" key={field}>
+                                        <td
+                                            style="width: 50%; word-wrap: break-word; white-space: normal; border: solid; border-width: 1px;">
+                                            <p slot="title" style="font-size:11px; color: black;"
+                                                class="slds-text-title_bold">Query Number {field.index}</p>
+                                        </td>
+                                        <td
+                                            style="width: 50%; word-wrap: break-word; white-space: normal; border: solid; border-width: 1px;">
+                                            <p slot="title" style="font-size:11px;"><a class="slds-truncate" data-id={field.Id} onclick={openRecordPage} >{field.Name}</a></p>
+                                        </td>
+                                    </tr>
+                            </template> -->
+                        </table>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2">
+
+                    </lightning-layout-item>
+                </lightning-layout>
+                <br>
+            </div>
+
+            <!-- <lightning-layout style="padding-top: 1.5%;">
+            <lightning-layout-item size="6">
+                <p style="color: black; font-weight: 500; margin-bottom: 5px; padding-left:10%">CSDL status</p>
+            </lightning-layout-item>
+            <lightning-layout-item size="6">
+                <div class="slds-float_right" style="padding-right:10%">
+                    <p style="color: #EAA200; font-weight: 500; margin-bottom: 5px; padding-left:10%">Fraud</p>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout>
+        <lightning-layout style="padding-top: 1.5%;">
+            <lightning-layout-item size="6">
+                <p style="color: black; font-weight: 500; margin-bottom: 5px; padding-left:10%">Hunter status</p>
+            </lightning-layout-item>
+            <lightning-layout-item size="6">
+                <div class="slds-float_right" style="padding-right:10%">
+                    <p style="color: green; font-weight: 500; margin-bottom: 5px; padding-left:10%">Positive</p>
+                </div>
+            </lightning-layout-item>
+        </lightning-layout> -->
+
+            <!-- <div class="content-container">
+                <template if:true={pdfUrl}>
+                    <iframe src={pdfUrl} class="content-viewer"
+                        style="border: 1px solid #000000; margin-bottom: 5px;"></iframe>
+                </template>
+                <template if:true={imageUrl}> -->
+                    <!-- <div class="overflow-y: scroll;" style="max-height: 300px;"> -->
+                    <!-- <div class="scrollable">
+                        <img src={imageUrl} alt="Document Image" class="content-viewer" style="border: 1px solid #000000; margin-bottom: 5px;"/>
+                    </div> -->
+                    <!-- </div> -->
+                <!-- </template>
+            </div> -->
+            <div class="content-container">
+                <template if:true={pdfUrl}>
+                    <!-- <div class="overflow-y: scroll;">
+                     <div class="scrollable"> 
+                            <iframe data-id="documentViewer" src={pdfUrl} class="content-viewer"
+                                    style="border: 1px solid #000000; margin-bottom: 5px; max-width: 68%;"></iframe>
+                        </div>
+                        </div> -->
+                         <div class = "scrollable">               
+
+                            <iframe data-id="documentViewer" src={pdfUrl} class="content-viewer"
+
+                                    style="border: 1px solid #000000; margin-bottom: 5px;"></iframe>
+
+                        </div>
+                </template>
+                
+                <template if:true={imageUrl}>
+                    
+                    <div class="scrollable">
+                        <img data-id="documentImage" src={imageUrl} alt="Document Image" class="content-viewer" style="border: 1px solid #000000; margin-bottom: 5px; max-width: 68%; height: auto;" />
+                    </div>
+                </template>
+                
+                <template if:true={isZipFolder}>
+                    <div>
+                        <a href={fileUrl} target="_blank" download>Download Zip File</a>
+                         </div>
+                </template>
+            
+                <!-- Zoom In/Out Buttons -->
+                <template if:false={noImage}>
+                    <div class="fixed-action-buttons">
+                        <lightning-layout horizontal-align="center" multiple-rows>
+                            <!-- Zoom Out Button -->
+                            <lightning-layout-item size="auto" class="slds-text-align_center">
+                                <lightning-button-icon 
+                                    icon-name="utility:dash" 
+                                    variant="bare"
+                                    alternative-text="Zoom Out" 
+                                    title="Zoom Out" 
+                                    size="large"
+                                    class="slds-m-left_xx-small icon-blue" 
+                                    onclick={handleZoomOut}>
+                                </lightning-button-icon>
+                            </lightning-layout-item>
+            
+                            <!-- Zoom In Button -->
+                            <lightning-layout-item size="auto" class="slds-text-align_center">
+                                <lightning-button-icon 
+                                    icon-name="utility:zoomin" 
+                                    variant="bare"
+                                    alternative-text="Zoom In" 
+                                    title="Zoom In" 
+                                    size="large"
+                                    class="slds-m-left_xx-small icon-blue" 
+                                    onclick={handleZoomIn}>
+                                </lightning-button-icon>
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </div>
+                </template>
+            </div>
+
+            <div class="slds-text-align_center">
+                <h5 slot="title"
+                    style="font-style: Lato Bold; font-size:11px; font-weight: bold; margin-top: 11px; margin-bottom: 11px"
+                    class="slds-text-title_bold">({showCurrentIndex}/{totalCount})</h5>
+            </div>
+
+            <lightning-layout
+                style="position: sticky;bottom: 0;z-index: 4;height: 42px;padding-top: 6px;">
+                <template if:true={isVendor}>
+                    <lightning-layout-item size="2">
+                        <div style="display: flex; justify-content: flex-start; width: 100%; flex-wrap: wrap;">
+                            <template if:true={disablePrevious}>
+                                <button class="disabled-button slds-button slds-button_brand" disabled={disablePrevious}>Previous</button>
+                            </template>
+                            <template if:false={disablePrevious}>
+                                <button class="previous-button slds-button slds-button_brand" onclick={handlePrevious} disabled={disablePrevious}>Previous</button>
+                            </template>
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="10">
+                        <div style="display: flex; justify-content: flex-end; width: 100%; flex-wrap: wrap; gap: 8px;">
+                            <template if:true={buttonVisibilityPending}>
+                                <template if:false={currentfcuinitiated}>
+                                    <template lwc:if={profile.Admin}>
+                                        <button class="save-button slds-button slds-button_brand slds-m-left_small" style="width:fit-content;" onclick={handleRecommend}>Recommend for FCU</button>
+                                    </template>                                   
+                                    <template lwc:elseif={profile.Sampler}>
+                                            <button class="save-button slds-button slds-button_brand slds-m-left_small" onclick={handleSample}>Add to queue</button>
+                                            <button class="save-button slds-button slds-button_brand slds-m-left_small" onclick={handleIconClick}>Screen</button>
+                                            <!-- <template if:true={showHoldButton} > -->
+                                                <button name="holdButton" class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={handleHold}>Hold</button>
+                                            <!-- </template> -->
+                                            <!-- <template if:false={showHoldButton} > -->
+                                                <!-- <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={handleUnHold}>Un-Hold</button> -->
+                                            <!-- </template> -->
+                                                <template if:true={isVendor}>
+                                                    <button class="previous-button slds-button slds-button_brand slds-m-left_small" onclick={handleSendBack}>Send back</button>
+                                                </template>
+                                    </template>
+                                </template>
+                                
+                                <template if:false={disableNext}>
+                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={handleNext}>Next</button>
+                                </template>
+                                <template if:true={disableNext}>
+                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small">Next</button>
+                                </template>                 
+                            </template>
+                            <template if:true={buttonVisibilitySentBack}>
+                                <template if:false={disableNext}>
+                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={handleNext}>Next</button>
+                                </template>
+                                <template if:true={disableNext}>
+                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small">Next</button>
+                                </template>
+                            </template>
+                            <template if:true={buttonVisibilityScreened}>
+                                <template if:false={currentfcuinitiated}>
+                                    <!-- <lightning-icon class="hoverable-icon slds-m-left_small" icon-name="utility:success" alternative-text="Screened!" variant="success" title="Screened" onclick={handleRemoveFromScreened}></lightning-icon> -->
+                                    <template lwc:if={profile.Admin}>
+                                        <!-- <button class="SaveButton slds-button slds-button_brand slds-m-left_small" style="width:200px;" onclick={handleRemoveFromQueue}>Recall FCU Recommendation</button> -->
+                                    </template>
+                                    <template lwc:elseif={profile.Sampler}>
+                                        <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={handleRemoveFromScreened}>Un-Screen</button>
+                                    </template>
+                                </template>
+                                <template if:false={disableNext}>
+                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={handleNext}>Next</button>
+                                </template>
+                                <template if:true={disableNext}>
+                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small">Next</button>
+                                </template>
+                            </template>
+                            <template if:true={buttonVisibilitySampling}>
+                                <template if:false={currentfcuinitiated}>
+                                    <template lwc:if={profile.Admin}>
+                                        <!-- <button class="SaveButton slds-button slds-button_brand slds-m-left_small" style="width:200px;" onclick={handleRemoveFromQueue}>Recall FCU Recommendation</button> -->
+                                    </template>
+                                    <template lwc:elseif={profile.Sampler}>
+                                        <button class="cancel-button button-text-nowrap slds-button slds-button_brand slds-m-left_small" onclick={handleRemoveFromQueue}>Remove from queue</button>
+                                        <!-- <button class="save-button slds-button slds-button_brand slds-m-left_small" onclick={handleConfirm}>Screen</button> -->
+                                    </template>
+                                </template>
+                                <template if:false={disableNext}>
+                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={handleNext}>Next</button>
+                                </template>
+                                <template if:true={disableNext}>
+                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small">Next</button>
+                                </template>
+                            </template>
+
+                            <template if:true={buttonVisibilityOnhold}>
+                                <template lwc:if={profile.Sampler}>
+                                    <template if:true={showUnHoldButton}>
+                                        <button class="save-button slds-button slds-button_brand slds-m-left_small" style="width:fit-content;" onclick={handleUnHold}>Un-Hold</button>
+                                    </template>
+                                </template>
+                            </template>
+
+                        </div>
+                    </lightning-layout-item>
+                </template>
+                <template if:false={isVendor}>
+                    <lightning-layout-item size="2">
+                        <div style="display: flex; justify-content: flex-start; width: 100%; flex-wrap: wrap;">
+                            <template if:true={disablePrevious}>
+                                <button class="disabled-button slds-button slds-button_brand" disabled={disablePrevious}>Previous</button>
+                            </template>
+                            <template if:false={disablePrevious}>
+                                <button class="previous-button slds-button slds-button_brand" onclick={handlePrevious} disabled={disablePrevious}>Previous</button>
+                            </template>
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="10" style="padding-right: 1%;">
+
+                        <div style="display: flex; justify-content: flex-end; width: 100%; flex-wrap: wrap; gap: 8px;">
+                            <template if:true={buttonVisibilityPending}>
+                                <template if:false={currentfcuinitiated}>
+                                    <template lwc:if={profile.Admin}>
+                                        <template if:false={buttonVisibilityOnhold}>
+                                        <button class="save-button slds-button slds-button_brand slds-m-left_small" style="width:fit-content;" onclick={handleRecommend}>Recommend for FCU</button>
+                                    </template>
+                                    </template>
+                                    <template lwc:elseif={profile.Sampler}>
+                                        <template if:false={buttonVisibilityOnhold}>
+                                            <button class="save-button slds-button slds-button_brand slds-m-left_small" onclick={handleSample}>Add to queue</button>
+                                            <button class="save-button slds-button slds-button_brand slds-m-left_small" onclick={handleIconClick}>Screen</button>
+                                            <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={handleHold}>{buttonLabel}</button>
+                                        </template>
+                                    </template>
+                                </template>
+                                <template if:false={disableNext}>
+                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={handleNext}>Next</button>
+                                </template>
+                                <template if:true={disableNext}>
+                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={handleLastNext}>Next</button>
+                                </template>
+                            </template>
+                            <template if:true={buttonVisibilityScreened}>
+                                <template if:false={currentfcuinitiated}>
+                                    <!-- <lightning-icon class="hoverable-icon slds-m-left_small" icon-name="utility:success" alternative-text="Screened!" variant="success" title="Screened" onclick={handleRemoveFromScreened}></lightning-icon> -->
+                                    <template lwc:if={profile.Admin}>
+                                        <button class="save-button slds-button slds-button_brand slds-m-left_small" style="width:fit-content;" onclick={handleRecommend}>Recommend for FCU</button>
+                                    </template>
+                                    <template lwc:elseif={profile.Sampler}>
+                                        <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={handleRemoveFromScreened}>Un-Screen</button>
+                                    </template>
+                                </template>
+                                <template if:false={disableNext}>
+                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={handleNext}>Next</button>
+                                </template>
+                                <template if:true={disableNext}>
+                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={handleLastNext}>Next</button>
+                                </template>
+                            </template>
+                            <template lwc:if={buttonVisibilityRecommend}>
+                                <template if:false={currentfcuinitiated}>
+                                    <template lwc:if={profile.Admin}>
+                                        <button class="previous-button slds-button slds-button_brand slds-m-left_small" style="width:fit-content;" onclick={handleRemoveFromQueue}>Recall FCU Recommendation</button>
+                                    </template>
+                                    <template lwc:elseif={profile.Sampler}>
+                                    </template>
+                                </template>
+                                <template if:false={disableNext}>
+                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={handleNext}>Next</button>
+                                </template>
+                                <template if:true={disableNext}>
+                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={handleLastNext}>Next</button>
+                                </template>
+                            </template>
+                            <template if:true={buttonVisibilitySampling}>
+                                <template if:false={currentfcuinitiated}>
+                                    <template lwc:if={profile.Admin}>
+                                        <!-- <button class="SaveButton slds-button slds-button_brand slds-m-left_small" style="width:200px;" onclick={handleRemoveFromQueue}>Recall FCU Recommendation</button> -->
+                                    </template>
+                                    <template lwc:elseif={profile.Sampler}>
+                                        <button class="cancel-button button-text-nowrap slds-button slds-button_brand slds-m-left_small" onclick={handleRemoveFromQueue}>Remove from queue</button>
+                                        <!-- <button class="save-button slds-button slds-button_brand slds-m-left_small" onclick={handleConfirm}>Screen</button> -->
+                                    </template>
+                                </template>
+                                <template if:false={disableNext}>
+                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={handleNext}>Next</button>
+                                </template>
+                                <template if:true={disableNext}>
+                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={handleLastNext}>Next</button>
+                                </template>
+                            </template>
+                            <template if:true={buttonVisibilitySentBack}>
+                                <template lwc:if={profile.Admin}>
+                                    <button class="save-button slds-button slds-button_brand slds-m-left_small" style="width:fit-content;" onclick={handleRecommend}>Recommend for FCU</button>
+                                </template>
+                                <template if:false={disableNext}>
+                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small" onclick={handleNext}>Next</button>
+                                </template>
+                                <template if:true={disableNext}>
+                                    <button class="cancel-button slds-button slds-button_brand slds-m-left_small">Next</button>
+                                </template>
+                            </template>
+                            <template if:true={buttonVisibilityOnhold}>
+                                <template lwc:if={profile.Sampler}>
+                                    <template if:true={showUnHoldButton}>
+                                        <button class="save-button slds-button slds-button_brand slds-m-left_small" style="width:fit-content;" onclick={handleUnHold}>Un-Hold</button>
+                                    </template>
+                                </template>
+                            </template>
+                        </div>
+                    </lightning-layout-item>
+                </template>
+            </lightning-layout>
+        </template>
+
+        <template if:true={showConfirmationScreen}>
+            <section role="dialog" tabindex="-1" aria-modal="true"
+                aria-label="Meaningful description of the modal content" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container" style="max-width: 100%;">
+                    <header class="slds-modal__header" style="background-color: #1467eb; color:#ffffff;font-weight:500;">
+                        <!-- <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleBackConfirmation}>
+                       <lightning-icon icon-name="utility:close"
+                          alternative-text="close"
+                          variant="error"
+                          size="small" ></lightning-icon>
+                       <span class="slds-assistive-text">Close</span>
+                    </button> -->
+                        <div class="slds-text-align_center">
+                            <h2 slot="title"
+                                style="font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px; color:#ffffff;"
+                                class="slds-text-heading_medium slds-hyphenate">Confirmation Screen</h2>
+                        </div>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless slds-scrollable_y"
+                        id="confirm-body" style="max-height: 70% !important;overflow: auto;background: #0e1c30;">
+                        <div class="button-shadow"
+                            style="width: 90%;background: #16283f; margin: 20px;padding: 20px;border-radius: 10px;border: 1px solid #33455e;">
+                            <p class="slds-text-align_center"
+                                style="font-style: Lato Bold; font-size: 12px;color: #ffffff;">{confirmMessage}</p>
+                        </div>
+                    </div>
+                    <footer class="slds-modal__footer" style="border: revert; background: #0a1524">
+                        <div class="slds-align_absolute-center">
+                            <button class="cancel-button slds-button slds-button_brand" onclick={handleBackConfirmation}>No</button>
+                            <button class="save-button slds-button slds-button_brand"  onclick={handleYes}>Yes</button>
+                        </div>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+        </template>
+
+        <template if:true={isRemarkScreen}>
+            <section role="dialog" tabindex="-1" aria-modal="true"
+                aria-label="Meaningful description of the modal content" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container" style="max-width: 100%; margin-top:6%">
+                    <header class="slds-modal__header" style="background-color: #1467eb; color:#ffffff;font-weight:500;">
+                        <!-- <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={cancelRemark}>
+                       <lightning-icon icon-name="utility:close"
+                          alternative-text="close"
+                          variant="error"
+                          size="small" ></lightning-icon>
+                       <span class="slds-assistive-text">Close</span>
+                    </button> -->
+                        <div class="slds-text-align_center">
+                            <h2 slot="title"
+                                style="font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px; color:#ffffff;"
+                                class="slds-text-heading_medium slds-hyphenate">Remarks Screen</h2>
+                        </div>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless slds-scrollable_y"
+                        style="max-height: 70% !important;overflow: auto;background: #0e1c30;">
+                        <div class="button-shadow"
+                            style="width: 90%;background: #16283f; margin: 20px;padding: 20px;border-radius: 10px;border: 1px solid #33455e;">
+                            <lightning-textarea name="manualRemark" label="Remarks" value={manualRemark}
+                                onchange={handleRemarkChanges} required={isSampleRemark}></lightning-textarea>
+                            <template if:true={isScreenRemark}>
+                                <lightning-combobox
+                                name="selectedRemark"
+                                label="FCU Remarks"
+                                value={selectedRemark}
+                                placeholder="Select a Remark"
+                                options={remarkOptions}
+                                onchange={handleRemarkChanges}
+                                ></lightning-combobox>
+                            </template>
+                        </div>
+                    </div>
+                    <footer class="slds-modal__footer" style="border: 1px solid #33455e;background: #0a1524">
+                        <div class="slds-align_absolute-center">
+                            <button class="cancel-button slds-button slds-button_brand"  onclick={cancelRemark}>Cancel</button>
+                            <button class="save-button slds-button slds-button_brand" onclick={handleRemark}>Save</button>
+                        </div>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+        </template>
+
+
+        <template if:true={showgenericConfirm}>
+            <c-confirmation-screen confirm-message={confirmMessage} positive-label='Yes' negative-label='No'
+                onnegativeclick={handleNegative} onpositiveclick={handlePositive}></c-confirmation-screen>
+        </template>
+        <template if:true={showSendBackRemarks}>
+            <section role="dialog" tabindex="-1" aria-modal="true"
+                aria-label="Meaningful description of the modal content" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container" style="max-width: 100%;">
+                    <header class="slds-modal__header" style="background-color: #1467eb; color:#ffffff;font-weight:500;">
+                        <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handleNegative}>
+                       <lightning-icon icon-name="utility:close"
+                          alternative-text="close"
+                          variant="error"
+                          size="small" ></lightning-icon>
+                       <span class="slds-assistive-text">Close</span>
+                    </button>
+                        <div class="slds-text-align_center">
+                            <h2 slot="title"
+                                style="font-style: Lato Bold; font-size:11px; font-weight: bold; margin-top: 5px; margin-bottom: 5px"
+                                class="slds-text-heading_medium slds-hyphenate"> Send Back Remarks Screen</h2>
+                        </div>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless slds-scrollable_y"
+                        id="send-back" style="max-height: 70% !important;overflow: auto;">
+                        <div class="button-shadow"
+                            style="width: 90%;background: #16283f; margin: 20px;padding: 20px;border-radius: 10px;border: 1px solid #33455e;">
+                            <lightning-textarea label="Remarks" type="text" value={remarks}
+                                onchange={handleSaveRemarksOnChange} required class="custom-input-style">
+                            </lightning-textarea>
+
+                        </div>
+                        <footer
+                            class="slds-modal__footer slds-align_absolute-center slds-m-top_medium slds-m-top_xx-small"
+                            style="border: revert;">
+                            <button class="cancel-button slds-button slds-button_brand" onclick={handleCloseRemarks}>Cancel</button>
+                            <button class="save-button slds-button slds-button_brand"  onclick={handleSaveRemarks}>Save</button>
+                        </footer>
+                    </div>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+        </template>
+    </template>
+    <template if:true={openQueryModule}>
+        <c-query-module-child-cmp record-id={recordId} onclosequerymodal={closeQueryModule} width-percentage =80
+            onclosequerymodalwithdata={closeQueryModuleWithData} document-checklist-id={currentDocCheckListId} 
+             onassignedquery={handleUpdateQueryAssignment} onclosemodal={handleCloseModal} module-name="FCU Module" ></c-query-module-child-cmp>
+    </template>
+</template>

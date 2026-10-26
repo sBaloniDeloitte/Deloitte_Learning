@@ -1,0 +1,297 @@
+/* _______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________ */
+@import "c/cssLibrary";
+
+/* ── Dark theme tokens (matching "Lead Potential" reference design) ─────── */
+:host {
+    --dlr-bg-page:      #0d0d17;
+    --dlr-card-bg:      #171728;
+    --dlr-card-border:  rgba(139, 92, 246, 0.18);
+    --dlr-accent-start: #7c3aed;
+    --dlr-accent-end:   #a855f7;
+    --dlr-text-title:   #ffffff;
+    --dlr-text-sub:     #9ca3af;
+    --dlr-text-body:    #d1d5db;
+    --dlr-radius-lg:    28px;
+    --dlr-radius-sm:    8px;
+
+    display: block;
+    width: 100%;
+    border-radius: var(--dlr-radius-lg);
+    overflow: hidden;
+}
+
+/* ── Root host — kills any white gutter around the component and carries ─
+   the same curvature as the card so the OUTERMOST rendered box (the host
+   element itself) is rounded, not just the inner div ────────────────────── */
+:host {
+    background: var(--dlr-bg-page) !important;
+}
+
+/* ── Card wrapper — replaces the old inline white background ────────────── */
+.dialer-card,
+.border-field {
+    background: var(--dlr-card-bg) !important;
+    border: 2px solid var(--dlr-card-border);
+    border-radius: var(--dlr-radius-lg) !important;
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+    color: var(--dlr-text-title);
+}
+
+/* ── Header — SLDS ships a white .slds-modal__header, force it dark ────── */
+.header-section,
+.slds-modal__header {
+    background: transparent !important;
+    border-bottom: 1px solid var(--dlr-card-border);
+    padding: 20px 20px 16px;
+}
+
+/* ── Content area — SLDS ships a white .slds-modal__content, force it dark */
+.slds-modal__content {
+    background: var(--dlr-card-bg) !important;
+    color: var(--dlr-text-title) !important;
+}
+
+.header-badge-row {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 10px;
+}
+
+.header-icon-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    border-radius: var(--dlr-radius-sm);
+    background: linear-gradient(135deg, var(--dlr-accent-start) 0%, var(--dlr-accent-end) 100%);
+    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
+}
+
+.header-title {
+    color: var(--dlr-text-title);
+    font-weight: 700;
+}
+
+.header-subtitle {
+    color: var(--dlr-text-sub);
+    font-size: 0.8rem;
+    margin: 4px 0 0;
+}
+
+/* ── Body text ───────────────────────────────────────────────────────────── */
+.last-disposition-text {
+    text-align: center;
+    padding-top: 0.7rem;
+    color: var(--dlr-text-body);
+}
+
+.section-subheading {
+    font-size: 12px;
+    color: var(--dlr-text-sub);
+    margin-top: 1rem;
+    margin-bottom: 3px;
+}
+
+/* ── Table (dark) — SLDS .slds-table ships white bg + black text, override */
+.dark-table,
+.slds-table {
+    background: transparent !important;
+    color: var(--dlr-text-body) !important;
+}
+
+.dark-table tr,
+.slds-table tr {
+    background: rgba(255, 255, 255, 0.02) !important;
+    border-bottom: 1px solid var(--dlr-card-border);
+}
+
+.dark-table td,
+.slds-table td,
+.dark-table th,
+.slds-table th {
+    background: transparent !important;
+    color: var(--dlr-text-body) !important;
+    border: none;
+}
+
+.note-key {
+    color: var(--dlr-accent-end) !important;
+}
+
+.note-value {
+    color: var(--dlr-text-body) !important;
+}
+
+.no-records-cell {
+    text-align: center;
+    padding: 10px;
+    color: var(--dlr-text-sub) !important;
+}
+
+/* ── Call Count label — keep dark card background, only the "Call Count"
+   word switches from black (SLDS default) to white for visibility ──────── */
+.call-count-input {
+    --slds-c-input-color-background: var(--dlr-card-bg);
+    --slds-c-input-text-color: var(--dlr-text-title);
+    --slds-c-input-label-color: var(--dlr-text-title);
+    --sds-c-input-color-background: var(--dlr-card-bg);
+    --sds-c-input-text-color: var(--dlr-text-title);
+    --sds-c-input-color-border: var(--dlr-card-border);
+    --lwc-colorTextLabel: var(--dlr-text-title);
+    --lwc-colorTextInput: var(--dlr-text-title);
+    --lwc-colorBackgroundInput: var(--dlr-card-bg);
+    --lwc-colorBorderInput: var(--dlr-card-border);
+}
+
+.call-count-input label,
+.call-count-input .slds-form-element__label {
+    color: var(--dlr-text-title) !important;
+}
+
+.footer-section,
+.slds-modal__footer {
+    background: transparent !important;
+}
+
+/* ── Force every heading / paragraph / bold / span text to white ────────── */
+.dialer-card h2,
+.dialer-card p,
+.dialer-card b,
+.dialer-card span,
+.dialer-card label,
+.dialer-card td {
+    color: var(--dlr-text-title);
+}
+
+.header-subtitle,
+.section-subheading,
+.no-records-cell {
+    color: var(--dlr-text-sub) !important;
+}
+
+/* ── Layout (unchanged from source — functional, not visual) ───────────── */
+/* .btn-col {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    /* ____GenAI: when this component is hosted in a narrower column (e.g. the
+       340px right rail in leadManagementV2), the lightning-layout-item's
+       computed percentage width could shrink this cell below the button's
+       own size, making the "+" circle render squeezed/invisible. min-width
+       + flex-shrink:0 guarantee the column always has room for the button,
+       regardless of the parent's width. Visual-only, no behavior change____ 
+    min-width: 2.75rem;
+    flex-shrink: 0;
+} */
+.btn-col {
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+    min-width: 2.75rem;
+    flex-shrink: 0;
+    margin-left: 0.75rem;
+}
+
+/* ── Increment ("+") button — modern gradient circular button ─────────
+   lightning-button-icon renders in native shadow DOM, so its internal
+   <button> cannot be reached with descendant selectors. The wrapper div
+   below paints the actual visible circle/gradient/shadow; the component
+   itself is only made transparent via its exposed styling hooks (the
+   ONLY thing that legitimately crosses the shadow boundary) so the
+   wrapper's gradient shows through instead of the flat SLDS brand blue. ── */
+.increment-btn-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+    flex-shrink: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--dlr-accent-start) 0%, var(--dlr-accent-end) 100%);
+    box-shadow: 0 4px 16px rgba(124, 58, 237, 0.5), 0 0 0 4px rgba(124, 58, 237, 0.12);
+    cursor: pointer;
+    transition: transform 0.18s ease, box-shadow 0.18s ease;
+}
+
+.increment-btn-wrapper:hover {
+    transform: translateY(-2px) scale(1.06);
+    box-shadow: 0 8px 22px rgba(124, 58, 237, 0.65), 0 0 0 5px rgba(124, 58, 237, 0.18);
+}
+
+.increment-btn-wrapper:active {
+    transform: translateY(0) scale(0.94);
+    box-shadow: 0 2px 8px rgba(124, 58, 237, 0.45);
+}
+
+.increment-btn {
+    --slds-c-button-icon-color-background: transparent !important;
+    --slds-c-button-icon-color-background-hover: transparent !important;
+    --slds-c-button-icon-color-background-active: transparent !important;
+
+    --slds-c-button-icon-color-border: transparent !important;
+    --slds-c-button-icon-color-border-hover: transparent !important;
+    --slds-c-button-icon-color-border-active: transparent !important;
+
+    --slds-c-icon-color-foreground: #ffffff !important;
+    --slds-c-icon-color-foreground-hover: #ffffff !important;
+
+    --sds-c-button-icon-color-background: transparent !important;
+    --sds-c-button-icon-color-background-hover: transparent !important;
+    --sds-c-button-icon-color-background-active: transparent !important;
+
+    --sds-c-button-icon-color-border: transparent !important;
+    --sds-c-button-icon-color-border-hover: transparent !important;
+    --sds-c-button-icon-color-border-active: transparent !important;
+
+    --sds-c-icon-color-foreground: #ffffff !important;
+    --sds-c-icon-color-foreground-hover: #ffffff !important;
+}
+
+@media (min-width: 1024px) {
+    .btn-col {
+        margin-top: 1.15rem;
+    }
+}
+
+@media (max-width: 1023px) {
+    .btn-col {
+        margin-top: 2.1rem;
+    }
+}
+
+.call-count-wrapper {
+    width: 100%;
+}
+
+.call-count-label {
+    display: block;
+    color: #ffffff !important;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 0.25rem;
+}
+
+.call-count-display {
+    width: 100%;
+    height: 2.5rem;
+    box-sizing: border-box;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 0.75rem;
+
+    background: #16283f !important;
+    border: 1px solid #33455e;
+    border-radius: 0.25rem;
+
+    color: #ffffff !important;
+    font-size: 0.875rem;
+    font-weight: 400;
+}
+/* __________________________GenAI: Generated code ends here______________________________ */

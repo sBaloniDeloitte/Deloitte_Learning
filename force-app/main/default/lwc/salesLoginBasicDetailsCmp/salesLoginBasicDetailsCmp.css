@@ -1,0 +1,19 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+
+:host {
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+}
+
+.save-button {
+    background-color: #1467eb !important;
+    color: #ffffff !important;
+    border-color: #1467eb !important;
+    font-weight: 600;
+}
+
+.previous-button {
+    background-color: #2a2f45 !important;
+    color: #ffffff !important;
+    border-color: #2a2f45 !important;
+}

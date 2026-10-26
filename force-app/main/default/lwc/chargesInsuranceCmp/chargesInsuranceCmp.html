@@ -1,0 +1,293 @@
+<template>
+   <span class="styleContainer">
+      
+   </span>
+   <template lwc:if={isLoading}>
+      <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+   </template>
+   <div class=" slds-grid slds-wrap slds-p-around_medium" >
+      <template lwc:if={isEditableUser}>
+         <div class="tobeScrolled slds-col slds-size_1-of-6">
+            <lightning-record-picker
+               label="VAS Code"
+               placeholder="Search VAS Code"
+               object-api-name="Charges_Insurance_Master__c"
+               value={selectedVasRecordId}
+               onchange={handleVASCode} 
+               size="large"
+               icon-name="custom:custom94"
+               display-info={displayInfo}
+               matching-info={matchingInfo}
+               filter={filter}
+               class="recordPicker"
+               disabled={isPreviewMode}>
+            </lightning-record-picker>
+            <div class="slds-col slds-size_1-of-6"></div>
+            <div class="slds-col slds-size_1-of-6"></div>
+            <div class="slds-col slds-size_1-of-6"></div>
+            <div class="slds-col slds-size_1-of-6"></div>
+            <div class="slds-col slds-size_1-of-6"></div>
+         </div>
+      </template>
+   </div>
+   <div>
+      <template lwc:if={selectedVasRecordId}>
+         <div style="color: red; font-weight: bold; margin-top: 10px;" class="slds-m-around_small">
+            {label.requiredFieldMsg}
+        </div>
+         <template if:true={showNoIndividualApplicantMsg}>
+             <div style="color: red; font-weight: bold; margin-top: 10px;" class="slds-m-around_small">
+            {label.noIndividualApplicantMsg}
+        </div>
+         </template>
+        <div class="slds-p-right_medium slds-p-left_medium">
+            <lightning-record-edit-form object-api-name="Charges_Insurance__c" density="Comfy" onsuccess={handleSuccess} onsubmit={saveRecord} onerror={handleFormError} record-id={vasRecordId}>
+               <div id="vasDetails" class="tabstyle bottomBoaderStyle">VAS Details</div>
+               <div class="slds-p-around_medium boaderStyle bottomBoaderStyle">
+                  <div class="slds-grid slds-gutters slds-wrap slds-p-around_medium">
+                     <div class="slds-col slds-size_1-of-3">
+                        <lightning-input-field class="hideInput" variant="bare" field-name="Description__c" value={prefilledFields.description} onchange={handleChange} onfocusout={handleFocusOut} disabled> </lightning-input-field>
+                        <p lwc:if={errorMessages.Description__c} class="slds-text-color_error slds-p-left_xx-small">{errorMessages.Description__c}</p>
+                     </div>
+                     <div class="slds-col slds-size_1-of-3">
+                        <lightning-input-field class="removeborder" style="width:100%;" field-name="Fee_Method__c" label="Mode of Payment" onchange={handleChange} onfocusout={handleFocusOut} value={prefilledFields.feeMethod} required disabled={disableFeeMethod}> </lightning-input-field>
+                        <p lwc:if={errorMessages.Fee_Method__c} class="slds-text-color_error slds-p-left_xx-small">{errorMessages.Fee_Method__c}</p>
+                     </div>
+                  </div>
+               </div>
+               <div class="slds-p-top_medium">
+                  <div class="secondTabStyle">{tabName}</div>
+                  <template for:each={groupedFieldList} for:item="tabItem" for:index="groupedIndex">
+                     <div key={tabItem.tabIndex}>
+                        <template lwc:if={tabItem.isVisible}>
+                        <div class="slds-p-around_small boaderStyle" >
+                           <div class="slds-p-bottom_small slds-text-title_bold">{tabItem.sectionName} :</div>
+                           <div class="slds-grid slds-gutters slds-wrap slds-p-around_medium">
+                              <template lwc:if={tabItem.isFieldData}>
+                              <template for:each={tabItem.fieldList} for:item="vas" for:index="tabIndex">
+                                 <div key={vas.fieldName} class="slds-col slds-size_1-of-3">
+                                    <template lwc:if={vas.isCustomerName}>
+                                          <lightning-combobox
+                                                class="removeborder" 
+                                                style="width:100%;"
+                                                name="Application_Applicant__c"
+                                                label="Customer Name"
+                                                value={customerId}
+                                                placeholder="Select Customer Name"
+                                                options={applicants}
+                                                onchange={handleCustomerChange} 
+                                               
+                                                data-groupedindex={groupedIndex} 
+                                                data-tabindex={tabIndex}
+                                                required = {vas.isRequired}
+                                                disabled={isPreviewMode}
+                                                 ></lightning-combobox>
+                                                  <!-- onfocusout={handleCustomerFcsOut} -->
+                                       </template>
+                                       <template lwc:elseif={vas.isPrefilled}>
+                                          <lightning-input-field class={vas.customClass} variant="bare" field-name={vas.fieldName} value={vas.fieldValue} data-groupedindex={groupedIndex} data-tabindex={tabIndex} onchange={handleChange} onfocusout={handleFocusOut} disabled={vas.isDisabled}> </lightning-input-field>
+                                       </template>
+                                       <template lwc:else>
+                                          <lightning-input-field 
+                                          class={vas.customClass} 
+                                          variant="bare" 
+                                          field-name={vas.fieldName} 
+                                          data-groupedindex={groupedIndex} 
+                                          data-tabindex={tabIndex} 
+                                          onchange={handleChange} 
+                                          onfocusout={handleFocusOut} 
+                                          required = {vas.isRequired}
+                                          value = {vas.fieldValue}
+                                          disabled={isPreviewMode}> </lightning-input-field>
+                                       </template>
+                                       <p if:true={vas.fieldErrorMessage} class="slds-text-color_error slds-p-left_xx-small">{vas.fieldErrorMessage}</p>
+                                 </div>
+                              </template>
+                              </template>
+                              <template lwc:else>
+                                
+                                 <template if:true = {tabItem.isExcelUploadSection}>
+                                 <c-upload-view-delete-document
+                                          doc-detail-id={excelCalculatorDocId}
+                                          show-view={showViewExcel}
+                                          show-upload={showUploadExcel}
+                                          show-delete={showDeleteExcel}
+                                          show-retake={showRetakeExcel}
+                                          show-location={showLocationExcel}
+                                          content-doc-id={contentIdExcel}
+                                          file-type={fileTypeExcel}
+                                          name='File Upload Excel Calculator:'
+                                          onclick={handleFileUploadExcel}>
+                                 </c-upload-view-delete-document>
+                                 </template>
+                                 <template if:false = {tabItem.isExcelUploadSection}>
+                                 <c-upload-view-delete-document
+                                          doc-detail-id={DocDetailId}
+                                          show-view={showView}
+                                          show-upload={showUpload}
+                                          show-delete={showDelete}
+                                          show-retake={showRetake}
+                                          show-location={showLocation}
+                                          content-doc-id={contentId}
+                                          file-type={fileType}
+                                          name='File Upload Vas Proposal Form:'
+                                          disable-upload={disableUpload}
+                                          onclick={handleFileUpload}>
+                                 </c-upload-view-delete-document>
+                                 </template>
+                                     
+                              </template>
+                           </div>
+                        </div>
+                        </template>
+                     </div>
+                  </template>
+               </div>
+               <div class="slds-grid slds-grid_align-end slds-m-top_medium">
+                  <div class="slds-col">
+                     <template lwc:if={isEditableUser}>
+                        <button
+                        class="slds-button slds-button_brand save-button saveBtnStyle"
+                        type="submit"
+                        label="Save Record"
+                        >Save</button>
+                     </template>
+                  </div>
+               </div>
+            </lightning-record-edit-form>
+         </div>
+      </template>
+   </div>
+   <div class="slds-p-around_medium">
+      <template lwc:if={showTable}>
+         <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+         <thead>
+            <tr class="slds-line-height_reset">
+               <th class="slds-cell-wrap commonStyle tableHeader vasCode" scope="col">
+                  <div class="" title="VAS Code">VAS #</div>
+               </th>
+               <th class="slds-cell-wrap commonStyle tableHeader vasCode" scope="col">
+                  <div class="" title="VAS Code">VAS Code</div>
+               </th>
+               <th class="slds-cell-wrap commonStyle tableHeader vasCode" scope="col">
+                  <div class="" title="VAS Code">VAS Type</div>
+               </th>
+               <th class="slds-cell-wrap commonStyle tableHeader vasCode" scope="col">
+                  <div class="" title="Customer Name">Customer Name</div>
+               </th>
+               <th class="slds-cell-wrap commonStyle tableHeader description" scope="col">
+                  <div class="" title="Description">Description</div>
+               </th>
+               <th class="slds-cell-wrap commonStyle tableHeader selfFunded" scope="col">
+                  <div class="" title="Insurance Premium">Insurance Premium</div>
+               </th>
+               <th class="slds-cell-wrap commonStyle tableHeader sumInsured" scope="col">
+                  <div class="" title="Sum Insured">Sum Insured</div>
+               </th>
+               <th class="slds-cell-wrap commonStyle tableHeader modeOfPayment" scope="col">
+                  <div class="" title="Mode of Payment">Mode of Payment</div>
+               </th>
+               <th class="slds-cell-wrap commonStyle tableHeader actions" scope="col">
+                  <div class="" title="Actions">Actions</div>
+               </th>
+            </tr>
+         </thead>
+         <tbody>
+            <template for:each={existingVasRecords} for:item="vasRecord" for:index="index">
+               <tr key={vasRecord.Id} class="">
+                  <td class="slds-cell-wrap commonStyle vasCode" data-label="VAS Code">
+                     <div class="slds-truncate" title={vasRecord.chargeInsurance.Custom_Auto_Number__c}>{vasRecord.chargeInsurance.Custom_Auto_Number__c}</div>
+                  </td>
+                  <td class="slds-cell-wrap commonStyle vasCode" data-label="VAS Code">
+                     <div class="slds-truncate" title={vasRecord.chargeInsurance.VAS_Code__c}>{vasRecord.chargeInsurance.VAS_Code__c}</div>
+                  </td>
+                  <td class="slds-cell-wrap commonStyle vasCode" data-label="VAS Type">
+                     <div class="slds-truncate" title={vasRecord.chargeInsurance.VAS_Type__c}>{vasRecord.chargeInsurance.VAS_Type__c}</div>
+                  </td>
+                  <td class="slds-cell-wrap commonStyle customerName" data-label="Customer Name">
+                     <div class="slds-truncate" title={vasRecord.chargeInsurance.Application_Applicant__r.Applicant_Name__c}>{vasRecord.chargeInsurance.Application_Applicant__r.Applicant_Name__c}</div>
+                  </td>
+                  <td class="slds-cell-wrap commonStyle description" data-label="Description">
+                     <div class="" title={vasRecord.chargeInsurance.Description__c}>{vasRecord.chargeInsurance.Description__c}</div>
+                  </td>
+                  <td class="slds-cell-wrap commonStyle description" data-label="Description">
+                     <div class="" title={vasRecord.chargeInsurance.Description__c}>{vasRecord.chargeInsurance.Insurance_Premium__c}</div>
+                  </td>
+                  <td class="slds-cell-wrap commonStyle sumInsured" data-label="Sum Insured">
+                     <div class="slds-truncate" title={vasRecord.chargeInsurance.Sum_Insured_Customer_Details__c}>{vasRecord.chargeInsurance.Sum_Insured_Customer_Details__c}</div>
+                  </td>
+                  <td class="slds-cell-wrap commonStyle modeOfPayment" data-label="Mode of Payment">
+                     <div class="slds-truncate" title={vasRecord.chargeInsurance.Fee_Method__c}>{vasRecord.chargeInsurance.Fee_Method__c}</div>
+                  </td>
+                  <td class="slds-cell-wrap commonStyle action" data-label="Actions">
+                     <div class="slds-truncate" title="Actions">
+                        <template lwc:if={isEditableUser}>
+                           <lightning-icon class="editIcon" 
+                                           size="small" 
+                                           icon-name="utility:edit" 
+                                           alternative-text="edit" 
+                                           title="edit" 
+                                           data-vasid={vasRecord.chargeInsurance.Id} 
+                                           data-vascode={vasRecord.chargeInsurance.Charges_Insurance_Master__c}
+                                            data-vasnomineedob={vasRecord.chargeInsurance.Nominee_DOB__c} 
+                                            data-vasselffunded={vasRecord.chargeInsurance.Self_Funded__c} 
+                                            data-vascustomerid={vasRecord.chargeInsurance.Application_Applicant__c} 
+                                           data-vasinsurancepremium={vasRecord.chargeInsurance.Insurance_Premium__c} 
+                                           data-vasdocdetailid={vasRecord.docDetailId} 
+                                           data-vascontentid={vasRecord.contentId} 
+                                           data-vasfiletype={vasRecord.fileType} 
+                                           data-vasdocdetailidexcel={vasRecord.docDetailIdExcel} 
+                                           data-vascontentidexcel={vasRecord.contentIdExcel} 
+                                           data-vasfiletypeexcel={vasRecord.fileTypeExcel}
+                                           onclick={handleEdit}></lightning-icon>
+                           <template lwc:if={isLoanInPSVStage}>
+                              <lightning-icon class="deleteIcon" size="small" icon-name="utility:delete" alternative-text="delete" title="delete" data-vasid={vasRecord.chargeInsurance.Id} data-vascustomerid={vasRecord.chargeInsurance.Application_Applicant__c} data-vascode={vasRecord.chargeInsurance.Charges_Insurance_Master__c} onclick={handleDelete}></lightning-icon>
+                           </template>
+                        </template>
+                        <template lwc:else>
+                           <lightning-icon class="previewIcon" 
+                           icon-name="utility:preview" 
+                           data-vasid={vasRecord.chargeInsurance.Id} 
+                           data-vascode={vasRecord.chargeInsurance.Charges_Insurance_Master__c} 
+                           data-vasnomineedob={vasRecord.chargeInsurance.Nominee_DOB__c} 
+                           data-vasselffunded={vasRecord.chargeInsurance.Self_Funded__c}
+                            data-vascustomerid={vasRecord.chargeInsurance.Application_Applicant__c} 
+                            data-vasinsurancepremium={vasRecord.chargeInsurance.Insurance_Premium__c} 
+                            data-vasdocdetailid={vasRecord.docDetailId} 
+                            data-vascontentid={vasRecord.contentId} 
+                            data-vasfiletype={vasRecord.fileType} 
+                            data-vasdocdetailidexcel={vasRecord.docDetailIdExcel} 
+                           data-vascontentidexcel={vasRecord.contentIdExcel} 
+                           data-vasfiletypeexcel={vasRecord.fileTypeExcel}
+                            onclick={handlePreview}></lightning-icon>
+                        </template>   
+                     </div>
+                  </td>
+               </tr>
+            </template>
+         </tbody>
+      </table>
+   </template>
+   </div>
+   <template if:true={confirmDeletePopup}>
+      <section role="dialog" tabindex="-1" aria-modal="true" aria-label="This is a confirmation modal for step loan record deletion"
+         class="slds-modal slds-fade-in-open">
+         <div class="slds-modal__container">
+            <header class="slds-modal__header header-section">
+               <div class="slds-text-align_center">
+                  <h2 slot="title" class="header-title slds-text-heading_medium slds-hyphenate">Confirmation Screen</h2>
+               </div>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless textAlignment">
+               Are you sure you want to delete?
+            </div>
+            <footer class="slds-modal__footer footer-section">
+               <div class="slds-align_absolute-center">
+                  <button class="cancel-button slds-button slds-button_brand" onclick={closeVasDeleteModal}>No</button>
+                  <button class="save-button slds-button slds-button_brand" onclick={confirmVasDelete}>Yes</button>
+               </div>
+            </footer>
+         </div>
+      </section>
+   </template>
+</template>

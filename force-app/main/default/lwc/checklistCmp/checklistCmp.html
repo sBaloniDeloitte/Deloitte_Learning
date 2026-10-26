@@ -1,0 +1,127 @@
+<!--
+   @description       : 
+   @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+   @group             : 
+   @last modified on  : 01-31-2025
+   @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+   -->
+<template>
+   <div class="custom-tab-container">
+      <!-- Dynamic Picklist -->
+      <div class="fixed-width-combobox" style="margin-left: 16px; margin-bottom: 10px; display: inline-block;">
+         <lightning-combobox name="Categories"
+            value={value}
+            options={picklistOptions}
+            placeholder="Select Category"
+            onchange={handleCategorySelected}
+            style="--slds-c-input-color-background: #1a73f0; --slds-c-input-text-color: #ffffff; --slds-c-input-color-border: #0d3f9c; --slds-c-input-radius-border: 8px; font-weight: 700;"></lightning-combobox>
+      </div>
+      <!-- Picklist Content -->
+      <template for:each={recordObj} for:item="item" for:index="index">
+         <div key={item.label} class="tab-content" if:true={item.isActive}>
+            <div class="slds-m-top_medium slds-p-around_medium">
+               <div class="checklist-table-wrapper">
+               <table class="slds-table slds-table_cell-buffer checklist-table">
+                  <thead class="checklist-thead">
+                     <tr style="border-radius: 12px; overflow: hidden;">
+                        <th class="slds-cell-wrap checklist-header-cell" scope="col" style="background-color: #0e1c30; color: #ffffff; border-top-left-radius: 10px; border-bottom-left-radius: 10px;">
+                           Description
+                        </th>
+                        <th class="slds-cell-wrap checklist-header-cell" scope="col" style="background-color: #0e1c30; color: #ffffff;">
+                           Document Type
+                        </th>
+                        <th class="slds-cell-wrap checklist-header-cell" scope="col" style="background-color: #0e1c30; color: #ffffff;">
+                           Category
+                        </th>
+                        <th class="slds-cell-wrap checklist-header-cell" scope="col" style="background-color: #0e1c30; color: #ffffff;">
+                           Status
+                        </th>
+                        <th class="slds-cell-wrap checklist-header-cell" scope="col" style="background-color: #0e1c30; color: #ffffff;">
+                           OVD Verified
+                        </th>
+                        <th class="slds-cell-wrap checklist-header-cell" scope="col" style="background-color: #0e1c30; color: #ffffff;">
+                           Remark
+                        </th>
+                        <th class="slds-cell-wrap checklist-header-cell" scope="col" style="background-color: #0e1c30; color: #ffffff; border-top-right-radius: 12px; border-bottom-right-radius: 12px;">
+                           Remark History
+                        </th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <template for:each={item.fieldList} for:item="record" for:index="recindex">
+                        <tr key={record.DeveloperName} style={record.rowStyle}>
+                           <td class="slds-cell-wrap checklist-cell checklist-cell-desc">
+                              {record.Description__c}
+                           </td>
+                           <td class="slds-cell-wrap checklist-cell checklist-cell-doc">
+                              {record.Document_Type__c}
+                           </td>
+                           <td class="slds-cell-wrap checklist-cell checklist-cell-category">
+                              {record.Category__c}
+                           </td>
+                           <td class="checklist-cell checklist-cell-radio" style="text-align: left; vertical-align: top; padding: 8px 8px 8px 12px;">
+                              <lightning-radio-group name={record.Label} options={options} type="radio"
+                                 value={record.Status__c} data-recindex={recindex} data-tabindex={index}
+                                 onchange={handleStatusChange} disabled={record.isStatusDisabled}
+                                 style="display: block; width: 100%;">
+                              </lightning-radio-group>
+                           </td>
+                           <td class="checklist-cell checklist-cell-radio" style="text-align: left; vertical-align: top; padding: 8px 8px 8px 12px;">
+                              <lightning-radio-group name={record.Label} options={options} type="radio"
+                                 value={record.Status__c} data-recindex={recindex} data-tabindex={index}
+                                 onchange={handleStatusChange} disabled={record.isStatusDisabled}
+                                 style="display: block; width: 100%;">
+                              </lightning-radio-group>
+                           </td>
+                           <td class={record.inputClass}>
+                              <textarea class="remarks-textarea"
+                                 data-recindex={recindex} data-tabindex={index} oninput={handleTextareaChange}
+                                 disabled={record.isRemarksDisabled}>{record.Remarks__c}</textarea>
+                           </td>
+                           <td class="slds-cell-wrap checklist-action-cell">
+                              <lightning-button-icon icon-name="utility:preview" variant="border-filled"
+                                 class="view-action-btn" alternative-text="View" title="View"
+                                 data-tabindex={index} data-recindex={recindex} onclick={handleViewHistory}>
+                              </lightning-button-icon>
+                           </td>
+                        </tr>
+                     </template>
+                  </tbody>
+               </table>
+               </div>
+            </div>
+            <div class="slds-m-top_medium slds-text-align_right">
+               <template if:true={showSaveButton}>
+                  <button class="save-button slds-button slds-button_brand checklist-btn-noborder" data-tabindex={index} onclick={saveRecord}>
+                  Save
+                  </button>
+               </template>
+            </div>
+         </div>
+      </template>
+      
+      <!-- Remark History Modal -->
+      <template if:true={isModalOpen}>
+         <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+               <header class="slds-modal__header checklist-modal-header">
+                  <div class="slds-text-align_center">
+                     <h2 slot="title"
+                        class="slds-text-heading_medium slds-hyphenate checklist-modal-title">Remark History</h2>
+                  </div>
+               </header>
+               <div class="slds-modal__content slds-p-around_medium checklist-modal-content">
+                  <lightning-formatted-rich-text value={selectedRemarkHistory}></lightning-formatted-rich-text>
+               </div>
+               <footer class="slds-modal__footer checklist-modal-footer">
+                  <div class="slds-align_absolute-center">
+                     <button class="cancel-button slds-button slds-button_brand checklist-btn-noborder"
+                        onclick={closeModal}>Close</button>
+                  </div>
+               </footer>
+            </div>
+         </section>
+         <div class="slds-backdrop slds-backdrop_open"></div>
+      </template>
+   </div>
+</template>

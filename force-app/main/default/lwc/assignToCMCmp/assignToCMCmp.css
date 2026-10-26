@@ -1,0 +1,153 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import 'c/cssLibrary';
+
+/* ----------------- Dark Theme Palette -----------------
+   Matches the modal colour scheme already used on loanReassignmentScreen /
+   rejectLoanApplicationCmp / homeQuickAction so this popup looks consistent
+   with the rest of the app's modals. */
+:host {
+    --dt-bg: #0a1524;
+    --dt-input-bg: #16283f;
+    --dt-border: #33455e;
+    --dt-text: #ffffff;
+    --dt-text-muted: #cfd8e6;
+    --dt-gradient: linear-gradient(135deg, rgb(0, 26, 94) 0%, rgb(0, 48, 135) 55%, rgb(0, 77, 179) 100%);
+}
+
+/* .slds-modal is the actual full-viewport overlay layer here (this component
+   never renders a separate .slds-backdrop element) - dim + blur the page
+   behind the popup while it's open. Centering behavior unchanged. */
+.slds-modal {
+    background-color: rgba(4, 9, 20, 0.55) !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* The Validation popup can be shown at the same time as the main confirmation
+   popup (isModalOpen and showValidation both stay true) - stack it above. */
+.assign-cm-validation-modal {
+    z-index: 9001;
+}
+
+.header-section {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-image: var(--dt-gradient) !important;
+    color: var(--dt-text) !important;
+    border-bottom: 1px solid var(--dt-border);
+}
+
+.header-title {
+    color: var(--dt-text) !important;
+}
+
+.footer-section {
+    position: sticky;
+    bottom: 0;
+    background-image: var(--dt-gradient) !important;
+    border-top: 1px solid var(--dt-border);
+}
+
+/* Same "flush header/footer" fix already applied elsewhere: cssLibrary.css
+   (imported above) forces ".slds-modal__container { padding: 3% 0 !important; }"
+   on every modal in the org - resetting that padding and pinning header/footer
+   as fixed-size flex items (content scrollable in between) removes the empty
+   dark strip above/below them. */
+.assign-cm-modal-container {
+    width: 42rem;
+    max-width: 90%;
+    background-color: var(--dt-bg);
+    display: flex;
+    flex-direction: column;
+    padding: 0 !important;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.assign-cm-modal-container .header-section,
+.assign-cm-modal-container .footer-section {
+    flex: 0 0 auto;
+}
+
+.assign-cm-modal-container .slds-modal__content {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    background-color: var(--dt-bg);
+    color: var(--dt-text);
+}
+
+/* "X" close button pinned to the top-right corner of the header. header-section
+   is already position:sticky (a valid positioning context), so no extra
+   position:relative is needed. Calls the same existing handleCancel /
+   closeValidationModal handlers already used by the Cancel/Close buttons -
+   purely additive UI, no behavior change. */
+.assign-cm-close-btn {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    z-index: 11;
+    --sds-c-icon-color-foreground: #ffffff;
+    --sds-c-icon-color-foreground-default: #ffffff;
+}
+
+.assign-cm-close-btn:hover,
+.assign-cm-close-btn:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+}
+
+/* Footer buttons centered instead of right/default-aligned. */
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+/* Yes, Assign - solid purple ("Start Application"/"Yes" look used elsewhere). */
+.continue-button {
+    background-color: #a855f7 !important;
+    border-color: #a855f7 !important;
+    color: #ffffff !important;
+    border-radius: 0.5rem !important;
+    font-weight: 700 !important;
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.5) !important;
+}
+
+/* Cancel / Close - dark navy background with purple outline. */
+.previous-button {
+    background-color: #16283f !important;
+    border: 1px solid #a855f7 !important;
+    color: #a855f7 !important;
+    border-radius: 0.5rem !important;
+    font-weight: 700 !important;
+    box-shadow: none !important;
+}
+
+.assign-cm-loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 21, 36, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1;
+}
+
+.assign-cm-validation-item {
+    margin-bottom: 8px;
+    color: var(--dt-text);
+}
+
+.slds-form-element__label {
+    color: var(--dt-text-muted) !important;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

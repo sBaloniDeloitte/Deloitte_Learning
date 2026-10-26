@@ -1,0 +1,64 @@
+<template>
+    <div class="content slds-scrollable-x">
+        <div class="slds-scrollable-x slds-scrollable-y external-events slds-scrollable"
+            style="max-height: calc(100vh - 5rem);">
+            <table
+                class="slds-table slds-table_cell-buffer slds-table_fixed-layout slds-table_bordered slds-table_col-bordered slds-table slds-table_cell-buffer slds-table_bordered slds-scrollable-x slds-scrollable-y doc-table-css"
+                style="overflow-y: scroll; overflow-x: scroll;width: 100%;" border="2">
+                <thead>
+                    <tr class="slds-line-height_reset" style="width:2px; word-wrap:break-word;">
+                        <th class="slds-text-title_caps tableCss" scope="col" style="width:6%;background: #5bb6e3;">
+                            <div class="slds-truncate" style="text-align: center;" title="Name">Sr. No.</div>
+                        </th>
+                        <th class="slds-text-title_caps tableCss" scope="col"
+                            style="width:20%;background: #5bb6e3;">
+                            <div style="text-align: center;" title="Applicant Type">Document Name
+                            </div>
+                        </th>
+                        <th class="slds-text-title_caps tableCss" scope="col"
+                            style="width:20%;background: #5bb6e3;">
+                            <div style="text-align: center;" title="Status">Screening Status</div>
+                        </th>
+                        <th class="slds-text-title_caps tableCss" scope="col"
+                            style="width:20%;background: #5bb6e3;">
+                            <div style="text-align: center;" title="Status">Verification Status</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={alldocuments} for:item="rec" for:index="index">
+                        <tr class="slds-line-height_reset" key={rec.docChecklistId}>
+                            <td scope="row" class="tableCss" style="width:4px; word-wrap:break-word;">
+                                <div class="slds-truncate slds-cell-wrap" style="text-align: center;">{rec.docCount}</div>
+                            </td>
+                            <td scope="row" class="tableCss" style="width:2px; word-wrap:break-word;">
+                                <div class="slds-cell-wrap" style="text-align: center;"> {rec.docName}</div>
+                                <!-- <a href="javascript:void(0);" class="slds-truncate slds-cell-wrap"
+                                    style="cursor: pointer; text-decoration: underline;color: black"
+                                    onclick={handleDocChangeClick} data-id={rec.docContentId}>
+                                    {rec.docName}
+                                </a> -->
+                            </td>
+                            <td scope="row" class="tableCss" style="text-align: center;">
+                                <template if:false={rec.fcuinitiated}>
+                                    <div class="slds-cell-wrap" style="text-align: center;">{rec.screeningstatus}</div>
+                                </template>
+                                <template if:true={rec.fcuinitiated}>
+                                    <div class="slds-truncate slds-cell-wrap" style="text-align: center;">FCU initiated</div>
+                                </template>
+                            </td>
+                            <td scope="row" class="tableCss" style="text-align: center;">
+                                <template if:true={rec.isScreened}>
+                                    <div class="slds-cell-wrap" style="text-align: center;">Verified</div>
+                                </template>
+                                <template if:false={rec.isScreened}>
+                                <div class="slds-cell-wrap" style="text-align: center;">{rec.Status}</div>
+                                </template>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</template>

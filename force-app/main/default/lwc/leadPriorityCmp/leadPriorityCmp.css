@@ -1,0 +1,150 @@
+/* ================================================================
+   Lead Priority - Hot/Warm/Cold selector - static card
+   Dark/purple theme aligned with leadManagementV2 (LMV2) design.
+   ================================================================ */
+
+.lp-container {
+    background-color: #0e1c30;
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.12);
+    overflow: hidden;
+    box-sizing: border-box;
+    color: #e8edf5;
+    font-family: inherit;
+}
+
+/* ================= HEADER ================= */
+
+.lp-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.1rem;
+    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+}
+
+.lp-header-icon {
+    flex-shrink: 0;
+}
+
+.lp-header-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+/* ================= BODY ================= */
+
+.lp-body {
+    padding: 1rem 1.1rem 1.1rem 1.1rem;
+}
+
+.lp-pills {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.lp-pill {
+    flex: 1 1 0;
+    min-width: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    padding: 0.55rem 0.6rem;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 0.85rem;
+    font-weight: 700;
+    cursor: pointer;
+    box-sizing: border-box;
+    transition: all 0.15s ease;
+}
+
+/* ---- Hot ---- */
+
+.lp-pill_hot {
+    background-color: rgba(244, 63, 94, 0.12);
+    border-color: rgba(244, 63, 94, 0.45);
+    color: #fb7185;
+    --slds-c-icon-color-foreground: #fb7185;
+    --slds-c-icon-color-foreground-default: #fb7185;
+}
+
+.lp-pill_hot.lp-pill_active {
+    background-color: #e11d48;
+    border-color: #e11d48;
+    color: #ffffff;
+    --slds-c-icon-color-foreground: #ffffff;
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+/* ____GenAI: label text (Hot/Warm/Cold) recolored to green on the active/
+   selected pill per explicit request, replacing the previous white text.
+   The icon color and the pill's own background/border are untouched -
+   only the ".lp-pill-label" span's color changed____ */
+.lp-pill_active .lp-pill-label {
+    color: #fdfdfd;
+}
+
+/* ---- Warm ---- */
+
+.lp-pill_warm {
+    background-color: rgba(249, 115, 22, 0.12);
+    border-color: rgba(249, 115, 22, 0.45);
+    color: #fb923c;
+    --slds-c-icon-color-foreground: #fb923c;
+    --slds-c-icon-color-foreground-default: #fb923c;
+}
+
+.lp-pill_warm.lp-pill_active {
+    background-color: #f97316;
+    border-color: #f97316;
+    color: #ffffff;
+    --slds-c-icon-color-foreground: #ffffff;
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+/* ---- Cold ---- */
+
+.lp-pill_cold {
+    background-color: rgba(56, 189, 248, 0.12);
+    border-color: rgba(56, 189, 248, 0.45);
+    color: #38bdf8;
+    --slds-c-icon-color-foreground: #38bdf8;
+    --slds-c-icon-color-foreground-default: #38bdf8;
+}
+
+.lp-pill_cold.lp-pill_active {
+    background-color: #0ea5e9;
+    border-color: #0ea5e9;
+    color: #ffffff;
+    --slds-c-icon-color-foreground: #ffffff;
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+/* ================= CONFIRMATION ================= */
+
+.lp-confirmation {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.85rem;
+    padding: 0.6rem 0.85rem;
+    border-radius: 8px;
+    background-color: rgba(20, 103, 235, 0.12);
+    border: 1px solid rgba(20, 103, 235, 0.4);
+    color: #ffffff;
+    font-size: 0.85rem;
+    --slds-c-icon-color-foreground: #1467eb;
+    --slds-c-icon-color-foreground-default: #1467eb;
+}
+
+/* ____GenAI: badge recolored from green to the same blue used in the
+   leadScoreCmp ring per explicit request; bold priority word (Hot/Warm/Cold)
+   and base text recolored to white instead of green____ */
+.lp-confirmation strong {
+    color: #ffffff;
+}

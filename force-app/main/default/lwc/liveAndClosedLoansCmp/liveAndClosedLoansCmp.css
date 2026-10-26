@@ -1,0 +1,186 @@
+th.tableCss {
+    color: white !important;
+    background-color: #5bb6e3 !important;
+}
+/* Main table container */
+.content {
+    background: #071426;
+    padding: 0;
+}
+
+/* Scrollable area */
+.external-events {
+    background: #071426;
+}
+
+/* Main Live / Closed Loans table */
+.doc-table-css {
+    width: 100%;
+    min-width: 1500px;
+    border-collapse: collapse;
+    border: 1px solid #33455e;
+    background: #16283f !important;
+}
+
+/* "No live/closed loan records found to display." empty-state message -
+   slds-text-heading_medium/slds-text-title_bold do not set an explicit
+   text color, so it inherited a dim default instead of the dark theme's
+   white text. */
+.slds-text-heading_medium.slds-text-title_bold {
+    color: #ffffff !important;
+}
+
+/* Table Header */
+.doc-table-css thead th {
+    background: #16283f !important;
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    border: 1px solid #33455e !important;
+    padding: 8px 10px !important;
+    white-space: nowrap;
+}
+
+/* Header text */
+.doc-table-css thead th .slds-truncate {
+    color: #ffffff !important;
+    font-weight: 800 !important;
+    text-align: center !important;
+}
+
+/* Table body cells */
+.doc-table-css tbody td {
+    background: #16283f !important;
+    color: #ffffff !important;
+    border: 1px solid #33455e !important;
+    text-align: center !important;
+    vertical-align: middle !important;
+    padding: 7px 10px !important;
+}
+
+/* Body text */
+.doc-table-css tbody td .slds-truncate,
+.doc-table-css tbody td .slds-cell-wrap {
+    color: #ffffff !important;
+}
+
+/* Row */
+.doc-table-css tbody tr {
+    background: #16283f !important;
+}
+
+/* Remove SLDS hover/alternate row colors */
+.doc-table-css tbody tr:hover td {
+    background: #1f3550 !important;
+}
+
+/* ____GenAI: DPD in Tradeline red highlight removed per explicit request -
+   falls back to the same normal dark table cell color already used for the
+   "No" (green) case right below, so both states now render identically. The
+   isDPDRed flag/branching in the HTML/JS is untouched - color only____ */
+.doc-table-css tbody td[style*="background: red"] {
+    background: #16283f !important;
+    color: #ffffff !important;
+}
+
+/* DPD in Tradeline "No" value - green highlight removed per request,
+   falls back to the normal dark table cell color. */
+.doc-table-css tbody td[style*="background: green"] {
+    background: #16283f !important;
+    color: #ffffff !important;
+}
+
+/* DPD text */
+.doc-table-css tbody td[style*="background: red"] .slds-truncate,
+.doc-table-css tbody td[style*="background: green"] .slds-truncate {
+    color: #ffffff !important;
+}
+
+/* Horizontal scrollbar area */
+.external-events::-webkit-scrollbar {
+    height: 10px;
+    width: 10px;
+}
+
+.external-events::-webkit-scrollbar-track {
+    background: #071426;
+}
+
+.external-events::-webkit-scrollbar-thumb {
+    background: #7a8795;
+    border-radius: 5px;
+}
+
+.external-events::-webkit-scrollbar-thumb:hover {
+    background: #9aa7b5;
+}
+/* Applicant dropdown */
+.applicant-combobox {
+    --slds-c-input-color-background: #ffffff;
+    --slds-c-input-text-color: #1a1a1a;
+    --slds-c-input-color-border: #7b8da3;
+    --slds-c-input-radius-border: 4px;
+    --slds-c-input-shadow: none;
+}
+
+/* Dropdown text */
+.applicant-combobox .slds-combobox__input {
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+}
+
+/* Selected value */
+.applicant-combobox input {
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+}
+
+/* Dropdown arrow */
+.applicant-combobox .slds-input__icon {
+    color: #4a4a4a !important;
+}
+
+/* Dropdown options */
+.applicant-combobox .slds-listbox {
+    background: #ffffff !important;
+}
+
+.applicant-combobox .slds-listbox__option {
+    color: #1a1a1a !important;
+    background: #ffffff !important;
+}
+
+.applicant-combobox .slds-listbox__option:hover {
+    background: #eaf4ff !important;
+    color: #111111 !important;
+}
+/* Credit Remarks input */
+.credit-remarks-input {
+    --slds-c-input-color-background: #ffffff;
+    --slds-c-input-text-color: #1a1a1a;
+    --slds-c-input-color-border: #7b8da3;
+    --slds-c-input-radius-border: 4px;
+    --slds-c-input-shadow: none;
+}
+
+/* Input field */
+.credit-remarks-input input {
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    -webkit-text-fill-color: #1a1a1a !important;
+}
+
+/* Placeholder */
+.credit-remarks-input input::placeholder {
+    color: #666666 !important;
+    opacity: 1;
+}
+
+/* Disabled input */
+.credit-remarks-input input:disabled {
+    background: #ffffff !important;
+    color: #1a1a1a !important;
+    -webkit-text-fill-color: #1a1a1a !important;
+    opacity: 1 !important;
+}

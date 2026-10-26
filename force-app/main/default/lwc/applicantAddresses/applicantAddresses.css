@@ -1,0 +1,195 @@
+@import 'c/cssLibrary';
+
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+
+/* ____GenAI: Generated code starts here - dark theme repaint to match the
+   rest of the loan login screens (salesLoginBSAScreenCmp palette). Only
+   colors/surfaces changed - no layout, spacing, or markup structure, and
+   no JS/functionality touched. All colors are driven off the tokens below
+   so the whole component recolors from one place.____ */
+:host {
+    --c-blue:     #2563EB;
+    --c-blue-dk:  #1d4ed8;
+    --c-ink:      #ffffff;
+    --c-ink2:     #cfd8e6;
+    --c-surface:  #101b30;
+    --c-slate-bg: #16283f;
+    --c-bg:       #0a1524;
+    --c-bdr:      #1d2f45;
+    --c-bdr2:     #33455e;
+
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+    --slds-c-input-color-background: var(--c-slate-bg);
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: var(--c-bdr2);
+    --slds-c-combobox-input-color-background: var(--c-slate-bg);
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: var(--c-bdr2);
+    --slds-c-combobox-label-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: var(--c-slate-bg);
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: var(--c-bdr2);
+
+    /* lightning-card - this is the big white panel wrapping the whole
+       component. Style hooks are the only way to reach its background,
+       since the base component renders in native shadow DOM. */
+    --slds-c-card-color-background: var(--c-surface);
+    --slds-c-card-color-border: var(--c-bdr);
+    --slds-c-card-text-color: #ffffff;
+    --slds-c-card-shadow: 0 4px 14px rgba(0,0,0,.45), 0 2px 4px rgba(0,0,0,.3);
+}
+
+/* lightning-card renders its own light-DOM-visible ".slds-card" wrapper in
+   some component versions - kept as a harmless fallback alongside the
+   style hooks above. */
+.slds-card,
+lightning-card .slds-card {
+    background: var(--c-surface) !important;
+    color: #ffffff !important;
+    border-color: var(--c-bdr) !important;
+}
+
+.tdBorderHeader{
+    color: #ffffff; height:20px; border: 1px solid var(--c-bdr2); padding-left: 1%;
+}
+
+/* Table wrapper box */
+.slds-box {
+    background: var(--c-surface) !important;
+    border-color: var(--c-bdr) !important;
+}
+
+/* ===== Address table - restyled to match the approved "Aadhar Details"
+   screenshot look: rounded dark-navy card, bold title bar, solid blue
+   header row with bold centered white text, subtle body borders. ===== */
+.slds-table {
+    background: var(--c-surface) !important;
+    color: #ffffff !important;
+}
+
+/* Title bar rendered above the table - kept transparent/borderless so the
+   table below reads as one continuous rounded dark-navy card, matching the
+   approved screenshot (no separate blue title strip). */
+.address-title-bar {
+    background-color: transparent;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 10px 16px 6px;
+    margin: 0 12px;
+    border: none;
+}
+
+/* Outer wrapper - single rounded dark-navy card wrapping header + body,
+   matching the screenshot's uniform rounded-rectangle table look */
+.address-table-wrapper {
+    border-radius: 12px;
+    overflow: hidden;
+    overflow-x: auto;
+    border: 1px solid var(--c-bdr2);
+    margin-top: 0 !important;
+    background-color: var(--c-surface) !important;
+}
+
+/* The <table> itself must not draw its own outer edge (slds-border_left/
+   slds-border_right/slds-table_bordered add a square border directly on
+   the table element) - that square border was rendering on top of the
+   wrapper's rounded corners, making the whole card look square. The
+   wrapper above now owns the single rounded outer border; the table only
+   keeps its inner cell divider lines. */
+.address-table-wrapper table {
+    border: none !important;
+    border-radius: 12px;
+}
+
+/* Belt-and-suspenders: round the actual corner cells too, in case the
+   table's border-collapse context prevents the wrapper's overflow clip
+   from visually rounding the corners in some browsers. */
+.address-table-wrapper table thead tr:first-child th:first-child {
+    border-top-left-radius: 12px;
+}
+.address-table-wrapper table thead tr:first-child th:last-child {
+    border-top-right-radius: 12px;
+}
+.address-table-wrapper table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 12px;
+}
+.address-table-wrapper table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 12px;
+}
+
+/* Header cells - same dark-navy background as the body (uniform card look),
+   bold centered white text, thin lighter-navy dividers */
+.slds-table thead th,
+.address-header-cell {
+    background-color: var(--c-surface) !important;
+    color: #ffffff !important;
+    border: 1px solid var(--c-bdr2) !important;
+    border-top: none !important;
+    text-align: center;
+    font-weight: 700;
+    font-size: 13px;
+}
+
+/* Body cells - same dark navy background, subtle borders, centered white text */
+.slds-table tbody td,
+.address-body-cell {
+    background-color: var(--c-surface) !important;
+    color: #ffffff !important;
+    border-color: var(--c-bdr2) !important;
+    text-align: center;
+}
+
+.slds-table tbody tr:hover td {
+    background-color: var(--c-slate-bg) !important;
+}
+
+/* Actions column cells - centered, matches the screenshot's Actions column */
+.address-action-cell {
+    text-align: center;
+}
+
+/* View/Edit icon buttons restyled as rounded pill/oval outline buttons,
+   matching the "Edit" pill button look in the approved screenshot */
+.address-action-btn {
+    --slds-c-icon-color-foreground: #ffffff;
+    --slds-c-icon-color-foreground-default: #ffffff;
+    --slds-c-button-color-border: #ffffff;
+    --slds-c-button-color-background: transparent;
+    --slds-c-button-radius-border: 999px;
+    background-color: transparent;
+    border: 1px solid #ffffff;
+    border-radius: 999px;
+}
+
+/* "No addresses added" empty-state row */
+.slds-table tbody td[colspan] {
+    background-color: var(--c-slate-bg) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* Primary action button (Save/Update) */
+.save-button {
+    background-color: #1467eb !important;
+    color: #ffffff !important;
+    border-color: #1467eb !important;
+    font-weight: 600;
+}
+
+/* Next button - dedicated color per request, does not affect Save/Update */
+.next-button {
+    background-color: #7c3aed !important;
+    color: #ffffff !important;
+    border-color: #7c3aed !important;
+    font-weight: 600;
+}
+
+/* Secondary action button (Cancel) */
+.previous-button {
+    background-color: #2a2f45 !important;
+    color: #ffffff !important;
+    border-color: #2a2f45 !important;
+}
+/* ____GenAI: Generated code ends here____ */

@@ -1,0 +1,114 @@
+/* ==========================================================
+   THEME VARIABLES
+   Matched to the parent "Initiate Legal" popup's own theme
+   (hl_InitiateLegalChild.css / hl_InitiateLegalValuation.css):
+   dark-navy page background, purple positive CTA, dark negative CTA.
+========================================================== */
+:host {
+    display: block;
+    color: #ffffff;
+    --dcm-page-bg: #12172b;
+    --dcm-panel-bg: #1c2238;
+    --dcm-input-bg: #16283f;
+    --dcm-border: #2a2f45;
+    --dcm-accent: #1467eb;
+}
+
+/* ==========================================================
+   MODAL CONTAINER / HEADER / CONTENT / FOOTER
+========================================================== */
+.slds-modal__container {
+    overflow: hidden;
+}
+
+.slds-modal__header {
+    background-color: var(--dcm-accent) !important;
+    border-bottom: 1px solid var(--dcm-border);
+    color: #ffffff !important;
+}
+
+.slds-modal__title {
+    color: #ffffff !important;
+}
+
+.slds-modal__content {
+    background-color: var(--dcm-page-bg) !important;
+    color: #ffffff !important;
+}
+
+.slds-modal__footer {
+    background-color: var(--dcm-page-bg) !important;
+    border-top: 1px solid var(--dcm-border) !important;
+}
+
+.slds-backdrop_open {
+    background: rgba(10, 15, 30, 0.78);
+}
+
+/* ==========================================================
+   TEXT / LEGENDS
+========================================================== */
+.modal-text,
+.modal-text-italic,
+.slds-form-element__legend,
+.slds-form-element__label {
+    color: #ffffff !important;
+}
+
+/* ==========================================================
+   CHECKBOX ROWS / LABELS
+========================================================== */
+.hl-checkbox-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.5rem; /* optional vertical spacing between rows */
+}
+
+.hl-label {
+    color: #a78bfa;
+    font-weight: 500;        /* optional: make it a bit bolder */
+    overflow-wrap: anywhere; /* wraps long names nicely */
+}
+
+/* ==========================================================
+   INPUTS / CHECKBOXES
+========================================================== */
+lightning-input {
+    --slds-c-input-color-background: var(--dcm-input-bg);
+    --slds-c-input-color-border: var(--dcm-border);
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-color-background: var(--dcm-input-bg);
+    --slds-c-checkbox-color-border: var(--dcm-border);
+    --slds-c-checkbox-label-color: #ffffff;
+}
+
+/* ==========================================================
+   BUTTONS
+   Positive CTA (Add Document) - #7c3aed fill, no border, 8px radius.
+   Negative CTA (Cancel) - #16283f fill, 1px solid #7c3aed border,
+   8px radius. Matched to the app-wide CTA convention.
+========================================================== */
+.save-button {
+    background-color: #7c3aed !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.save-button:hover {
+    background-color: #6b21d1 !important;
+}
+
+.cancel-button {
+    background-color: #16283f !important;
+    border: 1px solid #7c3aed !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.cancel-button:hover {
+    background-color: #1f3550 !important;
+}

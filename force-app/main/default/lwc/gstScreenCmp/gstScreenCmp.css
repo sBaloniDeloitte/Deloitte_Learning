@@ -1,0 +1,217 @@
+@import "c/cssLibrary";
+
+/* Combobox styling hooks - matches addBankAccountCmp's modal theme so the
+   dropdown OPTIONS LIST (not just the input box) renders dark instead of
+   SLDS's default white background/black text. Scoped to just the combobox
+   per request - the rest of this component's light theme is untouched. */
+:host {
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+    --slds-c-combobox-input-value-text-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: #16283f;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+    --slds-c-combobox-label-color: #ffffff;
+
+    /* Global SLDS2 surface/neutral tokens - the combobox DROPDOWN LISTBOX
+       falls back to these global tokens rather than the
+       --slds-c-combobox-listbox-* hook above, which is why it was still
+       rendering white despite the input box already being dark. */
+    --slds-g-color-neutral-base-100: #16283f;
+    --slds-g-color-neutral-base-95: #16283f;
+    --slds-g-color-neutral-base-90: #1d2f45;
+    --slds-g-color-surface: #16283f;
+    --slds-g-color-surface-1: #16283f;
+    --slds-g-color-surface-2: #12172b;
+    --slds-g-color-surface-container: #16283f;
+    --slds-g-color-surface-container-1: #16283f;
+    --slds-g-color-border-base-1: #2a2f45;
+    --slds-g-color-neutral-base-30: #ffffff;
+    --slds-g-color-neutral-base-40: #ffffff;
+    --slds-g-color-neutral-base-50: #ffffff;
+    --slds-g-color-neutral-base-10: #ffffff;
+    --slds-g-color-neutral-base-20: #ffffff;
+    --slds-g-color-on-surface: #ffffff;
+    --slds-g-color-on-surface-1: #ffffff;
+}
+
+lightning-combobox::part(input) {
+    background-color: #16283f !important;
+    border: 1px solid #33455e !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+/* Direct fallback for the listbox option text - crosses shadow boundary via
+   the SLDS "part" exposed on lightning-combobox's listbox rows. */
+lightning-combobox::part(listbox),
+lightning-combobox::part(option) {
+    color: #ffffff !important;
+}
+
+.custom-border {
+    border: 2px solid black;
+    padding: 1rem;
+    border-radius: 5px;
+}
+.custom-width {
+    width: 30%;
+}
+.combobox-container {
+    display: flex;
+    justify-content: center;
+}
+
+.instruction-text {
+    color: red;
+    font-size: 12px;
+    font-weight: 500;
+    margin-bottom: 10px;
+}
+
+.form-container {
+    background-color: white;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+.upload-instruction {
+    font-size: 14px;
+    margin-top: 40px;
+    margin-bottom: 20px;
+    color: #333;
+}
+
+.save-button,
+.previous-button,
+.green-button {
+    padding: 8px;
+    border: none;
+    text-align: center;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 140px;
+    border-radius: 4px;
+}
+.save-button {
+    background-color: #9bbf56;
+}
+.previous-button {
+    background-color: #dc387e;
+}
+.green-button {
+    background-color: #9bbf56;
+}
+
+.button-group {
+    display: flex;
+    justify-content: flex-end; 
+    margin-top: 20px;
+}
+
+.sticky {
+    background-color: skyblue;
+    color: white;
+    font-weight: bold;
+}
+
+.table-container {
+    max-height: 300px;
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+}
+
+.layout-border {
+    border: 2px solid #150101;
+    padding: 10px;
+    border-radius: 30px;
+}
+.form-container,
+.table-container {
+    border: 1px solid #150101;
+    padding: 15px;
+    border-radius: 5px;
+}
+
+.fixed-table {
+    width: 100%;
+    table-layout: fixed;
+}
+.col-width {
+    width: 200px;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+.fixed-button {
+    position: sticky;
+    bottom: 0;
+    background: white;
+    padding: 10px;
+    text-align: center;
+    border-top: 1px solid #ccc;
+}
+
+.uploaded-file-name {
+    background-color: lightgrey;
+    font-weight: 500;
+    padding: 4px 8px;
+    margin: 4px 0;
+    border-radius: 4px;
+}
+
+@media (max-width: 768px) {
+    .slds-size_6-of-12,
+    .slds-size_12-of-12,
+    lightning-layout-item[size="6"],
+    lightning-layout-item[size="12"] {
+        width: 100% !important;
+        flex: 0 0 100%;
+    }
+
+    .form-container {
+        padding: 12px;
+    }
+
+    .layout-border {
+        padding: 10px;
+        border-radius: 15px;
+    }
+
+    .upload-instruction {
+        font-size: 12px;
+    }
+
+    .button-group {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    lightning-combobox,
+    lightning-input,
+    lightning-file-upload {
+        width: 100%;
+    }
+
+    .save-button,
+    .previous-button,
+    .green-button {
+        width: 100%;
+        margin-top: 8px;
+    }
+
+    .combobox-container {
+        flex-direction: column;
+        align-items: stretch;
+        width: 100%;
+    }
+
+    .uploaded-file-name {
+        font-size: 12px;
+    }
+}

@@ -1,0 +1,497 @@
+@import 'c/cssLibrary';
+
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+
+:host {
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+    --dt-gradient: linear-gradient(135deg, rgb(0, 77, 179) 0%, rgb(0, 48, 135) 55%, rgb(0, 26, 94) 100%);
+}
+
+/* ____GenAI: Generated code starts here - "Select Documents" modal text
+   visibility fix only. The modal content area was plain white/SLDS-default
+   while the checkbox/label style hooks above already forced text to white -
+   white-on-white made everything invisible. Darkening just the modal
+   content area (not the rest of the component/screen) makes that existing
+   white text readable. No JS/functionality changed.____ */
+.slds-modal__content {
+    background: #1c2333 !important;
+    color: #ffffff !important;
+}
+
+/* Header/footer chrome - matches the design-token gradient banner convention
+   (--dt-gradient) used elsewhere in this app's modals, replacing the flat
+   #16283f/#101b30 fills. background-image (not the "background" shorthand)
+   is used so it wins over the header's inline background-color style via
+   !important without needing to touch the inline attribute itself. */
+.slds-modal__header {
+    background-image: var(--dt-gradient) !important;
+    background-color: transparent !important;
+    border-bottom: none !important;
+}
+
+.slds-modal__header h2,
+.slds-modal__header .slds-hyphenate {
+    color: #ffffff !important;
+}
+
+.slds-modal__footer {
+    background-image: var(--dt-gradient) !important;
+    background-color: transparent !important;
+    border-top: none !important;
+}
+
+/* Negative CTA (Close) - #16283f fill, 1px solid #7c3aed border, pill radius.
+   Scoped to ".select-doc-footer .select-doc-close-btn" (two classes,
+   specificity 0,2,0) rather than the bare single-class selector - this
+   file's pre-existing ".cancel-button" rule (below, single class,
+   0,1,0) also carries !important, and CSS ties on specificity resolve by
+   SOURCE ORDER, so a bare single-class ".select-doc-close-btn" declared
+   above ".cancel-button" would have lost to it regardless of !important.
+   The two-class selector wins unconditionally, independent of order.
+   Height reduced 10% from a 1.98rem line-height baseline (1.98 * 0.9 =
+   1.782rem), matching the pattern used for this same modal in
+   documentProcessingScreen.css. */
+.select-doc-footer .select-doc-close-btn {
+    background: #16283f !important;
+    color: #eeecf0 !important;
+    border: 1px solid #a855f7 !important;
+    border-radius: 8px !important;
+    width: auto !important;
+    height: auto !important;
+    padding: 0 20px !important;
+    line-height: 1.782rem !important;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: none !important;
+}
+
+.select-doc-footer .select-doc-close-btn:hover {
+    background: #1f3550 !important;
+    transform: none;
+}
+
+/* Positive CTA (Confirm) - #7c3aed fill, no border, pill radius. Scoped to
+   ".select-doc-footer .select-doc-confirm-btn" (two classes, 0,2,0) for the
+   same source-order-independence reason as the Close button above - this
+   file's pre-existing ".save-button" rule (single class, 0,1,0, also
+   !important, also used by the separate outer "Add Documents" trigger
+   button) must NOT win the tie by appearing later in the file. The
+   two-class selector guarantees this button renders #7c3aed regardless of
+   where either rule is declared. Height reduced 10% (1.98rem -> 1.782rem
+   line-height), same as the Close button above. */
+.select-doc-footer .select-doc-confirm-btn {
+    background: #a855f7 !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    width: auto !important;
+    height: auto !important;
+    padding: 0 22px !important;
+    line-height: 1.782rem !important;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.5) !important;
+}
+
+.select-doc-footer .select-doc-confirm-btn:hover {
+    background: #9333ea !important;
+    transform: translateY(-1px);
+}
+
+.slds-modal__content lightning-input,
+.slds-modal__content lightning-combobox {
+    --slds-c-input-color-background: #2a2f45;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #3a4055;
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+    --slds-c-combobox-input-color-background: #2a2f45;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #3a4055;
+    --slds-c-combobox-label-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: #2a2f45;
+    --slds-c-combobox-option-text-color: #ffffff;
+}
+
+/* "Pick an Applicant" combobox fix - ported verbatim from the proven,
+   already-working pattern in documentProcessingScreen.css for the same
+   "Select Documents" modal (scoped there to .select-doc-container
+   lightning-combobox). The dedicated --slds-c-combobox-option-* hooks alone
+   are not consistently honored by the base component for the RESTING
+   (non-hover) option background/text - overriding the underlying SLDS2
+   global neutral-base surface tokens (which the listbox's own internal CSS
+   reads for its default background) is what actually fixes the resting
+   color. Direct SLDS-class overrides are layered on top as a fallback. */
+.select-doc-container lightning-combobox {
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+    --slds-c-combobox-listbox-color-background: #16283f;
+    --sds-c-combobox-listbox-color-background: #16283f;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background: #16283f;
+    --sds-c-combobox-option-color-background: #16283f;
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+    --slds-c-combobox-option-color-background-focus: #1f3550;
+    --slds-c-combobox-label-color: #ffffff;
+    --slds-g-color-neutral-base-100: #16283f;
+    --slds-g-color-neutral-base-95: #16283f;
+    --slds-g-color-neutral-base-10: #ffffff;
+}
+
+.select-doc-container lightning-combobox .slds-dropdown,
+.select-doc-container lightning-combobox .slds-listbox,
+.select-doc-container lightning-combobox .slds-listbox_vertical {
+    background-color: #16283f !important;
+    border: 1px solid #33455e !important;
+}
+
+.select-doc-container lightning-combobox .slds-listbox__option,
+.select-doc-container lightning-combobox .slds-listbox__item {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+}
+
+.select-doc-container lightning-combobox .slds-listbox__option:hover,
+.select-doc-container lightning-combobox .slds-listbox__option:focus,
+.select-doc-container lightning-combobox .slds-listbox__option_term.slds-has-focus,
+.select-doc-container lightning-combobox .slds-listbox__option.slds-has-focus {
+    background-color: #1f3550 !important;
+    color: #ffffff !important;
+}
+
+.select-doc-container lightning-combobox .slds-listbox__option .slds-media__body,
+.select-doc-container lightning-combobox .slds-listbox__option .slds-truncate {
+    color: #ffffff !important;
+}
+
+.select-doc-container lightning-combobox .slds-listbox__option[aria-checked="true"] {
+    background-color: #1f3550 !important;
+}
+
+/* "Select Documents" category header row (e.g. "PAN", "Address Proof") -
+   was an inline lightgrey <div> with default black text; recolored to
+   match the darkened modal content so its white label text is visible. */
+.doc-category-header {
+    width: 100%;
+    background: #2a2f45;
+    color: #ffffff;
+    padding-left: 1%;
+    padding-top: 0.5%;
+    padding-bottom: 0.5%;
+    font-size: 14px;
+    font-weight: 600;
+    border-radius: 4px;
+}
+/* ____GenAI: Generated code ends here____ */
+
+.container {
+    display: flex;
+    gap: 20px;
+}
+
+.left-panel {
+    width: 40%;
+}
+.document-card {
+    border: 1px solid #ccc; /* Light gray border for a softer look */
+    border-radius: 8px; /* Rounded corners for a modern design */
+    padding: 16px; /* Adds spacing inside the card */
+    margin-bottom: 12px; /* Adds spacing between multiple cards */
+    background: #f9f9f9; /* Light background for contrast */
+    box-shadow: 2px 2px 6px rgba(0, 0, 0, 0.1); /* Soft shadow effect */
+}
+.right-panel {
+    width: 60%;
+    padding: 10px;
+    border-left: 2px solid #ccc;
+}
+
+.document-container {
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.document {
+    width: 100%;
+    max-width: 200px;
+    transition: transform 0.3s ease-in-out;
+}
+
+.document:hover {
+    transform: scale(1.05);
+}
+
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.zoomed-image {
+    max-width: 80%;
+    max-height: 80%;
+}
+
+.slds-p-around_medium {
+    padding: 1rem;
+}
+
+.image-container {
+    flex: 0 0 150px; /* Fixed width for the image container */
+    text-align: center; /* Center the image */
+}
+
+.document-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem; /* Adds space between document items */
+}
+
+.content-viewer {
+    display: inline-block;
+    max-width: 100%;
+    height: auto;
+    border-radius: 4px;
+}
+
+.doc-details {
+    margin-top: 1rem;
+}
+
+.doc-table-css {
+    width: 100%;
+}
+
+.tableCss {
+    text-align: center;
+    padding: 0.5rem;
+}
+
+.slds-p-around_medium {
+    padding: 1rem;
+}
+
+/* ===== Progress Indicator Styling ===== */
+
+.slds-progress {
+
+    margin-bottom: 20px;
+
+}
+ 
+/* ===== Image Container (Ensures Image Stays Inside Box) ===== */
+
+
+ 
+
+ 
+/* ===== Document Details Styling (Box & Table) ===== */
+
+.doc-details {
+
+    background: white;
+
+    padding: 15px;
+
+    border: 1px solid #ccc;
+
+    border-radius: 5px;
+
+    box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+
+    width: 100%;
+
+    max-width: 350px; /* Matches image box */
+
+    min-height: 230px; /* Ensures height consistency */
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+}
+
+
+ 
+/* ===== Table Styling (Auto-Adjusting) ===== */
+
+.slds-table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    text-align: left;
+
+    table-layout: fixed; /* Ensures uniform column width */
+
+    word-wrap: break-word;
+
+}
+ 
+.slds-table th,
+
+.slds-table td {
+
+    padding: 10px;
+
+    border: 1px solid #333; /* Clearer table borders */
+
+    word-break: break-word;
+
+    white-space: normal;
+
+    overflow-wrap: break-word;
+
+}
+ 
+/* Table Header */
+
+.table-header {
+
+    background-color: #0070D2; /* Salesforce Blue */
+
+    color: white;
+
+    font-weight: bold;
+
+    text-align: left;
+
+}
+ 
+/* ===== Upload Button Styling (Primary Button) ===== */
+
+.upload-button {
+    padding: 12px 8px; /* Increase vertical padding for more height */
+    border: none;
+    display: inline-block;
+    text-align: center;
+    color: white;
+    background-color: #1467eb !important;
+    align-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;  
+    width: 130px; /* Decrease width */
+    height: 40px; /* Increase button height */
+    border-radius: 5px;
+    margin-left: 20px;
+    border-color: #1467eb !important;
+    font-weight: 600;
+}
+
+/* Primary Action Button Styling */
+.save-button {
+    padding: 12px 8px;
+    border: none;
+    display: inline-block;
+    text-align: center;
+    color: #ffffff !important;
+    background-color: #1467eb !important;
+    border-color: #1467eb !important;
+    align-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: 600;
+}
+
+/* Smaller footprint specifically for the "Add Documents" trigger button -
+   scoped so the shared .save-button styling (e.g. the modal "Confirm"
+   button) is unaffected */
+.add-documents-button {
+    padding: 8px 16px !important;
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    line-height: normal !important;
+    height: auto !important;
+    min-height: unset !important;
+}
+
+/* Secondary Action Button Styling */
+.cancel-button {
+    padding: 12px 8px;
+    border: none;
+    display: inline-block;
+    text-align: center;
+    color: #ffffff !important;
+    background-color: #2a2f45 !important;
+    border-color: #2a2f45 !important;
+    align-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-weight: 600;
+}
+
+
+
+.document-container {
+    width: 100%;
+    height: 300px; /* Set a fixed height */
+    overflow: auto; /* Enables both horizontal and vertical scrollbars */
+    border: 2px solid green; /* Optional: Green border for clarity */
+    display: flex;
+    flex-direction: column; /* Ensures button stays below */
+    padding: 0px; /* Remove extra padding */
+    margin: 0px; 
+    
+}
+
+
+.image-container {
+    width: 120%; /* Makes sure scrollbars appear */
+    height: 300px; /* Larger than .document-container to force scrolling */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0px; /* Ensure no padding around the image */
+    margin-top: 5px;
+}
+
+.doc-image {
+    display: block;
+    max-width: 100%; /* Ensure image fits properly */
+    margin: 0 auto;
+}
+
+.zoomed-image-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.zoomed-image {
+    max-width: 90%;
+    max-height: 90%;
+}
+.custom-layout {
+    display: flex;
+    flex-wrap: nowrap;  /* Prevents wrapping */
+    justify-content: space-between;  /* Ensures even spacing */
+    width: 100%;
+}
+.tab-block{
+    background: white;
+    border-radius: 5px;
+}
+.card-panel{
+    border: 1px solid black;
+    padding: 10px;
+    text-align: center;
+    margin: 10px;
+}

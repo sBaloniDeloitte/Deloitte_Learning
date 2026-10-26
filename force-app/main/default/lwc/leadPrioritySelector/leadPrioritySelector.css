@@ -1,0 +1,233 @@
+/* ── Design tokens (matching leadJourneyWizard.css) ──────── */
+:host {
+    --sky-bg:       #dff2fb;
+    --sky-mid:      #b8e3f5;
+    --sky-card:     #eaf7fd;
+    --navy:         #0d2b5e;
+    --navy-mid:     #1a3f7a;
+    --navy-light:   #2c5499;
+    --white:        #ffffff;
+    --success:      #2e7d32;
+    --success-bg:   #e8f5e9;
+    --radius-sm:    8px;
+    --radius-md:    14px;
+    --radius-lg:    20px;
+    --shadow-card:  0 8px 32px rgba(13,43,94,0.14);
+    --transition:   0.22s ease;
+
+    /* Priority colours */
+    --hot-main:     #d32f2f;
+    --hot-light:    #ffebee;
+    --hot-border:   #ef9a9a;
+    --hot-hover:    #b71c1c;
+
+    --warm-main:    #e65100;
+    --warm-light:   #fff3e0;
+    --warm-border:  #ffcc80;
+    --warm-hover:   #bf360c;
+
+    --cold-main:    #1565c0;
+    --cold-light:   #e3f2fd;
+    --cold-border:  #90caf9;
+    --cold-hover:   #0d47a1;
+
+    display: block;
+    width: 100%;
+}
+
+/* ── Card wrapper ────────────────────────────────────────── */
+.priority-card {
+    background: var(--white);
+    border: 1.5px solid var(--sky-mid);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-card);
+    overflow: hidden;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+/* ── Header — navy gradient matching app-header ─────────── */
+.priority-header {
+    background: linear-gradient(135deg, #0d2b5e 0%, #1a3f7a 100%);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+
+.priority-header-icon {
+    font-size: 1.1rem;
+}
+
+.priority-title {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--white);
+    margin: 0;
+    line-height: 1.2;
+}
+
+/* ── Body ────────────────────────────────────────────────── */
+.priority-body {
+    padding: 16px 18px 18px;
+}
+
+/* ── Button row ──────────────────────────────────────────── */
+.priority-buttons {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+/* ── Base button style ───────────────────────────────────── */
+.priority-btn {
+    flex: 1;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 10px 8px;
+    border-radius: var(--radius-sm);
+    border: 1.5px solid;
+    font-size: 0.84rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: transform var(--transition), box-shadow var(--transition),
+                background var(--transition), color var(--transition);
+    line-height: 1;
+    white-space: nowrap;
+}
+
+.priority-btn:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.priority-btn:active {
+    transform: translateY(0);
+}
+
+/* ── HOT — red ───────────────────────────────────────────── */
+.priority-btn--hot {
+    background: var(--hot-light);
+    color: var(--hot-main);
+    border-color: var(--hot-border);
+}
+
+.priority-btn--hot:hover:not(:disabled) {
+    background: var(--hot-main);
+    color: var(--white);
+    border-color: var(--hot-main);
+}
+
+.priority-btn--hot.priority-btn--selected {
+    background: var(--hot-main);
+    color: var(--white);
+    border-color: var(--hot-main);
+    box-shadow: 0 3px 10px rgba(211,47,47,0.4);
+    transform: translateY(-1px);
+}
+
+/* ── WARM — amber/orange ─────────────────────────────────── */
+.priority-btn--warm {
+    background: var(--warm-light);
+    color: var(--warm-main);
+    border-color: var(--warm-border);
+}
+
+.priority-btn--warm:hover:not(:disabled) {
+    background: var(--warm-main);
+    color: var(--white);
+    border-color: var(--warm-main);
+}
+
+.priority-btn--warm.priority-btn--selected {
+    background: var(--warm-main);
+    color: var(--white);
+    border-color: var(--warm-main);
+    box-shadow: 0 3px 10px rgba(230,81,0,0.4);
+    transform: translateY(-1px);
+}
+
+/* ── COLD — blue ─────────────────────────────────────────── */
+.priority-btn--cold {
+    background: var(--cold-light);
+    color: var(--cold-main);
+    border-color: var(--cold-border);
+}
+
+.priority-btn--cold:hover:not(:disabled) {
+    background: var(--cold-main);
+    color: var(--white);
+    border-color: var(--cold-main);
+}
+
+.priority-btn--cold.priority-btn--selected {
+    background: var(--cold-main);
+    color: var(--white);
+    border-color: var(--cold-main);
+    box-shadow: 0 3px 10px rgba(21,101,192,0.4);
+    transform: translateY(-1px);
+}
+
+/* ── Status messages ─────────────────────────────────────── */
+.priority-saving {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 12px;
+    font-size: 0.8rem;
+    color: var(--navy-mid);
+    font-weight: 500;
+}
+
+.saving-text {
+    font-style: italic;
+}
+
+.priority-success {
+    margin-top: 12px;
+    padding: 8px 12px;
+    background: var(--success-bg);
+    border: 1px solid rgba(46,125,50,0.28);
+    border-radius: var(--radius-sm);
+    font-size: 0.79rem;
+    color: var(--success);
+    font-weight: 600;
+    animation: fadeIn 0.25s ease;
+}
+
+.priority-error {
+    margin-top: 12px;
+    padding: 8px 12px;
+    background: #fdecea;
+    border: 1px solid rgba(229,57,53,0.28);
+    border-radius: var(--radius-sm);
+    font-size: 0.79rem;
+    color: #e53935;
+    font-weight: 600;
+}
+
+/* ── Spinner ─────────────────────────────────────────────── */
+.spinner-small {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(13,43,94,0.18);
+    border-top-color: var(--navy-light);
+    border-radius: 50%;
+    display: inline-block;
+    animation: spin 0.7s linear infinite;
+    vertical-align: middle;
+    flex-shrink: 0;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}

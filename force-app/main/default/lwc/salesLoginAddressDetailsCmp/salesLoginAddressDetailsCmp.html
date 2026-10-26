@@ -1,0 +1,250 @@
+<template>
+    <div class="slds-m-top_large">
+        <template if:false={isHLUser}>
+            <template if:true={showAddAddressButton}>
+    <button class="slds-button slds-button_brand initiate-button"
+        style="margin-left: 2%; background-color:#1467EB;"
+        onclick={handleAddNewAddress}
+        disabled={isDisable}>
+        Add Address
+    </button>
+</template>
+        </template>
+        <template if:true={isHLUser}>
+            <!-- <template if:false={showHLAddressButton}> -->
+            <template if:true={showAddAddressButton}>
+    <button class="slds-button slds-button_brand initiate-button"
+        style="margin-left: 2%; background-color:#1467EB;"
+        onclick={handleAddNewAddress}
+        disabled={isDisable}>
+        Add Address
+    </button>
+</template>
+            <!-- </template> -->
+            <p style="margin-left: 2%; margin-top: 0.5rem; font-size: 0.8rem; color: red; font-weight: bold;">
+                You can only add address for Source – Login Fee and Registerd Business Address(for Salaried) using this
+                button.
+                For adding any other address or for any other source, please use the Document screen.
+            </p>
+        </template>
+
+
+
+    </div>
+    <template if:true={hasAddresses}>
+        <div class="slds-m-around_small address-table-box" style="overflow: auto;">
+            <table
+                class="table-class slds-table slds-table_bordered slds-table_cell-buffer slds-table_striped">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Name</th>
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Address Type</th>
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Address Ownership</th>
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Address Line 1</th>
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Address Line 2</th>
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Address Line 3</th>
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Pincode</th>
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">State</th>
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Source</th>
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Document Source</th>
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Update Address</th>
+                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={addresses} for:item="address">
+                        <tr key={address.Id}>
+                            <td class="tdBorderHeader" style="text-align: center;">{address.sellerName}</td>
+                            <td class="tdBorderHeader" style="text-align: center;">{address.addType}</td>
+                            <td class="tdBorderHeader" style="text-align: center;">{address.addOwnership}</td>
+                            <td class="tdBorderHeader" style="text-align: center;">{address.addLine1}</td>
+                            <td class="tdBorderHeader" style="text-align: center;">{address.addLine2}</td>
+                            <td class="tdBorderHeader" style="text-align: center;">{address.addLine3}</td>
+                            <td class="tdBorderHeader" style="text-align: center;">{address.pincode}</td>
+                            <td class="tdBorderHeader" style="text-align: center;">{address.state}</td>
+                            <td class="tdBorderHeader" style="text-align: center;">{address.source}</td>
+                            <td class="tdBorderHeader" style="text-align: center;">{address.addressSourceDoc}</td>
+                            <td class="tdBorderHeader" style="text-align: center;">
+                                <template if:false={isGCStandardUser}>
+                                    <template if:false={address.deleteAddressDisable}>
+                                        <lightning-button variant="neutral" label="Edit" title="Edit"
+                                            data-id={address.Id} data-applicantid={address.applicantId}
+                                            onclick={handleEdit} disabled={address.disableEdit}>
+                                        </lightning-button>
+                                    </template>
+                                    <template if:true={address.deleteAddressDisable}>
+                                        -
+                                    </template>
+                                </template>
+                                <template if:true={isGCStandardUser}>
+                                    -
+                                </template>
+                            </td>
+                            <td scope="col" style="width: 10%; text-align: center; border-color: white;">
+                                <template if:false={isGCStandardUser}>
+                                    <template if:false={address.deleteAddressDisable}>
+                                        <button type="button" class="slds-button slds-button_icon delete-table-color-btn"
+                                            title="Delete Document" data-id={address.Id} onclick={handleOpenDeletePopup}
+                                            disabled={address.disableEdit}>
+                                            <lightning-icon icon-name="utility:delete" size="x-small" variant="inverse"
+                                                class="delete-icon-white-color">
+                                            </lightning-icon>
+                                        </button>
+                                    </template>
+                                    <template if:true={address.deleteAddressDisable}>
+                                        -
+                                    </template>
+                                </template>
+                                <template if:true={isGCStandardUser}>
+                                    -
+                                </template>
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </template>
+
+    <template if:true={editMode}>
+        <div class="slds-box slds-m-around_small">
+            <!-- First Row -->
+            <div class="getProductByDeviceType slds-grid slds-wrap">
+                <div class="getProductByDeviceTypeCol slds-col slds-size_12 slds-medium-size_6 slds-large-size_3">
+                    <!-- Applicant__c Combobox -->
+                    <lightning-combobox name="Applicant" label="Name" value={appId} options={applicantOptions}
+                        onchange={handleApplicantChange} disabled={editAddress.isDisable} required>
+                    </lightning-combobox>
+                </div>
+
+                <div class="getProductByDeviceTypeCol slds-col slds-size_12 slds-medium-size_6 slds-large-size_3">
+                    <lightning-combobox name="Address Type" label="Address Type" data-id="Address_Type__c"
+                        value={editAddress.addType} options={addressTypeOptions} onchange={handleAddressTypeChange}
+                        required>
+                    </lightning-combobox>
+                </div>
+                <div class="getProductByDeviceTypeCol slds-col slds-size_12 slds-medium-size_6 slds-large-size_3">
+                    <lightning-combobox name="Address Ownership" label="Address Ownership"
+                        value={editAddress.addOwnership} options={addressOwnershipOptions}
+                        onchange={handleAddressOwnershipChange} required>
+                    </lightning-combobox>
+                </div>
+                <div class="getProductByDeviceTypeCol slds-col slds-size_12 slds-medium-size_6 slds-large-size_3">
+                    <lightning-input type="text" label="Pincode" value={editAddress.pincode} data-field="pincode"
+                        onchange={handlePincodeChange} disabled={editAddress.isDisable} required>
+                    </lightning-input>
+
+                    <template if:true={filteredPincodeList.length}>
+                        <ul class="slds-list_dotted slds-m-top_small">
+                            <template for:each={filteredPincodeList} for:item="pincode">
+                                <li key={pincode.Id} class="slds-p-vertical_x-small slds-border_bottom">
+                                    <a href="javascript:void(0);" onclick={handlePincodeSelect} data-id={pincode.Id}
+                                        data-name={pincode.Name}>
+                                        {pincode.Name}
+                                    </a>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+
+                </div>
+
+                <div class="getProductByDeviceTypeCol slds-col slds-size_12 slds-medium-size_6 slds-large-size_3">
+                    <lightning-input name="Address Line 1" label="Address Line 1" value={editAddress.addLine1}
+                        maxlength="49" message-when-too-long="Maximum 49 characters allowed"
+                        onchange={handleAddLine1Change} disabled={editAddress.isDisable} required>
+                    </lightning-input>
+                </div>
+
+                <div class="getProductByDeviceTypeCol slds-col slds-size_12 slds-medium-size_6 slds-large-size_3">
+                    <lightning-input name="Address Line 2" label="Address Line 2" value={editAddress.addLine2}
+                        maxlength="49" message-when-too-long="Maximum 49 characters allowed"
+                        disabled={editAddress.isDisable} onchange={handleAddLine2Change}>
+                    </lightning-input>
+                </div>
+            </div>
+
+            <!-- Second Row -->
+            <div class="getProductByDeviceType slds-grid slds-wrap">
+                <div class="getProductByDeviceTypeCol slds-col slds-size_12 slds-medium-size_6 slds-large-size_3">
+                    <lightning-input name="Address Line 3" label="Address Line 3" value={editAddress.addLine3}
+                        disabled={editAddress.isDisable} maxlength="49"
+                        message-when-too-long="Maximum 49 characters allowed" onchange={handleAddLine3Change}>
+                    </lightning-input>
+                </div>
+
+                <div class="getProductByDeviceTypeCol slds-col slds-size_12 slds-medium-size_6 slds-large-size_3">
+                    <lightning-input name="City" label="City" value={editAddress.city} disabled>
+                    </lightning-input>
+                </div>
+
+                <div class="getProductByDeviceTypeCol slds-col slds-size_12 slds-medium-size_6 slds-large-size_3">
+                    <lightning-input name="State" label="State" value={editAddress.state} disabled>
+                    </lightning-input>
+                </div>
+
+                <!--  <template if:true={showAddressProof}>
+                <div class="getProductByDeviceTypeCol slds-col slds-size_12 slds-medium-size_6 slds-large-size_3">
+                    <lightning-combobox
+                        name="Address Proof"
+                        label="Address Proof"
+                        value={editAddress.addProof}
+                        options={addressProofOptions}
+                        onchange={handleAddressProofChange}>
+                    </lightning-combobox>
+                </div>
+            </template> -->
+            </div>
+
+            <!-- Buttons -->
+            <div class="slds-p-around_small slds-m-around_large">
+                <div class="slds-grid slds-wrap slds-grid_align-center">
+                    <button type="button" class="slds-button previous-button" onclick={cancelEdit} style="background-color:#DB2929"
+                        disabled={editAddress.isDisable}>Reset</button>
+                    <template if:true={isHLRelated}>
+                        <button type="button" class="slds-button save-button" onclick={handleCloseScreen}>Close</button>
+                    </template>
+                    <button type="button" class="slds-button save-button" onclick={updateAddress}>Save</button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <template if:true={showModal}>
+        <!-- Backdrop wrapper -->
+        <div class="custom-modal-backdrop">
+            <div class="custom-modal-container">
+
+                <!-- Header -->
+                <header class="slds-modal__header modal-header">
+                    <h2 class="slds-text-heading_medium">Confirm Delete</h2>
+                </header>
+
+                <!-- Body -->
+                <div class="slds-modal__content slds-p-around_medium custom-modal-content">
+                    <p>Are you sure you want to delete this record?</p>
+                </div>
+
+                <!-- Footer -->
+                <footer class="slds-modal__footer modal-footer">
+                    <lightning-button variant="neutral" label="No" onclick={handleCancel} class="footer-btn"
+                        style="margin-right: 0.75rem;">
+                    </lightning-button>
+
+                    <lightning-button variant="brand" label="Yes" onclick={handleDelete} class="footer-btn">
+                    </lightning-button>
+                </footer>
+            </div>
+        </div>
+    </template>
+
+
+
+    <div style="display: flex; justify-content: flex-end; margin-top: 2%;">
+        <button class="SaveButton slds-button slds-button_brand"
+            style="font-size: 11px; width: 110px; color: white; background-color:#7c3aed; border-color : #7c3aed; font-weight: 500; border-radius:8px;"
+            onclick={handleNext}><b>Next</b></button>
+    </div>
+
+
+</template>

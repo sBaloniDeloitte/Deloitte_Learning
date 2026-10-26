@@ -1,0 +1,140 @@
+:host {
+    display: block;
+}
+
+.lead-dark-theme {
+    background: #071628;
+    padding: 20px;
+    min-height: 100%;
+}
+
+.lead-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.object-title {
+    color: #ffffff;
+    font-size: 13px;
+}
+
+.listview-title {
+    color: white;
+    font-size: 28px;
+    font-weight: 700;
+}
+
+.lead-card {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #33455e;
+}
+
+.lead-dark-theme {
+    background: #071628;
+    padding: 20px;
+    min-height: 100%;
+    border-radius: 12px;
+}
+
+.lead-card {
+    background: #09172b;
+    border: 1px solid #2b405d;
+    border-radius: 14px;
+    overflow: hidden;
+
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,.02),
+        0 8px 24px rgba(0,0,0,.4);
+}
+
+.table-scroll {
+    overflow-x: auto;
+}
+
+.lead-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #1b304d;
+    color: white;
+}
+
+.lead-table thead th {
+     background: #1b304d; /*linear-gradient(
+        135deg,
+        #001a5e 0%,
+        #003087 55%,
+        #004db3 100%
+    ); */
+
+    color: white;
+    font-weight: 600;
+    padding: 12px;
+
+    border: 1px solid white;
+    border-top: 2px solid white;
+    text-align: left;
+}
+
+.lead-table tbody td {
+    background: #1b304d;
+    color: white;
+
+    padding: 12px;
+
+    border: 1px solid #ffffff;;
+}
+
+.lead-table tbody tr:hover td {
+    background: #243d60;
+}
+
+.lead-link {
+    color: #4ea8ff;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.lead-link:hover {
+    text-decoration: underline;
+}
+
+.listview-title {
+    color: white;
+    font-size: 32px;
+    font-weight: 700;
+    margin-bottom: 16px;
+}
+
+.nameCol {
+    border-top-left-radius: 12px;
+}
+
+.leadTypeCol {
+    border-top-right-radius: 12px;
+}
+
+.refreshBtn {
+    padding-right: 5px;
+}
+
+/* DARK DATATABLE */
+
+:host {
+    --lwc-colorBackgroundAlt: #09172b;
+    --lwc-colorBackgroundRowHover: #243d60;
+
+    --slds-c-table-color-background: #09172b;
+    --slds-c-table-heading-color-background: #1b304d;
+    --slds-c-table-heading-text-color: #ffffff;
+
+   --slds-c-table-text-color: #ffffff;
+    --slds-c-table-color-background-header: #1b304d;
+
+    --slds-c-link-text-color: #4fa3ff;
+
+    --slds-c-button-brand-color-background: #1467EB;
+}

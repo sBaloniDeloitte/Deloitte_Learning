@@ -1,0 +1,461 @@
+@import "c/cssLibrary";
+
+/* ----------------- Dark Theme Palette -----------------
+   Matches the theme already shipped on loanLoginParentCmp's sibling
+   components (salesCKYCDetailsCmp, salesLoginProductDetailsCmp) so this
+   component looks consistent with the rest of the flow. Uses SLDS styling
+   hooks (the officially supported way to theme lightning-input/-combobox/
+   -card internals) instead of raw style injection. */
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+
+    /* lightning-card */
+    --slds-c-card-color-background: #0e1c30;
+    --slds-c-card-color-background-header: #0e1c30;
+    --slds-c-card-color-border: #1d2f45;
+    --slds-c-card-heading-text-color: #ffffff;
+
+    /* input / textarea */
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-radius-border: 6px;
+    --slds-c-input-placeholder-text-color: #8a99b3;
+    --slds-c-input-label-color: #ffffff;
+
+    /* combobox / dropdown */
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+    --slds-c-combobox-input-value-text-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: #16283f;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+    --slds-c-combobox-label-color: #ffffff;
+
+    /* checkbox */
+    --slds-c-checkbox-color-background: #16283f;
+    --slds-c-checkbox-color-border: #33455e;
+    --slds-c-checkbox-label-color: #ffffff;
+
+    /* icons / generic label text */
+    --slds-c-icon-color-foreground: #cfd8e6;
+    --slds-c-icon-color-foreground-default: #cfd8e6;
+    --slds-c-label-text-color: #ffffff;
+
+    /* legacy design tokens - fallback for base component versions still
+       reading the "--lwc-*" naming instead of the newer style hooks */
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+
+    --slds-g-color-neutral-base-30: #ffffff;
+    --slds-g-color-neutral-base-40: #ffffff;
+    --slds-g-color-neutral-base-50: #ffffff;
+
+    /* local tokens used by the rules below */
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-text: #ffffff;
+    --dt-text-muted: #cfd8e6;
+    --dt-placeholder: #8a99b3;
+    --dt-accordion: #1589ee;
+    --dt-positive: #8b5cf6;
+    --dt-positive-hover: #7c3aed;
+    --dt-negative: #16283f;
+    --dt-purple: #8d29db;
+    --dt-modal-gradient: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+
+    --slds-c-accordion-summary-color-background: #0e1c30;
+}
+
+/* Outer page gutter so content doesn't sit flush against the edges */
+.collateral-dark-theme {
+    padding: 0 1.5rem;
+    box-sizing: border-box;
+}
+
+/* ----------------- Modal Container (Desktop & Mobile) ----------------- */
+.custom-modal-container {
+    width: 90vw !important;          /* adjust width like first modal */
+    max-width: 1100px !important;
+    max-height: 90vh;
+    height: 85vh;
+    margin: auto;
+    overflow-y: auto;
+    padding: 1rem 1.5rem;
+    box-sizing: border-box;
+    /* background-color: var(--dt-bg); */
+    color: var(--dt-text);
+}
+
+.custom-modal-container::-webkit-scrollbar-thumb {
+    background: var(--dt-border);
+}
+
+.slds-modal__container {
+    /* background-color: var(--dt-bg); */
+}
+
+/* ----------------- Mobile Modal ----------------- */
+@media only screen and (max-width: 768px) {
+    .custom-modal-container {
+        width: 95% !important;
+        height: 90vh;
+        padding: 0.5rem;
+    }
+
+    /* Stack checkbox items & form fields vertically */
+    .apf-checkbox-list .checkbox-item,
+    .project-dev-wrapper {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+
+    .project-field,
+    .developer-field {
+        min-width: 100% !important;
+    }
+
+    /* Stack footer buttons */
+    .modal-footer-right,
+    .footer-btn {
+        width: 100% !important;
+        flex-direction: column;
+        margin: 0.25rem 0;
+    }
+
+    /* Table scroll for mobile only */
+    .table-scroll-container {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .wrap-table {
+        min-width: 1200px;        /* force horizontal scroll for many columns */
+        table-layout: fixed;
+    }
+}
+
+/* ----------------- Modal Header / Footer ----------------- */
+.modal-header {
+    background: var(--dt-modal-gradient) !important;
+    border-bottom: 1px solid var(--dt-border);
+    color: #ffffff !important;
+}
+
+.modal-header h2 {
+    color: #ffffff !important;
+}
+
+.footer-section {
+    background: var(--dt-modal-gradient) !important;
+    border-top: 1px solid var(--dt-border);
+    color: #ffffff !important;
+}
+
+.slds-modal__content {
+    background-color: var(--dt-bg);
+    color: var(--dt-text);
+}
+
+/* ----------------- Buttons ----------------- */
+.add-collateral-btn {
+    margin-top: 1rem;
+}
+
+.footer-btn {
+    min-width: 80px;
+    margin-right: 0.5rem;
+}
+
+/* Positive flowing CTAs - Green (Next, Save, Submit, Assign UPID, etc.) */
+button.slds-button_brand,
+.initiate-button,
+.SaveButton,
+.positive-cta {
+    background-color: var(--dt-positive) !important;
+    border-color: var(--dt-positive) !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
+button.slds-button_brand:hover,
+.initiate-button:hover,
+.SaveButton:hover,
+.positive-cta:hover {
+    background-color: var(--dt-positive-hover) !important;
+    border-color: var(--dt-positive-hover) !important;
+}
+
+/* Negative flowing CTAs - Red (Close, Cancel, Back, etc.) */
+button.slds-button_destructive,
+button.slds-button_neutral,
+button.slds-button_brand.negative-cta {
+    background-color: var(--dt-negative) !important;
+    border-color: var(--dt-negative) !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
+/* Add-type action CTAs (Add, Add Row, Add Collateral, etc.) - Blue.
+   Selector specificity must match/beat "button.slds-button_brand" (0,1,1)
+   from the positive-CTA rule above, or that rule wins regardless of
+   source order since both use !important. */
+button.add-collateral-btn,
+button.slds-button_brand.add-collateral-btn,
+.initiate-button.add-collateral-btn,
+button.add-cta,
+button.slds-button_brand.add-cta,
+.initiate-button.add-cta {
+    background-color: #1467eb !important;
+    border-color: #1467eb !important;
+    color: #ffffff !important;
+}
+
+/* ----------------- Checkbox List ----------------- */
+.apf-checkbox-list {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--dt-border);
+    border-radius: 0.25rem;
+    background-color: var(--dt-panel-bg);
+}
+
+.apf-checkbox-list .section-label {
+    font-weight: bold;
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    display: inline-block;
+    color: var(--dt-text);
+}
+
+.apf-checkbox-list .checkbox-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 0.75rem;
+}
+
+.apf-checkbox-list .checkbox-item input[type="checkbox"] {
+    margin-right: 0.5rem;
+}
+
+.apf-checkbox-list .checkbox-item .applicant-label {
+    font-weight: normal;
+    font-size: 0.95rem;
+    color: var(--dt-text-muted);
+}
+
+/* ----------------- Fieldset ----------------- */
+.custom-fieldset {
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--dt-border);
+    padding: 1rem;
+    border-radius: 0.25rem;
+    background-color: var(--dt-panel-bg);
+}
+
+.custom-fieldset legend {
+    background-color: var(--dt-input-bg);
+    color: var(--dt-text);
+    padding: 0.25rem 0.75rem;
+    border-radius: 0.25rem;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+/* Extended Fields Credit now matches every other fieldset legend's
+   styling instead of standing out in purple. */
+.custom-fieldset.extended-fields-credit {
+    border-color: var(--dt-border);
+}
+
+.custom-fieldset.extended-fields-credit legend {
+    background-color: var(--dt-input-bg);
+    color: var(--dt-text);
+}
+
+/* ----------------- Form Fields ----------------- */
+.slds-form-element__label {
+    color: var(--dt-text-muted) !important;
+    font-weight: 600;
+}
+
+/* Belt-and-braces alongside the :host styling hooks above, matching the
+   pattern already proven on salesLoginProductDetailsCmp - some base
+   component versions read ::part(input) rather than the style hooks. */
+lightning-input::part(input),
+lightning-combobox::part(input),
+lightning-combobox .slds-combobox__input,
+lightning-select .slds-select {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    color: var(--dt-text) !important;
+    height: 2.25rem !important;
+}
+
+/* Combobox dropdown listbox (open options list) - dark theme to match the
+   closed input above instead of the SLDS default white popover. */
+lightning-combobox .slds-dropdown,
+lightning-combobox .slds-dropdown__list,
+lightning-combobox .slds-listbox_vertical {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+}
+
+lightning-combobox .slds-listbox__option,
+lightning-combobox .slds-listbox__item {
+    background-color: var(--dt-input-bg) !important;
+    color: var(--dt-text) !important;
+}
+
+lightning-combobox .slds-listbox__option:hover,
+lightning-combobox .slds-listbox__option:focus,
+lightning-combobox .slds-listbox__option.slds-has-focus {
+    background-color: var(--dt-accordion) !important;
+    color: #ffffff !important;
+}
+
+lightning-combobox .slds-listbox__option[aria-selected="true"] {
+    background-color: var(--dt-accordion) !important;
+    color: #ffffff !important;
+}
+
+.project-dev-wrapper {
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    max-width: 600px;
+    margin-bottom: 1rem;
+}
+
+.project-field,
+.developer-field {
+    flex: 1;
+    min-width: 150px;
+}
+
+.project-field lightning-combobox,
+.developer-field lightning-input {
+    width: 100%;
+}
+
+.developer-field lightning-input[disabled] {
+    background-color: var(--dt-input-bg);
+    color: var(--dt-text-muted);
+    cursor: not-allowed;
+}
+
+/* Project / Tower / Unit / Pincode search suggestion lists */
+.slds-list_dotted {
+    background-color: var(--dt-panel-bg);
+    border: 1px solid var(--dt-border);
+    border-radius: 0.25rem;
+}
+
+.slds-list_dotted li.slds-border_bottom {
+    border-color: var(--dt-border) !important;
+}
+
+.slds-list_dotted a {
+    color: var(--dt-accordion);
+}
+
+/* ----------------- Tables ----------------- */
+.slds-table thead th {
+    color: #ffffff;
+    font-weight: bold;
+    text-align: left;
+    padding: 10px;
+    background-color: var(--dt-header-bg) !important;
+    border-color: var(--dt-header-bg);
+}
+
+.table-class {
+    width: 99%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-left: 1.01%;
+    border: 1px solid var(--dt-border);
+    border-radius: 0.75rem;
+    overflow: hidden;
+    background-color: var(--dt-panel-bg);
+}
+
+.table-class thead tr:first-child th:first-child {
+    border-top-left-radius: 0.75rem;
+}
+
+.table-class thead tr:first-child th:last-child {
+    border-top-right-radius: 0.75rem;
+}
+
+.table-class tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 0.75rem;
+}
+
+.table-class tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 0.75rem;
+}
+
+.tdBorderHeader {
+    color: #ffffff !important;
+    height: 20px;
+    border: 1px solid var(--dt-border);
+    padding-left: 1%;
+}
+
+.slds-table_striped tbody tr:nth-child(odd) td {
+    background-color: var(--dt-panel-bg);
+}
+
+.slds-table_striped tbody tr:nth-child(even) td {
+    background-color: var(--dt-input-bg);
+}
+
+.slds-table tbody tr:hover td {
+    background-color: #232a3d !important;
+}
+
+.wrap-text {
+    white-space: normal;
+    word-wrap: break-word;
+    word-break: break-word;
+    max-width: 200px;
+}
+
+/* Related Collateral box (non-modal view) */
+.slds-box {
+    background-color: var(--dt-panel-bg) !important;
+    border-color: var(--dt-border) !important;
+    border-radius: 0.75rem !important;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+.slds-box h3 {
+    color: var(--dt-text) !important;
+}
+
+/* ----------------- Modal Footer ----------------- */
+.modal-footer-right {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    padding: 1rem 1.5rem;
+}
+
+.error {
+    color: var(--dt-negative);
+}

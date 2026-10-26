@@ -1,0 +1,105 @@
+@import "c/cssLibrary";
+/* =========================================================
+   PROGRESS BAR BASE
+   ========================================================= */
+
+.slds-progress {
+    --slds-g-color-brand-base-50: #7c3aed;
+    --slds-g-color-brand-base-60: #7c3aed;
+    --slds-g-color-brand-base-70: #7c3aed;
+}
+
+
+/* MAIN HORIZONTAL LINE */
+.slds-progress__list {
+    position: relative;
+}
+
+.slds-progress__list::before {
+    background-color: #33455e !important;
+}
+
+
+/* =========================================================
+   DEFAULT MARKERS
+   ========================================================= */
+
+.slds-progress__marker {
+    background-color: #16283f !important;
+    border: 4px solid #33455e !important;
+    box-shadow: none !important;
+}
+
+
+/* =========================================================
+   OPEN MARKER
+   ONLY WHEN stepOneClass HAS slds-is-active
+   ========================================================= */
+
+.slds-progress__item.slds-is-active:first-child .slds-progress__marker {
+    background-color: #7c3aed !important;
+    border-color: #7c3aed !important;
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.18) !important;
+}
+
+
+/* =========================================================
+   CLOSED MARKER
+   ONLY WHEN CLOSED STEP IS ACTIVE
+   ========================================================= */
+
+.slds-progress__item.slds-is-active:last-child .slds-progress__marker {
+    background-color: #7c3aed !important;
+    border-color: #7c3aed !important;
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.18) !important;
+}
+
+
+/* =========================================================
+   PROGRESS BAR BACKGROUND
+   ========================================================= */
+
+.slds-progress-bar {
+    background-color: #33455e !important;
+    border-radius: 999px !important;
+    overflow: hidden;
+}
+
+
+/* =========================================================
+   PROGRESS FILL
+   ========================================================= */
+
+.slds-progress-bar__value {
+    background: linear-gradient(
+        90deg,
+        #7c3aed 0%,
+        #7c3aed 100%
+    ) !important;
+
+    border-radius: 999px !important;
+    transition: width 0.3s ease;
+}
+
+
+/* OPEN = NO FILL */
+.slds-progress-bar__value.open-progress {
+    width: 0% !important;
+}
+
+
+/* CLOSED = FULL FILL */
+.slds-progress-bar__value.closed-progress {
+    width: 100% !important;
+}
+
+
+/* =========================================================
+   TEXT
+   ========================================================= */
+
+.slds-progress__item_content,
+.slds-progress__item_content *,
+.slds-progress__item .slds-grid {
+    color: #ffffff !important;
+}

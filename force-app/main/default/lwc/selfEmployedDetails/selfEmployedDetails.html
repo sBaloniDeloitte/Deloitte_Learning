@@ -1,0 +1,38 @@
+<template>
+    <div class="container">
+
+
+        <!-- Data table -->
+        <template if:true={applicants}>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Business Entity Name</th>
+                        <th>Applicant Type</th>
+                        <th>Customer Profile / Constitution</th>
+                        <th>Sector</th>
+                        <th>Nature of Business</th>
+                        <th>Business Vintage</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={applicants} for:item="app">
+                        <tr key={app.Id}>
+                            <td>{app.Business_Entity_Name__c}</td>
+                            <td>{app.Applicant_Type__c}</td>
+                            <td>{app.Customer_Profile__c}</td>
+                            <td>{app.Sector__c}</td>
+                            <td>{app.Nature_of_Business__c}</td>
+                            <td>{app.Business_Vintage__c}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </template>
+
+        <!-- No data / error -->
+        <template if:true={error}>
+            <p>No SEP/SENP applicants found.</p>
+        </template>
+    </div>
+</template>

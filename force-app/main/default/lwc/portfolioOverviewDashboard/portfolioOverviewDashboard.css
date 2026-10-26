@@ -1,0 +1,325 @@
+/* _______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________ */
+:host {
+    --po-accent: #e3e4e9;
+    --po-accent-dark: #e4e5e8;
+
+    --po-card-bg: radial-gradient(120% 120% at 15% 0%, rgba(58, 110, 196, 0.35) 0%, rgba(10, 15, 25, 0) 45%),
+        linear-gradient(160deg, #142042 0%, #0a1120 55%, #060911 100%);
+    --po-card-border: rgba(120, 150, 220, 0.18);
+    --po-card-glow: 0 0 0 1px rgba(80, 130, 220, 0.12) inset, 0 8px 24px rgba(0, 0, 0, 0.45);
+    --po-page-bg: #060912;
+
+    --po-border: rgba(255, 255, 255, 0.08);
+
+    --po-tab-gray: #a8b0c6;
+    --po-value-dark: #5b9bf0;
+    --po-title-color: #ffffff;
+    --po-subtitle-color: #7c8aa8;
+    --po-label-color: #eaecf1;
+
+    display: block;
+
+    background: var(--po-page-bg);
+    color: #ffffff;
+
+    font-family: -apple-system, BlinkMacSystemFont,
+        "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* Main Container */
+.po-container {
+    background: linear-gradient(
+        90deg,
+        #060912 0%,
+        #090d1c 50%,
+        #060912 100%
+    );
+    min-height: 100vh;
+    padding: 0;
+}
+
+/* ── Tab Bar ───────────────────────────────────────────── */
+.po-tabs {
+    display: flex;
+    border-bottom: 1px solid var(--po-border);
+    margin-bottom: 10px;
+}
+
+.po-tab {
+    flex: 1;
+    text-align: center;
+    padding: 14px 0;
+    cursor: pointer;
+    color: var(--po-tab-gray);
+    font-size: 14px;
+    font-weight: 500;
+    position: relative;
+    transition: color 0.15s ease;
+}
+
+.po-tab:hover {
+    color: var(--po-accent-dark);
+}
+
+.po-tab.active {
+    color: var(--po-accent);
+    font-weight: 700;
+}
+
+.po-tab.active::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 2px;
+    background: var(--po-accent);
+}
+.po-header {
+    background: #182235;
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 4px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 18px 24px;
+    margin-bottom: 0;
+}
+
+.po-header-title {
+    color: #ffffff;
+    font-size: 2rem;
+    font-weight: 700;
+}
+
+.po-header-icon {
+    width: 44px;
+    height: 44px;
+
+    background: #6c8cff;
+    color: white;
+
+    border-radius: 4px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-right: 15px;
+}
+.po-grid {
+padding: 24px 32px;
+}
+/* ── Tab Panels ────────────────────────────────────────── */
+/* Only one panel is ever visible: the active getter appends 'show', the
+   other two panels get 'hide' -- both toggled on plain divs, never on
+   template if:true, so exactly one component renders at a time. */
+.po-tab-panel.show {
+    display: block;
+}
+
+.po-tab-panel.hide {
+    display: none;
+}
+
+/* Centers the Bulk Leads content (c-bulk-upload-home) horizontally within
+   the tab area, matching the reference screenshot. */
+.po-bulkleads-panel {
+    display: flex;
+    justify-content: center;
+    padding-top: 24px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+/* ── Card Grid ─────────────────────────────────────────── */
+/* auto-fit + minmax(0, 1fr) sizes columns off this component's actual
+   rendered width rather than the browser viewport. A Lightning
+   region/tab is often narrower than the viewport, so a fixed
+   repeat(5, minmax(180px, 1fr)) can force a total minimum width wider
+   than the container -- that is what pushes cards past the rounded
+   boundary. minmax(0, 1fr) also lets a track shrink below a card's
+   min-content width instead of overflowing. Viewport media queries are
+   kept only as an extra floor on very small phone screens. */
+.po-grid {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 16px;
+    max-width: 100%;
+    overflow: hidden;
+}
+
+/* Fixed column counts (rather than auto-fit) keep row distribution
+   consistent -- e.g. 5+5 for 10 cards -- instead of auto-fit packing as
+   many 180px+ columns as the container width allows (which produced an
+   uneven 7-then-3 split on wide screens). */
+@media (max-width: 1200px) {
+    .po-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 768px) {
+    .po-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 480px) {
+    .po-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ── Card ──────────────────────────────────────────────── */
+.po-card {
+    background: var(--po-card-bg);
+    border: 1px solid var(--po-card-border);
+    border-radius: 16px;
+    box-shadow: var(--po-card-glow);
+    padding: 16px 18px 14px;
+    min-width: 0;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+    outline: none;
+}
+
+.po-card:hover,
+.po-card:focus-visible {
+    transform: translateY(-3px);
+    box-shadow: var(--po-card-glow), 0 8px 18px rgba(91, 111, 232, 0.25);
+    border-color: rgba(120, 150, 220, 0.4);
+}
+
+.po-card-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 12px;
+    min-height: 36px;
+}
+
+/* Rounded-square gradient tile that wraps the leading card icon. */
+.po-card-icon-wrap {
+    flex: 0 0 auto;
+    width: 36px;
+    height: 36px;
+    border-radius: 9px;
+    background: linear-gradient(135deg, #3d6fd6 0%, #1c3f8c 100%);
+    box-shadow: 0 4px 10px rgba(30, 70, 170, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.po-card-heading {
+    flex: 1 1 auto;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.po-card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--po-title-color);
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+    word-break: break-word;
+}
+
+.po-card-subtitle {
+    font-size: 12.5px;
+    font-weight: 400;
+    color: var(--po-subtitle-color);
+    line-height: 1.3;
+}
+
+/* All card icons share this class so every icon renders at the identical size/color. */
+.po-card-icon {
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    color: #ffffff;
+    pointer-events: none;
+}
+
+/* Muted top-right "signal bars" indicator, consistent across every card. */
+.po-card-signal {
+    flex: 0 0 auto;
+    width: 20px;
+    height: 20px;
+    color: rgba(120, 150, 220, 0.55);
+    pointer-events: none;
+    margin-top: 2px;
+}
+
+/* Divider between the card header and its metric rows. */
+.po-card-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 3px 0 12px;
+}
+
+.po-metric-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    font-size: 13px;
+    color: var(--po-label-color);
+    margin-bottom: 9px;
+}
+
+.po-metric-row:last-child {
+    margin-bottom: 0;
+}
+
+.po-metric-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    min-width: 0;
+}
+
+/* Small rounded tile behind each metric-row icon/emoji. */
+.po-metric-icon-box {
+    flex: 0 0 auto;
+    width: 24px;
+    height: 24px;
+    border-radius: 7px;
+    background: rgba(60, 100, 190, 0.18);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    line-height: 1;
+}
+
+.po-metric-label {
+    color: var(--po-label-color);
+    overflow-wrap: anywhere;
+}
+
+.po-metric-value {
+    flex: 0 0 auto;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--po-value-dark);
+    margin-left: 8px;
+}
+/* Main tab panel spacing */
+.po-tab-panel.show {
+    display: block;
+    padding-top: 16px;
+}
+
+/* Dashboard component spacing */
+c-dashboard-overview-charts {
+    display: block;
+    margin-top: 24px;
+}

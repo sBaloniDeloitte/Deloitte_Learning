@@ -1,0 +1,92 @@
+<template>
+    <!-- Main Box -->
+    <div class="slds-box slds-m-around_small">
+        <!-- <template if:false={isDocPresent}> -->
+        <div class="slds-grid slds-gutters slds-p-around_medium slds-wrap">
+            <div class="slds-col slds-size_12 slds-medium-size_4">
+                <lightning-combobox name="Applicant" label="Name" value={selectedApplicantId} options={applicantOptions}
+                    onchange={handleApplicantChange} required>
+                </lightning-combobox>
+            </div>
+            <!-- Yes/No Dropdown -->
+            <div class="slds-col slds-size_12 slds-medium-size_4">
+                <lightning-combobox label="Is Seller Consent" value={sellerValue} options={yesNoOptions}
+                    onchange={handleSellerChange} disabled={isDisabled}>
+                </lightning-combobox>
+            </div>
+
+            <!-- File Upload Section -->
+            <template if:true={showFileSection}>
+
+                <div class="slds-col slds-size_12 slds-medium-size_4">
+                    <lightning-file-upload label="Upload File" name="sellerFileUploader" record-id={applicantId}
+                        accept={acceptedFormats} onuploadfinished={handleUploadFinished} disabled={isDisabled}>
+                    </lightning-file-upload>
+                </div>
+
+                <!-- Preview Button -->
+                <!-- <div class="slds-col slds-size_12 slds-medium-size_4 slds-align_absolute-center">
+                        <lightning-button-icon icon-name="utility:preview" alternative-text="Preview" label="Consent Document"
+                            title="Preview File" onclick={previewHandler} data-id={doc.contentId}
+                            data-documentid={doc.documentId} variant="brand">
+                        </lightning-button-icon>
+                    </div> -->
+                <div class="slds-col slds-size_12 slds-medium-size_4">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label">Consent Document</label>
+                        <div class="slds-form-element__control">
+                            <lightning-button-icon icon-name="utility:preview" alternative-text="Preview"
+                                title="Preview File" onclick={previewHandler} data-id={doc.contentId}
+                                data-documentid={doc.documentId} variant="brand">
+                            </lightning-button-icon>
+                        </div>
+                    </div>
+                </div>
+
+            </template>
+        </div>
+
+        <!-- OK Button (Right aligned like Next button) -->
+        <template if:true={showOkButton}>
+            <!-- <div class="slds-p-around_small slds-m-top_medium">
+                <div class="SaveButton slds-button slds-button_brand"
+                        style="font-size: 11px; width: 140px; background-color:#9bbf56; color: white; border-color: #9bbf56; font-weight: 500;">
+                    <lightning-button 
+                        label="OK"
+                        variant="brand"
+                        onclick={handleOkClick}
+                        class="slds-m-right_small">
+                    </lightning-button>
+                </div>
+            </div> -->
+            <div style="display: flex; justify-content: flex-end; margin-top: 2%;">
+                <button class="SaveButton slds-button slds-button_brand"
+                    style="font-size: 11px; width: 140px; background-color:#9bbf56; color: white; border-color: #9bbf56; font-weight: 500;"
+                    onclick={handleOkClick}>OK</button>
+            </div>
+        </template>
+        <!-- </template> -->
+        <!-- Accordion Section -->
+        <template if:true={showAccordion}>
+            <div class="slds-m-around_small">
+                <!-- <lightning-accordion active-section-name={activeSections} allow-multiple-sections-open>
+                    <lightning-accordion-section name="crifSection" label="CRIF One View">
+                        <div class="slds-p-around_medium"> -->
+                <template if:true={showChildCmp}>
+                    <c-sales-login-bureau-screen-cmp is-crif={isCrif} app-id={applicantId} record-id={recordId}
+                        from-sales={fromsales} is-seller={isSeller}>
+                    </c-sales-login-bureau-screen-cmp>
+                </template>
+                <!-- </div>
+                    </lightning-accordion-section>
+                </lightning-accordion> -->
+            </div>
+        </template>
+    </div>
+    <!-- <template if:true={isDocPresent}>
+        <c-sales-login-bureau-screen-cmp is-crif={isCrif} app-id={applicantId} record-id={recordId}
+            from-sales={fromsales} is-seller={isSeller}>
+        </c-sales-login-bureau-screen-cmp>
+
+    </template> -->
+</template>

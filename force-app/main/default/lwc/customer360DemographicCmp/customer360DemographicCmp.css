@@ -1,0 +1,221 @@
+:host {
+    display: block;
+    font-size: 13px;
+    font-family: Arial, Helvetica, sans-serif;
+    --bg-card: #1c2238;
+    --accent: #1467eb;
+    --accent-hover: #0d54c9;
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-muted: rgba(255, 255, 255, 0.5);
+    --divider: rgba(255, 255, 255, 0.1);
+    --border-color: #2a2f45;
+    --card-glow: 0 0 20px rgba(20, 103, 235, 0.15);
+}
+
+:host *,
+:host *::before,
+:host *::after {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.demographic-container {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: var(--card-glow);
+    color: var(--text-primary);
+    font-size: 13px;
+    overflow: hidden;
+}
+
+/* =========================
+   HEADER
+   ========================= */
+
+.component-header {
+    min-height: 90px;
+    padding: 1rem 1.25rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid #002266;
+    background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Circular profile picture */
+
+.profile-photo-wrapper {
+    width: 80px;
+    height: 80px;
+    min-width: 80px;
+    border-radius: 50%;
+    overflow: hidden;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.4);
+    flex-shrink: 0;
+}
+
+.profile-photo {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+    object-position: center;
+}
+
+/* Header title block */
+
+.header-title {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 3px;
+}
+
+.title-main {
+    font-size: 14px;
+    line-height: 20px;
+    font-weight: bold;
+    color: var(--text-primary);
+    letter-spacing: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.title-name {
+    font-size: 12px;
+    line-height: 17px;
+    font-weight: 400;
+    color: rgba(255, 255, 255, 0.85);
+    margin: 0;
+    padding: 0;
+}
+
+/* Unmask button */
+
+.unmask-button {
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    padding: 6px 4px;
+    text-align: right;
+    align-self: flex-start;
+    margin-top: 4px;
+}
+
+.unmask-button:hover {
+    text-decoration: underline;
+}
+
+/* =========================
+   SECTIONS
+   ========================= */
+
+.detail-section {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--divider);
+}
+
+.detail-section:last-child {
+    border-bottom: none;
+}
+
+.section-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.875rem;
+}
+
+/* =========================
+   FIELDS
+   ========================= */
+
+.details-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 1.5rem;
+    row-gap: 1rem;
+}
+
+.detail-item {
+    min-width: 0;
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.label {
+    display: block;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-muted);
+    margin-bottom: 3px;
+}
+
+.value {
+    display: block;
+    font-size: 13px;
+    line-height: 1.45;
+    font-weight: 500;
+    color: var(--text-primary);
+    word-break: break-word;
+}
+
+.masked {
+    letter-spacing: 0.4px;
+    font-weight: 400;
+    color: var(--text-secondary);
+}
+
+/* =========================
+   RESPONSIVE
+   ========================= */
+
+@media (max-width: 700px) {
+
+    .component-header {
+        padding: 14px 14px;
+        align-items: flex-start;
+    }
+
+    .profile-photo-wrapper {
+        width: 56px;
+        height: 56px;
+        min-width: 56px;
+    }
+
+    .header-title {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 3px;
+    }
+
+    .details-grid {
+        grid-template-columns: 1fr;
+        column-gap: 0;
+    }
+
+    .detail-section {
+        padding-left: 14px;
+        padding-right: 14px;
+    }
+
+    .full-width {
+        grid-column: auto;
+    }
+}

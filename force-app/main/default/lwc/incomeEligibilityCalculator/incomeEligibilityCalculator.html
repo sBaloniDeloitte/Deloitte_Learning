@@ -1,0 +1,22 @@
+<template>
+    <template if:true={showTable}>
+        <div class="slds-grid slds-wrap slds-scrollable_x iec-scroll-wrapper">
+            <table class="slds-table iec-table" style="max-width:57%">
+                <tbody>
+                    <template for:each={tableInfo} for:item="iter">
+                        <tr key={iter.fieldLabel}>
+                            <template if:true={iter.isHeader}>
+                                <td class="col-width-10 color-theme" style="text-align: center;">{iter.fieldLabel}</td>
+                                <td class="col-width-10 color-theme" style="text-align: center;">{iter.fieldValue}</td>
+                            </template>
+                            <template if:false={iter.isHeader}>
+                                <td class="col-width-100" style="text-align: left;">{iter.fieldLabel}</td>
+                                <td class="col-width-100" style="text-align: center;">{iter.fieldValue}</td>
+                            </template>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </template>
+</template>

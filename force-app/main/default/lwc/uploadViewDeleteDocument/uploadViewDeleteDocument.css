@@ -1,0 +1,461 @@
+@import "c/cssLibrary";
+
+/* ==========================================================
+   THEME VARIABLES
+========================================================== */
+
+:host {
+    --bg-primary: #081426;
+    --bg-secondary: #0c1729;
+    --header-blue: #334fae;
+    --border-color: rgba(255,255,255,.08);
+
+    --text-primary: #ffffff;
+    --text-secondary: #dce4f2;
+
+    --success-color: #64d26e;
+    --danger-color: #ff6b6b;
+    --info-color: #57a6ff;
+
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+    --slds-c-button-neutral-color-background: #16283f;
+}
+
+/* ==========================================================
+   LABELS
+========================================================== */
+
+.slds-form-element__label {
+    color: #ffffff !important;
+}
+
+/* ==========================================================
+   ICON CONTAINER
+========================================================== */
+
+.upload-icon-css {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    width: 38px;
+    height: 38px;
+
+    background: #14233d;
+
+    border: 1px solid #57a6ff;
+    border-radius: 8px;
+
+    margin: 2px;
+    cursor: pointer;
+
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Same visual layout as .upload-icon-css, without the shared library's
+   hover selector. Applied only when a parent requests static actions. */
+.upload-icon-static {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 38px;
+    height: 38px;
+    background: #14233d;
+    border: 1px solid #57a6ff;
+    border-radius: 8px;
+    margin: 2px;
+    cursor: pointer;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+/* Override the shared .upload-icon-css:hover rule for document actions.
+   Keep every interactive state visually identical to the resting icon. */
+.upload-icon-static:hover,
+.upload-icon-static:focus,
+.upload-icon-static:active,
+.upload-icon-static:focus-visible {
+    background: #14233d !important;
+    border-color: #57a6ff !important;
+    box-shadow: none !important;
+    outline: none !important;
+    transform: none !important;
+}
+
+/* Native selector is deliberately retained here: unlike a transparent
+   overlay, it keeps Salesforce's full, accessible file-picker hit area. */
+.document-processing-file-upload {
+    --slds-c-file-selector-button-color-background: #13233d;
+    --slds-c-file-selector-button-color-background-hover: #1a2d4b;
+    --slds-c-file-selector-button-color-background-active: #1a2d4b;
+    --slds-c-file-selector-button-color-border: #4a5e87;
+    --slds-c-file-selector-button-text-color: #dce4f2;
+    --slds-c-file-selector-button-radius-border: 4px;
+    --slds-c-file-selector-button-font-size: 0.8125rem;
+    --slds-c-file-selector-button-spacing-block-start: 0.55rem;
+    --slds-c-file-selector-button-spacing-block-end: 0.55rem;
+    --slds-c-file-selector-button-spacing-inline-start: 1rem;
+    --slds-c-file-selector-button-spacing-inline-end: 1rem;
+}
+
+/* Upload icon button color match - the CSS custom-property override
+   below (kept as a harmless fallback) was not enough on its own: the
+   actual <lightning-file-upload> button paints its solid blue (#334fae)
+   fill via an internal background-image/gradient layer that the
+   --slds-c-file-selector-button-* hooks don't fully clear, so the
+   button kept rendering solid blue with a white "Upload Files" label
+   regardless. The reliable fix is the overlay pattern below: the real
+   file-upload input is made fully transparent and stretched to cover
+   the whole box (so clicking anywhere still opens the file browser),
+   while a separate, purely visual lightning-icon (pointer-events: none)
+   is centered on top, giving the exact look of the reference image -
+   dark-navy box, thin blue border, blue upload icon only, no visible
+   native button chrome. */
+.upload-icon-css lightning-file-upload,
+.upload-icon-static lightning-file-upload {
+    --slds-c-file-selector-button-color-background: transparent;
+    --slds-c-file-selector-button-color-background-hover: transparent;
+    --slds-c-file-selector-button-color-background-active: transparent;
+    --slds-c-file-selector-button-color-border: transparent;
+    --slds-c-file-selector-button-text-color: #57a6ff;
+    --slds-c-file-selector-button-radius-border: 8px;
+}
+
+.upload-icon-css .upload-input-overlay,
+.upload-icon-static .upload-input-overlay {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0.01;
+    cursor: pointer;
+    z-index: 2;
+}
+
+.upload-icon-css .upload-visual-icon,
+.upload-icon-static .upload-visual-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    pointer-events: none;
+    --slds-c-icon-color-foreground-default: #57a6ff;
+}
+
+/* ==========================================================
+   ICON COLORS
+========================================================== */
+
+.green-utility-icon {
+    --slds-c-icon-color-foreground-default: #64d26e;
+}
+
+.red-utility-icon {
+    --slds-c-icon-color-foreground-default: #ff6b6b;
+}
+
+.blue-utility-icon {
+    --slds-c-icon-color-foreground-default: #57a6ff;
+}
+
+/* ==========================================================
+   FILE WIDGET
+========================================================== */
+
+.file-widget-inner {
+    background: var(--bg-primary);
+
+    border: 1px solid var(--border-color);
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    min-height: 220px;
+}
+
+/* ==========================================================
+   BUTTONS
+========================================================== */
+
+.save-button {
+    background: #7c3aed !important;
+
+    color: #ffffff !important;
+
+    border: none !important;
+
+    border-radius: 8px !important;
+
+    font-weight: 600;
+
+    min-width: 140px;
+}
+
+.cancel-button {
+    background: #16283f !important;
+
+    color: #ffffff !important;
+
+    border: 1px solid #7c3aed !important;
+
+    border-radius: 8px !important;
+
+    min-width: 140px;
+}
+
+/* ==========================================================
+   FILE UPLOAD
+========================================================== */
+
+lightning-file-upload {
+    --slds-c-file-selector-button-color-background: #334fae;
+    --slds-c-file-selector-button-color-border: #334fae;
+    --slds-c-file-selector-button-text-color: white;
+    --slds-c-file-selector-button-radius-border: 8px;
+}
+
+/* Upload component alignment */
+.upload-btn-wrapper lightning-file-upload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -3px;
+}
+
+/* ==========================================================
+   MODAL FIX
+========================================================== */
+
+.slds-modal {
+    position: fixed !important;
+
+    inset: 0;
+
+    z-index: 2147483646 !important;
+}
+
+.slds-backdrop {
+    position: fixed !important;
+
+    inset: 0;
+
+    background: rgba(0,0,0,0.7);
+
+    z-index: 2147483645 !important;
+}
+
+/* ==========================================================
+   MODAL CONTAINER
+========================================================== */
+
+.slds-modal__container {
+    position: fixed !important;
+
+    top: 50% !important;
+    left: 50% !important;
+
+    transform: translate(-50%, -50%) !important;
+
+    width: 80%;
+
+    max-width: 1200px;
+
+    max-height: 90vh;
+
+    margin: 0 !important;
+
+    border-radius: 12px;
+
+    overflow: hidden;
+
+}
+
+/* ==========================================================
+   MODAL HEADER
+========================================================== */
+
+.header-section {
+    background: var(--header-blue);
+
+    border-bottom: 1px solid var(--border-color);
+
+    color: white;
+}
+
+.header-title {
+    color: white !important;
+
+    font-size: 14px;
+
+    font-weight: 600;
+}
+
+/* ==========================================================
+   MODAL BODY
+========================================================== */
+
+.slds-modal__content {
+    background: var(--bg-primary) !important;
+
+    color: var(--text-primary) !important;
+
+    overflow-y: auto !important;
+
+    max-height: calc(90vh - 140px);
+}
+
+/* ==========================================================
+   MODAL FOOTER
+========================================================== */
+
+.footer-section {
+    background: #0c1729;
+    border-top: 1px solid rgba(255,255,255,.08);
+    padding: 12px;
+}
+
+/* Footer button row */
+.footer-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+}
+
+.button-container > div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.cancel-button {
+    background: #16283f !important;
+    color: #ffffff !important;
+    border: 1px solid #7c3aed !important;
+
+    width: 140px;
+    height: 40px;
+
+    border-radius: 8px;
+
+    font-weight: 600;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+lightning-file-upload {
+    --slds-c-file-selector-button-color-background: #334fae;
+    --slds-c-file-selector-button-color-border: #334fae;
+    --slds-c-file-selector-button-text-color: white;
+    --slds-c-file-selector-button-radius-border: 8px;
+}
+
+/* ==========================================================
+   PREVIEW AREA
+========================================================== */
+
+.popup-body {
+    background: var(--bg-primary);
+}
+
+.popup-body img {
+    max-width: 90%;
+
+    border-radius: 8px;
+
+    box-shadow: 0 2px 10px rgba(0,0,0,.35);
+}
+
+.popup-body iframe {
+    width: 90% !important;
+
+    border-radius: 8px;
+
+    background: white;
+
+    border: none;
+}
+
+/* ==========================================================
+   INSIDE PREVIEW
+========================================================== */
+
+.slds-modal__content img,
+.slds-modal__content iframe {
+    max-height: 70vh !important;
+}
+
+/* ==========================================================
+   BUTTON CONTAINER
+========================================================== */
+
+.cancel-button {
+    background: #16283f !important;
+    color: #ffffff !important;
+    border: 1px solid #7c3aed !important;
+    border-radius: 8px !important;
+
+    min-width: 140px;
+    height: 38px;
+
+    font-weight: 600;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+
+.button-container lightning-file-upload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ==========================================================
+   SMALL POPUP
+========================================================== */
+
+.small-popup .slds-modal__container {
+    width: 500px;
+
+    max-width: 90vw;
+}
+
+/* ==========================================================
+   DOWNLOAD LINKS
+========================================================== */
+
+a {
+    color: #57a6ff;
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+.upload-btn-wrapper {
+    display: flex;
+    align-items: end;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+    height: 40px;
+}
+lightning-icon{
+    --slds-c-icon-color-foreground-default: #ffffff !important;
+    --slds-c-icon-color-foreground: #ffffff !important;
+}

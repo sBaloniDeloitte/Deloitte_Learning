@@ -1,0 +1,48 @@
+<template>
+
+        <template lwc:if={isError}>  
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr>
+                        <th scope="col">S.no</th>
+                        <th scope="col">Error Message</th>
+                    </tr>
+                </thead>
+                <tbody>            
+                    <template for:each={errorData} for:item="item">
+                        <tr key={item.Id}>
+                            <td>{item.Id}</td>
+                            <td>
+                                <div style="white-space:normal">
+                                    {item.Message}
+                                </div> 
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>    
+        
+        </template>
+        
+    <template lwc:if = {displayButton}>
+        <div class="slds-align_absolute-center" style="height:5rem">Are you sure to push data, please confirm proceed?</div>
+        <div class="slds-align_absolute-center" style="height:5rem">        
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col">
+                    <span><button class="slds-button slds-button_brand continue-button" onclick={handleButtonValidation}>Proceed</button></span>
+                </div>
+                <div class="slds-col">
+                    <span><button class="slds-button slds-button_brand close-button" onclick={closeModal}>Cancel</button></span>
+                </div>
+            </div>
+        </div>
+    </template>
+        
+ 
+
+    
+    <!-- Load spinner -->
+    <template lwc:if ={isLoading}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>     
+</template>

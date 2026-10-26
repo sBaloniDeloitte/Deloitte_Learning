@@ -1,0 +1,74 @@
+<template>
+    
+    <template if:false={showButton}>
+        <button class="save-button slds-button slds-button_brand slds-m-right_medium"
+                style="border:none;margin-bottom: 10px; background-color:#1467EB" onclick={handleClick}>Get Exposure API Data</button>
+    </template>
+
+    <template if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+    </template>
+
+    <div>
+        <div class="exposure-table-wrapper">
+        <table
+            class="sortable slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right">
+            <thead style="position: sticky;top: 0;z-index: 1;">
+                <tr class="slds-line-height_reset">
+                    <!--<template if:false={isOneView}>-->
+                    <th style="text-align: center; background-color: #87CEEB; color:#181818;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; min-width: 100px;"
+                        scope="col" colspan="1">
+                        Exposure in Salesforce
+                    </th>
+                    <th style="text-align: center; background-color: #87CEEB; color:#181818;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; min-width: 100px;"
+                        scope="col" colspan="1">
+                        Exposure in PLF
+                    </th>
+                    <th style="text-align: center; background-color: #87CEEB; color:#181818;font-family:Arial, sans-serif; font-size:13px; padding:8px 10px; min-width: 100px;"
+                        scope="col" colspan="1">
+                        Total Exposure
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        {totalWipLoanSalesforce}
+                    </td>
+                    <td>
+                        {exposureGhfWipLoan}
+                    </td>
+                    <td>
+                        {totalExposureNew}
+                    </td>
+                </tr>
+    
+            </tbody>
+        </table>
+    </div>
+        <!--
+            <c-banking-summary 
+                total-exposure={totalExposure}
+                total-exposure-ghf-hfc={totalExposureGhfHfc}
+                total-exposure-gfl-nbfc={totalExposureGflNbfc}
+                total-exposure-gc={totalExposureGc}
+                exposure-ghf-wip-loan={exposureGhfWipLoan}
+                exposure-ghf-disburst-loan={exposureGhfDisburstLoan}
+                exposure-gfl={exposureGfl}
+                total-wip-loan-salesforce={totalWipLoanSalesforce}
+                total-disbursed-loan-salesforce={totalDisbursedLoanSalesforce}>
+            ></c-banking-summary>
+        -->
+    </div>
+
+        <!-- <template if:false={showButton}> -->
+            <div style="padding-top: 1%;">
+                <c-loan-exposures existing-loans={existingLoans}></c-loan-exposures>
+            </div>
+            <br/>
+            <div>
+                <c-linked-loans linked-loans-combined={linkedLoansCombined}></c-linked-loans>
+            </div>
+        <!-- </template> -->
+        
+</template>

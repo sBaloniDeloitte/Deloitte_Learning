@@ -1,0 +1,110 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import 'c/cssLibrary';
+
+/* ----------------- Dark Theme Palette -----------------
+   Matches the modal colour scheme used on homeQuickAction so this
+   pop-up looks consistent with the rest of the flow. */
+:host {
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-text: #ffffff;
+    --dt-text-muted: #cfd8e6;
+    --dt-placeholder: #8a99b3;
+    --dt-accordion: #1589ee;
+    --dt-positive: #1467eb;
+    --dt-negative: #db2929;
+    --dt-purple: #8d29db;
+    --dt-gradient: linear-gradient(135deg, rgb(0, 26, 94) 0%, rgb(0, 48, 135) 55%, rgb(0, 77, 179) 100%);
+}
+
+/* The dialog wrapper must stay transparent and centre its child instead
+   of stretching it (flexbox default align-items:stretch) - otherwise
+   the coloured container grows to the full dialog height, leaving a
+   large coloured gap above/below the header/footer. */
+.slds-modal {
+    background: transparent !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.slds-backdrop {
+    background-color: #000000;
+    opacity: 0.8;
+}
+
+.slds-modal__container {
+    width: 40rem;
+    max-width: 90%;
+    background-color: var(--dt-bg);
+    flex: 0 1 auto;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 0 !important;
+}
+
+.slds-modal__content {
+    background-color: var(--dt-bg);
+    color: var(--dt-text);
+}
+
+.header-section {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-image: var(--dt-gradient) !important;
+    color: var(--dt-text) !important;
+    border-bottom: 1px solid var(--dt-border);
+    padding: 0.75rem 1.5rem !important;
+}
+
+.header-title {
+    color: var(--dt-text) !important;
+}
+
+.footer-section {
+    position: sticky;
+    bottom: 0;
+    background-image: var(--dt-gradient) !important;
+    border-top: 1px solid var(--dt-border);
+    padding: 0.75rem 1.5rem !important;
+}
+
+.confirm-text {
+    color: var(--dt-text);
+    font-weight: 500;
+    padding: 1rem 0;
+}
+
+.button-container {
+    display: flex;
+    gap: 0.75rem;
+}
+
+/* Neutral outline CTA - dismisses the modal without updating the record */
+.cancel-button {
+    background-color: #0e1c30;
+    border: 1px solid var(--dt-border) !important;
+    color: var(--dt-text) !important;
+    border-radius: 0.5rem !important;
+    font-weight: 600 !important;
+}
+
+.cancel-button:hover {
+    background-color: var(--dt-input-bg) !important;
+}
+
+/* Right-hand / positive flowing CTA - solid purple fill, rounded, glow */
+.continue-button {
+    background-color: #a855f7 !important;
+    border-color: #a855f7 !important;
+    color: #ffffff !important;
+    border-radius: 0.5rem !important;
+    font-weight: 700 !important;
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.5) !important;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

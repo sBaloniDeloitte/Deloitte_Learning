@@ -1,0 +1,254 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import "c/cssLibrary";
+
+/* ==========================================================================
+   Modern Dark Theme — hl_finalIncomeEligibilityScreenCmp
+   ========================================================================== */
+
+:host {
+    --fie-bg: #0f1b30;
+    --fie-surface: #16233d;
+    --fie-surface-alt: #1b2c4c;
+    --fie-header-bg: #0c1830;
+    --fie-border: #2c3e5e;
+    --fie-text: #e9edf5;
+    --fie-text-muted: #a9b6cf;
+    --fie-accent: #4fb0e0;
+    display: block;
+    background-color: var(--fie-bg);
+    color: var(--fie-text);
+    border-radius: 10px;
+}
+
+.slds-table_cell-buffer tr>th:first-child, .slds-table_cell-buffer tr>td:first-child, .slds-table--cell-buffer tr>th:first-child, .slds-table--cell-buffer tr>td:first-child{
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+/* Allow picklist dropdowns to escape the table's scroll/clip boundaries */
+:host .slds-modal__content {
+    overflow: initial;
+}
+
+.slds-scrollable_x {
+    overflow-x: auto;
+    overflow-y: visible;
+}
+
+/* Modern slim scrollbar */
+.slds-scrollable_x::-webkit-scrollbar {
+    height: 8px;
+}
+.slds-scrollable_x::-webkit-scrollbar-track {
+    background: transparent;
+}
+.slds-scrollable_x::-webkit-scrollbar-thumb {
+    background-color: var(--fie-border);
+    border-radius: 8px;
+}
+.slds-scrollable_x::-webkit-scrollbar-thumb:hover {
+    background-color: var(--fie-accent);
+}
+
+/* ==========================================================================
+   Tables — bordered grid layout (matches reference screenshot)
+   ========================================================================== */
+
+table, th, td {
+    border: 1px solid rgba(233, 237, 245, 0.35) !important;
+}
+
+.slds-table {
+    background-color: transparent;
+    color: var(--fie-text);
+    border-collapse: collapse !important;
+    border: 1px solid rgba(233, 237, 245, 0.35) !important;
+    border-radius: 10px;
+    overflow: hidden;
+    width: 100%;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+}
+
+.slds-table thead th {
+    white-space: normal;
+    padding: 0.75rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    text-transform: none;
+    text-align: center;
+    border: 1px solid rgba(233, 237, 245, 0.35) !important;
+    background: linear-gradient(180deg, var(--fie-surface-alt) 0%, var(--fie-header-bg) 100%);
+    color: var(--fie-text);
+}
+
+.slds-table tbody td {
+    padding: 0.75rem 1rem;
+    background-color: var(--fie-surface);
+    color: var(--fie-text);
+    border: 1px solid rgba(233, 237, 245, 0.35) !important;
+    vertical-align: middle;
+    text-align: center;
+}
+
+.slds-table tbody tr:nth-child(even) td {
+    background-color: var(--fie-surface-alt);
+}
+
+.slds-table tbody tr:hover td {
+    background-color: var(--fie-surface-alt);
+    transition: background-color 0.15s ease-in-out;
+}
+
+/* ==========================================================================
+   Header row theme (Particulars / Applicant tables)
+   ========================================================================== */
+
+.color-theme {
+    text-align: center;
+    font-weight: 700;
+    font-size: 0.85rem;
+    background-color: var(--fie-header-bg) !important;
+    color: var(--fie-text) !important;
+    border: 1px solid rgba(233, 237, 245, 0.35) !important;
+}
+
+.no-hover:hover {
+    background-color: var(--fie-header-bg) !important; /* Or whatever the default background color is */
+    cursor: default; /* Change cursor back to default if it was changed on hover */
+}
+
+.no-hover-child:hover {
+    background-color: transparent !important; /* Or whatever the default background color is */
+    cursor: default; /* Change cursor back to default if it was changed on hover */
+}
+
+.col-width-10 {
+    width: 40px;
+}
+.col-width-100 {
+    min-width: 100px;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+
+/* ==========================================================================
+   Fetch Eligibility button — brand blue (overrides inline style)
+   ========================================================================== */
+
+lightning-button.slds-m-right_small {
+    --slds-c-button-brand-outline-color-background: #1467eb;
+    --slds-c-button-brand-outline-color-background-hover: #0f56c9;
+    --slds-c-button-brand-outline-color-background-active: #0d4bb0;
+    --slds-c-button-brand-outline-color-border: #1467eb;
+    --slds-c-button-brand-outline-text-color: #ffffff;
+    --slds-c-button-brand-outline-text-color-hover: #ffffff;
+    --slds-c-button-brand-outline-text-color-active: #ffffff;
+    background-color: #f0f1f3 !important;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(124, 58, 237, 0.35);
+    transition: all 0.2s ease;
+    margin-right: 3px;
+}
+
+lightning-button.slds-m-right_small:hover {
+    box-shadow: 0 4px 12px rgba(20, 103, 235, 0.55);
+    transform: translateY(-1px);
+}
+
+lightning-button.slds-m-right_small button,
+lightning-button.slds-m-right_small .slds-button {
+    background-color: #1467eb !important;
+    border-color: #1467eb !important;
+    color: #ffffff !important;
+    border-radius: 8px;
+}
+
+/* ==========================================================================
+   Inputs & Combobox — blend into dark table rows
+   ========================================================================== */
+
+lightning-input,
+lightning-combobox {
+    display: block;
+    --slds-c-input-color-background: transparent;
+    --slds-c-input-color-border: var(--fie-border);
+    --slds-c-input-text-color: var(--fie-text);
+    --slds-c-input-color-background-focus: var(--fie-surface-alt);
+    --slds-c-input-shadow-focus: 0 0 0 1px var(--fie-accent);
+}
+
+.slds-table lightning-input .slds-input,
+.slds-table lightning-combobox .slds-combobox__input {
+    background-color: transparent;
+    border: none;
+    border-bottom: 1px solid var(--fie-border);
+    border-radius: 4px;
+    color: var(--fie-text);
+    box-shadow: none;
+}
+
+.slds-table lightning-input .slds-input:focus,
+.slds-table lightning-combobox .slds-combobox__input:focus {
+    border-bottom-color: var(--fie-accent);
+    box-shadow: 0 1px 0 0 var(--fie-accent);
+    background-color: rgba(79, 176, 224, 0.08);
+}
+
+.slds-table lightning-input .slds-input::placeholder {
+    color: var(--fie-text-muted);
+}
+
+.slds-table lightning-input .slds-input[disabled],
+.slds-table lightning-combobox .slds-combobox__input[disabled] {
+    background-color: transparent;
+    color: var(--fie-text-muted);
+    opacity: 0.7;
+}
+
+/* ==========================================================================
+   Picklist / Combobox dropdown visibility fix
+   ========================================================================== */
+
+.slds-table td {
+    position: relative;
+}
+
+/* Ensure ancestor containers never clip the open dropdown */
+.slds-grid.slds-align_absolute-left,
+.slds-grid.slds-wrap {
+    overflow: visible;
+}
+
+lightning-combobox .slds-dropdown-trigger {
+    position: relative;
+}
+
+lightning-combobox .slds-dropdown {
+    z-index: 9000;
+    background-color: var(--fie-surface);
+    border: 1px solid var(--fie-border);
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5);
+}
+
+lightning-combobox .slds-listbox__option {
+    color: var(--fie-text);
+}
+
+lightning-combobox .slds-listbox__option:hover,
+lightning-combobox .slds-listbox__option.slds-has-focus {
+    background-color: var(--fie-surface-alt);
+    color: var(--fie-text);
+}
+
+/* ==========================================================================
+   Modal overrides to match dark theme
+   ========================================================================== */
+
+.slds-modal__container {
+    background-color: var(--fie-surface);
+    color: var(--fie-text);
+    border-radius: 8px;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

@@ -1,0 +1,109 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import "c/cssLibrary";
+
+/*
+ * Table theme matched EXACTLY to the "Field Investigation Initiation"
+ * table in creditFIInitiationCmp.css (.accordion-container .slds-table /
+ * .fi-table-wrapper) - dark-navy #0a1524 outer backdrop (wrapper),
+ * #0e1c30 table surface for both header and body, #33455e borders on
+ * every cell, 18px rounded corners on the outer cells only, left-aligned
+ * bold white header text with 12px/10px padding, 13px body text, and the
+ * same #16283f row-hover highlight - replacing the standard Dynamic
+ * Related List's default (white/grey) chrome in the Hunter Check
+ * accordion section.
+ */
+:host {
+    display: block;
+    color: #ffffff;
+}
+
+.hunter-section-title {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    margin-bottom: 8px;
+}
+
+.fi-table-wrapper {
+    background-color: #0a1524 !important;
+    padding: 1rem 1.5rem;
+    border-radius: 18px;
+}
+
+.fi-table-wrapper .slds-table {
+    width: 100%;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border-radius: 18px;
+    background-color: #0e1c30 !important;
+    border: 1px solid #33455e !important;
+    color: #ffffff;
+}
+
+.fi-table-wrapper .slds-table th,
+.fi-table-wrapper .slds-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fi-table-wrapper .slds-table thead th {
+    background-color: #0e1c30 !important;
+    background-image: none !important;
+    border-right: 1px solid #33455e !important;
+    border-bottom: 1px solid #33455e !important;
+    border-color: #33455e !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    font-size: 12.5px;
+    letter-spacing: 0.2px;
+    padding: 12px 10px !important;
+    text-align: left !important;
+    box-shadow: none !important;
+    vertical-align: middle;
+}
+
+.fi-table-wrapper .slds-table thead tr:first-child th:first-child {
+    border-top-left-radius: 18px;
+}
+
+.fi-table-wrapper .slds-table thead tr:first-child th:last-child {
+    border-top-right-radius: 18px;
+}
+
+.fi-table-wrapper .slds-table tbody td {
+    background-color: #0e1c30 !important;
+    border-right: 1px solid #33455e !important;
+    border-bottom: 1px solid #33455e !important;
+    border-color: #33455e !important;
+    color: #ffffff !important;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: left !important;
+    padding: 12px 10px !important;
+    vertical-align: middle;
+}
+
+.fi-table-wrapper .slds-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 18px;
+}
+
+.fi-table-wrapper .slds-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 18px;
+}
+
+.fi-table-wrapper .slds-table tbody tr:hover td {
+    background-color: #16283f !important;
+}
+
+.fi-table-wrapper .slds-table a {
+    color: #7db2ff !important;
+}
+
+.hunter-empty-state {
+    color: #8a99b3;
+    text-align: center;
+    padding: 12px;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

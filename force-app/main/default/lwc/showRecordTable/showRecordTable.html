@@ -1,0 +1,94 @@
+<template>
+    
+    <div class={cssMain}>
+        
+        <template lwc:if={showHeaderFooter}>
+            <header class="slds-modal__header header-section">
+                <div class="slds-text-align_center">
+                    <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">{headerText}</h2>
+                </div>
+            </header>
+        </template>
+
+        <div class={cssContainer}>
+            <template lwc:if={showNoRecords}>
+                <div class="no-records-message">No records found!</div>
+            </template>
+
+            <template lwc:else>
+                <div class="table-container" style="max-height: 450px; margin-bottom: 0;">
+                    <table class="slds-table">
+                        <thead>
+                            <tr class="sticky">
+                                <template for:each={headerColumns} for:item="hcol">
+                                    <th key={hcol.srNo} scope="col" style={hcol.styleTh}>
+                                        
+                                        <template lwc:if={hcol.showCheckbox}>
+                                            <lightning-input type="checkbox" variant="label-hidden" style="margin-left: var(--lwc-spacingXSmall,0.5rem);" 
+                                                data-name="mainToggle" 
+                                                onchange={handleCheckboxChange}>
+                                            </lightning-input>
+                                        </template>
+                                        <template lwc:else>
+                                            {hcol.title}
+                                        </template>
+                                    </th>
+                                </template>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={recordList} for:item="record">
+                            
+                                <tr key={record.id} style={record.styleTr}>
+                                    <template for:each={record.recordColumns} for:item="rcol">
+                                        <td key={rcol.srNo} scope="col" style={rcol.styleTd}>
+            
+                                            <template lwc:if={rcol.showLink}>
+                                                <a href={rcol.linkURL} target="_blank" title="Click here to open this record">{rcol.value}</a>
+                                            </template>
+            
+                                            <template lwc:elseif={rcol.showCheckbox}>
+                                                <lightning-input type="checkbox" variant="label-hidden" title="Click to select" style="margin-left: var(--lwc-spacingXSmall,0.5rem);" 
+                                                    data-name="toggle" data-id={record.id} 
+                                                    disabled={rcol.isDisabled}
+                                                    checked={rcol.isChecked}
+                                                    onchange={handleCheckboxChange}>
+                                                </lightning-input>
+                                            </template>
+
+                                            <template lwc:elseif={rcol.showRadio}>
+                                                <label class="slds-radio">
+                                                    <input type="radio" name="radioGroup" title="Click to select" 
+                                                        data-id={record.id} 
+                                                        disabled={rcol.isDisabled}
+                                                        checked={rcol.isChecked}
+                                                        onchange={handleRadioSelect}
+                                                    />
+                                                    <span class="slds-radio_faux"></span>
+                                                </label>
+                                            </template>
+            
+                                            <template lwc:else>
+                                                <template lwc:if={rcol.showBoldValue}>
+                                                    <span style="font-weight: 500;">{rcol.valueInBold}</span>
+                                                </template>
+                                                {rcol.value}
+                                            </template>
+                                            
+                                        </td>
+                                    </template>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
+        </div>
+
+        <template lwc:if={showHeaderFooter}>
+            <footer class="footer-section">
+            </footer>
+        </template>
+    </div>
+
+</template>

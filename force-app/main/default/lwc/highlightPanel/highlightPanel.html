@@ -1,0 +1,38 @@
+<template>
+    <article class="slds-card" style="border: none; box-shadow: 0 0.25rem 0.625rem rgba(0, 0, 0, 0.1);">
+        <!-- Header section -->
+        <div class="slds-grid card-bg">
+            <div class="stack-bg">
+                <header class="slds-media slds-media_center">
+                    <div class="slds-grid">
+                        <div class="slds-media__figure">
+                            <span class="slds-icon_container">
+                                <!-- Profile Picture -->
+                            </span>
+                        </div>
+                        <div class="slds-media__body user-name">
+                            <!-- Name -->
+                            <h1>{name}</h1>
+                        <div class="slds-grid slds-gutters_x-small slds-p-top_xx-small slds-text-title_caps">
+                            <!-- Stage__c -->
+                            <template if:true={stage}>
+                                <div class="slds-text-title_caps slds-p-top_xx-small slds-col slds-shrink-none">
+                                    <span><b>{stage.label}:</b></span>
+                                    <div>{stage.value}</div>
+                                </div>
+                            </template>
+                            <!-- RecordType__c -->
+                            <template if:true={recordTypeName}>
+                                <div class="slds-text-title_caps slds-p-top_xx-small slds-col slds-shrink-none slds-m-left_small">
+                                    <span><b>{recordTypeLabel}:</b></span>
+                                    <div>{recordTypeName}</div>
+                                </div>
+                            </template>
+                         </div>
+                        </div>
+                    </div>
+                </header>
+            </div>
+        </div>
+    </article>
+</template>

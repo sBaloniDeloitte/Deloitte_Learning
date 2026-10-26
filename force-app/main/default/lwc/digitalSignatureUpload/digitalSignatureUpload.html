@@ -1,0 +1,26 @@
+<template>
+    <lightning-card>
+        <div class="slds-box slds-m-around_small">
+            <div class="slds-grid slds-wrap slds-gutters">
+                <!-- Upload -->
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning-file-upload label="Upload File" name="digitalSignatureUpload" record-id={recordId}
+                        accept={acceptedFormats} onuploadfinished={handleUpload} disabled={isDisabled}>
+                    </lightning-file-upload>
+                </div>
+                <!-- Preview -->
+                <div class="slds-col slds-size_1-of-2">
+                    <div class="slds-form-element">
+                        <label class="slds-form-element__label">Digital Signature</label>
+                        <div class="slds-form-element__control">
+                            <lightning-button-icon icon-name="utility:preview" alternative-text="Preview"
+                                title="Preview File" onclick={previewHandler} data-id={doc.contentId}
+                                data-documentid={doc.documentId} variant="brand">
+                            </lightning-button-icon>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </lightning-card>
+</template>

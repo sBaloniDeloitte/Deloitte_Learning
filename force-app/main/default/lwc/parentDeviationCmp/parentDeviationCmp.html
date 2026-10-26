@@ -1,0 +1,247 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 04-07-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <span class="styleContainer"></span>
+    <lightning-card title="" style="">
+        <div class="" style="background-color:#071628;">
+            <template if:false={hideButton}>
+            <template if:false={hasPsvOrDisbursalStage}>
+                <template if:false={isDisabled}>
+                    <button class="save-button slds-button slds-button_brand slds-float_left"  onclick={handleAddDeviationRecord}>Add Deviation</button>
+                </template>
+            </template>
+            </template>
+        </div>
+        <div class="" style="margin-left: 10px;display: inline-block; background-color:#071628;">
+            <template if:false={hideButton}>
+            <template if:false={hasPsvOrDisbursalStage}>
+                <button class="save-button slds-button slds-button_brand slds-float_left"  onclick={handleRefresh}>Refresh</button>
+            </template>
+            </template>
+        </div>
+        <template if:true={showAdditionScreen}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Meaningful description of the modal content"
+                class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container" style="min-width: 60%;">
+                    <header class="slds-modal__header">
+                        <div class="slds-text-align_center">
+                            <h2 slot="title"
+                                style="color: white;font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px"
+                                class="slds-text-heading_medium slds-hyphenate">Add Deviations</h2>
+                        </div>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless " id="confirm-body" style="min-height: 30% !important;">
+                        <template if:true={isHLRelated}>
+                            <lightning-combobox 
+                                label="Product"
+                                placeholder="Select a Product"
+                                options={productOptions}
+                                onchange={onChangeProduct}
+                                value={selectedProduct}>
+                            </lightning-combobox>
+
+                            <template if:false={showInputText}>
+
+                                <lightning-input 
+                                    name="mitigant" 
+                                    label="Search deviation." 
+                                    value={devSearchText} 
+                                    onchange={handleChangeDeviation}>
+                                </lightning-input>
+                                    
+                                <table class="slds-table" style="width: 795px; margin: 10px 0 0 0; border-radius:8px; border: 1px solid white;">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 60px; background-color: #5bb6e3;"></th>
+                                            <th style="width: 350px; background-color: #5bb6e3; text-align: left;">Description</th>
+                                            <th style="width: 250px; background-color: #5bb6e3;">Deviation Number</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={deviationMasterList} for:item="item">
+                                            <tr key={item.Id}>
+                                                <td>
+                                                    <button class="slds-button slds-button_brand initiate-button" style="width: 50px; background-color:#1467EB" data-id={item.Id}
+                                                    data-name={item.Name} onclick={handleDeviationSelection}>Select</button>
+                                                </td>
+                                                <td style="text-align: left;">{item.Description__c}</td>
+                                                <td>{item.Deviation_Number__c}</td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+
+                                <div if:true={selected}>
+                                    <div if:true={devselected}>
+                                        <br>
+                                        <p slot="title" class="required-field" style="font-size:14px; font-style: italic; color: #113451;">Please select within
+                                            the available options for the deviation.</p>
+                                        <div class="slds-scrollable_y" style="overflow: auto;">
+                                            <template for:each={deviationOptions} for:item="option">
+                                                <div key={option.value} style="border: none;">
+                                                    <label style="display: flex; align-items: center;">
+                                                        <lightning-input
+                                                            type="checkbox"
+                                                            key={option.value}
+                                                            data-id={option.id}
+                                                            label={option.label}
+                                                            value={option.value}
+                                                            checked={option.checked}
+                                                            onchange={handleDeviationChange}
+                                                            class="applicant-checkbox">
+                                                        </lightning-input>
+                                                    </label>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                    <div if:true={showmitigantsList}>
+                                        <br>
+                                        <div style="padding-top: 1.3%">
+                                            <lightning-input 
+                                            name="remarks" 
+                                            label="Please add appropriate mitigant(s)." 
+                                            value={mitigantsVal} 
+                                            required="true" 
+                                            onchange={handleMitigants}>
+                                            </lightning-input>
+                                        </div>
+                                    </div>
+                                    <div if:true={showRemark} style="padding-top: 1.2%;padding-bottom:1%">
+                                        <button class="save-button slds-button slds-button_brand slds-float_left" onclick={handleSaveManualDeviation}>Add</button><br/>
+                                    </div>
+                                </div>
+                            </template>
+                        </template>
+
+                        <template if:false={isHLRelated}>
+                            <template if:false={showInputText}>
+                                <c-search-lookup
+                                label="Select Deviation"
+                                show-label="true"
+                                required="true"
+                                placeholder="Search Deviation"
+                                object-name="Deviation_Mitigant_Master__c"
+                                return-fields="['Id','Description__c','Deviation_Number__c']"
+                                onlookupselected={handleDeviationSelction}
+                                onlookupdeselected={handleDeviationDeselction}
+                                search-fields = "['Description__c','Deviation_Number__c']"
+                                filter-criteria="[RecordType.Name = Deviation;Product_Name__c = Home Loan]"
+                                ></c-search-lookup>
+
+                                <div if:true={selected}>
+                                    <div if:true={devselected}>
+                                        <br>
+                                        <p slot="title" class="required-field" style="font-size:14px; font-style: italic; color: #113451;">Please select within
+                                            the available options for the deviation.</p>
+                                        <div class="slds-scrollable_y" style="overflow: auto;">
+                                            <template for:each={deviationOptions} for:item="option">
+                                                <div key={option.value} style="border: none;">
+                                                    <label style="display: flex; align-items: center;">
+                                                        <lightning-input
+                                                            type="checkbox"
+                                                            key={option.value}
+                                                            data-id={option.id}
+                                                            label={option.label}
+                                                            value={option.value}
+                                                            checked={option.checked}
+                                                            onchange={handleDeviationChange}
+                                                            class="applicant-checkbox">
+                                                        </lightning-input>
+                                                    </label>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </div>
+                                    <div if:true={showmitigantsList}>
+                                        <br>
+                                        <div style="padding-top: 1.3%">
+                                            <lightning-input 
+                                            name="remarks" 
+                                            label="Please add appropriate mitigant(s)." 
+                                            value={mitigantsVal} 
+                                            required="true" 
+                                            onchange={handleMitigants}>
+                                            </lightning-input>
+                                        </div>
+                                    </div>
+                                    <div if:true={showRemark} style="padding-top: 1.2%;padding-bottom:1%">
+                                        <button class="save-button slds-button slds-button_brand slds-float_left" onclick={handleSaveManualDeviation}>Add</button><br/>
+                                    </div>
+                                </div>
+                            </template>
+                        </template>
+                        
+                        <template if:true={showScreenTable}>
+                            <div style="padding-top: 3%;">
+                                <p slot="title" style="font-size:14px; font-style: italic; color: #113451;">New Deviation
+                                    Conditions.</p>
+                                <table
+                                    class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right">
+                                    <thead style="top: 0;background: white;z-index: 4;">
+                                        <tr>
+                                            <th class="slds-cell-wrap" scope="col" style="text-align: center;border: 1px solid black;padding-left: 1%; max-width: 20%">Deviations</th>
+                                                <th class="slds-cell-wrap" scope="col" style="text-align: center;border: 1px solid black;padding-left: 1%; max-width: 30%">Applicable For</th>
+                                            <!-- <th class="slds-cell-wrap" scope="col" style="text-align: center;border: 1px solid black;padding-left: 1%; max-width: 25%">Remarks</th> -->
+                                            <th class="slds-cell-wrap" scope="col" style="text-align: center;border: 1px solid black;padding-left: 1%; max-width: 15%">Mitigants</th>
+                                                <th class="slds-cell-wrap" scope="col" style="text-align: center;border: 1px solid black;padding-left: 1%; max-width: 10%">Delete</th>
+                                        </tr>
+                                                </thead>
+                                                <tbody>
+                                        <template for:each={deviationTable} for:item="iter">
+                                            <tr key={iter.id}>
+                                                <td class="slds-cell-wrap" style="text-align: left; border: 1px solid black; padding-left: 1%; width: 20%;">
+                                                    <div class="slds-cell-wrap" style="text-align: left;">
+                                                        <lightning-button 
+                                                            variant="base"
+                                                            label={iter.Description} 
+                                                            data-id={iter.id} 
+                                                            onclick={handleOpenDeviations}
+                                                            class="slds-m-left_x-small">
+                                                        </lightning-button>
+                                                    </div>
+                                                </td>
+                                                <td class="slds-cell-wrap" style="text-align: center; border: 1px solid black; padding-left: 1%; width: 30%;">{iter.ApplicableFor}</td> 
+                                                <td class="tdBorderHeader" style="text-align: left; border: 1px solid black; padding-left: 1%; width: 15%;">{iter.mitigants}
+                                                </td>
+                                                <td class="tdBorderHeader" style="text-align: center; border: 1px solid black; padding-left: 1%;width: 10%;">
+                                                    <lightning-button-icon 
+                                                        variant="basic" 
+                                                        icon-name="utility:delete" 
+                                                        title="Delete Document" 
+                                                        data-id={iter.id} 
+                                                        onclick={deleteDeviation} 
+                                                        class="slds-m-left_x-small uploaded-view" 
+                                                        style="margin-top: 19px;">
+                                                    </lightning-button-icon>
+                                                </td>   
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </template>
+                    </div>
+                    <footer class="slds-modal__footer footer-section" style="border: revert;">
+                        <div class="slds-align_absolute-center">
+                            <button class="cancel-button slds-button slds-button_brand"
+                                style="" onclick={handleClose}>Close</button>
+                        </div>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+        </template>
+
+        <template if:true={showTable}>
+            <lightning-layout-item size="12" padding="around-small">
+                <c-deviation-records-cmp record-id={recordId} has-psv-or-disbursal-stage={hasPsvOrDisbursalStage}></c-deviation-records-cmp>
+            </lightning-layout-item>
+        </template>
+    </lightning-card>
+</template>

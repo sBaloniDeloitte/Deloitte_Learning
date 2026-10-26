@@ -1,0 +1,10 @@
+@import 'c/cssLibrary';
+.black-border {
+    border: 1px solid black;
+}
+.errorClass{
+    font-size: 12px;
+    min-height: 10%;
+    text-align: center;
+    padding: 4%;
+}

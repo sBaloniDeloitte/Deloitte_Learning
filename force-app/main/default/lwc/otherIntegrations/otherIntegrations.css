@@ -1,0 +1,131 @@
+@import "c/cssLibrary";
+
+:host {
+    display: block;
+    min-height: 100%;
+    background: #12172b;
+    color: #ffffff;
+    --integration-page-bg: #12172b;
+    --integration-panel-bg: #1c2238;
+    --integration-field-bg: #16283f;
+    --integration-accent: #1467eb;
+    --integration-border: #2a2f45;
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+    --slds-c-accordion-color-background: #12172b;
+    --slds-c-accordion-section-color-background: #1c2238;
+    --slds-c-accordion-summary-color-background: #1c2238;
+    --slds-c-accordion-summary-heading-color: #ffffff;
+    --slds-c-accordion-summary-text-color: #ffffff;
+    --slds-c-accordion-color-border: #2a2f45;
+}
+
+.example-accordion,
+.bsa-page,
+.slds-p-around_medium {
+    background: var(--integration-page-bg) !important;
+    color: #ffffff;
+}
+
+/* Same dark palette/structure as creditFIInitiationCmp.css (Field Investigation accordion) — .integration-table + full thead/tbody "tr" chain needed to reliably out-specify cssLibrary's !important rules */
+.slds-table.integration-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: var(--integration-panel-bg) !important;
+    border: 1px solid var(--integration-border) !important;
+    border-radius: 8px;
+    overflow: hidden;
+    color: #ffffff;
+}
+
+.slds-table.integration-table thead tr th {
+    background-color: var(--integration-accent) !important;
+    border-color: var(--integration-border) !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    padding: 10px !important;
+    text-align: center;
+}
+
+.slds-table.integration-table tbody tr td {
+    background-color: var(--integration-panel-bg) !important;
+    border-color: var(--integration-border) !important;
+    color: #ffffff !important;
+}
+
+.slds-table.integration-table tbody tr:hover td {
+    background-color: #242c46 !important;
+}
+
+.slds-table.integration-table a {
+    color: #7db2ff !important;
+}
+
+lightning-input,
+lightning-textarea,
+lightning-combobox {
+    --slds-c-input-color-background: var(--integration-field-bg);
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: var(--integration-border);
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-textarea-color-background: var(--integration-field-bg);
+    --slds-c-textarea-text-color: #ffffff;
+    --slds-c-textarea-color-border: var(--integration-border);
+    --slds-c-combobox-color-background: var(--integration-field-bg);
+    --slds-c-combobox-text-color: #ffffff;
+    --slds-c-combobox-color-border: var(--integration-border);
+    --slds-c-combobox-label-color: #ffffff;
+}
+
+/* Positive CTA (Trigger API/Fetch Information/Fetch MCA/View) -
+   #7c3aed fill, no border, 8px radius. */
+.initiate-button,
+.save-button,
+.fetch-mca-button {
+    background-color: #7c3aed !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* "Fetch Information" (FSSAI / Shop & Establishment Check) only -
+   scoped override on top of the shared ".save-button" class (also used
+   by Trigger API/View elsewhere in this file, all left untouched at
+   #7c3aed). */
+.fssai-fetch-btn,
+.shop-est-fetch-btn {
+    background-color: #1467eb !important;
+    border: 1px solid #1467eb !important;
+}
+
+.slds-modal__container {
+    background: var(--integration-panel-bg);
+    border: 1px solid var(--integration-border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.slds-modal__header {
+    background-color: var(--integration-accent) !important;
+    border-bottom: 1px solid var(--integration-border);
+    color: #ffffff !important;
+}
+
+.slds-modal__title,
+.slds-modal__header h2 {
+    color: #ffffff !important;
+}
+
+.slds-modal__content,
+.slds-modal__footer {
+    background-color: var(--integration-page-bg) !important;
+    color: #ffffff !important;
+    border-color: var(--integration-border) !important;
+}
+
+.combobox-container {
+    display: flex;
+    flex-direction: column;
+}

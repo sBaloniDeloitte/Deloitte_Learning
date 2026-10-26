@@ -1,0 +1,28 @@
+<template>
+        <div class="slds-scrollable" style="padding-top: 10px;">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr>
+                        <th>Fin Reference</th>
+                        <th>Demand Amount</th>
+                        <th>Paid Amount</th>
+                        <th>Receipt Date</th>
+                        <th>Remarks</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={loanTransactionData} for:item="itrTran">
+                        <tr key={itrTran.index}>
+                            <td><input type="text" value={itrTran.index} disabled /></td>
+                            <td><input type="text" value={itrTran.builderDemand} disabled /></td>
+                            <td><input type="text" value={itrTran.paidAmount} disabled /></td>
+                            <td><input type="date" value={itrTran.receiptDate} disabled /></td>
+                            <td><input type="text-area" value={itrTran.remarks} disabled /></td>
+                            <td><input type="text" value="Uploaded" disabled /></td> <!-- Assuming status is static -->
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+</template>

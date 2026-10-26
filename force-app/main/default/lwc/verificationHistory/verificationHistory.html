@@ -1,0 +1,27 @@
+<template>
+    <template if:true={data}>
+      <template if:false={productCheck}>
+        <lightning-datatable
+            key-field="Id"
+            data={data}
+            columns={columns}
+            hide-checkbox-column="true"
+        ></lightning-datatable>
+    </template>
+    <template if:true={productCheck}>
+        <template if:true={data.length}>
+        <lightning-datatable
+            key-field="Id"
+            data={data}
+            columns={columns}
+            hide-checkbox-column="true"
+        ></lightning-datatable>
+    </template>
+    <template if:false={data.length}>
+            <p class="slds-p-around_medium slds-text-color_weak">
+                No audit trail records found
+            </p>
+        </template>
+    </template>
+    </template>
+</template>

@@ -1,0 +1,430 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 02-26-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </template>
+    <div class="bsa-page">
+        <div style="margin-left: 15px;">
+            <template if:true={showOpenAll}>
+                <button class="save-button slds-button slds-button_brand" onclick={handlePassAllSections}>Open
+                    All</button>
+            </template>
+            <template if:false={showOpenAll}>
+                <button class="save-button slds-button slds-button_brand" onclick={handleCloseAllSections}>Close
+                    All</button>
+            </template>
+            <template if:true={showPDF}>
+                <button class="save-button pdf-action-button slds-button slds-button_brand" onclick={generatePDF}>PDF</button>
+            </template>
+        </div>
+    </div>
+    <div class="bsa-page printable-area">
+        <template if:true={isAccordionReady}>
+            <lightning-accordion class="example-accordion" allow-multiple-sections-open
+                active-section-name={mainAccordianActiveSactions} onsectiontoggle={handleSectionToggle}>
+                <lightning-accordion-section label="Sourcing Details" name="Sourcing Details"
+                    style=" font-weight: 700;">
+                    <!-- <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                        <tbody>
+                            <template for:each={sourcingData} for:item="rows">
+                                <tr key={rows}>
+                                    <template for:each={rows.tableData} for:item="row">
+                                        <td key={row} class="slds-text-title_bold"
+                                            style="background-color:#16283f !important; color:#ffffff !important; font-family:Arial, sans-serif; font-size:13px; font-weight:700; text-align:center; padding:8px 10px; border-color:#33455e; white-space:nowrap; width:20%;">
+                                            {row.header}
+                                        </td>
+                                        <td key={row} style="background-color:#16283f !important; color:#ffffff !important; font-weight: 400;width: 100px;border-color: #33455e;">
+                                            {row.value}</td>
+                                    </template>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table> -->
+                    
+                    <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-no-row-hover sourcing-details-table">
+                        <tbody>
+                            <template for:each={sourcingData} for:item="rows">
+                                <tr key={rows}>
+                                    <template for:each={rows.tableData} for:item="row">
+                    
+                                        <!-- KEY / HEADER -->
+                                        <td key={row} class="sourcing-key">
+                                            {row.header}
+                                        </td>
+                    
+                                        <!-- VALUE -->
+                                        <td key={row} class="sourcing-value">
+                                            {row.value}
+                                        </td>
+                    
+                                    </template>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </lightning-accordion-section>
+
+                <template for:each={fieldDetails} for:item="item">
+                    <template if:false={item.sourcingDetails}>
+                        <lightning-accordion-section key={item.label} label={item.name} name={item.name}
+                            class="custom-accordion-header">
+                            
+                            
+                            <template if:true={item.fcuScreen}>
+                                <template if:false={isHLRelated}>
+                                 <table class="slds-table slds-table_cell-buffer slds-table_fixed-layout slds-table_bordered slds-table_col-bordered slds-table slds-table_cell-buffer slds-table_bordered slds-scrollable-x slds-scrollable-y slds-no-row-hover doc-table-css"
+                                           style="overflow-y: scroll; overflow-x: scroll;width: 100%;" border="2">
+                                <thead>
+                                    <tr class="slds-line-height_reset" style="width:2px; word-wrap:break-word;">
+                                        <th class="slds-text-title_caps tableCss" scope="col" style="background-color:#16283f !important; color:#ffffff !important; font-weight:700 !important;">
+                                            <div class="slds-truncate" style="text-align: center;" title="Name">FCU Status</div>
+                                        </th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="background-color:#16283f !important; color:#ffffff !important; font-weight:700 !important;">
+                                            <div style="text-align: center;" title="Applicant Type">Overall FCU Verification
+                                            </div>
+                                        </th>
+                                       
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    
+                                        <tr class="slds-line-height_reset">
+                                            <td scope="row" class="tableCss" style="background-color:#16283f !important; color:#ffffff !important; width:4px; word-wrap:break-word;">
+                                                <div class="slds-truncate slds-cell-wrap" style="text-align: center;">{fcuStatus}
+                                                </div>
+                                            </td>
+                                            <td scope="row" class="tableCss" style="background-color:#16283f !important; color:#ffffff !important; width:2px; word-wrap:break-word;">
+                                                
+                                                 <div class="slds-truncate slds-cell-wrap" style="text-align: center;">{ovreAllFcuStatus}
+                                                </div>
+                                            </td>
+
+                                        </tr>
+                                    
+
+                                </tbody>
+                            </table>
+                            </template>
+                             
+
+                                <!-- <lightning-accordion-section label="FCU" name="FCU"> -->
+                                    <table class="slds-table slds-table_cell-buffer slds-table_fixed-layout slds-table_bordered slds-table_col-bordered slds-table slds-table_cell-buffer slds-table_bordered slds-scrollable-x slds-scrollable-y slds-no-row-hover doc-table-css"
+                                           style="overflow-y: scroll; overflow-x: scroll;width: 100%;" border="2">
+                                <thead>
+                                    <tr class="slds-line-height_reset" style="width:2px; word-wrap:break-word;">
+                                        <th class="slds-text-title_caps tableCss" scope="col" style="width:6%;background-color:#16283f !important; color:#ffffff !important;">
+                                            <div class="slds-truncate" style="text-align: center;" title="Name">Sr. No.</div>
+                                        </th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="width:20%;background-color:#16283f !important; color:#ffffff !important;">
+                                            <div style="text-align: center;" title="Applicant Type">Document Name
+                                            </div>
+                                        </th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="width:20%;background-color:#16283f !important; color:#ffffff !important;">
+                                            <div style="text-align: center;" title="Status">Screening Status</div>
+                                        </th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="width:20%;background-color:#16283f !important; color:#ffffff !important;">
+                                            <div style="text-align: center;" title="Status">Verification Status</div>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={alldocuments} for:item="rec" for:index="index">
+                                        <tr class="slds-line-height_reset" key={rec.docChecklistId}>
+                                            <td scope="row" class="tableCss" style="background-color:#16283f !important; color:#ffffff !important; width:4px; word-wrap:break-word;">
+                                                <div class="slds-truncate slds-cell-wrap" style="text-align: center;">{rec.docCount}
+                                                </div>
+                                            </td>
+                                            <td scope="row" class="tableCss" style="background-color:#16283f !important; width:2px; word-wrap:break-word;">
+                                                
+                                                <a href="javascript:void(0);" class="slds-truncate slds-cell-wrap"
+                                                    style="cursor: pointer; text-decoration: underline;color: #ffffff"
+                                                    onclick={handleDocChangeClick} data-id={rec.docContentId}>
+                                                    {rec.docName}
+                                                </a>
+                                            </td>
+
+                                            <td scope="row" class="tableCss" style="background-color:#16283f !important; color:#ffffff !important; text-align: center;">
+                                                <template if:false={rec.fcuinitiated}>
+                                                    <div class=" slds-cell-wrap" style="text-align: center;">{rec.screeningstatus}
+                                                    </div>
+                                                </template>
+                                                <template if:true={rec.fcuinitiated}>
+                                                    <div class="slds-truncate slds-cell-wrap" style="text-align: center;">FCU
+                                                        initiated
+                                                    </div>
+                                                </template>
+                                            </td>
+                                            <td scope="row" class="tableCss" style="background-color:#16283f !important; color:#ffffff !important; text-align: center;">
+                                                <template if:true={isHLRelated}>
+                                                <div class="slds-cell-wrap" style="text-align: center;">
+                                                    {rec.Status}
+                                                </div>
+                                                </template>
+                                                <template if:false={isHLRelated}>
+                                                 <template if:false={rec.fcuinitiated}>
+                                                    <div class=" slds-cell-wrap" style="text-align: center;">{rec.screeningstatus}
+                                                    </div>
+                                                </template>
+                                                <template if:true={rec.fcuinitiated}>
+                                                    <div class="slds-truncate slds-cell-wrap" style="text-align: center;">FCU
+                                                        initiated
+                                                    </div>
+                                                </template>
+                                                </template>
+                                            </td>
+                                        </tr>
+                                    </template>
+
+                                </tbody>
+                            </table>
+                            
+                            </template>
+
+                    <!-- </lightning-accordion-section> -->
+                                
+                           
+                            
+                            <template if:true={item.propertyCmp}>
+                                <c-property-details-cmp record-id={recordId}></c-property-details-cmp>
+                            </template>
+                            
+                             <template if:true={item.productDetailsScreen}>
+                               <c-sales-login-product-details-cmp record-id={recordId} is-one-view=true>
+                               </c-sales-login-product-details-cmp>
+                            </template>
+                            
+                            <template if:true ={item.technicalEvaluationScreen}>
+                                <c-hl_technical-evalvation record-id={recordId} notce=true is-one-vie=true></c-hl_technical-evalvation>
+                            </template>
+                            <template if:true ={item.covenantScreen}>
+                                <c-hl_covenants-detail-form record-id={recordId} is-one-view=true>
+                        </c-hl_covenants-detail-form>
+                            </template>
+                            <template if:true ={item.incomeAssessmentScreen}>
+                                <c-income-assessment-main-cmp record-id={recordId} is-one-view=true>
+
+                        </c-income-assessment-main-cmp>
+                            </template>
+
+                             <template if:true ={item.approvalScreen}>
+                                 <c-hl_-loan-approval-process record-id={recordId} is-one-view=true>
+                        </c-hl_-loan-approval-process>
+                            </template>
+                           
+
+                            <template if:false={item.propertyCmp}>
+                                <template if:true={item.EligibilityScreen}>
+                                    <template if:true={isHLRelated}>
+                                        <div style="padding-top: 5px;">
+                                            <c-hl_final-income-eligibility-screen-cmp record-id={recordId} disable-actions="true"></c-hl_final-income-eligibility-screen-cmp>
+                                        </div>
+                                    </template>
+                                    <template if:false={isHLRelated}>
+                                        <c-product-table record-id={recordId} is-one-view=true></c-product-table>
+                                    </template>
+                                </template>
+                                <template if:false={item.EligibilityScreen}>
+                                    <template if:true={item.ObligationScreen}>
+                                        <c-obligations-cmp record-id={recordId} is-one-view=true></c-obligations-cmp>
+                                    </template>
+                                    <template if:false={item.ObligationScreen}>
+                                        <template if:true={item.IntegrationScreen}>
+                                            <c-other-integrations record-id={recordId} hide-fssai-controls
+                                                hide-shop-controls hide-actions>
+                                            </c-other-integrations>
+                                        </template>
+                                        <template if:false={item.IntegrationScreen}>
+                                            <template if:true={item.SanctionConditionsScreen}>
+                                                <c-sanction-conditions-cmp record-id={recordId}
+                                                    disable-status-edit></c-sanction-conditions-cmp>
+                                            </template>
+                                            <template if:false ={item.covenantScreen}>
+                                            <template if:false ={item.approvalScreen}>
+                                            <template if:false ={item.incomeAssessmentScreen}>
+                                            <template if:false ={item.approvalScreen}>
+                                            <template if:false={item.fcuScreen}>
+                                            <template if:false={item.productDetailsScreen}>
+                                            <template if:false={item.SanctionConditionsScreen}>
+                                                <div class="slds-scrollable">
+                                                    <table class="slds-table slds-table_bordered slds-no-row-hover">
+                                                        <thead>
+                                                            <tr>
+                                                                <template for:each={item.value} for:item="field">
+                                                                    <th key={field.Id}
+                                                                        style="background-color:#16283f !important; color:#ffffff !important; font-family:Arial, sans-serif; font-size:13px; font-weight:700; text-align:center; padding:8px 10px; border-color:#33455e; white-space:nowrap; min-width:200px;">
+                                                                        {field.Field_Label__c}
+                                                                    </th>
+
+                                                                </template>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                                <template for:each={item.value} for:item="field">
+                                                                    <td key={field.Id}
+                                                                        style="background-color:#16283f !important; color:#ffffff !important; text-align: center;padding: 0;text-align: center;align-content: baseline;">
+                                                                        <template if:true={field.value}>
+                                                                            <template for:each={field.value}
+                                                                                for:item="val">
+                                                                                <div key={val}
+                                                                                    style="border-bottom: 1px solid #33455e;padding: 4px;font-weight: 100;">
+                                                                                    {val}</div>
+                                                                            </template>
+                                                                        </template>
+                                                                        <template if:false={field.value}>
+                                                                            <div
+                                                                                style="border-bottom: 1px solid #33455e;padding: 4px;font-weight: 100;">
+                                                                                --</div>
+                                                                        </template>
+                                                                    </td>
+                                                                </template>
+                                                            </tr>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                            </template>
+                                            </template>
+                                            </template>
+                                            </template>
+                                            </template>
+                                            </template>
+                                            </template>
+                                        </template>
+                                    </template>
+                                </template>
+                            </template>
+                        </lightning-accordion-section>
+                    </template>
+
+                </template>
+                <template if:false={isHLRelated}>
+                <lightning-accordion-section label="Income Method" name="Income Method">
+                    <c-hl_eligibility-cmp record-id={recordId} is-disabled=true></c-hl_eligibility-cmp>
+                </lightning-accordion-section>
+                </template>
+
+                <!-- <template if:true={isHLRelated}>
+                     <lightning-accordion-section label="Technical Evaluation" name="Technical Evaluation">
+                        <c-hl_technical-evalvation record-id={recordId} notce=true is-one-vie=true></c-hl_technical-evalvation>
+                     </lightning-accordion-section>
+                    
+                </template> -->
+
+                <!-- <template if:true={isHLRelated}>
+                    <lightning-accordion-section label="FCU" name="FCU">
+                        <table
+                    class="slds-table slds-table_cell-buffer slds-table_fixed-layout slds-table_bordered slds-table_col-bordered slds-table slds-table_cell-buffer slds-table_bordered slds-scrollable-x slds-scrollable-y doc-table-css"
+                    style="overflow-y: scroll; overflow-x: scroll;width: 100%;" border="2">
+                    <thead>
+                        <tr class="slds-line-height_reset" style="width:2px; word-wrap:break-word;">
+                            <th class="slds-text-title_caps tableCss" scope="col" style="width:6%;background: #5bb6e3;">
+                                <div class="slds-truncate" style="text-align: center;" title="Name">Sr. No.</div>
+                            </th>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                                style="width:20%;background: #5bb6e3;">
+                                <div style="text-align: center;" title="Applicant Type">Document Name
+                                </div>
+                            </th>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                                style="width:20%;background: #5bb6e3;">
+                                <div style="text-align: center;" title="Status">Screening Status</div>
+                            </th>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                                style="width:20%;background: #5bb6e3;">
+                                <div style="text-align: center;" title="Status">Verification Status</div>
+                            </th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={alldocuments} for:item="rec" for:index="index">
+                            <tr class="slds-line-height_reset" key={rec.docChecklistId}>
+                                <td scope="row" class="tableCss" style="width:4px; word-wrap:break-word;">
+                                    <div class="slds-truncate slds-cell-wrap" style="text-align: center;">{rec.docCount}
+                                    </div>
+                                </td>
+                                <td scope="row" class="tableCss" style="width:2px; word-wrap:break-word;">
+                                    
+                                    <a href="javascript:void(0);" class="slds-truncate slds-cell-wrap"
+                                        style="cursor: pointer; text-decoration: underline;color: black"
+                                        onclick={handleDocChangeClick} data-id={rec.docContentId}>
+                                        {rec.docName}
+                                    </a>
+                                </td>
+
+                                <td scope="row" class="tableCss" style="text-align: center;">
+                                    <template if:false={rec.fcuinitiated}>
+                                        <div class=" slds-cell-wrap" style="text-align: center;">{rec.screeningstatus}
+                                        </div>
+                                    </template>
+                                    <template if:true={rec.fcuinitiated}>
+                                        <div class="slds-truncate slds-cell-wrap" style="text-align: center;">FCU
+                                            initiated
+                                        </div>
+                                    </template>
+                                </td>
+                                <td scope="row" class="tableCss" style="text-align: center;">
+                                    <div class="slds-cell-wrap" style="text-align: center;">
+                                        {rec.Status}
+                                    </div>
+                                </td>
+                            </tr>
+                        </template>
+
+                    </tbody>
+                </table>
+
+                    </lightning-accordion-section>
+                </template> -->
+
+
+           
+
+                <!-- <template if:true={isHLRelated}> -->
+                    
+
+                    <!-- <lightning-accordion-section label="Product Detail" name="Product">
+                        <c-sales-login-product-details-cmp record-id={recordId} is-one-view=true>
+                        </c-sales-login-product-details-cmp>
+                    </lightning-accordion-section> -->
+                    
+                    <!-- <lightning-accordion-section label="Covenant Details" name="Covenant">
+                        <c-hl_covenants-detail-form record-id={recordId} is-one-view=true>
+                        </c-hl_covenants-detail-form>
+                    </lightning-accordion-section> -->
+
+                     <!-- <lightning-accordion-section label="Income Assessment Details" name="Income Assessment Details">
+                        <c-income-assessment-main-cmp record-id={recordId} is-one-view=true>
+
+                        </c-income-assessment-main-cmp>
+                       
+                    </lightning-accordion-section> -->
+                    <!-- <lightning-accordion-section label="Approval" name="Approval">
+                        <c-hl_-loan-approval-process record-id={recordId} is-one-view=true>
+                        </c-hl_-loan-approval-process>
+                    </lightning-accordion-section> -->
+                <!-- </template> -->
+                      <template if:false={isHLRelated}>
+                    <lightning-accordion-section label="Approval" name="Approval">
+                        <c-hl_loan-approval-cmp record-id={recordId} is-one-view=true>
+                        </c-hl_loan-approval-cmp>
+                    </lightning-accordion-section>
+                </template>
+                 
+            </lightning-accordion>
+
+        </template>
+    </div>
+</template>

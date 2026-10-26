@@ -1,0 +1,33 @@
+<!--
+    @description : Static "Lead Priority" card - Hot/Warm/Cold selector
+                    (dark/purple theme aligned with leadManagementV2).
+    @author       : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <div class="lp-container">
+
+        <div class="lp-header">
+            <lightning-icon icon-name="utility:target" size="small" variant="inverse" class="lp-header-icon"></lightning-icon>
+            <span class="lp-header-title">Lead Priority</span>
+        </div>
+
+        <div class="lp-body">
+            <div class="lp-pills">
+                <template for:each={priorityPills} for:item="pill">
+                    <div key={pill.value} class={pill.cssClass} data-value={pill.value} onclick={handlePriorityClick}>
+                        <span class="lp-pill-icon">{pill.icon}</span>
+                        <span class="lp-pill-label">{pill.label}</span>
+                    </div>
+                </template>
+            </div>
+
+            <template if:true={showConfirmation}>
+                <div class="lp-confirmation">
+                    <lightning-icon icon-name="utility:success" size="x-small"></lightning-icon>
+                    <span> This is a <strong>{selectedPriority}</strong> Priority Lead. </span>
+                </div>
+            </template>
+        </div>
+
+    </div>
+</template>

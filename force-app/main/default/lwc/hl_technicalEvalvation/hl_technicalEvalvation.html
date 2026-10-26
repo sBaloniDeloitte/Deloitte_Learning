@@ -1,0 +1,352 @@
+<template>
+    <template if:true={showConfirmationPopup}>
+        <c-popup-screen record-id={recordId} header-title="Enter Remarks" confirm-message={confirmationMessage} show-collateral-remarks="true"
+            show-close-btn=true close-btn-text="Close" process-name="Enter Collateral Remarks" save-btn-text="Save" show-save-btn="true" onremarks={handleCallDedupe} onhandleclose={handleCloseConfimationPopup}>
+        </c-popup-screen>
+    </template>
+    <!-- <template if:true={showTechnicalTable}>
+        <div class="slds-p-around_medium" style="margin-top: 1rem; overflow-x: auto;">
+            <legend class="slds-form-element__legend slds-form-element__label slds-m-bottom_small">Technical Records</legend>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered" role="grid">
+                <thead>
+                    <tr>
+                        <th scope="col">Sr. No</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Stage</th>
+                        <th scope="col">Assigned To</th>
+                        <th scope="col">Initiated By</th>
+                        <th scope="col">Initiated On</th>
+                        <th scope="col">Collateral</th>
+                        <th scope="col">Address</th>
+                        <th scope="col">Closed Date</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={technicals} for:item="technical" for:index="index">
+                        <tr key={technical.Id}>
+                            <td>{technical.srno}</td>
+                            <td><a data-id={technical.id} onclick={navigateToRecord}>{technical.name}</a></td>
+                            <td>{technical.status}</td>
+                            <td>{technical.assignedTo}</td>
+                            <td>{technical.initiatedBy}</td>
+                            <td>{technical.initiatedOn}</td>
+                            <td>{technical.collateralType}</td>
+                            <td style="white-space: normal; word-break: break-word;">{technical.collateralAddress}</td>
+                            <td>{technical.closedDate}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </template> -->
+
+    <template if:true={isHomeLoanProduct}>
+        <div style="padding: 20px 20px 10px 20px; width: 300px;">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered" role="grid">
+                <thead>
+                    <tr>
+                        <th scope="col" style="background-color:#111d30 !important; color:#ffffff !important; font-weight:700 !important;">Required Evaluation</th>
+                        <th scope="col" style="background-color:#111d30 !important; color:#ffffff !important; font-weight:700 !important;">Initiated Evaluation</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={technicalMasterGrid} for:item="item">
+                        <tr key={item.recordId}>
+                            <td style="background-color:#0e1626 !important; color:#ffffff !important; border-color:#1d2f45 !important;">{item.requiredTechnical}</td>
+                            <td style="background-color:#0e1626 !important; color:#ffffff !important; border-color:#1d2f45 !important;">{item.initiatedTechnical}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </template>
+
+    <template if:true={showTechnicalTable}> 
+        <div class="slds-p-around_medium" style="overflow-x: auto;">
+            <legend class="slds-form-element__legend slds-form-element__label slds-m-bottom_small">Technical Records</legend>
+            
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered" role="grid">
+                <thead>
+                    <tr>
+                        <th scope="col" style="background-color: #5bb6e3; color: black;">Collateral</th>
+                        <template if:true={isHLUser}>
+                            <th scope="col" style="background-color: #5bb6e3; color: black;">Document Valuation</th>
+                            <th scope="col" style="background-color: #5bb6e3; color: black;">Select Valuation</th>
+                        </template>
+                        <th scope="col" style="background-color: #5bb6e3; color: black;">Sr.No</th>
+                        <th scope="col" style="background-color: #5bb6e3; color: black;">Name</th>
+                        <template if:true={isHLUser}>
+                        <th scope="col" style="background-color: #5bb6e3; color: black;">Requested Loan Amount</th>
+                        </template>   
+                        <th scope="col" style="background-color: #5bb6e3; color: black;">Stage</th>
+                        <template if:true={isHLUser}>
+                         <th scope="col" style="background-color: #5bb6e3; color: black;">Assigned to Admin</th>
+                        </template>
+                        <th scope="col" style="background-color: #5bb6e3; color: black;">Initiated By</th>
+                         <template if:false={isHLUser}>
+                        <th scope="col" style="background-color: #5bb6e3; color: black;">Vendor Agency</th>
+                        </template>
+                        <th scope="col" style="background-color: #5bb6e3; color: black;">Initiated On</th>
+                        <th scope="col" style="background-color: #5bb6e3; color: black;">Address</th>
+                        <th scope="col" style="background-color: #5bb6e3; color: black;">Closed Date</th>
+                        <th scope="col" style="background-color: #5bb6e3; color: black;">Status</th>
+                        <template if:false={isHLUser}>
+                        <th scope="col" style="background-color: #5bb6e3; color: black;">Recommended Value</th>
+                        </template> 
+                        <th scope="col" style="background-color: #5bb6e3; color: black;">Valuation</th>
+                        <!--<template if:false={isHLUser}>
+                            <th scope="col" style="background-color: #5bb6e3; color: black;">Final Valuation</th>
+                        </template>-->
+                        <template if:false={isHLUser}>
+                            <th scope="col" style="background-color: #5bb6e3; color: black;">Select Valuation</th>
+                        </template> 
+                        <template if:true={isHLUser}>
+                        <th scope="col" style="background-color: #5bb6e3; color: black;">Delink Technical</th>
+                        </template>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <template for:each={groupedTechnicals} for:item="group">
+                        <template for:each={group.records} for:item="technical">
+                            <tr key={technical.Id}>
+                                <!-- Collateral column only on first row per group -->
+                                <template if:true={technical.isFirst}>
+                                    <td rowspan={group.rowspan} style="font-weight: bold;">
+                                        {group.collateral}
+                                    </td>
+                                    <template if:true={isHLUser}>
+                                        <td rowspan={group.rowspan} style="font-weight: bold;">
+                                            {technical.docVal}
+                                        </td>
+                                        <td rowspan={group.rowspan} style="font-weight: bold;">
+                                            <template if:true={techincalManager}>
+                                        <lightning-combobox 
+                                            options={group.mortgageTypeOptions} 
+                                            data-field="mortgageType" 
+                                                    onblur={handlecheckValue}
+                                            data-id={group.collateral}
+                                            value={technical.marketVal}
+                                            required  disabled={notce}> 
+                                                </lightning-combobox>
+                                            </template>
+                                            <template if:true={creditManager}>
+                                        <lightning-combobox 
+                                            options={group.mortgageTypeOptions} 
+                                            data-field="mortgageType" 
+                                                    onblur={handlecheckValue}
+                                            data-id={group.collateral}
+                                            value={technical.marketVal}
+                                            required  disabled> 
+                                                </lightning-combobox>
+                                            </template>
+                                            <template if:true={others}>
+                                        <lightning-combobox 
+                                            options={group.mortgageTypeOptions} 
+                                            data-field="mortgageType" 
+                                                    onblur={handlecheckValue}
+                                            data-id={group.collateral}
+                                            value={technical.marketVal}
+                                            required  disabled> 
+                                                </lightning-combobox>
+                                            </template>
+                                        </td>
+                                    </template>
+                                </template>
+
+                                <!-- Sr. No -->
+                                <td style={technical.styleClass}>{technical.srno}</td>
+
+                                <!-- Name with record navigation -->
+                                <td>
+                                    <a data-id={technical.id} onclick={navigateToRecord}>
+                                        {technical.name}
+                                    </a>
+                                </td>
+                                <!--Requested Loan Amount-->
+                                <template if:true={isHLUser}>
+                                <td>{technical.requestedLoanAmount}</td>
+                                </template>
+
+                                <!-- Stage -->
+                                <td>{technical.status}</td>
+                                <template if:true={isHLUser}>
+                                <td>{technical.assignedToAdmin}</td>
+                                </template>
+
+                                <!-- Initiated By -->
+                                <td>{technical.initiatedBy}</td>
+
+                                <!-- vendor agency -->
+                                <template if:false={isHLUser}>
+                                <td>{technical.vendorAgencyName}</td>
+                                 </template>
+
+                                <!-- Initiated On -->
+                                <td>{technical.initiatedOn}</td>
+
+                                <!-- Address -->
+                                <td style="white-space: normal; word-break: break-word;">
+                                    {technical.collateralAddress}
+                                </td>
+
+                                <!-- Closed Date -->
+                                <td>{technical.closedDate}</td>
+
+                                <!-- Status -->
+                                <td>{technical.finalStatus}</td>
+                                 <template if:false={isHLUser}>
+                                <td>{technical.recommededValue}</td>
+                                </template>
+                                <!-- Valuation -->
+                                <td>{technical.valuation}</td>
+                                
+                                <!-- FinalValuation -->
+                                <td>
+                                    <!--<template if:false={isHLUser}>
+                                        {technical.finalValuation}
+                                    </template>-->
+                                    <template if:false={isHLUser}>
+                                        <lightning-input
+                                            type="checkbox"
+                                            onchange={handleRowSelection}
+                                            data-id={technical.id}
+                                            data-status={technical.finalStatus}
+                                            checked={technical.isValuationSelected}
+                                            data-name={technical.collId}
+                                            data-val={technical.valuation}
+                                            name="rowSelection">
+                                        </lightning-input> 
+                                    </template>
+                                      <template if:true={isHLUser}>
+                               
+                                <template lwc:if={showDelinkButton}>
+                                    <template if:true={technical.shoButton}>
+                                    <lightning-button
+                                        variant="neutral"
+                                        label="Delink"
+                                        title="Delink"
+                                        data-id={technical.id}
+                                        onclick={handleDelink}>
+                                    </lightning-button>
+                                    </template>
+                                </template>
+                            
+                            </template>
+                                </td>
+                            </tr>
+                            <template if:true={technical.isLast}>
+                            <tr key={group.collateralKey}>
+                            <td colspan="12" style="background-color: #ffffff; padding: 0;">
+                                <div class="slds-p-around_x-small" style="background-color: #00000000; color: black; font-weight: bold; text-align: center; font-size: 14px;">
+                                    Remarks
+                                </div>
+                                <div class="slds-p-around_small">
+                                    <lightning-textarea value={technical.remarks} data-id={group.collateral}
+                                        onchange={handleRemarksChange} variant="label-hidden" required disabled>
+                                    </lightning-textarea>
+                                </div>
+                            </td>
+                        </tr>
+                        </template>
+                        </template>
+                    </template>
+                </tbody>
+
+            </table>
+        </div>
+    </template>
+    <template if:false ={isOneVie}>
+    <lightning-card>
+        
+        <template if:false={disabledCmp}>
+        <template if:false={userHavePsFcuSamplerPermissionSet}>
+            <template lwc:if={showTechnicalEvaluation}>
+                <div style="padding-left: 1%;">
+                    <button class="slds-button slds-button_brand initiate-button" onclick={handleMainButton}>Initiate Technical</button>
+                </div>        
+            </template>
+        </template>
+        </template>
+    </lightning-card>
+    </template>
+
+    <template if:true={showConfirmation}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header" style="background-color: #5bb6e3;">
+                    <h2 class="slds-text-heading_medium">Confirmation Screen</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p>Are you sure you want to delink this technical from this Loan Application? You should check eligibility again after delink.</p>
+                </div>
+                <footer class="slds-modal__footer slds-text-align_center" style="background-color: #5bb6e3;">
+                    <button class="slds-button slds-button_brand" style="background-color: #16283f; border: 1px solid #7c3aed; border-radius: 8px; margin-right: 7px; width: 100px;" onclick={handleNegative}>No</button>
+                    <button class="slds-button slds-button_brand" style="background-color: #7c3aed; border: none; border-radius: 8px; width: 100px;" onclick={handlePositive}>Yes</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template lwc:if={isModalOpen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container width-80" style="padding: 1% 0 !important;">
+                <header class="slds-modal__header header-section">
+                <!--updated Ayushi-->
+                    <button class="slds-button slds-button_icon slds-modal__close" onclick={closeModal}>
+                    <lightning-icon variant="error" icon-name="utility:close" size="small"></lightning-icon>
+                </button><!--end updated-->
+                    <div class="slds-text-align_center">
+                        <h2 class="slds-text-heading_medium slds-hyphenate header-title">Initiate Technical</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1" style="max-height: 80vh; overflow-y: auto;">
+                    <lightning-accordion allow-multiple-sections-open active-section-name="Initiate Technical">
+                        <lightning-accordion-section name="Initiate Technical" label="Initiate Technical">
+                            <template if:true={isHomeLoanProduct}>
+                                
+                                <div style="padding: 10px 0px; width: 300px;">
+                                    <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered" role="grid">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" style="background-color: #5bb6e3; color: black;">Required Evaluation</th>
+                                                <th scope="col" style="background-color: #5bb6e3; color: black;">Initiated Evaluation</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template for:each={technicalMasterGrid} for:item="item">
+                                                <tr key={item.recordId}>
+                                                    <td>{item.requiredTechnical}</td>
+                                                    <td>{item.initiatedTechnical}</td>
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                   </div>
+                                <c-hl_technical-record-type-selection_v1 record-id={recordId} generic-initiate=true onclose={closeModal}></c-hl_technical-record-type-selection_v1>
+                            </template>
+                            <template if:false={isHomeLoanProduct}>
+                                <c-hl_technical-record-type-selection record-id={recordId} generic-initiate=true onclose={closeModal}></c-hl_technical-record-type-selection>
+                            </template>
+                        </lightning-accordion-section>
+                    </lightning-accordion>
+                </div>
+                <!-- <div class="slds-modal__footer slds-grid slds-grid_align-end">
+                </div> -->
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+     
+
+    <input 
+        type="file" 
+        style="display:none"
+        accept="image/*,.pdf" 
+        capture="environment" 
+        onchange={handleUpload} 
+        class="genericFileUpload"
+    />
+</template>

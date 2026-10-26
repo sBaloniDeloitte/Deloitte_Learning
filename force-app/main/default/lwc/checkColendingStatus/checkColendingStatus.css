@@ -1,0 +1,106 @@
+@import "c/cssLibrary";
+.margin{
+    margin: 30px;
+}
+
+.ml-badge {
+--sds-c-badge-color-background: #2563EB;
+--sds-c-badge-text-color: #ffffff;
+border-radius: 999px;
+}
+
+.recommendation-card {
+background-color: #2563EB;
+border-radius: 10px;
+padding: 20px 22px;
+color: #ffffff;
+}
+
+.rec-title {
+font-size: 16px;
+font-weight: 700;
+margin-bottom: 12px;
+color: #ffffff;
+}
+
+.rec-subtitle {
+font-size: 13px;
+font-weight: 600;
+margin-bottom: 10px;
+color: #ffffff;
+}
+
+.rec-list {
+list-style: none;
+padding: 0;
+margin: 0 0 16px;
+display: flex;
+flex-direction: column;
+gap: 8px;
+}
+
+.rec-list li {
+display: flex;
+align-items: flex-start;
+gap: 8px;
+font-size: 13px;
+color: #ffffff;
+}
+
+.rec-list lightning-icon {
+--sds-c-icon-color-foreground-default: #ffffff;
+margin-top: 2px;
+flex-shrink: 0;
+}
+
+.rec-divider {
+border-top: 0.5px solid rgba(255, 255, 255, 0.3);
+margin-bottom: 14px;
+}
+
+.rec-alternative {
+font-size: 12px;
+color: rgba(255, 255, 255, 0.75);
+margin: 0;
+}
+
+.rec-alternative strong {
+color: rgba(255, 255, 255, 0.9);
+}
+
+.send-footer {
+padding-top: 0;
+}
+
+.send-btn {
+--sds-c-button-neutral-color-border: #8B2020;
+--sds-c-button-text-color: inherit;
+width: 100%;
+}
+
+.send-btn button {
+width: 100%;
+justify-content: center;
+}
+
+.send-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.partner-bank-section {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.partner-label {
+    font-weight: 600;
+    margin-right: 0.5rem;
+}
+
+.partner-dropdown {
+    max-width: 200px;
+}

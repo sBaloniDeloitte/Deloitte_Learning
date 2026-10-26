@@ -1,0 +1,418 @@
+<!-- _______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________ -->
+<template>
+    <div class="oo-container">
+
+        <!-- Header banner: greeting + name are dynamic, quote is static -->
+        <div class="oo-header">
+            <div class="oo-header-left">
+                <div class="oo-avatar-icon">
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                        <circle cx="12" cy="12" r="3" fill="none" stroke="#ffffff" stroke-width="1.6"></circle>
+                        <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"></path>
+                    </svg>
+                </div>
+                <div class="oo-header-text">
+                    <h1 class="oo-greeting">{greetingText}</h1>
+                    <p class="oo-subgreeting">Here's your operations overview for today.</p>
+                </div>
+            </div>
+            <div class="oo-header-right">
+                <span class="oo-date">{todayFormatted}</span>
+                <p class="oo-quote">&ldquo;Operational Excellence<br />Drives Customer Trust&rdquo;</p>
+            </div>
+        </div>
+
+        <!-- Stat strip -->
+        <div class="oo-stat-strip">
+            <template for:each={statCards} for:item="card">
+                <div key={card.key} class="oo-stat-card">
+                    <div class={card.iconClass}>
+                        <template if:true={card.isDoc}>
+                            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                                <path d="M6 2h9l3 3v17H6z" style={card.glyphStyle}></path>
+                                <path d="M15 2v3h3" fill="#0c1526"></path>
+                                <rect x="8.5" y="10" width="7" height="1.4" fill="#0c1526"></rect>
+                                <rect x="8.5" y="13" width="7" height="1.4" fill="#0c1526"></rect>
+                                <rect x="8.5" y="16" width="4.5" height="1.4" fill="#0c1526"></rect>
+                            </svg>
+                        </template>
+                        <template if:true={card.isClock}>
+                            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                                <circle cx="12" cy="12" r="9" style={card.glyphStyle}></circle>
+                                <path d="M12 7v5l4 2" fill="none" stroke="#0c1526" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </template>
+                        <template if:true={card.isWarning}>
+                            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                                <path d="M12 2 22 20H2z" style={card.glyphStyle}></path>
+                                <rect x="11" y="9" width="2" height="6" fill="#0c1526"></rect>
+                                <rect x="11" y="16.5" width="2" height="2" fill="#0c1526"></rect>
+                            </svg>
+                        </template>
+                        <template if:true={card.isCheck}>
+                            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                                <circle cx="12" cy="12" r="9" style={card.glyphStyle}></circle>
+                                <path d="M8 12.5l2.5 2.5L16 9" fill="none" stroke="#0c1526" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </template>
+                        <template if:true={card.isCross}>
+                            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                                <circle cx="12" cy="12" r="9" style={card.glyphStyle}></circle>
+                                <path d="M9 9l6 6M15 9l-6 6" fill="none" stroke="#0c1526" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </template>
+                        <template if:true={card.isPeople}>
+                            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                                <circle cx="9" cy="9" r="3" style={card.glyphStyle}></circle>
+                                <circle cx="16" cy="10" r="2.4" style={card.glyphStyle}></circle>
+                                <path d="M3.5 19c0-3.3 2.5-5.6 5.5-5.6s5.5 2.3 5.5 5.6" style={card.glyphStyle}></path>
+                                <path d="M14.5 14.2c2.4.3 4 2.2 4 4.8" style={card.glyphStyle}></path>
+                            </svg>
+                        </template>
+                    </div>
+                    <div class="oo-stat-value">{card.value}</div>
+                    <div class="oo-stat-label">{card.label}</div>
+                    <div class={card.trendClass}>{card.trendLabel} <span class="oo-trend-suffix">vs last week</span></div>
+                </div>
+            </template>
+        </div>
+
+        <!-- Application Processing Trend + Stage-wise Application Count -->
+        <div class="oo-row-2col">
+
+            <div class="oo-section oo-card-panel">
+                <div class="oo-section-head">
+                    <div class="oo-section-title-group">
+                        <span class="oo-section-icon">
+                            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                <rect x="3" y="12" width="3" height="8" fill="#4aa3ff"></rect>
+                                <rect x="9" y="7" width="3" height="13" fill="#4aa3ff"></rect>
+                                <rect x="15" y="3" width="3" height="17" fill="#4aa3ff"></rect>
+                            </svg>
+                        </span>
+                        <div>
+                            <h2 class="oo-section-title">Application Processing Trend</h2>
+                            <p class="oo-section-subtitle">Track intake, processing and completion over time</p>
+                        </div>
+                    </div>
+                    <div class="oo-dropdown" onclick={handleTrendDropdownToggle}>
+                        <span>{trendRange}</span>
+                        <svg viewBox="0 0 24 24" width="12" height="12" class="oo-chevron" aria-hidden="true">
+                            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                        <template if:true={isTrendDropdownOpen}>
+                            <ul class="oo-dropdown-menu">
+                                <template for:each={trendDropdownOptions} for:item="opt">
+                                    <li key={opt} data-value={opt} onclick={handleTrendOptionSelect}>{opt}</li>
+                                </template>
+                            </ul>
+                        </template>
+                    </div>
+                </div>
+
+                <div class="oo-trend-chart">
+                    <svg class="oo-trend-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                        <template for:each={trendChartSeries} for:item="series">
+                            <g key={series.key}>
+                                <polyline class="oo-trend-line" points={series.polyline} style={series.lineStyle}></polyline>
+                                <template for:each={series.markers} for:item="marker">
+                                    <circle key={marker.key} class="oo-trend-dot" cx={marker.cx} cy={marker.cy} r="1.3" style={marker.style}></circle>
+                                </template>
+                            </g>
+                        </template>
+                    </svg>
+                    <div class="oo-trend-axis">
+                        <template for:each={trendDates} for:item="d">
+                            <span key={d} class="oo-trend-axis-label">{d}</span>
+                        </template>
+                    </div>
+                </div>
+
+                <div class="oo-trend-legend">
+                    <template for:each={trendChartSeries} for:item="series">
+                        <span key={series.key} class="oo-legend-item">
+                            <span class="oo-legend-dot" style={series.dotStyle}></span>{series.label}
+                        </span>
+                    </template>
+                </div>
+            </div>
+
+            <div class="oo-section oo-card-panel">
+                <div class="oo-section-head">
+                    <div class="oo-section-title-group">
+                        <span class="oo-section-icon">
+                            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                <circle cx="12" cy="12" r="4" fill="none" stroke="#4aa3ff" stroke-width="8"></circle>
+                            </svg>
+                        </span>
+                        <div>
+                            <h2 class="oo-section-title">Stage-wise Application Count</h2>
+                            <p class="oo-section-subtitle">Breakup of applications across process stages</p>
+                        </div>
+                    </div>
+                    <div class="oo-dropdown" onclick={handleStageDropdownToggle}>
+                        <span>{stageRange}</span>
+                        <svg viewBox="0 0 24 24" width="12" height="12" class="oo-chevron" aria-hidden="true">
+                            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                        <template if:true={isStageDropdownOpen}>
+                            <ul class="oo-dropdown-menu">
+                                <template for:each={stageDropdownOptions} for:item="opt">
+                                    <li key={opt} data-value={opt} onclick={handleStageOptionSelect}>{opt}</li>
+                                </template>
+                            </ul>
+                        </template>
+                    </div>
+                </div>
+
+                <div class="oo-donut-wrapper">
+                    <svg class="oo-donut-svg" viewBox="0 0 180 180" aria-hidden="true">
+                        <circle class="oo-donut-track" cx="90" cy="90" r="70" fill="none" stroke-width="26"></circle>
+                        <template for:each={stageSegments} for:item="segment">
+                            <circle
+                                key={segment.key}
+                                class="oo-donut-segment"
+                                cx="90"
+                                cy="90"
+                                r="70"
+                                fill="none"
+                                stroke-width="26"
+                                stroke-dasharray={segment.dashArray}
+                                stroke-dashoffset={segment.dashOffset}
+                                style={segment.pathStyle}
+                                transform="rotate(-90 90 90)"
+                            ></circle>
+                        </template>
+                        <text x="90" y="86" class="oo-donut-center-value" text-anchor="middle">{stageTotal}</text>
+                        <text x="90" y="106" class="oo-donut-center-label" text-anchor="middle">Total</text>
+                    </svg>
+                    <ul class="oo-donut-legend">
+                        <template for:each={stageSegments} for:item="segment">
+                            <li key={segment.key} class="oo-donut-legend-item">
+                                <span class="oo-legend-dot" style={segment.swatchStyle}></span>
+                                <span class="oo-donut-legend-label">{segment.label}</span>
+                                <span class="oo-donut-legend-value">{segment.count} ({segment.percent}%)</span>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Pending with Operations + SLA Compliance -->
+        <div class="oo-row-2col">
+
+            <div class="oo-section oo-card-panel">
+                <div class="oo-section-head">
+                    <div class="oo-section-title-group">
+                        <span class="oo-section-icon oo-icon-amber">
+                            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                <rect x="4" y="3" width="16" height="18" rx="1.5" fill="none" stroke="#f0a93b" stroke-width="1.6"></rect>
+                                <rect x="7" y="7" width="10" height="1.6" fill="#f0a93b"></rect>
+                                <rect x="7" y="11" width="10" height="1.6" fill="#f0a93b"></rect>
+                                <rect x="7" y="15" width="6" height="1.6" fill="#f0a93b"></rect>
+                            </svg>
+                        </span>
+                        <div>
+                            <h2 class="oo-section-title">Pending with Operations <span class="oo-count-badge oo-badge-red">{pendingOpsCount}</span></h2>
+                            <p class="oo-section-subtitle">Applications pending for operational action</p>
+                        </div>
+                    </div>
+                    <button class="oo-view-all" type="button" onclick={handleViewAllPendingOps}>View All &rarr;</button>
+                </div>
+
+                <table class="oo-approvals-table">
+                    <thead>
+                        <tr>
+                            <th>Application No.</th>
+                            <th>Customer Name</th>
+                            <th>Product</th>
+                            <th>Pending Since</th>
+                            <th>Current Stage</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={pendingOps} for:item="row">
+                            <tr key={row.key}>
+                                <td>{row.appNo}</td>
+                                <td>{row.customer}</td>
+                                <td>{row.product}</td>
+                                <td>{row.pendingSince}</td>
+                                <td><span class={row.stageClass}>{row.stage}</span></td>
+                                <td><button class="oo-action-btn" type="button" data-appno={row.appNo} onclick={handleTakeActionClick}>Take Action</button></td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="oo-section oo-card-panel">
+                <div class="oo-section-head">
+                    <div class="oo-section-title-group">
+                        <span class="oo-section-icon">
+                            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                <circle cx="12" cy="12" r="4" fill="none" stroke="#4aa3ff" stroke-width="8"></circle>
+                            </svg>
+                        </span>
+                        <div>
+                            <h2 class="oo-section-title">SLA Compliance</h2>
+                            <p class="oo-section-subtitle">Track TAT compliance across stages</p>
+                        </div>
+                    </div>
+                    <div class="oo-dropdown" onclick={handleSlaDropdownToggle}>
+                        <span>{slaRange}</span>
+                        <svg viewBox="0 0 24 24" width="12" height="12" class="oo-chevron" aria-hidden="true">
+                            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                        <template if:true={isSlaDropdownOpen}>
+                            <ul class="oo-dropdown-menu">
+                                <template for:each={slaDropdownOptions} for:item="opt">
+                                    <li key={opt} data-value={opt} onclick={handleSlaOptionSelect}>{opt}</li>
+                                </template>
+                            </ul>
+                        </template>
+                    </div>
+                </div>
+
+                <div class="oo-donut-wrapper">
+                    <svg class="oo-donut-svg" viewBox="0 0 180 180" aria-hidden="true">
+                        <circle class="oo-donut-track" cx="90" cy="90" r="70" fill="none" stroke-width="26"></circle>
+                        <template for:each={slaSegments} for:item="segment">
+                            <circle
+                                key={segment.key}
+                                class="oo-donut-segment"
+                                cx="90"
+                                cy="90"
+                                r="70"
+                                fill="none"
+                                stroke-width="26"
+                                stroke-dasharray={segment.dashArray}
+                                stroke-dashoffset={segment.dashOffset}
+                                style={segment.pathStyle}
+                                transform="rotate(-90 90 90)"
+                            ></circle>
+                        </template>
+                        <text x="90" y="86" class="oo-donut-center-value" text-anchor="middle">{slaOnTimePercent}</text>
+                        <text x="90" y="106" class="oo-donut-center-label" text-anchor="middle">On Time</text>
+                    </svg>
+                    <ul class="oo-donut-legend">
+                        <template for:each={slaSegments} for:item="segment">
+                            <li key={segment.key} class="oo-donut-legend-item">
+                                <span class="oo-legend-dot" style={segment.swatchStyle}></span>
+                                <span class="oo-donut-legend-label">{segment.label}</span>
+                                <span class="oo-donut-legend-value">{segment.count} ({segment.percent}%)</span>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- Operational Tasks & Alerts + Operations Insights -->
+        <div class="oo-row-2col">
+
+            <div class="oo-section oo-card-panel">
+                <div class="oo-section-head">
+                    <div class="oo-section-title-group">
+                        <span class="oo-section-icon oo-icon-blue">
+                            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                <rect x="4" y="3" width="16" height="18" rx="1.5" fill="none" stroke="#4aa3ff" stroke-width="1.6"></rect>
+                                <path d="M8 12l2.5 2.5L16 9" fill="none" stroke="#4aa3ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </span>
+                        <div>
+                            <h2 class="oo-section-title">Operational Tasks &amp; Alerts <span class="oo-count-badge oo-badge-red">{tasksAlertsCount}</span></h2>
+                            <p class="oo-section-subtitle">Your pending tasks and important notifications</p>
+                        </div>
+                    </div>
+                    <button class="oo-view-all" type="button" onclick={handleViewAllTasks}>View All &rarr;</button>
+                </div>
+
+                <ul class="oo-tasks-list">
+                    <template for:each={tasksAlerts} for:item="task">
+                        <li key={task.key} class="oo-task-row">
+                            <span class={task.dotClass}></span>
+                            <span class="oo-task-text">{task.text}</span>
+                            <span class="oo-task-count">{task.count}</span>
+                            <span class="oo-task-date">{task.date}</span>
+                            <button class="oo-open-btn" type="button" data-key={task.key} onclick={handleTaskOpenClick}>Open</button>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+
+            <div class="oo-section oo-card-panel">
+                <div class="oo-section-head">
+                    <div class="oo-section-title-group">
+                        <span class="oo-section-icon">
+                            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                <rect x="3" y="12" width="3" height="8" fill="#4aa3ff"></rect>
+                                <rect x="9" y="7" width="3" height="13" fill="#4aa3ff"></rect>
+                                <rect x="15" y="3" width="3" height="17" fill="#4aa3ff"></rect>
+                            </svg>
+                        </span>
+                        <div>
+                            <h2 class="oo-section-title">Operations Insights</h2>
+                            <p class="oo-section-subtitle">Key operational metrics</p>
+                        </div>
+                    </div>
+                    <div class="oo-dropdown" onclick={handleInsightsDropdownToggle}>
+                        <span>{insightsRange}</span>
+                        <svg viewBox="0 0 24 24" width="12" height="12" class="oo-chevron" aria-hidden="true">
+                            <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                        <template if:true={isInsightsDropdownOpen}>
+                            <ul class="oo-dropdown-menu">
+                                <template for:each={insightsDropdownOptions} for:item="opt">
+                                    <li key={opt} data-value={opt} onclick={handleInsightsOptionSelect}>{opt}</li>
+                                </template>
+                            </ul>
+                        </template>
+                    </div>
+                </div>
+
+                <div class="oo-insight-grid">
+                    <template for:each={insightCards} for:item="card">
+                        <div key={card.key} class="oo-insight-card">
+                            <div class={card.iconClass}>
+                                <template if:true={card.isDoc}>
+                                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                        <rect x="4" y="4" width="16" height="16" rx="2" fill="none" stroke="#4aa3ff" stroke-width="1.6"></rect>
+                                        <rect x="7" y="9" width="10" height="1.4" fill="#4aa3ff"></rect>
+                                        <rect x="7" y="13" width="6" height="1.4" fill="#4aa3ff"></rect>
+                                    </svg>
+                                </template>
+                                <template if:true={card.isRefresh}>
+                                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                        <path d="M4 12a8 8 0 0 1 13.6-5.7M20 12a8 8 0 0 1-13.6 5.7" fill="none" stroke="#3fcf8e" stroke-width="1.8" stroke-linecap="round"></path>
+                                        <path d="M17.6 3.5v3.5h-3.5M6.4 20.5V17h3.5" fill="none" stroke="#3fcf8e" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                                    </svg>
+                                </template>
+                                <template if:true={card.isPeople}>
+                                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                        <circle cx="9" cy="9" r="3" fill="none" stroke="#8b6ff0" stroke-width="1.6"></circle>
+                                        <path d="M3.5 19c0-3.3 2.5-5.6 5.5-5.6s5.5 2.3 5.5 5.6" fill="none" stroke="#8b6ff0" stroke-width="1.6"></path>
+                                    </svg>
+                                </template>
+                                <template if:true={card.isStar}>
+                                    <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                        <path d="M12 3l2.6 5.6 6.1.6-4.6 4.2 1.3 6-5.4-3.2-5.4 3.2 1.3-6-4.6-4.2 6.1-.6z" fill="#f0a93b"></path>
+                                    </svg>
+                                </template>
+                            </div>
+                            <div class="oo-insight-value">{card.value}</div>
+                            <div class="oo-insight-label">{card.label}</div>
+                            <div class={card.trendClass}>{card.trendLabel}</div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+</template>
+<!-- __________________________GenAI: Generated code ends here______________________________ -->

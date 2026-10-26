@@ -1,0 +1,127 @@
+<template>
+    <template if:true={isCollateralPresent}>
+        <div class="slds-scrollable_x" style="overflow: initial; padding: 20px 0px;">
+
+            <table
+                class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right custom-table"
+                style="width: 100%; border-collapse: collapse;">
+
+                <thead>
+                    <tr class="slds-line-height_reset"> 
+
+                        <!-- Property Address -->
+                        <th
+                            scope="col"
+                            style="text-align: center; background-color: #16283f !important; color: white !important; border: 1px solid #33455e !important;">
+                            Property Address
+                        </th>
+
+                        <!-- Collateral Type -->
+                        <th
+                            scope="col"
+                            style="text-align: center; background-color: #16283f !important; color: white !important; border: 1px solid #33455e !important;">
+                            Collateral Type
+                        </th>
+
+                        <!-- Address Type -->
+                        <th
+                            scope="col"
+                            style="text-align: center; background-color: #16283f !important; color: white !important; border: 1px solid #33455e !important;">
+                            Address Type
+                        </th>
+
+                        <!-- Construction Stage -->
+                        <th
+                            scope="col"
+                            style="text-align: center; background-color: #16283f !important; color: white !important; border: 1px solid #33455e !important;">
+                            Construction Stage
+                        </th>
+
+                        <!-- Property Usage -->
+                        <th
+                            scope="col"
+                            style="text-align: center; background-color: #16283f !important; color: white !important; border: 1px solid #33455e !important;">
+                            Property Usage
+                        </th>
+
+                        <!-- Documented Value -->
+                        <th
+                            scope="col"
+                            style="text-align: center; background-color: #16283f !important; color: white !important; border: 1px solid #33455e !important;">
+                            Documented Value
+                        </th>
+
+                        <!-- Approved Valuation -->
+                        <th
+                            scope="col"
+                            style="text-align: center; background-color: #16283f !important; color: white !important; border: 1px solid #33455e !important;">
+                            Approved Valuation
+                        </th>
+
+                        <!-- Technical Remarks -->
+                        <th
+                            scope="col"
+                            style="text-align: center; background-color: #16283f !important; color: white !important; border: 1px solid #33455e !important;">
+                            Technical Remarks
+                        </th>
+
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <template for:each={collaterals} for:item="record">
+
+                        <tr key={record.property}>
+
+                            <td
+                                style="background-color: #16283f !important; color: white !important; border: 1px solid #33455e !important; text-align: center;">
+                                {record.propertyDetails}
+                            </td>
+
+                            <td
+                                style="background-color: #16283f !important; color: white !important; border: 1px solid #33455e !important; text-align: center;">
+                                {record.propertyType}
+                            </td>
+
+                            <td
+                                style="background-color: #16283f !important; color: white !important; border: 1px solid #33455e !important; text-align: center;">
+                                {record.addressType}
+                            </td>
+
+                            <td
+                                style="background-color: #16283f !important; color: white !important; border: 1px solid #33455e !important; text-align: center;">
+                                {record.constructionStage}
+                            </td>
+
+                            <td
+                                style="background-color: #16283f !important; color: white !important; border: 1px solid #33455e !important; text-align: center;">
+                                {record.propertyUsage}
+                            </td>
+
+                            <td
+                                style="background-color: #16283f !important; color: white !important; border: 1px solid #33455e !important; text-align: center;">
+                                {record.documentedValue}
+                            </td>
+
+                            <td
+                                style="background-color: #16283f !important; color: white !important; border: 1px solid #33455e !important; text-align: center;">
+                                {record.approvedValuation}
+                            </td>
+
+                            <td
+                                style="background-color: #16283f !important; color: white !important; border: 1px solid #33455e !important; text-align: center;">
+                                {record.technicalRemarks}
+                            </td>
+
+                        </tr>
+
+                    </template>
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </template>
+</template>

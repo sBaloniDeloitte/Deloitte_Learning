@@ -1,0 +1,58 @@
+<template>
+    <template if:true={spinnerRun}>
+        <section role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open" style="z-index: 900003;">
+            <lightning-spinner></lightning-spinner>
+        </section>
+    </template>
+    <template if:true={dataLoaded}>
+        <div class="slds-grid slds-wrap slds-scrollable_x mr-scroll-wrapper" style="margin-bottom:2%">
+           <table class="slds-table" style="width: 500px;">
+                <thead style="text-align: left;">
+                    <tr>
+                        <th class="color-theme" style="text-align: left;width: 100px;">Select</th>
+                        <th class=" color-theme" style="text-align: left;">Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={applicantList} for:item="iter">
+                        <tr key={iter.name}>
+                            <td>
+                                <lightning-input type="checkbox" data-id={iter.appId} checked={iter.isDataCreated} onchange={handleCheckboxChange}></lightning-input>
+                            </td>
+                            <td>{iter.name}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+
+        </div>
+        <template if:true={showTab}>
+            <div class="mr-tabset-wrapper">
+                <lightning-tabset>
+                    <template for:each={tabList} for:item="record" for:index="index">
+                        <lightning-tab key={record.name} label={record.name}>
+                            <c-hl_mixed-rentalcmp-child-cmp loan-id={recordId} applicant-id={record.appId}></c-hl_mixed-rentalcmp-child-cmp>
+                        </lightning-tab>
+                    </template>
+                </lightning-tabset>
+            </div>
+        </template>
+    </template>
+     <template if:true={confirmationScreen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header mr-modal-header">
+                    <h2 class="slds-text-heading_medium">Confirmation Screen</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    Are you sure you want to remove this applicant’s Mixed Rental record?
+                </div>
+                <footer class="slds-modal__footer slds-text-align_center mr-modal-footer">
+                    <button class="btn-negative-action slds-button slds-button_brand" style="margin-right: 7px; width: 100px; border:none;" onclick={onClickModalNo}>No</button>
+                    <button class="btn-positive-action slds-button slds-button_brand" style="width: 100px; border:none;" onclick={onClickModalYes}>Yes</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

@@ -1,0 +1,60 @@
+<template>
+    <div class="my-day-container">
+    <div class="my-day-layout">
+    <div class="my-day-main">
+
+        <!-- Quick Actions + Metrics: single unified card (Quick Actions
+             panel, divider, and metrics all live inside the same
+             bordered card, matching the reference screenshot). -->
+        <div class="quick-actions-metrics-card">
+
+            <div class="quick-actions-section">
+                <c-quick-actions-panel></c-quick-actions-panel>
+            </div>
+
+            <hr class="section-divider" />
+
+            <!-- Metrics Section -->
+
+            <div class="metrics-container">
+
+                <template for:each={metricCards} for:item="card">
+
+                    <div
+                        key={card.id}
+                        class="metric-card"
+                        data-id={card.id}
+                        onclick={handleCardClick}>
+
+                        <div class="metric-title">
+                            {card.label}
+                        </div>
+
+                        <div class="metric-value">
+                            {card.value}
+                        </div>
+
+                        <div class={card.subtitleClass}>
+                            {card.subtitle}
+                        </div>
+
+                    </div>
+
+                </template>
+
+            </div>
+
+        </div>
+          
+    </div>
+
+    <div class="my-day-sidebar">
+        <div class="most-active-lead-section"></div>
+            <c-most-active-lead-card></c-most-active-lead-card>
+        </div>
+    </div>
+
+    
+    </div>
+    <c-cross-sell-opportunities></c-cross-sell-opportunities>
+</template>

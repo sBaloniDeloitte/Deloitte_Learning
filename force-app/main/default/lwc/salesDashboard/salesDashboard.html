@@ -1,0 +1,956 @@
+<template>
+
+    <div class="dashboard-container">
+
+        <!-- ================= HEADER ================= -->
+
+        <div class="dashboard-header">
+
+            <div class="header-left">
+
+                <div class="header-icon">
+                    <lightning-icon
+                        icon-name="utility:einstein"
+                        size="small"
+                        variant="inverse">
+                    </lightning-icon>
+                </div>
+
+                <div class="header-text">
+
+                    <h1>
+                        {greeting}, {userName}!
+                    </h1>
+
+                    <p>
+                        Here's your sales overview for today.
+                    </p>
+
+                </div>
+
+            </div>
+
+            <div class="header-right">
+
+                <div class="header-date">
+                    <lightning-icon
+                        icon-name="utility:date_input"
+                        size="xx-small">
+                    </lightning-icon>
+                    <span>{currentDate}</span>
+                </div>
+
+                <div class="header-quote">
+                    "More people<br />
+                    in their dream homes"
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- ================= MY OVERVIEW ================= -->
+
+        <section class="overview-section">
+
+            <div class="section-title">
+
+                <div class="section-title-left">
+
+                    <lightning-icon
+                        icon-name="utility:chart"
+                        size="x-small">
+                    </lightning-icon>
+
+                    <span>My Overview</span>
+
+                    <lightning-icon
+                        icon-name="utility:info"
+                        size="xx-small"
+                        class="info-icon">
+                    </lightning-icon>
+
+                </div>
+
+                <div class="overview-period">
+                    <lightning-icon
+                        icon-name="utility:date_input"
+                        size="xx-small">
+                    </lightning-icon>
+                    <span>This Week</span>
+                    <lightning-icon
+                        icon-name="utility:chevrondown"
+                        size="xx-small">
+                    </lightning-icon>
+                </div>
+
+            </div>
+
+
+            <div class="kpi-grid">
+
+                <template
+                    for:each={kpiCards}
+                    for:item="card">
+
+                    <div
+                        key={card.id}
+                        class="kpi-card">
+
+                        <div class={card.iconClass}>
+
+                            <lightning-icon
+                                icon-name={card.icon}
+                                size="small">
+                            </lightning-icon>
+
+                        </div>
+
+                        <div class="kpi-content">
+
+                            <div class="kpi-value">
+                                {card.value}
+                            </div>
+
+                            <div class="kpi-title">
+                                {card.title}
+                            </div>
+
+                            <div class="kpi-change">
+                                ↑ {card.change}
+                                <span>vs last week</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </template>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= ACTION REQUIRED ================= -->
+
+        <section class="dashboard-section action-section">
+
+            <div class="section-heading">
+
+                <div class="heading-left">
+
+                    <div class="section-main-icon">
+                        ⚡
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Action Required
+                            <span class="action-total">42</span>
+                        </h2>
+
+                        <p>
+                            Applications that need your attention.
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <span class="view-all">
+                    View All
+                    <span class="arrow-up">⌃</span>
+                </span>
+
+            </div>
+
+
+            <div class="action-list">
+
+                <template
+                    for:each={actionItems}
+                    for:item="item">
+
+                    <div
+                        key={item.id}
+                        class="action-row">
+
+                        <div class="action-icon">
+                            <lightning-icon
+                                icon-name={item.icon}
+                                size="x-small">
+                            </lightning-icon>
+                        </div>
+
+
+                        <div class="action-info">
+
+                            <div class="action-title">
+                                {item.label}
+                            </div>
+
+                            <div class="action-description">
+                                {item.description}
+                            </div>
+
+                        </div>
+
+
+                        <div class="action-count">
+                            {item.count}
+                        </div>
+
+
+                        <div class="action-arrow">
+                            ›
+                        </div>
+
+                    </div>
+
+                </template>
+
+            </div>
+
+        </section>
+
+
+        <!-- ================= COLLAPSIBLE SECTIONS ================= -->
+
+        <section class={pipelineSectionClass}>
+
+            <div
+                class="collapse-header"
+                onclick={togglePipeline}>
+
+                <div class="collapse-left">
+
+                    <div class="collapse-icon">
+                        ▰
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            My Application Pipeline
+                        </h2>
+
+                        <p>
+                            Track the status of your applications across stages
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <span class={pipelineArrowClass}>
+                    ⌄
+                </span>
+
+            </div>
+
+            <template if:true={isPipelineOpen}>
+
+                <div class="collapse-body pipeline-body">
+
+                    <div class="pipeline-filters">
+
+                        <template
+                            for:each={pipelineFilterItems}
+                            for:item="filter">
+
+                            <div
+                                key={filter.id}
+                                class={filter.itemClass}
+                                data-value={filter.value}
+                                onclick={handlePipelineFilterClick}>
+
+                                <span class={filter.dotClass}></span>
+
+                                <span class="pipeline-filter-label">
+                                    {filter.label}
+                                </span>
+
+                                <div class="pipeline-filter-count">
+                                    {filter.count}
+                                </div>
+
+                            </div>
+
+                        </template>
+
+                    </div>
+
+
+                    <div class="pipeline-toolbar">
+
+                        <div class="pipeline-search">
+                            <lightning-icon
+                                icon-name="utility:search"
+                                size="xx-small">
+                            </lightning-icon>
+                            <input
+                                type="text"
+                                class="pipeline-search-input"
+                                placeholder="Search application, customer or product..."
+                                value={searchTerm}
+                                onchange={handleSearchChange} />
+                        </div>
+
+                        <div class="pipeline-select">
+                            <span>Product</span>
+                            <lightning-icon
+                                icon-name="utility:chevrondown"
+                                size="xx-small">
+                            </lightning-icon>
+                        </div>
+
+                        <div class="pipeline-select">
+                            <span>Created On</span>
+                            <lightning-icon
+                                icon-name="utility:chevrondown"
+                                size="xx-small">
+                            </lightning-icon>
+                        </div>
+
+                        <div class="pipeline-select">
+                            <span>Status</span>
+                            <lightning-icon
+                                icon-name="utility:chevrondown"
+                                size="xx-small">
+                            </lightning-icon>
+                        </div>
+
+                        <span class="pipeline-reset">
+                            Reset
+                        </span>
+
+                    </div>
+
+
+                    <div class="pipeline-table-wrapper">
+
+                        <table class="pipeline-table">
+
+                            <thead>
+
+                                <tr>
+                                    <th>Application No.</th>
+                                    <th>Customer Name</th>
+                                    <th>Product</th>
+                                    <th>Application Date ⌄</th>
+                                    <th>Current Stage</th>
+                                    <th>SLA (Days)</th>
+                                    <th>Action</th>
+                                </tr>
+
+                            </thead>
+
+                            <tbody>
+
+                                <template
+                                    for:each={applications}
+                                    for:item="app">
+
+                                    <tr key={app.id}>
+
+                                        <td>{app.appNo}</td>
+                                        <td>{app.customerName}</td>
+                                        <td>{app.product}</td>
+                                        <td>{app.appDate}</td>
+
+                                        <td>
+                                            <span class={app.stageClass}>
+                                                {app.stage}
+                                            </span>
+                                        </td>
+
+                                        <td>{app.sla}</td>
+
+                                        <td class="pipeline-action-cell">
+                                            <button class="pipeline-view-btn">View</button>
+                                            <span class="pipeline-more">⋯</span>
+                                        </td>
+
+                                    </tr>
+
+                                </template>
+
+                            </tbody>
+
+                        </table>
+
+                    </div>
+
+
+                    <div class="pipeline-footer">
+
+                        <span class="pipeline-showing">
+                            Showing 1-5 of 128 applications
+                        </span>
+
+                        <div class="pipeline-pagination">
+                            <span class="pipeline-page-arrow">‹</span>
+                            <span class="pipeline-page pipeline-page-active">1</span>
+                            <span class="pipeline-page">2</span>
+                            <span class="pipeline-page">3</span>
+                            <span class="pipeline-page-dots">...</span>
+                            <span class="pipeline-page">26</span>
+                            <span class="pipeline-page-arrow">›</span>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </template>
+
+        </section>
+
+
+        <section class={performanceSectionClass}>
+
+            <div
+                class="collapse-header"
+                onclick={togglePerformance}>
+
+                <div class="collapse-left">
+
+                    <div class="collapse-icon">
+                        ▥
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            Performance &amp; Insights
+                        </h2>
+
+                        <p>
+                            Track conversion and loan value analysis
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <span class={performanceArrowClass}>
+                    ⌄
+                </span>
+
+            </div>
+
+            <template if:true={isPerformanceOpen}>
+
+                <div class="collapse-body performance-body">
+
+                    <div class="performance-toolbar">
+
+                        <div class="performance-tabs">
+
+                            <template
+                                for:each={performanceTabItems}
+                                for:item="tab">
+
+                                <span
+                                    key={tab.id}
+                                    class={tab.itemClass}
+                                    data-value={tab.value}
+                                    onclick={handlePerformanceTabClick}>
+                                    {tab.label}
+                                </span>
+
+                            </template>
+
+                        </div>
+
+                        <div class="overview-period performance-period">
+                            <span>This Month</span>
+                            <lightning-icon
+                                icon-name="utility:chevrondown"
+                                size="xx-small">
+                            </lightning-icon>
+                        </div>
+
+                    </div>
+
+
+                    <template if:true={isApplicationsTab}>
+
+                        <div class="performance-grid-row">
+
+                            <div class="performance-card trend-card">
+
+                                <div class="performance-card-header">
+                                    <span class="performance-card-title">
+                                        Application Trend
+                                        <lightning-icon
+                                            icon-name="utility:info"
+                                            size="xx-small"
+                                            class="info-icon">
+                                        </lightning-icon>
+                                    </span>
+
+                                    <div class="mini-period">
+                                        <span>This Month</span>
+                                        <lightning-icon
+                                            icon-name="utility:chevrondown"
+                                            size="xx-small">
+                                        </lightning-icon>
+                                    </div>
+                                </div>
+
+                                <svg
+                                    viewBox="0 0 300 100"
+                                    preserveAspectRatio="none"
+                                    class="trend-svg">
+                                    <polyline
+                                        points="0,72 50,64 100,52 150,44 200,32 250,24 300,12"
+                                        class="trend-line trend-line-blue"></polyline>
+                                    <polyline
+                                        points="0,84 50,80 100,76 150,72 200,68 250,66 300,62"
+                                        class="trend-line trend-line-purple"></polyline>
+                                    <polyline
+                                        points="0,88 50,84 100,80 150,78 200,74 250,72 300,68"
+                                        class="trend-line trend-line-green"></polyline>
+                                    <polyline
+                                        points="0,94 50,92 100,90 150,88 200,86 250,85 300,82"
+                                        class="trend-line trend-line-orange"></polyline>
+                                    <polyline
+                                        points="0,97 50,96 100,95 150,94 200,93 250,92 300,90"
+                                        class="trend-line trend-line-red"></polyline>
+                                </svg>
+
+                                <div class="trend-x-labels">
+                                    <span>1 Sep</span>
+                                    <span>5 Sep</span>
+                                    <span>10 Sep</span>
+                                    <span>15 Sep</span>
+                                    <span>20 Sep</span>
+                                    <span>25 Sep</span>
+                                    <span>30 Sep</span>
+                                </div>
+
+                                <div class="trend-legend">
+                                    <span class="trend-legend-item"><span class="pipeline-dot pipeline-dot-blue"></span>Created</span>
+                                    <span class="trend-legend-item"><span class="pipeline-dot pipeline-dot-purple"></span>Submitted</span>
+                                    <span class="trend-legend-item"><span class="pipeline-dot pipeline-dot-green"></span>Approved</span>
+                                    <span class="trend-legend-item"><span class="pipeline-dot pipeline-dot-orange"></span>Sanctioned</span>
+                                    <span class="trend-legend-item"><span class="pipeline-dot pipeline-dot-red"></span>Disbursed</span>
+                                </div>
+
+                            </div>
+
+
+                            <div class="performance-card status-card">
+
+                                <div class="performance-card-header">
+                                    <span class="performance-card-title">Applications by Status</span>
+                                </div>
+
+                                <div class="donut-wrapper">
+
+                                    <div class="donut-chart">
+                                        <div class="donut-hole">
+                                            <span class="donut-total">128</span>
+                                            <span class="donut-total-label">Total</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="donut-legend">
+                                        <div class="donut-legend-item"><span class="pipeline-dot pipeline-dot-blue"></span><span class="donut-legend-label">In Progress</span><span class="donut-legend-value">32 (25%)</span></div>
+                                        <div class="donut-legend-item"><span class="pipeline-dot pipeline-dot-purple"></span><span class="donut-legend-label">Under Review</span><span class="donut-legend-value">28 (22%)</span></div>
+                                        <div class="donut-legend-item"><span class="pipeline-dot pipeline-dot-green"></span><span class="donut-legend-label">Approved</span><span class="donut-legend-value">22 (17%)</span></div>
+                                        <div class="donut-legend-item"><span class="pipeline-dot pipeline-dot-orange"></span><span class="donut-legend-label">Sanctioned</span><span class="donut-legend-value">14 (11%)</span></div>
+                                        <div class="donut-legend-item"><span class="pipeline-dot pipeline-dot-teal"></span><span class="donut-legend-label">Disbursed</span><span class="donut-legend-value">8 (6%)</span></div>
+                                        <div class="donut-legend-item"><span class="pipeline-dot pipeline-dot-grey"></span><span class="donut-legend-label">Rejected / Cancelled</span><span class="donut-legend-value">24 (19%)</span></div>
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="performance-card product-card">
+
+                                <div class="performance-card-header">
+                                    <span class="performance-card-title">Applications by Product</span>
+
+                                    <div class="mini-period">
+                                        <span>This Month</span>
+                                        <lightning-icon
+                                            icon-name="utility:chevrondown"
+                                            size="xx-small">
+                                        </lightning-icon>
+                                    </div>
+                                </div>
+
+                                <div class="bar-chart">
+                                    <div class="bar-item">
+                                        <span class="bar-value">52</span>
+                                        <div class="bar-col"><div class="bar-fill bar-fill-blue" style="height:100%"></div></div>
+                                        <span class="bar-label">Home Loan</span>
+                                    </div>
+                                    <div class="bar-item">
+                                        <span class="bar-value">28</span>
+                                        <div class="bar-col"><div class="bar-fill bar-fill-purple" style="height:54%"></div></div>
+                                        <span class="bar-label">LAP</span>
+                                    </div>
+                                    <div class="bar-item">
+                                        <span class="bar-value">18</span>
+                                        <div class="bar-col"><div class="bar-fill bar-fill-green" style="height:35%"></div></div>
+                                        <span class="bar-label">Personal Loan</span>
+                                    </div>
+                                    <div class="bar-item">
+                                        <span class="bar-value">16</span>
+                                        <div class="bar-col"><div class="bar-fill bar-fill-orange" style="height:31%"></div></div>
+                                        <span class="bar-label">Business Loan</span>
+                                    </div>
+                                    <div class="bar-item">
+                                        <span class="bar-value">14</span>
+                                        <div class="bar-col"><div class="bar-fill bar-fill-red" style="height:27%"></div></div>
+                                        <span class="bar-label">Balance Transfer</span>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="performance-grid-row performance-grid-row-2">
+
+                            <div class="performance-card tat-card">
+
+                                <div class="performance-card-header">
+                                    <span class="performance-card-title">
+                                        Turnaround Time (TAT)
+                                        <lightning-icon
+                                            icon-name="utility:info"
+                                            size="xx-small"
+                                            class="info-icon">
+                                        </lightning-icon>
+                                    </span>
+
+                                    <div class="mini-period">
+                                        <span>This Month</span>
+                                        <lightning-icon
+                                            icon-name="utility:chevrondown"
+                                            size="xx-small">
+                                        </lightning-icon>
+                                    </div>
+                                </div>
+
+                                <div class="bar-chart">
+                                    <div class="bar-item">
+                                        <span class="bar-value">2.1</span>
+                                        <div class="bar-col"><div class="bar-fill bar-fill-blue" style="height:52%"></div></div>
+                                        <span class="bar-label">Document Verification</span>
+                                    </div>
+                                    <div class="bar-item">
+                                        <span class="bar-value">3.4</span>
+                                        <div class="bar-col"><div class="bar-fill bar-fill-purple" style="height:85%"></div></div>
+                                        <span class="bar-label">Field Check</span>
+                                    </div>
+                                    <div class="bar-item">
+                                        <span class="bar-value">1.8</span>
+                                        <div class="bar-col"><div class="bar-fill bar-fill-green" style="height:45%"></div></div>
+                                        <span class="bar-label">Credit Underwriting</span>
+                                    </div>
+                                    <div class="bar-item">
+                                        <span class="bar-value">2.6</span>
+                                        <div class="bar-col"><div class="bar-fill bar-fill-orange" style="height:65%"></div></div>
+                                        <span class="bar-label">Sanction</span>
+                                    </div>
+                                    <div class="bar-item">
+                                        <span class="bar-value">1.2</span>
+                                        <div class="bar-col"><div class="bar-fill bar-fill-red" style="height:30%"></div></div>
+                                        <span class="bar-label">Disbursal</span>
+                                    </div>
+                                </div>
+
+                            </div>
+
+
+                            <div class="performance-card leadsource-card">
+
+                                <div class="performance-card-header">
+                                    <span class="performance-card-title">Lead Source Performance</span>
+
+                                    <div class="mini-period">
+                                        <span>This Month</span>
+                                        <lightning-icon
+                                            icon-name="utility:chevrondown"
+                                            size="xx-small">
+                                        </lightning-icon>
+                                    </div>
+                                </div>
+
+                                <div class="hbar-list">
+                                    <div class="hbar-row">
+                                        <span class="hbar-label">Direct Walk-in</span>
+                                        <div class="hbar-track"><div class="hbar-fill hbar-fill-blue" style="width:100%"></div></div>
+                                        <span class="hbar-value">38%</span>
+                                    </div>
+                                    <div class="hbar-row">
+                                        <span class="hbar-label">Website</span>
+                                        <div class="hbar-track"><div class="hbar-fill hbar-fill-purple" style="width:58%"></div></div>
+                                        <span class="hbar-value">22%</span>
+                                    </div>
+                                    <div class="hbar-row">
+                                        <span class="hbar-label">DSA</span>
+                                        <div class="hbar-track"><div class="hbar-fill hbar-fill-green" style="width:47%"></div></div>
+                                        <span class="hbar-value">18%</span>
+                                    </div>
+                                    <div class="hbar-row">
+                                        <span class="hbar-label">Partner Referral</span>
+                                        <div class="hbar-track"><div class="hbar-fill hbar-fill-orange" style="width:32%"></div></div>
+                                        <span class="hbar-value">12%</span>
+                                    </div>
+                                    <div class="hbar-row">
+                                        <span class="hbar-label">Marketing Campaign</span>
+                                        <div class="hbar-track"><div class="hbar-fill hbar-fill-red" style="width:21%"></div></div>
+                                        <span class="hbar-value">8%</span>
+                                    </div>
+                                    <div class="hbar-row">
+                                        <span class="hbar-label">Others</span>
+                                        <div class="hbar-track"><div class="hbar-fill hbar-fill-grey" style="width:11%"></div></div>
+                                        <span class="hbar-value">4%</span>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </template>
+
+
+                    <template if:false={isApplicationsTab}>
+                        <p class="collapse-placeholder">
+                            {selectedPerformanceTab} insights coming soon.
+                        </p>
+                    </template>
+
+                </div>
+
+            </template>
+
+        </section>
+
+
+        <section class={tasksSectionClass}>
+
+            <div
+                class="collapse-header"
+                onclick={toggleTasks}>
+
+                <div class="collapse-left">
+
+                    <div class="collapse-icon">
+                        ✓
+                    </div>
+
+                    <div>
+
+                        <h2>
+                            My Tasks &amp; Alerts
+                        </h2>
+
+                        <p>
+                            Your pending tasks and important notifications
+                        </p>
+
+                    </div>
+
+                </div>
+
+                <div class="collapse-header-right">
+                    <span class="collapse-view-all">View All</span>
+                    <span class={tasksArrowClass}>
+                        ⌄
+                    </span>
+                </div>
+
+            </div>
+
+            <template if:true={isTasksOpen}>
+
+                <div class="collapse-body tasks-body">
+
+                    <div class="tasks-columns">
+
+                        <div class="tasks-card">
+
+                            <div class="tasks-card-header">
+                                <span class="tasks-card-title">
+                                    <lightning-icon
+                                        icon-name="utility:task"
+                                        size="xx-small">
+                                    </lightning-icon>
+                                    My Tasks (8)
+                                </span>
+                                <span class="view-all">View All</span>
+                            </div>
+
+                            <div class="performance-tabs task-filters">
+                                <template
+                                    for:each={taskFilterItems}
+                                    for:item="filter">
+
+                                    <span
+                                        key={filter.id}
+                                        class={filter.itemClass}
+                                        data-value={filter.value}
+                                        onclick={handleTaskFilterClick}>
+                                        {filter.label}
+                                    </span>
+
+                                </template>
+                            </div>
+
+                            <div class="task-table-wrapper">
+
+                                <table class="task-table">
+
+                                    <thead>
+                                        <tr>
+                                            <th>Task</th>
+                                            <th>Related To</th>
+                                            <th>Due Date</th>
+                                            <th>Priority</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+
+                                        <template
+                                            for:each={tasks}
+                                            for:item="task">
+
+                                            <tr key={task.id}>
+
+                                                <td>
+                                                    <span class={task.dotClass}></span>
+                                                    {task.name}
+                                                </td>
+
+                                                <td>{task.relatedTo}</td>
+                                                <td>{task.dueDate}</td>
+
+                                                <td>
+                                                    <span class={task.priorityClass}>{task.priority}</span>
+                                                </td>
+
+                                                <td>
+                                                    <button class="task-open-btn">Open</button>
+                                                </td>
+
+                                            </tr>
+
+                                        </template>
+
+                                    </tbody>
+
+                                </table>
+
+                            </div>
+
+                            <div class="pipeline-footer">
+                                <span class="pipeline-showing">Showing 1-5 of 8 tasks</span>
+                                <div class="pipeline-pagination">
+                                    <span class="pipeline-page-arrow">‹</span>
+                                    <span class="pipeline-page pipeline-page-active">1</span>
+                                    <span class="pipeline-page">2</span>
+                                    <span class="pipeline-page-arrow">›</span>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="tasks-card">
+
+                            <div class="tasks-card-header">
+                                <span class="tasks-card-title">
+                                    <lightning-icon
+                                        icon-name="utility:warning"
+                                        size="xx-small"
+                                        class="alert-header-icon">
+                                    </lightning-icon>
+                                    Alerts (5)
+                                </span>
+                                <span class="view-all">View All</span>
+                            </div>
+
+                            <div class="performance-tabs task-filters">
+                                <template
+                                    for:each={alertFilterItems}
+                                    for:item="filter">
+
+                                    <span
+                                        key={filter.id}
+                                        class={filter.itemClass}
+                                        data-value={filter.value}
+                                        onclick={handleAlertFilterClick}>
+                                        {filter.label}
+                                    </span>
+
+                                </template>
+                            </div>
+
+                            <div class="alert-list">
+
+                                <template
+                                    for:each={alerts}
+                                    for:item="alert">
+
+                                    <div key={alert.id} class="alert-row">
+                                        <div class={alert.iconClass}>
+                                            <lightning-icon
+                                                icon-name={alert.icon}
+                                                size="xx-small">
+                                            </lightning-icon>
+                                        </div>
+                                        <span class="alert-message">{alert.message}</span>
+                                        <span class="alert-time">{alert.time}</span>
+                                    </div>
+
+                                </template>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </template>
+
+        </section>
+
+
+        <!-- ================= FOOTER ================= -->
+
+        <div class="dashboard-footer" style = {footerStyle}>
+
+            <!-- <div class="footer-message">
+                Helping more families<br />
+                find their dream homes.
+            </div>
+
+            <div class="footer-quote">
+                Together<br />
+                for a brighter<br />
+                tomorrow.
+            </div> -->
+
+        </div>
+
+    </div>
+
+</template>

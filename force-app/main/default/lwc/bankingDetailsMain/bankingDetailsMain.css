@@ -1,0 +1,136 @@
+@import "c/cssLibrary";
+
+:host {
+
+    background-color: #0a1730;
+
+    display: block;
+
+    padding: 8px;
+
+    border-radius: 8px;
+
+}
+
+
+
+.table-container {
+
+    width: 100%;
+
+    overflow-x: auto;
+
+    margin-top: 10px;
+
+    background-color: #0a1730;
+
+}
+
+
+
+
+/* Table Styling */
+
+table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+
+    background: #1b304d;
+
+    border: none;
+}
+
+.exposure-table-wrapper {
+    border: 1px solid #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+
+    background: #1b304d;
+}
+
+
+
+/* Dark Navy Header */
+
+th {
+    background: #1b304d !important;
+    color: #ffffff !important;
+
+    font-weight: 700;
+    font-size: 15px;
+
+    padding: 12px;
+
+    border: 1px solid #ffffff !important;
+
+    text-align: center;
+}
+
+
+
+/* Table Data Styling */
+
+td {
+    background: #1b304d !important;
+    color: #ffffff !important;
+
+    padding: 12px;
+
+    border: 1px solid #ffffff !important;
+
+    text-align: center;
+}
+
+thead tr:first-child th:first-child {
+    border-top-left-radius: 8px;
+}
+
+thead tr:first-child th:last-child {
+    border-top-right-radius: 8px;
+}
+
+tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+}
+
+tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
+}
+
+/* th:last-child,
+td:last-child {
+    border-right: none !important;
+}
+
+tbody tr:last-child td {
+    border-bottom: none !important;
+} */
+
+/* thead th {
+    border-top: none !important;
+}
+
+tbody tr:last-child td {
+    border-bottom: none !important;
+} */
+
+
+/* Alternating Row Colors */
+
+tr:nth-child(even) td {
+
+    background-color: #14284d !important;
+
+}
+
+
+
+/* Hover Effect */
+
+tr:hover td {
+    background-color: #17345c !important;
+
+    border-top: 1px solid #ffffff !important;
+    border-bottom: 1px solid #ffffff !important;
+}

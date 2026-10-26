@@ -1,0 +1,57 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 04-08-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+
+    <div if:false={fromSales} style="width: 15%;margin-bottom: 10px;" class="status-combobox">
+        <lightning-combobox name="progress" label="Status" value={value} placeholder="Select Applicant"
+            options={options} onchange={handleChange} variant="label-hidden" style="background-color: #014486;"></lightning-combobox>
+
+    </div>
+
+    <div if:true={fromSales} style="width: 15%;margin-bottom: 10px;">
+        <div if:true={notSales} class="status-combobox">
+            <lightning-combobox name="progress" label="Status" value={value} placeholder="Select Applicant"
+                options={options} onchange={handleChange} variant="label-hidden" style="background-color: #014486;"></lightning-combobox>
+        </div>
+    </div>
+   
+    <div style="height: 600px;">
+        <template if:true={noFile}>
+            <div style="margin-top: 10%;text-align:center;
+            font-style: italic;
+            font-size: 17px;
+            font-weight: 100;">
+            <p>No file found.</p>
+        </div>
+        </template>
+        <template if:false={noFile}>
+            <!--  <template if:true={isMobile}>
+                <div style="text-align:center; margin-top:20px;">
+                    <lightning-button label="View GEN AI" onclick={openPDF} variant="brand"></lightning-button>
+                </div>
+            </template>
+            <template if:false={isMobile}>
+                <div style="height: 100%; width: 100%; overflow: auto;">
+                    <iframe src={url} width="100%" height="100%" style="border:none;"></iframe>
+                </div>
+            </template>-->
+
+              <iframe src={url} height={height} width={width} title="Case File"></iframe>
+        </template>
+        <template if:true={noFile}>    
+                <div class="button-shadow" style="width: 90%;background: #0b1524; margin: 12px;padding: 12px;border-radius: 10px;border: 1px solid #2c3a4f;">
+                    <span style="display: inline-flex;align-items:center;">
+                    <lightning-icon icon-name="utility:ban" size="large" class="not-eligible-icon"></lightning-icon>
+                        <p class="slds-text-align_center" style="font-style: Lato Bold; font-size: 14px;color:#ffffff;margin:0 0 0 12px;">{errorList}</p>
+                    </span>
+                   </div>
+        </template>
+        
+    </div>
+
+</template>

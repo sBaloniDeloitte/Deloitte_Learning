@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>60.0</apiVersion>
+    <isExposed>true</isExposed>
+    <masterLabel>Highlights Panel Style Override</masterLabel>
+    <description>Injects a global stylesheet override to recolor the standard record-home Highlights Panel and related shared elements. Renders no visible markup.</description>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+</LightningComponentBundle>

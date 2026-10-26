@@ -1,0 +1,76 @@
+<!-- This Code was generated using GenAI tool: Codify, Please check for accuracy -->
+<template>
+    <div class="active-lead-card">
+
+        <!-- Header -->
+        <div class="card-header">
+            <div class="header-left">
+                <span class="star-icon">⭐</span>
+                <div class="header-text">
+                    <span class="header-title">MOST ACTIVE LEAD TODAY</span>
+                    <span class="header-subtitle">{headerSubtitle}</span>
+                </div>
+            </div>
+            <span class="header-timestamp">{asOf}</span>
+        </div>
+
+        <div class="card-body">
+
+            <div class="lead-row">
+
+                <!-- Engagement ring -->
+                <div class="engage-ring-wrapper">
+                    <svg class="progress-ring" viewBox="0 0 120 120">
+                        <circle class="ring-bg" cx="60" cy="60" r="50"></circle>
+                        <circle class="ring-fill" cx="60" cy="60" r="50" style={progressStyle}></circle>
+                    </svg>
+                    <div class="ring-inner">
+                        <div class="ring-score">{engagementScore}</div>
+                        <div class="ring-label">engage</div>
+                    </div>
+                </div>
+
+                <!-- Lead details -->
+                <div class="lead-info">
+                    <div class="lead-name-row">
+                        <span class="avatar-circle">{avatarInitials}</span>
+                        <div class="lead-name-col">
+                            <h3 class="lead-name">{leadName}</h3>
+                            <p class="lead-subtitle">{leadSubtitle}</p>
+                        </div>
+                    </div>
+
+                    <div class="pill-row">
+                        <span class="pill pill-touches">Loan Required - {HighestAmount}</span>
+                        <span class="pill pill-whatsapp">Highest Credit Score</span>
+                        <span class="pill pill-score">Score {leadScore}</span>
+                    </div>
+
+                    <div class="activity-row">
+                        <span class="dot dot-filled"></span>
+                        <span class="dot dot-filled"></span>
+                        <span class="dot dot-filled"></span>
+                        <span class="dot dot-empty"></span>
+                        <span class="dot dot-filled"></span>
+                        <span class="dot dot-filled"></span>
+                        <span class="activity-label">Activity &middot; {lastActivity}</span>
+                        <span class="activity-updated">{updatedAgo}</span>
+                    </div>
+                </div>
+
+            </div>
+
+            <hr class="divider" />
+
+            <!-- Footer -->
+            <div class="card-footer">
+                <span class="footer-note">{footerNote}</span>
+                <button class="btn btn-primary" onclick={handleOpenLead} disabled={isLoading}>
+                    Open Lead <span class="btn-arrow">→</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+</template>
+<!-- GenAI: Generated code ends here -->

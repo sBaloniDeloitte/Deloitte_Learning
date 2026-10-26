@@ -1,0 +1,49 @@
+<template>
+    <lightning-card title="Locality Details">
+        <div class="slds-p-around_medium">
+            <div class="slds-grid slds-gutters slds-wrap">
+
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning-combobox
+                        label="Distance From Godrej Branch"
+                        value={distenceFromGC}
+                        options={distOptions}
+                        data-field="Distance_from_Godrej_Branch_Base_Branc__c"
+                        onchange={handleChange}>
+                    </lightning-combobox>
+                </div>
+
+                <div class="slds-col slds-size_1-of-2">
+                    <lightning-combobox
+                        label="Nearest Railway Station"
+                        value={railwayStation}
+                        options={railwayOptions}
+                        data-field="Nearest_Railway_Station__c"
+                        onchange={handleChange}>
+                    </lightning-combobox>
+                </div>
+
+                <div class="slds-col slds-size_1-of-2 slds-m-top_small">
+                    <lightning-combobox
+                        label="Nearest Bus Stand"
+                        value={busStand}
+                        options={busOptions}
+                        data-field="Nearest_Bus_Stand__c"
+                        onchange={handleChange}>
+                    </lightning-combobox>
+                </div>
+
+                <div class="slds-col slds-size_1-of-2 slds-m-top_small">
+                    <lightning-combobox
+                        label="Nearest Hospital"
+                        value={hospital}
+                        options={hospitalOptions}
+                        data-field="Nearest_Hospital__c"
+                        onchange={handleChange}>
+                    </lightning-combobox>
+                </div>
+
+            </div>
+        </div>
+    </lightning-card>
+</template>

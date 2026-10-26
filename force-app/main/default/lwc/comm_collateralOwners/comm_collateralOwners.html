@@ -1,0 +1,43 @@
+<template>
+    <div class="slds-box slds-box_x-small">
+    <article class="slds-card slds-p-around_x-small">
+        <div class="slds_card__header slds-grid">
+            <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                <div class="slds-media__figure">
+                    <span class="slds-icon_container  slds-icon-standard-account" title="Account">
+                        <lightning-icon icon-name="standard:account" title="Account">
+                        </lightning-icon>
+                    </span>
+                </div>
+                <div class="slds-media__body">
+                    <h2 class="slds-card__header-title">
+                        <div class="slds-card__header-link slds-truncate" title="Collateral Owners">
+                            <span>Collateral Owners</span>
+                        </div>
+                    </h2>
+                </div>
+            </header>
+        </div>
+        <div class="slds-card__body slds-card__body_inner">
+            <div class="slds-box slds-box_x-small">
+                <div class="slds-grid slds-wrap slds-grid_pull-padded">
+                    <div class="slds-size_1-of-3 slds-p-horizontal_medium">
+                        <c-generic-multi-picklist-selector 
+                            showpills="true"
+                            label="List of Applicants"
+                            options={applicantNames}
+                            onselectedvalueschange={handleMultiPicklistSelection}>
+                        </c-generic-multi-picklist-selector>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="slds-card__footer" style="text-align: left;">
+            <template if:true={picklistValueSelected}>
+                <lightning-button label="Link as Owner" onclick ={onOwnerButtonClick}>
+            </lightning-button>
+        </template>
+        </footer>
+    </article>
+    </div>
+</template>

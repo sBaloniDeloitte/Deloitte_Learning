@@ -1,0 +1,81 @@
+@import "c/cssLibrary";
+.slds-listbox_expanded {
+    height:auto;
+}
+
+/* Dark-theme fix: dropdown listbox items were rendering with default SLDS
+   dark text on the dark modal background (near-invisible), and the default
+   SLDS hover state used a white background which made text disappear
+   entirely. Force white text always, and swap the hover highlight to a
+   dark navy tone consistent with the rest of the dark theme so items stay
+   legible in both normal and hover states. */
+.slds-dropdown {
+    background-color: #16283f;
+    border: 1px solid #33455e;
+}
+
+.slds-listbox__item,
+.slds-listbox__item .slds-truncate {
+    color: #ffffff;
+}
+
+.slds-listbox__option:hover,
+.slds-listbox__option:focus {
+    background-color: #1f3a5c !important;
+}
+
+.slds-listbox__option:hover .slds-truncate,
+.slds-listbox__option:focus .slds-truncate {
+    color: #ffffff !important;
+}
+
+/* Selected-value pills (shown below the search input once an item is
+   picked): base lightning-pill was rendering with a plain white background
+   and invisible (white-on-white) label text against this component's dark
+   host page. Force pill colors via SLDS pill hooks plus a ::part()
+   fallback so the label stays legible - same hooks+part+!important combo
+   already proven to work for the dark-theme textarea fix elsewhere in this
+   codebase (queryModuleAssignedQueriesCmp.css). */
+lightning-pill {
+    --slds-c-pill-color-background: #16283f;
+    --slds-c-pill-color-background-hover: #16283f;
+    --slds-c-pill-color-background-focus: #16283f;
+    --slds-c-pill-text-color: #ffffff;
+    --slds-c-pill-text-color-hover: #ffffff;
+    --slds-c-pill-color-border: #33455e;
+}
+
+lightning-pill::part(pill),
+lightning-pill::part(pill):hover,
+lightning-pill::part(pill):focus {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    border: 1px solid #33455e !important;
+}
+.lightning-input,
+.lightning-combobox {
+    width: 100%;
+    margin-bottom: 1rem;
+}
+
+/* For screens smaller than or equal to 768px (mobile) */
+@media (max-width: 768px) {
+    .lightning-input,
+    .lightning-combobox {
+        width: 100%;
+        margin-bottom: 1rem;
+    }
+
+    .slds-backdrop {
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+}
+
+/* For larger screens (desktop) */
+@media (min-width: 769px) {
+    .lightning-input,
+    .lightning-combobox {
+        max-width: 500px; /* Adjust to desired width for desktop */
+        margin: 0 auto 1rem; /* Center the inputs */
+    }
+}

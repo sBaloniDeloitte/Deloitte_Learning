@@ -1,0 +1,90 @@
+<!--
+    @description : Static AI Sales Insight card for an individual Home Loan
+                    applicant lead (dark/purple theme).
+    @author       : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <div class="aisi-container">
+
+        <!-- ================= HEADER ================= -->
+        <div class="aisi-header">
+            <div class="aisi-header-icon">
+                <lightning-icon icon-name="utility:einstein" size="small" variant="inverse"></lightning-icon>
+            </div>
+            <div class="aisi-header-text">
+                <h1 class="aisi-title">AI Sales Insight</h1>
+                <p class="aisi-subtitle">AI-generated lead summary and recommendations</p>
+            </div>
+        </div>
+
+        <!-- ================= LEAD SUMMARY CARD ================= -->
+        <div class="aisi-card">
+
+            <p class="aisi-summary">
+                <strong>High-intent lead:</strong> {applicantSummary}
+            </p>
+
+            <div class="aisi-next-action">
+                <strong>Next best action:</strong> {nextBestAction}
+            </div>
+
+            <p class="aisi-location-label">Lead capture location</p>
+
+            <div class="aisi-map-panel">
+                <div class="aisi-map-header">
+                    <lightning-icon icon-name="utility:location" size="x-small"></lightning-icon>
+                    <span>Location Map</span>
+                </div>
+                <div class="aisi-map-tabs">
+                    <span class="aisi-map-tab aisi-map-tab_active">Map</span>
+                    <!-- <span class="aisi-map-tab">Satellite</span> -->
+                </div>
+                <div class="aisi-map-frame-wrapper">
+                    <!-- <iframe
+                        src={mapEmbedUrl}
+                        title="Deloitte India - Mumbai"
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade"
+                        class="aisi-map-frame">
+                    </iframe> -->
+                    <lightning-map map-markers={mapMarkers} zoom-level="15" markers-title="Lead Capture Location"
+                        class="aisi-lightning-map">
+                    </lightning-map>
+                </div>
+            </div>
+        </div>
+
+        <!-- ================= SALES AGENT ACTION POINTS ================= -->
+        <div class="aisi-card">
+            <h2 class="aisi-action-heading">
+                <lightning-icon icon-name="utility:priority" size="x-small"></lightning-icon>
+                Sales Agent Action Points
+            </h2>
+
+            <ul class="aisi-action-list">
+                <template for:each={actionPoints} for:item="point">
+                    <li key={point.id} class="aisi-action-row">
+                        <div class={point.iconClass}>
+                            <lightning-icon icon-name={point.icon} size="x-small" variant="inverse"></lightning-icon>
+                        </div>
+                        <span class="aisi-action-text">
+                            <strong>{point.label}</strong> {point.text}
+                        </span>
+                    </li>
+                </template>
+            </ul>
+        </div>
+
+        <!-- ================= FOOTER ACTIONS ================= -->
+        <!-- <div class="aisi-footer">
+            <button class="aisi-btn aisi-btn_primary" onclick={handleViewApplication}>
+                View Application &rarr;
+            </button>
+            <button class="aisi-btn aisi-btn_primary" onclick={handleConvertToOpportunity}>
+                <lightning-icon icon-name="utility:opportunity" size="xx-small" variant="inverse" class="aisi-btn-icon"></lightning-icon>
+                Convert to Opportunity
+            </button>
+        </div> -->
+
+    </div>
+</template>

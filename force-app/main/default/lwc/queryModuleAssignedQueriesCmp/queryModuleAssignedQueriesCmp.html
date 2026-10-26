@@ -1,0 +1,281 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 04-02-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:true={showremarks}>
+        <div class="modal-backdrop">
+            <div class="modal">
+                <c-query-remarks-history-cmp 
+                    record-id={childId} 
+                    showfooter={showremarks} 
+                    onclose={handleRemarksClose}>
+                </c-query-remarks-history-cmp>
+            </div>
+        </div>
+    </template>
+    <template lwc:if={isLoading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+        </lightning-spinner>
+    </template>
+    <span class="styleContainer"></span>
+    <!-- GenAI: Generated code starts here -->
+    <template lwc:if={showQueryList}>
+        <header class="slds-modal__header header-section">
+            <div class="slds-text-align_center">
+                <h2 class="slds-text-heading_medium slds-hyphenate header-title">Assigned Queries</h2>
+            </div>
+        </header>
+        <div class="slds-modal__content slds-p-around_medium">
+            <template lwc:if={noQueriesFound}>
+                <p class="slds-p-around_medium slds-text-align_center">No queries found for this loan application.</p>
+            </template>
+            <template lwc:else>
+                <div class="table-container">
+                    <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                        <thead>
+                            <tr>
+                                <th>Query Number</th>
+                                <th>Type</th>
+                                <th>Category</th>
+                                <th>Status</th>
+                                <th>Requestor</th>
+                                <th>Created Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={queryList} for:item="q">
+                                <tr key={q.queryId}>
+                                    <td>{q.queryNumber}</td>
+                                    <td>{q.queryType}</td>
+                                    <td>{q.queryCategory}</td>
+                                    <td>{q.status}</td>
+                                    <td>{q.requestorName}</td>
+                                    <td>{q.createdDate}</td>
+                                    <td>
+                                        <lightning-button label="View" variant="brand" class="pill-view-button" data-id={q.queryId} onclick={handleSelectQuery}></lightning-button>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
+        </div>
+    </template>
+    <template lwc:else>
+    <!-- GenAI: Generated code ends here -->
+    <header class="slds-modal__header header-section">
+        <div class="slds-text-align_center">
+            <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">{headerTitle}</h2>
+        </div>
+        <!-- GenAI: Generated code starts here -->
+        <template if:true={showBackButton}>
+            <div class="slds-text-align_center slds-m-top_small back-to-list-wrapper">
+                <button type="button" class="back-to-list-button" onclick={handleBackToList}>Back to List</button>
+            </div>
+        </template>
+        <!-- GenAI: Generated code ends here -->
+    </header>
+    <div class="slds-modal__content slds-p-around_medium">
+        <div class="fields-grid">
+        <lightning-input type="text" required label="Query Type" value={queryType} disabled class="requested-by-input">
+        </lightning-input >
+        <template if:true={showCategory}>
+        <lightning-input type="text" required label="Query Category" value={queryCategory} disabled class="requested-by-input">
+        </lightning-input >
+        </template>
+        <template if:true={showDocTable}>
+            <div class="table-container fields-grid-full-row">
+                <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                    <thead>
+                        <tr>
+                            <th>Document Name</th>
+                            <th>Requirement Level</th>
+                            <th>Requested From</th>
+                            <th>Status</th>
+                            <th>Action</th>
+                            <th>*Remarks</th>
+                            <th>Preview</th>
+                            <!-- <th>Description</th> -->
+                            <th>Upload</th>
+                            <th>Remarks History</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={docList} for:item="iter">
+                            <tr key={iter.documentId}>
+                                <td>{iter.documentName}</td>
+                                <td>{iter.requirementLevel}</td>
+                                <td>{iter.childQueryWithUserNames}</td>
+                                <td>{iter.Stage}</td>
+                                <td>
+                                    <template if:true={isActionAllowed}>
+                                    <template if:true={iter.buttonWrapp}>
+                                        <div class="button-container">
+                                            <template for:each={iter.buttonWrapp} for:item="buttonTracker">
+                                                <button key={buttonTracker.name} 
+                                                        value={buttonTracker.value} 
+                                                        class={buttonTracker.buttonClass}
+                                                        onclick={updateDocRecordStatus}
+                                                        data-docid={iter.documentId}
+                                                        data-btnid={buttonTracker.buttonId}
+                                                        data-name={iter.queryId}>
+                                                    {buttonTracker.name}
+                                                </button>
+                                            </template>
+                                        </div>
+                                    </template>
+                                    </template>
+                                    
+                                    
+                                </td>
+                                <td ><lightning-textarea
+                                    type="text" 
+                                    data-id={iter.documentId} 
+                                    data-name={iter.queryId}
+                                    value={iter.remarks}
+                                    required="true"
+                                    onchange={handleInputChange}
+                                   >
+                                </lightning-textarea></td>
+                                <td>
+                                    <template if:true={iter.showPreview}>
+                                        <span class="styleContainer"></span>
+                                        <div class="uploaded-view">
+                                            <lightning-button-icon icon-name="utility:preview"
+                                                alternative-text="Preview Available" onclick={handlePreview}
+                                                data-id={iter.contentDocumentId} data-url={iter.contentDocLink} class="uploaded-view"
+                                                style="color: green;"></lightning-button-icon>
+                                        </div>
+                                    </template>
+                                    <template if:false={iter.showPreview}>
+                                        <lightning-button-icon icon-name="utility:preview"
+                                            alternative-text="No Preview" disabled></lightning-button-icon>
+                                    </template>
+                                </td>
+                                <!-- <td>{iter.description}</td> -->
+                                <td>
+                                    <span class="styleContainer"></span>
+                                    <lightning-button-icon icon-name="utility:upload"
+                                    alternative-text="Upload" onclick={openCamera} data-id={iter.documentId}
+                                    class="uploaded-view" style="color: green;"></lightning-button-icon>
+                                </td>
+                                <td>
+                                    <lightning-button  data-name={iter.queryId} label="View" variant="brand" class="pill-view-button" onclick={handleView}></lightning-button>
+                                </td>
+                               
+                            </tr>
+                        </template>
+
+                    </tbody>
+                </table>
+            </div>
+        </template>
+        <lightning-input type="text"  label="Requestor" value={requestor} required disabled class="requested-by-input"> </lightning-input>
+        <lightning-input if:true={showUploadDoc} type="text" label="Requested From" value={requestedFromUser}  required disabled class="requested-by-input"> </lightning-input>
+        <lightning-input type="text" label="Selected queue" value={selectedQueue}  disabled class="requested-by-input"> </lightning-input>
+        <template if:true={showUploadDoc}>
+        <template if:false={recordEditable}>
+            <lightning-input type="textarea" label="Remarks" value={remarks}  required onchange ={handleRemarks}  disabled class="requested-by-input"> </lightning-input>
+        </template>
+        <template if:true={recordEditable}>
+            <lightning-input type="textarea" label="Remarks" required value={remarks}  onchange ={handleRemarks} class="requested-by-input"> </lightning-input>
+        </template>
+        </template>
+        <lightning-input if:true={showUploadDoc} type="text" label="Status" value={status} disabled></lightning-input>
+        </div>
+      
+      <template if:true={isActionAllowed}>
+      <template if:true={uploadEditable}>
+        <template if:true={showUploadDoc}>
+            <span class="styleContainer" ></span>
+            <template if:false={showUpload}>
+                <lightning-button-icon icon-name="utility:upload"
+                alternative-text="Upload" onclick={openCameraNonDocument} 
+                class="uploaded-view" style="color: green;"></lightning-button-icon>
+            </template>
+            </template>
+        </template>
+    </template>
+
+    </div>
+
+    <footer class="footer-section">
+        <div class="slds-align_absolute-center button-container">
+            <template if:true={isActionAllowed}>
+            <!-- <button class="slds-button slds-button_brand close-button" style="padding: 0 0.75rem;margin-right: 0.5%;" onclick={handleCloseModal}>Cancel</button> -->
+            <template for:each={buttonTrackers} for:item="buttonTracker">
+                <button key={buttonTracker.name} value={buttonTracker.value} style="padding: 2px 0.75rem;" class={buttonTracker.buttonClass}
+                    onclick={updateRecordStatus}>
+                    {buttonTracker.name}
+                </button>
+            </template>
+            </template>
+        </div>
+    </footer>
+    <input 
+    type="file" 
+     accept=".png,.jpeg,.jpg,.pdf,.xlsx,.msg" 
+    capture="environment" 
+    onchange={handleUpload} 
+    class="hidden-input"
+    />
+    <input 
+    type="file" 
+     accept=".png,.jpeg,.jpg,.pdf,.xlsx,.msg"
+    capture="environment" 
+    onchange={handleUploadFinished} 
+    class="hidden-input-finish"
+    />
+
+    <template if:true={openReassignmentModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header" style="background-color: skyblue; color:white;font-weight:500;">
+                   
+                    <div class="slds-text-align_center">
+                        <h2 slot="title" style="font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px" class="slds-text-heading_medium slds-hyphenate">Re Assign</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content" style="max-height: 70% !important;overflow: auto;">
+                    <div class="slds-m-vertical_medium slds-p-around_small">
+                        <c-generic-multi-picklist-selector label="Select User" required="true" showpills="true"
+                        options={requestedFromUsers} onselectedvalueschange={handleRequestFromUsers}>
+                        </c-generic-multi-picklist-selector>
+                    </div>
+                    <div class="slds-m-vertical_medium slds-p-around_small">
+                        <label class="slds-form-element__label" for="horizontal-form-element-id-14"><strong><abbr class="slds-required" title="required">* </abbr>Remarks</strong></label>
+                        <lightning-textarea variant="label-hidden"  required value={remarks} onchange={handleRemarks}></lightning-textarea>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer" style="border: revert;">
+                    <div class="slds-align_absolute-center">
+                        <button class="slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color:#dc387e;color: black;border-color: skyblue;font-weight: 500;" onclick={closeReassignmentModal}>Cancel</button>
+                        <button class="slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color: #9bbf56;color: black;border-color: skyblue;font-weight: 500;" onclick={updateRecords}>Proceed</button>
+                    </div>
+                </footer>
+           </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!-- added by kalpesh -->
+     <template if:true={showPreview}> 
+                            <div class="preview-header slds-m-top_medium slds-m-bottom_medium" style="display: flex; flex-direction: column; align-items: flex-start; font-weight: bold; font-size: 1.6em; margin-bottom: 10px;">
+                                 <lightning-icon icon-name="utility:close" alternative-text="Close" size="medium" onclick={handleClosePreview} class="close-icon" style="cursor: pointer;"></lightning-icon>
+                                 <span>Previewing:<lightning-icon icon-name="utility:download" data-url={contentDocLink}
+                                         alternative-text="Download" 
+                                        title="Download" class="lightning-icon-hover" 
+                                        size="small" onclick={handleDownload}>
+                                    </lightning-icon> </span>
+                            </div>
+                            <iframe src={filePreviewUrl} class="content-viewer" style="width: 100%; height: 90vh; border: 1px solid #ccc; box-sizing: border-box;"></iframe>
+                        </template>
+    <!-- GenAI: Generated code starts here -->
+    </template>
+    <!-- GenAI: Generated code ends here -->
+</template>

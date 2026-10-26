@@ -1,0 +1,26 @@
+<!-- //_______________This Code was generated using GenAI tool: Codify, Please check for accuracy_______________// -->
+<template>
+    <div class="bureau-card">
+
+        <!-- Header -->
+        <div class="bureau-header">
+            <span class="bureau-title">Bureau</span>
+            <span class="bureau-refreshed">refreshed 4 Aug</span>
+        </div>
+
+        <!-- Rows -->
+        <div class="bureau-list">
+            <template for:each={members} for:item="member">
+                <div key={member.id} class="bureau-row">
+                    <div class="bureau-info">
+                        <div class="bureau-name">{member.name}</div>
+                        <div class="bureau-sub">{member.subtitle}</div>
+                    </div>
+                    <span class={member.badgeClass}>{member.score}</span>
+                </div>
+            </template>
+        </div>
+
+    </div>
+</template>
+<!-- //__________________________GenAI: Generated code ends here______________________________// -->

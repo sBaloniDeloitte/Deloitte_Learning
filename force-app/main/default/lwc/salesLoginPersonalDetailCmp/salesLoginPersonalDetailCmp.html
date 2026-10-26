@@ -1,0 +1,911 @@
+<!--
+@description       : 
+@author            : ChangeMeIn@UserSettingsUnder.SFDoc
+@group             : 
+@last modified on  : 04-07-2025
+@last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+<template if:true={isloading}>
+    <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+</template>
+<!-- <div class="container" style=" margin: 8px 5px 1px 10px;"> -->
+    <template if:true={showError}>
+        <div class="button-shadow" style="width: 90%;background: white; margin: 20px;padding: 20px;border-radius: 10px;border: 1px solid #113451;">       
+            <p class="slds-text-align_center" style="font-style: Lato Bold; font-size: 12px;color:red"> <lightning-formatted-rich-text value={errorList}></lightning-formatted-rich-text></p> 
+        </div>
+    </template>
+    <template if:true={showFormSixtyUrl}>
+        <template if:true ={isDesktop}>
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_fixed-layout slds-table_resizable-cols slds-table_header-fixed slds-m-around_medium">
+    <thead>
+        <tr>
+            <th><div class="slds-truncate">First Name</div></th>
+            <th><div class="slds-truncate">Last Name</div></th>
+            <th><div class="slds-truncate">Mobile Number</div></th>
+            <th><div class="slds-truncate">Form 60</div></th>
+            <!--Added by Prachi-->
+            <th><div class="slds-truncate">Actions</div></th>
+            <!--Added by Prachi-->
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td><div class="slds-truncate">{firstName}</div></td>
+            <td><div class="slds-truncate">{lastName}</div></td>
+            <td><div class="slds-truncate">{mobileNumber}</div></td>
+            <td><a href="javascript:void(0);" class="slds-button button-deeppink" onclick={handleView60}>View Form 60</a></td>
+            <td><lightning-button-icon class="slds-m-left_small" icon-name="utility:delete" alternative-text="Delete" title="Delete" variant="border-filled" onclick={handleDeleteForm60}></lightning-button-icon></td> 
+        </tr>
+    </tbody>
+    </table>
+    </template>
+    <!-- Mobile & Tablet View (No Table) -->
+    <template if:true={isMobileOrTablet}>
+    <div class="slds-p-around_medium">
+        <lightning-card title="Form 60 Details">
+            <div class="custom-mobile-table">
+                <div class="custom-row">
+                    <div class="custom-cell label">First Name</div>
+                    <div class="custom-cell value">{firstName}</div>
+            </div>
+                <div class="custom-row">
+                    <div class="custom-cell label">Last Name</div>
+                    <div class="custom-cell value">{lastName}</div>
+            </div>
+                <div class="custom-row">
+                    <div class="custom-cell label">Mobile Number</div>
+                    <div class="custom-cell value">{mobileNumber}</div>
+            </div>
+                <div class="custom-row">
+                    <div class="custom-cell label">Form 60</div>
+                    <div class="custom-cell value">
+                        <a href="javascript:void(0);" class="slds-button button-deeppink custom-mobile-btn" onclick={handleView60}>
+                        View Form 60
+                    </a>
+                </div>
+            </div>
+            <div class="custom-row">
+                    <div class="custom-cell label">Actions</div>
+                    <div class="custom-cell value"><lightning-button-icon class="slds-m-left_small" icon-name="utility:delete" alternative-text="Delete" title="Delete" variant="border-filled" onclick={handleDeleteForm60}></lightning-button-icon></div>
+            </div>
+            </div>
+        </lightning-card>
+    </div>
+    </template>
+    </template>
+    <!-- HL-Testing-Requirement: "Is PAN Available?" screen removed - the Upload/Manual
+    selection screen below is now always the first screen shown.
+    <template if:true={showIndividual}>
+    <template if:false={disablePan}>
+    <template if:true={showPANConfirmation}>
+    <lightning-card>
+            <div class="slds-p-around_medium">
+            <p><strong>Is PAN Available?</strong></p>
+    </div>
+    <template if:true={isDesktop}>
+    <div class="radio-inline-wrapper">
+        <template for:each={panAvailableOptions} for:item="option">
+            <lightning-input
+                key={option.value}
+                type="radio"
+                name="panUploadOrFill"
+                label={option.label}
+                value={option.value}
+                data-value={option.value}
+                onchange={handlePanAvailabilityChange}>
+            </lightning-input>
+        </template>
+        </div>
+    </template>
+    <template if:true={isMobile}>
+    <lightning-layout-item size="3" class="slds-p-around_x-small">
+            <template for:each={panAvailableOptions} for:item="option">
+            <lightning-input
+                key={option.value}
+                type="radio"
+                name="panUploadOrFill"
+                label={option.label}
+                value={option.value}
+                data-value={option.value}
+                onchange={handlePanAvailabilityChange}>
+            </lightning-input>
+        </template>
+    </lightning-layout-item>
+    </template>
+    <template if:true={isTablet}>
+    <lightning-layout-item size="6" class="slds-p-around_x-small">
+        <template for:each={panAvailableOptions} for:item="option">
+            <lightning-input
+                key={option.value}
+                type="radio"
+                name="panUploadOrFill"
+                label={option.label}
+                value={option.value}
+                data-value={option.value}
+                onchange={handlePanAvailabilityChange}>
+            </lightning-input>
+        </template>
+    </lightning-layout-item>
+    </template>
+    </lightning-card>
+    </template>
+</template>
+</template>
+    -->
+<template if:false={showFormSixtyUrl}>
+    <template if:false={disablePan}>
+    <template if:true={showUploadOrManualScreen}>
+    <lightning-card>
+            <!-- HL-Testing-Requirement: Previous button removed - this screen is now the
+            first screen shown, there is no earlier "Is PAN Available?" screen to go back to.
+            <template if:true={showIndividual}>
+                <button class = "button-deeppink slds-button slds-m-bottom_small"  onclick={handlePreviousButtonClick}>Previous</button>
+            </template>
+            -->
+            <div class="slds-p-around_medium">
+            <p class="radio-question">Would you like to upload PAN or enter details manually?</p>
+        <template if:true={isDesktop}>
+        <div class="radio-inline-wrapper">
+        <template for:each={UploadOrFillManuallyOptions} for:item="option">
+            <lightning-input
+                key={option.value}
+                type="radio"
+                name="panUploadOrFill"
+                label={option.label}
+                value={option.value}
+                data-value={option.value}
+                onchange={handlePanUploadOrFillChange}>
+            </lightning-input>
+        </template>
+    </div>
+	</template>
+    <template if:true={isTablet}>
+    <lightning-layout-item size="6" class="slds-p-around_x-small">
+            <template for:each={UploadOrFillManuallyOptions} for:item="option">
+            <lightning-input
+                key={option.value}
+                type="radio"
+                name="panUploadOrFill"
+                label={option.label}
+                value={option.value}
+                data-value={option.value}
+                onchange={handlePanUploadOrFillChange}>
+            </lightning-input>
+        </template>
+    </lightning-layout-item>
+    </template>
+    <template if:true={isMobile}>
+    <lightning-layout-item size="3" class="slds-p-around_x-small">
+            <template for:each={UploadOrFillManuallyOptions} for:item="option">
+            <lightning-input
+                key={option.value}
+                type="radio"
+                name="panUploadOrFill"
+                label={option.label}
+                value={option.value}
+                data-value={option.value}
+                onchange={handlePanUploadOrFillChange}>
+            </lightning-input>
+        </template>
+    </lightning-layout-item>
+    </template>
+        </div>
+        </lightning-card>
+    </template>
+    </template>
+    </template>
+
+    <template if:true={showFormSixtyScreen}>
+                <button class = "button-deeppink slds-button slds-m-bottom_small"  onclick={handlePreviousButtonClickFormSixty}>Previous</button>
+            
+        <template if:false={disablePan}>
+            <h2 class="slds-text-heading_medium slds-m-bottom_small slds-m-left_small">Form 60</h2>
+        </template>
+    <div class="slds-grid slds-wrap slds-m-around_small">
+        <div class="slds-col slds-size_1-of-2 slds-medium-size_6-of-12 slds-p-around_x-small">
+            <button class="button-green slds-button" onclick={openFormSixtyManualCmp}>
+                Add Form 60 Details
+            </button>
+        </div>
+        <div class="slds-col slds-size_2-of-2 slds-medium-size_6-of-12 slds-p-around_x-small">
+            <button class="button-red slds-button" onclick={handledownloadSampleCSV}>
+                Download Sample Form 60
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal Section -->
+    <template if:true={manualFormSixtycmp}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="width: 45% !important;">
+                <template if:true={isManualloading}>
+                    <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+                </template>
+
+                <header class="slds-modal__header" style="background-color: skyblue;">
+                    <h2 class="slds-text-heading_medium">Add Form 60 Details</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium">
+                    <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-max-medium-table_stacked-horizontal">
+                        <thead>
+                            <tr>
+                                <th class="slds-size_1-of-3 slds-truncate">Field</th>
+                                <th class="slds-size_2-of-3 slds-truncate">Value</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="slds-truncate" title="First Name">First Name <span class="slds-text-color_error">*</span></td>
+                                <td>
+                                    <lightning-input type="text" value={formSixtyDetails.firstName}
+                                        onchange={handleInputFormSixtyChange} data-field="firstName" max-length="150" onkeydown={blockSpaces}>
+                                    </lightning-input>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="slds-truncate" title="Middle Name">Middle Name</td>
+                                <td>
+                                    <lightning-input type="text" value={formSixtyDetails.middleName}
+                                        onchange={handleInputFormSixtyChange} data-field="middleName" max-length="150" onkeydown={blockSpaces}>
+                                    </lightning-input>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="slds-truncate" title="Last Name">Last Name<span class="slds-text-color_error">*</span></td>
+                                <td>
+                                    <lightning-input type="text" value={formSixtyDetails.lastName}
+                                        onchange={handleInputFormSixtyChange} data-field="lastName" max-length="150" onkeydown={blockSpaces}>
+                                    </lightning-input>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="slds-truncate" title="Mobile">Mobile <span class="slds-text-color_error">*</span></td>
+                                <td>
+                                    <lightning-input type="Phone" value={formSixtyDetails.mobileNumber}
+                                        onchange={handleInputFormSixtyChange}
+                                        pattern="^[6-9]\d{9}$"
+                                        message-when-pattern-mismatch="Enter a valid 10-digit mobile number starting with 6-9"
+                                        data-field="mobileNumber" max-length="10">
+                                    </lightning-input>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="slds-truncate" title="Form-60">Form-60 <span class="slds-text-color_error">*</span></td>
+                                <td>
+                                    <lightning-input type="file" accept=".pdf"
+                                        variant="label-stacked" disabled={disableFormSixty}
+                                        onchange={handleUploadFormSixtyFinished} icon-name="standard:upload" label="Upload Form 60 (PDF Only)" field-level-help="Only PDF files are allowed" 
+                                         data-field="formSixtyFile" required>
+                                    </lightning-input>
+
+                                    <template if:true={formSixtyPreviewUrl}>
+                                        <div class="slds-m-top_small">
+                                            <lightning-button label="Delete" icon-name="utility:delete"
+                                                onclick={handleDeleteFormSixty} variant="destructive">
+                                            </lightning-button>
+                                        </div>
+                                    </template>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <footer class="slds-modal__footer slds-align_absolute-center">
+                   <button class="slds-button button-red" onclick={closeFormSixtyManual}>Close</button>
+                   <button class="slds-button button-green" onclick={handleAddFormSixtyDetails}>Confirm</button>
+                </footer>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>
+    <template if:true={showUploadOption}>
+    <template if:false={showFormSixtyUrl}>
+        <!-- CASE: PAN Enabled - Show Full UI -->
+        <template if:false={disablePan}>
+    <h2 class="slds-text-heading_medium slds-m-bottom_small slds-m-left_small">
+        Enter PAN Details
+    </h2> 
+
+    <div class="slds-grid slds-wrap slds-m-around_small slds-gutters">
+        <!-- Upload File -->
+        <div class="slds-col slds-size_12-of-12 slds-medium-size_4-of-12 slds-p-around_x-small">
+           <!-- <lightning-input 
+                type="file" 
+                accept=".pdf,.jpg" 
+                label="Upload File" 
+                variant="label-stacked"
+                onchange={handleUploadFinished} 
+                icon-name="standard:upload"
+                disabled={disablePan}>
+            </lightning-input>-->
+            <lightning-file-upload
+                label="Upload File"
+                name="fileUploader"
+                accept=".pdf,.jpg"
+                record-id={recordId}
+                onuploadfinished={handleUploadFinished}
+                disabled={disablePan}
+                variant="label-stacked"
+                multiple="false">
+            </lightning-file-upload>
+
+        </div>
+
+        <!-- PAN Text Field -->
+        <div class="slds-col slds-size_12-of-12 slds-medium-size_4-of-12 slds-p-around_x-small">
+            <lightning-input 
+                type="text" 
+                label="PAN" 
+                value={stampedPanNumber} 
+                max-length="10"
+                onblur={handlePanDeDupe} 
+                disabled>
+            </lightning-input>
+        </div>
+
+        <!-- Confirm Button -->
+        <div class="slds-col slds-size_12-of-12 slds-medium-size_4-of-12 slds-p-around_x-small slds-align_absolute-center">
+            <template if:false={panDetailsConfirmed}>
+                <template if:true={showConfirmButton}>
+                    <button class="button-green slds-button" onclick={openPanCmp}>
+                        Confirm PAN Details
+                    </button>
+                </template>
+            </template>
+        </div>
+    </div>
+</template>
+     
+    </template>
+</template>
+
+<template if:false={showPANConfirmation}>
+  <template if:true={showUploadPanScreen}>
+    <template if:false={showFormSixtyUrl}>
+     <!-- <template if:false={disablePan}>
+        <h2 class="slds-text-heading_medium slds-m-bottom_small slds-m-left_small">Enter PAN Details</h2>
+      </template> -->
+    </template>
+
+    <!-- PAN Inputs + Buttons -->
+    <div class="slds-grid slds-wrap slds-m-around_small">
+      <!-- Confirm PAN Button -->
+      <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-p-around_x-small slds-align_absolute-center">
+        <template if:false={panDetailsConfirmed}>
+          <template if:true={showConfirmButton}>
+            <button class="slds-button button-green" onclick={openPanCmp}>Confirm PAN Details</button>
+          </template>
+        </template>
+        <template if:false={disablePan}>
+          <template if:true={showAddManualDetailsButton}>
+           
+          </template>
+        </template>
+      </div>
+
+      <!-- PAN Input Field -->
+      <template if:false={showFormSixtyUrl}>
+        <!-- <div class="slds-col slds-size_1-of-1 slds-medium-size_4-of-12 slds-p-around_x-small">
+          <lightning-input type="text" label="PAN" value={stampedPanNumber} max-length="10"
+            onblur={handlePanDeDupe} disabled>
+          </lightning-input>
+        </div> -->
+      </template>
+    </div>
+
+    <!-- Manual Entry Modal -->
+  
+    <template if:true={manualcmp}>
+      <section role="dialog" class="slds-modal slds-fade-in-open pan-manual-modal">
+        <div class="slds-modal__container pan-manual-modal-container">
+          <template if:true={isManualloading}>
+            <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+          </template>
+
+          <header class="slds-modal__header pan-manual-modal-header" style="background-image: linear-gradient(90deg, #2563eb, #1e3a8a) !important; color : #fff;">
+            <h2 class="slds-text-heading_medium">Add PAN Details Manually</h2>
+          </header>
+
+          <div class="slds-modal__content slds-p-around_medium pan-manual-modal-content">
+            
+                <template if:true={showCustomerDetails}>
+                    <lightning-layout>
+                        <lightning-layout-item size="3">
+            
+                        </lightning-layout-item>
+                        <lightning-layout-item size="6">
+                            <lightning-combobox label="Customer Type" value={selectedCustomerType} options={customerTypeOptions}
+                                onchange={handleCustomerTypeChange}>
+                            </lightning-combobox>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="3">
+            
+                        </lightning-layout-item>
+                    </lightning-layout>
+            
+                    <template if:true={showNonIndividual}>
+                        <lightning-layout>
+                            <lightning-layout-item size="3">
+            
+                            </lightning-layout-item>
+                            <lightning-layout-item size="6">
+                                <lightning-combobox label="Constitution" value={selectedConstitution} options={constitutionOptions}
+                                    onchange={handleConstitutionChange}>
+                                </lightning-combobox>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="3">
+            
+                            </lightning-layout-item>
+                        </lightning-layout>
+                    </template>
+            
+                </template>
+           
+           <!-- <template if:false={isCustomerTypeSelected}>
+              <div class="slds-grid slds-wrap slds-m-bottom_small">
+                <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-align_absolute-center">
+                  <lightning-combobox label="Customer Type" value={selectedCustomerType}
+                    options={customerTypeOptions} onchange={handleCustomerTypeChange} disabled>
+                  </lightning-combobox>
+                </div>
+              </div>
+
+              <template if:true={showNonIndividual}>
+                <div class="slds-grid slds-wrap slds-m-bottom_small">
+                  <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-align_absolute-center">
+                    <lightning-combobox label="Constitution" value={selectedConstitution}
+                      options={constitutionOptions} onchange={handleConstitutionChange}>
+                    </lightning-combobox>
+                  </div>
+                </div>
+              </template>
+            </template> -->
+
+            <template if:true={isCustomerTypeSelected}>
+                <template if:true={isShowImage}>
+                    <div class="slds-p-around_small slds-text-align_center">
+                        <p class="slds-text-title_bold">PAN Image</p>
+                        <img src={panImageUrl} 
+                            alt="PAN Image" 
+                            class="slds-m-top_small" 
+                            style="max-width:300px; max-height:200px;" />
+                    </div>
+                </template>
+                <template if:true={isShowPDF}>
+                    <div class="slds-p-around_small slds-text-align_center">
+                        <a href={panImageUrl} target="_blank" rel="noopener noreferrer">
+                                Click here to view the PDF
+                        </a>
+                        <!-- <iframe src={panImageUrl} width="100%" height="100%" style="border: none;min-height:500px;"></iframe> -->
+                    </div>
+                </template>
+
+              <table class="slds-table slds-table_bordered">
+                <thead>
+                  <tr>
+                    <th>Field</th>
+                    <th>Value</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <template if:true={showNonIndividual}>
+                    <tr>
+                      <td>Name of Organisation <span class="slds-text-color_error">*</span></td>
+                      <td>
+                        <lightning-input type="text" value={panDetails.name} max-length="80"
+                          onblur={handleInputBlur} onfocus={handleInputBlur} onchange={handleInputChange}
+                          data-field="name">
+                        </lightning-input>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Date of Incorporation <span class="slds-text-color_error">*</span></td>
+                      <td>
+                        <lightning-input type="date" value={panDetails.dobDoi}
+                          onchange={handleInputChange} onblur={handleInputBlurDate} onfocus={handleInputBlurDate}
+                          data-field="dobDoi">
+                        </lightning-input>
+                      </td>
+                    </tr>
+                  </template>
+
+                  <template if:true={showIndividual}>
+                        <tr>
+                            <td>First Name(as per PAN)<span style="color: red;">*</span></td>
+                            <td>
+                                <lightning-input type="text" value={panDetails.firstName} onchange={handleInputChange}
+                                    onblur={handleInputBlur} onfocus={handleInputBlur} data-field="firstName" max-length="150">
+                                </lightning-input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Middle Name(as per PAN)</td>
+                            <td>
+                                <lightning-input type="text" value={panDetails.middleName} onchange={handleInputChange}
+                                    onblur={handleInputBlur} onfocus={handleInputBlur} data-field="middleName" max-length="150">
+                                </lightning-input>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>Last Name(as per PAN)</td>
+                            <td>
+                                <lightning-input type="text" value={panDetails.lastName} onchange={handleInputChange}
+                                    onblur={handleInputBlur} onfocus={handleInputBlur} data-field="lastName" max-length="150">
+                                </lightning-input>
+                            </td>
+                        </tr>
+                    <tr>
+                      <td>Date of Birth <span class="slds-text-color_error">*</span></td>
+                      <td>
+                        <lightning-input type="date" value={panDetails.dobDoi}
+                          onchange={handleInputChange} onblur={handleInputBlurDate} onfocus={handleInputBlurDate}
+                          data-field="dobDoi">
+                        </lightning-input>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Father's Name <span class="slds-text-color_error">*</span></td>
+                      <td>
+                        <lightning-input type="text" value={panDetails.fathersName} max-length="80"
+                          onblur={handleInputBlur} onfocus={handleInputBlur} onchange={handleInputChange}
+                          data-field="fathersName">
+                        </lightning-input>
+                      </td>
+                    </tr>
+                  </template>
+
+                  <tr>
+                    <td>PAN <span class="slds-text-color_error">*</span></td>
+                    <td>
+                      <lightning-input type="text" value={panDetails.panNumber} max-length="10"
+                        onblur={handleInputBlur} onfocus={handleInputBlur} onchange={handlePanChange}
+                        data-field="panNumber">
+                      </lightning-input>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </template>
+          </div>
+
+          <!-- Modal Footer -->
+          <footer class="slds-modal__footer slds-grid slds-wrap slds-grid_align-center pan-manual-modal-footer">
+            <template if:true={isCustomerTypeSelected}>
+            <!-- <template if:false={isCoApplicant}>-->
+               
+                     <button class = "button-deeppink slds-button slds-m-bottom_small" onclick={goPrevious}>Previous</button>
+            <!-- </template>-->
+              <button class = "button-deeppink slds-button slds-m-bottom_small" onclick={closeModalManual}>Close</button>
+              <button class="button-green slds-button slds-m-bottom_small" onclick={handleAddDetailsManually}>Confirm</button>
+            </template>
+            <template if:false={isCustomerTypeSelected}>
+                
+              <button class = "button-deeppink slds-button slds-m-bottom_small" onclick={closeModalManual}>Close</button>
+              <button class="button-green slds-button slds-m-bottom_small" onclick={handleNextPan}>Next</button>
+            </template>
+          </footer>
+        </div>
+      </section>
+      <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+  </template>
+</template>
+<template if:true={isModalOpen}>
+    <section role="dialog" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container" style="width: 45% !important;">
+
+            <!-- Spinner -->
+            <template if:true={isConformationLoading}>
+                <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+            </template>
+
+            <!-- Modal Header -->
+            <header class="slds-modal__header" style="background-color: skyblue;">
+                <h2 class="slds-text-heading_medium">Confirmation Screen</h2>
+            </header>
+
+            <!-- Modal Body -->
+            <div class="slds-modal__content slds-p-around_medium">
+                <template if:true={showCustomerDetails}>
+                    <div class="slds-grid slds-wrap slds-m-bottom_medium">
+                        <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-align_absolute-center">
+                            <lightning-combobox label="Customer Type" value={selectedCustomerType}
+                                options={customerTypeOptions} onchange={handleCustomerTypeChange}>
+                            </lightning-combobox>
+                        </div>
+                    </div>
+
+                    <template if:true={showNonIndividual}>
+                        <div class="slds-grid slds-wrap slds-m-bottom_medium">
+                            <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12 slds-align_absolute-center">
+                                <template if:true={isProprietor}>
+                                    <lightning-input label="Constitution" value={selectedConstitution} disabled>
+                                    </lightning-input>
+                                </template>
+                                <template if:false={isProprietor}>
+                                    <lightning-combobox label="Constitution" value={selectedConstitution}
+                                        options={constitutionOptions} onchange={handleConstitutionChange}>
+                                    </lightning-combobox>
+                                </template>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+
+                <template if:true={isCustomerTypeSelected}>
+                    <!-- PAN Image or PDF Preview -->
+                    <div class="slds-grid slds-wrap slds-m-bottom_medium slds-align_absolute-center">
+                        <template if:true={isImage}>
+                            <div class="preview-box">
+                                <img src={uploadedPanUrl} alt="Uploaded PAN" class="uploaded-image" style={zoomStyle} />
+                            </div>
+                            <div class="image-controls slds-m-top_small">
+                                <button onclick={zoomIn} class="zoom-button">+</button>
+                                <button onclick={zoomOut} class="zoom-button">-</button>
+                            </div>
+                        </template>
+
+                        <template if:true={isPDF}>
+                            <a href={uploadedPanUrl} target="_blank" rel="noopener noreferrer">
+                                Click here to view the PDF
+                            </a>
+                        </template>
+                    </div>
+
+                    <!-- Prop Message -->
+                    <template if:true={showPropMessage}>
+                        <div class="slds-text-color_error slds-align_absolute-center slds-m-bottom_medium">
+                            <p><b>The above PAN may be of the individual applicant. The data populated below is from lead stage except PAN which was fetched via OCR.</b></p>
+                        </div>
+                    </template>
+
+                    <!-- PAN Table -->
+                    <div class="slds-scrollable_x slds-p-horizontal_small" style="max-width: 960px; margin: auto;">
+                        <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                            <thead>
+                                <tr>
+                                    <th>Field</th>
+                                    <th>Value</th>
+                                    <th>Confidence %</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            
+                                    <template if:true={showIndividual}>
+                                        <tr>
+                                            <td>First Name(as per PAN)<span style="color: red;">*</span></td>
+                                            <td>
+                                                <lightning-input type="text" value={panDetails.firstName} onchange={handleInputChange}
+                                                    onblur={handleInputBlur} onfocus={handleInputBlur} data-field="firstName" max-length="150">
+                                                </lightning-input>
+                                            </td>
+                                            <td>{panDetails.confidencePercentageName}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Middle Name(as per PAN)</td>
+                                            <td>
+                                                <lightning-input type="text" value={panDetails.middleName} onchange={handleInputChange}
+                                                    onblur={handleInputBlur} onfocus={handleInputBlur} data-field="middleName" max-length="150">
+                                                </lightning-input>
+                                            </td>
+                                            <td>{panDetails.confidencePercentageName}</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Last Name(as per PAN)</td>
+                                            <td>
+                                                <lightning-input type="text" value={panDetails.lastName} onchange={handleInputChange}
+                                                    onblur={handleInputBlur} onfocus={handleInputBlur} data-field="lastName" max-length="150">
+                                                </lightning-input>
+                                            </td>
+                                            <td>{panDetails.confidencePercentageName}</td>
+                                        </tr>
+                                 
+                                   <!-- <template if:true={showNonIndividual}>
+                                        <tr>
+                                            <td>Full Name(as per PAN)<span style="color: red;">*</span></td>
+                                            <td>
+                                                <lightning-input type="text" value={panDetails.name} onchange={handleInputChange}
+                                                    onblur={handleInputBlur} onfocus={handleInputBlur} data-field="name" max-length="150">
+                                                </lightning-input>
+                                            </td>
+                                            <td>{panDetails.confidencePercentageName}</td>
+                                        </tr>
+                                    </template>-->
+                                </template>
+                              
+                                  <!-- <tr>
+                                        <td>Full Name (as per PAN)<span class="slds-text-color_error">*</span></td>
+                                        <td>
+                                            <div class="slds-grid slds-wrap">
+                                                <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12">
+                                                    <lightning-input type="text" value={panDetails.name} onchange={handleInputChange}
+                                                        onblur={handleInputBlur} onfocus={handleInputBlur} data-field="name" max-length="150">
+                                                    </lightning-input>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{panDetails.confidencePercentageName}</td>
+                                    </tr>-->
+                                <!--Commented By Prachi-->
+                               <!-- </template>-->
+                               
+
+                                <!-- Date of Birth / Incorporation -->
+                                <tr>
+                                    <td>Date of Birth / Incorporation<span class="slds-text-color_error">*</span></td>
+                                    <td>
+                                        <div class="slds-grid slds-wrap">
+                                            <!-- <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12"> -->
+                                                <lightning-input
+                                                    type="date"
+                                                    value={panDetails.dobDoi}
+                                                    onchange={handleInputChange}
+                                                    onblur={handleInputBlurDate}
+                                                    onfocus={handleInputBlurDate}
+                                                    data-field="dobDoi">
+                                                </lightning-input>
+                                            <!-- </div> -->
+                                        </div>
+                                    </td>
+                                    <td>{panDetails.confidencePercentagedob}</td>
+                                </tr>
+
+                                <!-- Father's Name -->
+                                <template if:true={showIndividual}>
+                                    <tr>
+                                        <td>Father's Name (If Applicable)<span class="slds-text-color_error">*</span></td>
+                                        <td>
+                                            <div class="slds-grid slds-wrap">
+                                                <!-- <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12"> -->
+                                                    <lightning-input
+                                                        type="text"
+                                                        value={panDetails.fathersName}
+                                                        onchange={handleInputChange}
+                                                        onblur={handleInputBlur}
+                                                        onfocus={handleInputBlur}
+                                                        data-field="fathersName"
+                                                        max-length="25">
+                                                    </lightning-input>
+                                                <!-- </div> -->
+                                            </div>
+                                        </td>
+                                        <td>{panDetails.confidencePercentageFatherName}</td>
+                                    </tr>
+                                </template>
+
+                                <!-- PAN Number -->
+                                <tr>
+                                    <td>PAN<span class="slds-text-color_error">*</span></td>
+                                    <td>
+                                        <!-- <div class="slds-grid slds-wrap">
+                                            <div class="slds-col slds-size_1-of-1 slds-medium-size_6-of-12"> -->
+                                                <lightning-input
+                                                    type="text"
+                                                    value={panDetails.panNumber}
+                                                    onchange={handlePanChange}
+                                                    onblur={handleInputBlur}
+                                                    onfocus={handleInputBlur}
+                                                    data-field="panNumber"
+                                                    max-length="10">
+                                                </lightning-input>
+                                            <!-- </div>
+                                        </div> -->
+                                    </td>
+                                    <td>{panDetails.confidencePercentagepan}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </template>
+            </div>
+
+            <!-- Modal Footer -->
+            <footer class="slds-modal__footer">
+                <div class="slds-grid slds-wrap slds-grid_align-center">
+                    <template if:true={isCustomerTypeSelected}>
+                        <button class="slds-button slds-button_neutral slds-m-right_small" onclick={goPrevious}>Previous</button>
+                        <button class="slds-button slds-button_destructive slds-m-right_small" onclick={closeModal}>Close</button>
+                        <button class="slds-button slds-button_brand" onclick={handleConfirm}>Confirm</button>
+                    </template>
+                    <template if:false={isCustomerTypeSelected}>
+                        <button class="slds-button slds-button_destructive slds-m-right_small" onclick={closeModal}>Close</button>
+                        <button class="slds-button slds-button_brand" onclick={handleNextPan}>Next</button>
+                    </template>
+                </div>
+            </footer>
+
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>
+<!-- CASE: PAN Disabled - Show Only Centered PAN -->
+<template if:false={showFormSixtyUrl}>
+    <template if:true={disablePan}>
+        <template if:true={isDesktop}>
+        <div class="slds-p-around_medium">
+            <lightning-card >
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered table-class">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th scope="col"><div class="slds-truncate" title="PAN Name">Name as per PAN Card</div></th>
+                                <th scope="col"><div class="slds-truncate" title="PAN Number">PAN Number</div></th>
+
+                                <template if:true={showNonIndividual}>
+                                    <th scope="col"><div class="slds-truncate" title="DOI">Date Of Incorporation</div></th>
+                                </template>
+
+                                <template if:true={showIndividual}>
+                                    <th scope="col"><div class="slds-truncate" title="DOB">Date Of Birth</div></th>
+                                    <th scope="col"><div class="slds-truncate" title="Father's Name">Father's Name</div></th>
+                                </template>
+                                <!-- Bug Fix: Actions column (Edit/Delete) header removed per requirement -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><div class="slds-truncate" title={panName}>{panDetails.name}</div></td>
+                                <td><div class="slds-truncate" title={stampedPanNumber}>{stampedPanNumber}</div></td>
+
+                                <template if:true={showNonIndividual}>
+                                    <td><div class="slds-truncate" title={panDob}>{panDetails.dobDoi}</div></td>
+                                </template>
+
+                                <template if:true={showIndividual}>
+                                    <td><div class="slds-truncate" title={panDob}>{panDetails.dobDoi}</div></td>
+                                    <td><div class="slds-truncate" title={fatherName}>{panDetails.fathersName}</div></td>
+                                </template>
+                                <!-- Bug Fix: Actions column (Edit/Delete buttons) row removed per requirement -->
+                            </tr>
+                        </tbody>
+                    </table>
+
+            </lightning-card>
+        </div>
+        </template>
+        <!-- Mobile & Tablet View -->
+        <template if:true={isMobileOrTablet}>
+            <div class="slds-p-around_medium">
+                <lightning-card title="PAN Details">
+                    <div class="custom-mobile-table">
+
+                        <div class="custom-row">
+                            <div class="custom-cell label">Name as per PAN Card</div>
+                            <div class="custom-cell value">{panDetails.name}</div>
+                        </div>
+
+                        <div class="custom-row">
+                            <div class="custom-cell label">PAN Number</div>
+                            <div class="custom-cell value">{stampedPanNumber}</div>
+                        </div>
+
+                        <template if:true={showNonIndividual}>
+                            <div class="custom-row">
+                                <div class="custom-cell label">Date Of Incorporation</div>
+                                <div class="custom-cell value">{panDetails.dobDoi}</div>
+                            </div>
+                        </template>
+
+                        <template if:true={showIndividual}>
+                            <div class="custom-row">
+                                <div class="custom-cell label">Date Of Birth</div>
+                                <div class="custom-cell value">{panDetails.dobDoi}</div>
+                            </div>
+                            <div class="custom-row">
+                                <div class="custom-cell label">Father's Name</div>
+                                <div class="custom-cell value">{panDetails.fathersName}</div>
+                            </div>
+                        </template>
+                        <!-- Bug Fix: Actions row (Edit/Delete buttons) removed per requirement -->
+                            </div>
+                    </lightning-card>
+                </div>
+        </template>
+    </template>
+</template>
+
+<!-- </div> -->
+
+</template>

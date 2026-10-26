@@ -1,0 +1,348 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 04-29-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <span class="styleContainer"></span>
+
+    <template if:true={showDedupeSpinner}>
+    <lightning-spinner alternative-text="Loading" size="medium" class={spinnerClass} variant="base" data-text="Please wait while we check duplicate customer"></lightning-spinner>
+    </template>
+    <lightning-card>
+        <!-- <template if:false={loginChecklist}>
+            <lightning-layout multiple-rows="true">
+                
+                <lightning-layout-item size="3" padding="horizontal-small">
+                    <lightning-combobox class="removeborder"
+                        label="Select Address Type"
+                        placeholder="Select Address Type"
+                        options={availableaddressTypeOptions}
+                        onchange={handleSelecttype}
+                        value={addressTypeval}
+                        required="true">
+                    </lightning-combobox>
+                </lightning-layout-item>
+            
+                <lightning-layout-item size="3" padding="horizontal-small">
+                    <lightning-combobox class="removeborder"
+                        label="Address Type Same As"
+                        placeholder="Select Address Type"
+                        options={savedAddressType}
+                        onchange={handleSelectsameas}
+                        value={addressTypesameval}>
+                    </lightning-combobox>
+                </lightning-layout-item>
+            
+                
+                <lightning-layout-item size="3" padding="horizontal-small">
+                    <lightning-input class="hideInput" value={ad1} onchange={addrCHange1} label="Address Line 1"  required="true"  maxlength="50"></lightning-input>
+                </lightning-layout-item>
+            
+                
+                <lightning-layout-item size="3" padding="horizontal-small">
+                    <lightning-input class="hideInput"  value={ad2} onchange={addrCHange2} label="Address Line 2"  maxlength="50"></lightning-input>
+                </lightning-layout-item>
+            
+                
+                <lightning-layout-item size="3" padding="horizontal-small">
+                    <lightning-input class="hideInput"  value={ad3} onchange={addrCHange3} label="Address Line 3"  maxlength="50"></lightning-input>
+                </lightning-layout-item>
+            
+                
+                <lightning-layout-item size="3" padding="horizontal-small">
+                    <div style="border-bottom: 1px solid black !important;" if:true={showPin}>
+                    <c-search-lookup label="Pincode" show-label="true" required="true" 
+                        selected-id={pincodename}
+                        selected-name={pincodename} 
+                        placeholder="Search pincode"
+                        object-name="Pincode_Master__c"
+                        return-fields="['Id','Name','Town_and_Post_Office__c','Serviceable_For_Business_Loan__c']"
+                        disabled={pincodeDisabled} 
+                        onlookupselected={handleselectedPin}
+                        onlookupdeselected={handlepincodelookupdeselected} 
+                        product={selectedProductType}>
+                    </c-search-lookup>
+                </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="3" padding="horizontal-small">
+                        <lightning-input class="hideInput"  value={town} label="Town" disabled="true"></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="3" padding="horizontal-small">
+                        <lightning-input class="hideInput"  value={state}  label="State" disabled="true"></lightning-input>
+                    </lightning-layout-item>
+            </lightning-layout>
+            
+        </template> -->
+
+        <!-- <template if:false={loginChecklist}>
+          
+                <div class="slds-box slds-m-around_small"  style="border:none;text-align: right;">
+                    <button class="save-button slds-button slds-button_brand " style="border: none;" onclick={SaveAddress}>
+                        Save
+                    </button>
+                </div>
+           
+        </template> -->
+
+        <div class="address-title-bar">Address Details</div>
+        <div class="slds-box slds-m-around_small address-table-wrapper" style="overflow-x: auto; max-width: 100%;">
+            <table
+                class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <template if:true={showLoanDetails}>
+                            <th scope="col" class="address-header-cell" style="width: 10%;">
+                                <div class="slds-truncate" title="Document Name">Loan Application</div>
+                            </th>
+                            <th scope="col" class="address-header-cell" style="width: 10%;">
+                                <div class="slds-truncate" title="Document Name">Applicant Name</div>
+                            </th>
+                        </template>
+                        <th scope="col" class="address-header-cell" style="width: 10%;">
+                            <div class="slds-truncate" title="Document Name">Address Type</div>
+                        </th>
+                        <th scope="col" class="address-header-cell" style="width: 15%;">
+                            <div class="slds-truncate" title="Uploaded By">Address ownership type</div>
+                        </th>
+                        <th scope="col" class="address-header-cell" style="width: 15%;">
+                            <div class="slds-truncate" title="Timestamp">Address</div>
+                        </th>
+                        <th scope="col" class="address-header-cell" style="width: 15%;">
+                            <div class="slds-truncate" title="Timestamp">Pincode</div>
+                        </th>
+                        <th scope="col" class="address-header-cell" style="width: 15%;">
+                            <div class="slds-truncate" title="Timestamp">State</div>
+                        </th>
+                        <!-- <th scope="col"
+                        style="width: 10%; text-align: center; background-color:skyblue; color: black; border: 1px solid black">
+                        <div class="slds-truncate" title="Timestamp">Priority</div>
+                    </th> -->
+                        <th scope="col" class="address-header-cell" style="width: 15%;">
+                            <div class="slds-truncate" title="Upload/Preview">City</div>
+                        </th>
+                        <th scope="col" class="address-header-cell" style="width: 10%;">
+                            <div class="slds-truncate" title="View History">Priority</div>
+                        </th>
+                        <th scope="col" class="address-header-cell" style="width: 10%;">
+                            <div class="slds-truncate" title="View History">Document Type</div>
+                        </th>
+                         <!-- <template if:false={loginChecklist}>
+                            <th scope="col"
+                                style="width: 10%; text-align: center; background-color:skyblue; color: black; border: 1px solid black">
+                                <div class="slds-truncate" title="View History">Edit</div>
+                            </th>
+                        </template>      -->          
+                        <template if:true={viewEdit}>
+                            <th scope="col" class="address-header-cell">
+                                <div class="slds-truncate" title="View History">View</div>
+                            </th>
+                        <template if:true={isHLUser}>
+                            <th scope="col" class="address-header-cell">
+                                <div class="slds-truncate" title="View History">Edit</div>
+                            </th>
+                        </template>
+                            
+                        </template>  
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={addressTable} for:item="doc" if:false={error}>
+                        <tr key={doc.Id}>
+                            <template if:true={showLoanDetails}>
+                                 <td class="address-body-cell" scope="col" style="width: 15%;">
+                                    <div class="slds-truncate">{doc.loanNumber}</div>
+                                </td>
+                                <td class="address-body-cell" scope="col" style="width: 50%;">
+                                    <template if:false={doc.isEditing}>
+                                        <div style="text-wrap: auto;">{doc.applicantName}</div>
+                                    </template>
+                                </td>
+                            </template>
+                            <td class="address-body-cell" scope="col" style="width: 10%;">
+                                <div>
+                                    <template if:true={doc.isEditing}>
+                                        <lightning-combobox name="addressType" value={doc.addressType}
+                                            placeholder="Select Address Type" options={addressTypeOptions}
+                                            onchange={changeAddressType} data-id={doc.Id}
+                                            data-old-value={doc.addressType}>
+                                        </lightning-combobox>
+                                    </template>
+                                    <template if:false={doc.isEditing}>
+                                        <div class="slds-truncate">{doc.addressType}</div>
+                                    </template>
+                                </div>
+                            </td>
+                            <td class="address-body-cell" scope="col" style="width: 15%;">
+                                <div class="slds-truncate">{doc.ownerShip}</div>
+                            </td>
+                            <td class="address-body-cell" scope="col" style="width: 50%;">
+                                <template if:false={doc.isEditing}>
+                                    <div style="text-wrap: auto;">{doc.address}</div>
+                                </template>
+                            </td>
+                            <!--td class="" scope="col" style="width: 15%; text-align: center;border-color: black;">
+                                <div class="slds-truncate">
+                                <template if:true={doc.isEditing}>
+                                        <lightning-input data-id={doc.Id} type="text" onchange={changeAddressline2}
+                                            value={doc.addressLine2} maxlength="255"></lightning-input>
+                            </template>    
+                            <template if:false={doc.isEditing}>
+                                <div class="slds-truncate">{doc.addressLine2}</div>
+                            </template>
+                            </div>
+                            </td>
+                            <td class="" scope="col" style="width: 15%; text-align: center;border-color: black;">
+                                <div class="slds-truncate">
+                                <template if:true={doc.isEditing}>
+                                        <lightning-input data-id={doc.Id} type="text" onchange={changeAddressline3}
+                                            value={doc.addressLine3} maxlength="255"></lightning-input>
+                                </template> 
+                                <template if:false={doc.isEditing}>
+                                    <div class="slds-truncate">{doc.addressLine3}</div>
+                                </template>   
+                            </div>
+                            </td-->
+                            <!-- <td class="" scope="col" style="width: 10%; text-align: center;border-color: black;">
+                                <div>
+                                    <template if:true={doc.isEditing}>
+                                        <lightning-combobox name="priority" value={doc.priority}
+                                            placeholder="Address Priority" options={addrPriorityoptions}
+                                            onchange={changeprioritytype} data-id={doc.Id}>
+                                        </lightning-combobox>
+                                    </template>
+                                    <template if:false={doc.isEditing}>
+                                        <div class="slds-truncate">{doc.priority}</div>
+                                    </template>
+                                </div>
+                            </td> -->
+                            <td class="address-body-cell" scope="col" style="width: 15%;">
+                                <template if:true={doc.isEditing}>
+                                    <div>
+                                        <c-search-lookup required="true" selected-id={doc.pincodename}
+                                            selected-name={doc.pincodename} placeholder="Search pincode"
+                                            object-name="Pincode_Master__c"
+                                            return-fields="['Id','Name','Town_and_Post_Office__c','Serviceable_For_Business_Loan__c']"
+                                            disabled={pincodeDisabled} onlookupselected={handleSelectedRow}
+                                            onlookupdeselected={handlepincodelookupdeselected} address="true"
+                                            record-id={doc.Id} product={selectedProductType}>
+                                        </c-search-lookup>
+                                    </div>
+                                </template>
+                                <template if:false={doc.isEditing}>
+                                    <div class="slds-truncate">{doc.pincodename}</div>
+                                </template>
+                            </td>
+                            <td class="address-body-cell" scope="col" style="width: 10%;">
+                                <div class="slds-truncate">{doc.state}</div>
+                            </td>
+                            <td class="address-body-cell" scope="col" style="width: 10%;">
+                                <div class="slds-truncate">{doc.city}</div>
+                            </td>
+                            <td class="address-body-cell" scope="col" style="width: 10%;">
+                                <div class="slds-truncate">{doc.priority}</div>
+                            </td>
+                            <td class="address-body-cell" scope="col" style="width: 15%;">
+                                <template if:false={doc.isEditing}>
+                                    <div class="slds-truncate">{doc.documentType}</div>
+                                </template>
+                            </td>
+                            <!-- <template if:false={loginChecklist}>
+                                <td scope="col" style="width: 10%; text-align: center;border-color: black;">
+                                
+                                    <lightning-button-icon icon-name="utility:delete" alternative-text="Delete"
+                                        title="Delete" variant="border-filled" class="slds-m-left_xx-small"
+                                        data-id={doc.Id} onclick={handleDelete} disabled={isFieldDisable}>
+                                    </lightning-button-icon>
+                                </td>
+                            </template> -->
+                        <template if:true={isHLUser}>
+                             <template if:true={viewEdit}>
+                                <td class="address-body-cell address-action-cell" scope="col">
+                                    <c-upload-view-delete-document 
+                                            doc-detail-id={doc.docId}
+                                            content-doc-id={doc.docContentId} 
+                                            show-upload={setFalse}
+                                            show-view={doc.showDoc}
+                                            show-delete={setFalse} 
+                                            show-retake={setFalse}
+                                            show-widget-style={setFalse}
+                                            file-type={doc.docFileType}
+                                            from-credit={setTrue}
+                                            doc-name="Address Proof"
+                                        ></c-upload-view-delete-document>
+                                </td>
+                                <td class="address-body-cell address-action-cell" scope="col">
+                                    <lightning-button-icon icon-name="utility:edit" alternative-text="Edit"
+                                        title="Edit" variant="border-filled" class="slds-m-left_xx-small address-action-btn"
+                                        data-id={doc.Id} onclick={handleEdit}>
+                                    </lightning-button-icon>
+                                </td>
+                            </template>
+                        </template>
+                    </tr>
+                </template>
+                    <template if:true={error}>
+                        <tr>
+                            <td class="address-body-cell" colspan="8" style="text-align:center">
+                                No addresses added
+                            </td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+
+        <template if:true={showEditAddressRec}>
+            <div class="slds-box slds-m-around_small">
+                <span class="styleContainer"></span>
+                <lightning-input name="AddLn1" label="Address Line 1" max-length="50" value={editAddressDetails.addressLine1} onchange={addLnOneChange} required="true">
+                </lightning-input>
+                <lightning-input name="AddLn2" label="Address Line 2" max-length="50" value={editAddressDetails.addressLine2} onchange={addLnTwoChange} required="true">
+                </lightning-input>
+                <lightning-input name="AddLn3" label="Address Line 3" max-length="50" value={editAddressDetails.addressLine3} onchange={addLnThreeChange}>
+                </lightning-input>
+                <c-search-lookup required="true" selected-id={editAddressDetails.pincodename}
+                    selected-name={editAddressDetails.pincodename} placeholder="Search pincode"
+                    object-name="Pincode_Master__c" label="Pincode" show-label="true"
+                    return-fields="['Id','Name','Town_and_Post_Office__c','Serviceable_For_Business_Loan__c']"
+                    disabled={pincodeDisabled} onlookupselected={handleselectedPinEdit}
+                    onlookupdeselected={handlepincodelookupdeselected} address="true"
+                    record-id={editAddressDetails.Id} product={selectedProductType}>
+                </c-search-lookup>
+                <lightning-input name="state" label="State" value={editAddressDetails.state} onchange={stateChange} disabled></lightning-input>
+                <lightning-input name="city" label="City" value={editAddressDetails.city} onchange={cityChange} disabled></lightning-input>
+                <!-- <lightning-combobox name="addressType" label="Address Type" value={editAddressDetails.addressType} placeholder="Select Address Type" options={addressTypeOptions} onchange={changeAddressTypeee}  required="true"></lightning-combobox> -->
+                <!-- <lightning-combobox name="addressOwner" label="Address Ownership" value={editAddressDetails.ownerShip}
+                    placeholder="Select Address Type" options={addressOwnerOptions}
+                    onchange={changeOwnershipTypeee}  required="true">
+                </lightning-combobox> -->
+                <div class="slds-p-around_small slds-m-around_large">
+                    <span class="styleContainer"></span>
+                    <div class="slds-float_right">
+                        <button type="button" class="slds-button slds-button_neutral slds-m-right_small previous-button" style="color: white; text-align: center;" onclick={cancelUpdate}>Cancel</button>
+                        <button type="button" class="slds-button slds-button_brand save-button" style="color: white; text-align: center;" onclick={updateProduct}>Update</button>  
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <template if:false={loginChecklist}>
+            <!-- <lightning-layout style="margin-top: 20px;margin-left: 1rem;" horizontal-align="start"> -->
+            <div class="slds-box slds-m-around_small" style="border:none;text-align: right;">
+                <!-- <button class="save-button slds-button slds-button_brand " style="border: none;" onclick={SaveAddress}>
+                        Save
+                    </button> -->
+                <template if:true={isNextVisible}>
+                    <button class="next-button slds-button slds-button_brand " style="border: none;"
+                        onclick={navigateToNext}>
+                        Next
+                    </button>
+                </template>
+            </div>
+            <!-- </lightning-layout> -->
+        </template>
+    </lightning-card>
+</template>

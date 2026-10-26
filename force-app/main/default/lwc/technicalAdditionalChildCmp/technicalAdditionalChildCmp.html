@@ -1,0 +1,232 @@
+<template>
+    <lightning-card title="VALUE AS PER GOVERNMENT">
+        <div class="slds-p-around_small">
+            <table class="custom-table slds-table slds-table_cell-buffer">
+                <thead class="custom-header">
+                    <tr>
+                        <th>Particulars</th>
+                        <th>Area</th>
+                        <th>Rate</th>
+                        <th>Particulars</th>
+                        <th>VALUE IN RS.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={gov} for:item="row">
+                        <tr key={row.Id}>
+
+                            <td>{row.mainLabel}</td>
+
+                            <td>
+                                <lightning-input type="text" value={row.area} data-id={row.Id}
+                                    data-field={row.fieldApiNameArea} onblur={handleChange}>
+                                </lightning-input>
+                            </td>
+
+                            <td>
+                                <lightning-input type="text" value={row.rate} data-id={row.Id}
+                                    data-field={row.fieldApiNameRate} onblur={handleChange}>
+                                </lightning-input>
+                            </td>
+
+                            <td>{row.subLabel}</td>
+
+                            <td>
+                                <lightning-formatted-number value={row.value} format-style="currency"
+                                    currency-code="INR">
+                                </lightning-formatted-number>
+                            </td>
+
+                        </tr>
+                    </template>
+                    <tr>
+                        <td colspan="4">
+                            Other
+                        </td>
+                        <td>
+                            <lightning-input type="text" value={otherGovValue} data-id={recordId}
+                                data-field="Others_Government__c" onblur={handleChange}>
+                            </lightning-input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            Total Value as per Government
+                        </td>
+                        <td>
+                            <lightning-formatted-number value={govTotal} format-style="currency" currency-code="INR">
+                            </lightning-formatted-number>
+                        </td>
+                    </tr>
+                    <!-- <tr>
+                         <td colspan="4">
+Total Value of Existing property (As on date)
+                         </td>
+                        <td>
+                                <lightning-input
+                                    type="number"
+                                    value={totalValueAsOnDate}
+                                    data-id={recordId}
+                                    data-field="Total_Value_of_As_of_Date__c"
+                                    onchange={handleChange}>
+                                </lightning-input>
+                            </td>
+                        </tr> -->
+
+
+                </tbody>
+            </table>
+        </div>
+    </lightning-card>
+    <lightning-card title="POST COMPLETION FAIR MARKET VALUE (Under Construction Property)">
+        <div class="slds-p-around_small">
+            <table class="custom-table slds-table slds-table_cell-buffer">
+                <thead class="custom-header">
+                    <tr>
+                        <th>Particulars</th>
+                        <th>Area</th>
+                        <th>Rate</th>
+                        <th>Particulars</th>
+                        <th>VALUE IN RS.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={complition} for:item="row">
+                        <tr key={row.Id}>
+
+                            <td>{row.mainLabel}</td>
+
+                            <td>
+                                <lightning-input type="text" value={row.area} data-id={row.Id}
+                                    data-field={row.fieldApiNameArea} onblur={handleChange}>
+                                </lightning-input>
+                            </td>
+
+                            <td>
+                                <lightning-input type="text" value={row.rate} data-id={row.Id}
+                                    data-field={row.fieldApiNameRate} onblur={handleChange}>
+                                </lightning-input>
+                            </td>
+
+                            <td>{row.subLabel}</td>
+
+                            <td>
+                                <lightning-formatted-number value={row.value} format-style="currency"
+                                    currency-code="INR">
+                                </lightning-formatted-number>
+                            </td>
+
+                        </tr>
+                    </template>
+
+                    <tr>
+                        <td colspan="4">
+                            Other
+                        </td>
+                        <td>
+                            <lightning-input type="text" value={otherPostCompValue} data-id={recordId}
+                                data-field="Others_POST_COMPLETION__c" onblur={handleChange}>
+                            </lightning-input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            Total Realizable value of Property
+                        </td>
+                        <td>
+                            <lightning-formatted-number value={complitionTotal} format-style="currency"
+                                currency-code="INR">
+                            </lightning-formatted-number>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            QSV /Distress Value
+                        </td>
+                        <td>
+                            <lightning-input type="text" value={qsvDistressPC} data-id={recordId}
+                                data-field="QSV_Distress_Value_PC__c" onblur={handleChange}>
+                            </lightning-input>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+        </div>
+    </lightning-card>
+    <lightning-card title="Present Fair Market Value (As on Date)">
+        <div class="slds-p-around_small">
+            <table class="custom-table slds-table slds-table_cell-buffer">
+                <thead class="custom-header">
+                    <tr>
+                        <th>Particulars</th>
+                        <th>Area</th>
+                        <th>Rate</th>
+                        <th>Particulars</th>
+                        <th>VALUE IN RS.</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={market} for:item="row">
+                        <tr key={row.Id}>
+
+                            <td>{row.mainLabel}</td>
+
+                            <td>
+                                <lightning-input type="text" value={row.area} data-id={row.Id}
+                                    data-field={row.fieldApiNameArea} onblur={handleChange}>
+                                </lightning-input>
+                            </td>
+
+                            <td>
+                                <lightning-input type="text" value={row.rate} data-id={row.Id}
+                                    data-field={row.fieldApiNameRate} onblur={handleChange}>
+                                </lightning-input>
+                            </td>
+
+                            <td>{row.subLabel}</td>
+
+                            <td>
+                                <lightning-formatted-number value={row.value} format-style="currency"
+                                    currency-code="INR">
+                                </lightning-formatted-number>
+                            </td>
+
+                        </tr>
+                    </template>
+                    <tr>
+                        <td colspan="4">
+                            Other
+                        </td>
+                        <td>
+                            <lightning-input type="text" value={otherPresentValue} data-id={recordId}
+                                data-field="Others_Present_Fair__c" onblur={handleChange}>
+                            </lightning-input>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            Total Realizable value of Property
+                        </td>
+                        <td>
+                            <lightning-formatted-number value={marketTotal} format-style="currency" currency-code="INR">
+                            </lightning-formatted-number>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="4">
+                            QSV /Distress Value
+                        </td>
+                        <td>
+                            <lightning-input type="text" value={qsvDistress} data-id={recordId}
+                                data-field="QSV_Distress_Value__c" onblur={handleChange}>
+                            </lightning-input>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </lightning-card>
+
+
+</template>

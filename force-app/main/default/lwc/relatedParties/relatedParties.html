@@ -1,0 +1,23 @@
+<!-- //_______________This Code was generated using GenAI tool: Codify, Please check for accuracy_______________// -->
+<template>
+    <div class="rp-card">
+
+        <div class="rp-header">
+            <span class="rp-title">Related parties</span>
+        </div>
+
+        <div class="rp-list">
+            <template for:each={parties} for:item="party">
+                <div key={party.id} class="rp-row">
+                    <div class="rp-info">
+                        <div class="rp-name">{party.name}</div>
+                        <div class="rp-meta">{party.meta}</div>
+                    </div>
+                    <button class="rp-open-btn" data-id={party.id} onclick={handleOpen}>Open</button>
+                </div>
+            </template>
+        </div>
+
+    </div>
+</template>
+<!-- //__________________________GenAI: Generated code ends here______________________________// -->

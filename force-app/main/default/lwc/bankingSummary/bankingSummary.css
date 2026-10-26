@@ -1,0 +1,61 @@
+.container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+ }
+ table {
+
+    width: 100%;
+
+    border-collapse: collapse;
+
+    text-align: left;
+
+    font-family: Arial, sans-serif;
+
+    /* font-size: 14px; */
+
+}
+ th, td {
+    padding: 8px;
+    text-align: left;
+    border: 1px solid black;
+    vertical-align: middle;
+ }
+ /* Section Headers */
+ .section-header {
+    /* font-size: 16px; */
+    font-weight: bold;
+    color: black;
+    background-color:  skyblue; /* Light Blue */
+    padding: 10px;
+    text-align: center;
+ }
+ /* Banking Details Section */
+ .banking-data {
+    background-color: white;
+    font-weight: bold;
+    vertical-align: top;
+    text-align: center;
+    color: black;
+ }
+ /* Summary Exposure Header */
+ .summary-header {
+    background-color:  white;
+    font-weight: bold;
+    text-align: center;
+    color: black;
+ }
+ /* Summary Exposure Data */
+ .summary-data {
+    background-color: white;
+    text-align: center;
+    /* font-weight: bold; */
+    color: black;
+ }
+ /* Empty Cell Styling */
+ .empty-cell {
+    background-color: #f8f9f9; /* Match Banking Details */
+    border: none;
+ }

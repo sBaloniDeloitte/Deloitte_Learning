@@ -1,0 +1,10 @@
+@import 'c/cssLibrary';
+
+.save-button{
+	width: 175px !important;
+	background-color: #1467EB;
+}
+
+.custom-container{
+	color : black;
+}

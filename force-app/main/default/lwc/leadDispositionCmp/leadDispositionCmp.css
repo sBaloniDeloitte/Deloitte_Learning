@@ -1,0 +1,261 @@
+/* ================================================================
+   Disposition - set the lead follow-up status - static card
+   Dark/purple theme aligned with leadManagementV2 / leadPriorityCmp /
+   leadScoreCmp design.
+   ================================================================ */
+
+/* .ld-container {
+    background-color: #0e1c30;
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.12);
+    overflow: visible;
+    box-sizing: border-box;
+    color: #e8edf5;
+    font-family: inherit;
+} */
+
+.ld-container {
+    background-color: #0e1c30;
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.12);
+    overflow: visible;
+    box-sizing: border-box;
+    color: #e8edf5;
+    font-family: inherit;
+
+    /* =====================================================
+       COMBOBOX / DROPDOWN DARK THEME
+       Same tokens used by the working main CMP
+       ===================================================== */
+
+    --slds-g-color-surface-1: #16283f;
+    --slds-g-color-surface-2: #16283f;
+    --slds-g-color-surface-container-1: #16283f;
+    --slds-g-color-surface-container-2: #1f3550;
+
+    --slds-g-color-neutral-base-100: #16283f;
+    --slds-g-color-neutral-base-95: #1f3550;
+    --slds-g-color-neutral-base-90: #1f3550;
+
+    --slds-g-color-on-surface-1: #ffffff;
+    --slds-g-color-on-surface-2: #ffffff;
+
+    /* SDS equivalents */
+    --sds-g-color-surface-1: #16283f;
+    --sds-g-color-surface-2: #16283f;
+    --sds-g-color-surface-container-1: #16283f;
+    --sds-g-color-surface-container-2: #1f3550;
+
+    --sds-g-color-neutral-base-100: #16283f;
+    --sds-g-color-neutral-base-95: #1f3550;
+    --sds-g-color-neutral-base-90: #1f3550;
+
+    --sds-g-color-on-surface-1: #ffffff;
+    --sds-g-color-on-surface-2: #ffffff;
+
+    --slds-g-color-neutral-base-10: #ffffff;
+    --sds-g-color-neutral-base-10: #ffffff;
+}
+/* ================= HEADER ================= */
+
+.ld-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.1rem;
+    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+    border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.ld-header-icon {
+    flex-shrink: 0;
+    --slds-c-icon-color-foreground: #ffffff !important;
+    --slds-c-icon-color-foreground-default: #ffffff !important;
+    --sds-c-icon-color-foreground: #ffffff !important;
+    --sds-c-icon-color-foreground-default: #ffffff !important;
+}
+
+.ld-header-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.ld-header-subtitle {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* ================= BODY ================= */
+
+.ld-body {
+    padding: 1rem 1.1rem 1.1rem 1.1rem;
+    color: white;
+}
+
+/* ---- Combobox dark theme override (same pattern used in leadManagementV2) ---- */
+
+.ld-combobox {
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-combobox-label-color: #ffffff;
+    --slds-c-input-placeholder-text-color: #8a99b3;
+
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+    --slds-c-combobox-input-value-text-color: #ffffff;
+
+    /* DROPDOWN */
+    --slds-c-combobox-listbox-color-background: #16283f;
+
+    /* NORMAL OPTION */
+    --slds-c-combobox-option-color-background: #16283f;
+    --slds-c-combobox-option-text-color: #ffffff;
+
+    /* HOVER */
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+    --slds-c-combobox-option-text-color-hover: #ffffff;
+
+    /* SELECTED */
+    --slds-c-combobox-option-color-background-selected: #1f3550;
+    --slds-c-combobox-option-text-color-selected: #ffffff;
+
+    /* SELECTED + HOVER */
+    --slds-c-combobox-option-color-background-selected-hover: #1f3550;
+    --slds-c-combobox-option-text-color-selected-hover: #ffffff;
+
+    --slds-c-combobox-listbox-radius-border: 6px;
+
+    display: block;
+}
+
+/* ____GenAI: light-DOM fallback for the same open-dropdown white-out, mirroring
+   the fallback pattern already used in leadManagementV2.css, in case this
+   org's installed base-component version renders the listbox markup in a way
+   the design tokens above do not reach. Scoped to this card only - no
+   options list, selection logic, or other markup changed____ */
+.ld-container .slds-dropdown,
+.ld-container .slds-listbox,
+.ld-container .slds-listbox__option,
+.ld-container .slds-listbox__option .slds-media__body {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+}
+
+.ld-container .slds-listbox__option:hover,
+.ld-container .slds-listbox__option:focus,
+.ld-container .slds-listbox__option.slds-has-focus,
+.ld-container .slds-listbox__option.slds-is-selected,
+.ld-container .slds-listbox__option[aria-selected="true"],
+.ld-container .slds-listbox__option[aria-checked="true"],
+.ld-container .slds-listbox__option:active {
+    background-color: #1f3550 !important;
+    color: #ffffff !important;
+
+.ld-container .slds-listbox__option:hover *,
+.ld-container .slds-listbox__option:focus *,
+.ld-container .slds-listbox__option.slds-has-focus *,
+.ld-container .slds-listbox__option.slds-is-selected *,
+.ld-container .slds-listbox__option[aria-selected="true"] *,
+.ld-container .slds-listbox__option[aria-checked="true"] *,
+.ld-container .slds-listbox__option:active * {
+    background-color: #1f3550 !important;
+    color: #ffffff !important;
+}
+/* =========================================================
+   FINAL COMBOBOX HOVER FIX
+   ========================================================= */
+
+.ld-container .slds-dropdown,
+.ld-container .slds-listbox {
+    background-color: #16283f !important;
+}
+
+.ld-container .slds-listbox__option {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+}
+
+.ld-container .slds-listbox__option:hover,
+.ld-container .slds-listbox__option:focus,
+.ld-container .slds-listbox__option.slds-has-focus,
+.ld-container .slds-listbox__option.slds-is-selected,
+.ld-container .slds-listbox__option[aria-selected="true"],
+.ld-container .slds-listbox__option[aria-checked="true"],
+.ld-container .slds-listbox__option:active {
+    background-color: #1f3550 !important;
+    color: #ffffff !important;
+}
+
+.ld-container .slds-listbox__option:hover *,
+.ld-container .slds-listbox__option:focus *,
+.ld-container .slds-listbox__option.slds-has-focus *,
+.ld-container .slds-listbox__option.slds-is-selected *,
+.ld-container .slds-listbox__option[aria-selected="true"] *,
+.ld-container .slds-listbox__option[aria-checked="true"] *,
+.ld-container .slds-listbox__option:active * {
+    background-color: #1f3550 !important;
+    color: #ffffff !important;
+}
+}
+
+/* ____GenAI: the hover/highlighted option was still showing a white background
+   with a blue focus ring (per the reported screenshot) - the option's inner
+   "slds-media__body" wrapper (which actually paints behind the option label
+   text) was not covered by the hover/focus rule above, only by the default
+   dark-background rule, so it kept repainting white on hover in this org's
+   installed base-component version. Explicitly repainting it on hover/focus
+   too, same navy used everywhere else in this card. Scoped to this combobox
+   only - no options list, values, or selection logic changed____ */
+.ld-container .slds-listbox__option:hover .slds-media__body,
+.ld-container .slds-listbox__option:focus .slds-media__body,
+.ld-container .slds-listbox__option.slds-has-focus .slds-media__body,
+.ld-container .slds-listbox__option.slds-is-selected .slds-media__body,
+.ld-container .slds-listbox__option[aria-selected="true"] .slds-media__body,
+.ld-container .slds-listbox__option[aria-checked="true"] .slds-media__body,
+.ld-container .slds-listbox__option:active .slds-media__body {
+    background-color: #1f3550 !important;
+    color: #ffffff !important;
+}
+
+.ld-container .slds-listbox__option .slds-icon,
+.ld-container .slds-listbox__option .slds-icon use,
+.ld-container .slds-listbox__option svg {
+    fill: #ffffff !important;
+}
+
+/* ================= FOOTER ================= */
+
+.ld-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1rem;
+}
+
+.ld-save-btn {
+    border: none;
+    border-radius: 999px;
+    padding: 0.55rem 1.5rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #ffffff;
+    background-color: #8b5cf6;
+    cursor: pointer;
+}
+
+.ld-save-btn:hover {
+    background-color: #7c3aed;
+}
+.ld-combobox .slds-form-element__label {
+    color: #ffffff !important;
+}
+
+.ld-combobox .slds-form-element__label,
+.ld-combobox .slds-form-element__label * {
+    color: #ffffff !important;
+}

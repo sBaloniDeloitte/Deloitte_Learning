@@ -1,0 +1,225 @@
+<!-- Modified by Anish to fix loading issue  26/02 -->
+<template>
+    <template if:true={isloading}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </template>
+    <template lwc:if={showDisplayMessage}>
+        <div class="not-applicable-container">
+            <p class="not-applicable-message">{displayMessage}</p>
+        </div>
+    </template>
+    <template lwc:else>
+        <template lwc:if={isReady}>   
+        <div class="generic-screen-container">
+            <c-sales-loan-login-generic-screen-cmp passed-screen-name={passedScreenName} record-id={recordId}
+                active-section={activeSection} form-identifier={formName} onkeepaccordionopen={handleKeepAccordionOpen}
+                onbuilderselleradd={handleNextButton} from-builder-seller>
+            </c-sales-loan-login-generic-screen-cmp>
+        </div>
+        <!-- Applicants Table Section -->
+        <template lwc:if={hasApplicants}>
+            <div class="slds-box applicants-table-container" style="overflow:auto; background-color:#16283f">
+                <table
+                    class="table-class slds-box slds-table slds-table_bordered slds-table_cell-buffer slds-table_striped">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <!-- Builder Headers -->
+                            <template lwc:if={isBuilder}>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">Name</th>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">PAN</th>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">DOI</th>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">Contact Person Name
+                                </th>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">Mobile Number</th>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">Edit</th>
+                                <!-- <th class="tdBorderHeader" scope="col" style="text-align: center;">Delete</th> -->
+                            </template>
+
+                            <!-- Seller Headers -->
+                            <template lwc:if={isSeller}>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">Name</th>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">PAN</th>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">Customer Type</th>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">DOB</th>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">DOI</th>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">Aadhar Number</th>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">Contact Person Name
+                                </th>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">Mobile Number of the
+                                    Contact Person</th>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">Mobile Number</th>
+                                <th class="tdBorderHeader" scope="col" style="text-align: center;">Edit</th>
+                                <!-- <th class="tdBorderHeader" scope="col" style="text-align: center;">Delete</th> -->
+                            </template>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={applicantsList} for:item="applicant">
+                            <tr key={applicant.Id}>
+                                <!-- Builder Row Data -->
+                                <template lwc:if={isBuilder}>
+
+                                    <td class="tdBorderHeader" style="text-align:center;">
+                                        <lightning-input variant="label-hidden" value={applicant.applicantName}
+                                            data-id={applicant.Id} data-field="Name" disabled={applicant.isDisabled}
+                                            onblur={handleFieldChange}>
+                                        </lightning-input>
+                                    </td>
+
+                                    <td class="tdBorderHeader" style="text-align:center;">
+                                        <lightning-input variant="label-hidden" value={applicant.panNumber}
+                                            data-id={applicant.Id} data-field="PAN_Number__c"
+                                            disabled={applicant.isDisabled} onblur={handleFieldChange}>
+                                        </lightning-input>
+                                    </td>
+
+                                    <td class="tdBorderHeader" style="text-align:center;">
+                                        <lightning-input type="date" variant="label-hidden" value={applicant.doi}
+                                            data-id={applicant.Id} data-field="DOI__c" disabled={applicant.isDisabled}
+                                            onblur={handleFieldChange}>
+                                        </lightning-input>
+                                    </td>
+
+                                    <td class="tdBorderHeader" style="text-align:center;">
+                                        <lightning-input variant="label-hidden" value={applicant.contactPersonName}
+                                            data-id={applicant.Id} data-field="Contact_Person_Name__c"
+                                            disabled={applicant.isDisabled} onblur={handleFieldChange}>
+                                        </lightning-input>
+                                    </td>
+
+                                    <td class="tdBorderHeader" style="text-align:center;">
+                                        <lightning-input variant="label-hidden" value={applicant.contactPersonNumber}
+                                            data-id={applicant.Id} data-field="Contact_Person_Number__c"
+                                            disabled={applicant.isDisabled} onblur={handleFieldChange}>
+                                        </lightning-input>
+                                    </td>
+
+                                    <!-- EDIT BUTTON -->
+                                    <td class="tdBorderHeader" style="text-align:center;">
+                                        <lightning-icon size="small" icon-name="utility:edit" alternative-text="Edit"
+                                            title="Edit" onclick={handleEdit} data-id={applicant.Id}>
+                                        </lightning-icon>
+                                    </td>
+
+                                    <!-- DELETE BUTTON -->
+                                    <!-- <td class="tdBorderHeader" style="text-align:center;">
+                                        <lightning-icon size="small" icon-name="utility:delete"
+                                            alternative-text="Delete" title="Delete" onclick={handleDelete}
+                                            data-id={applicant.Id}>
+                                        </lightning-icon>
+                                    </td> -->
+
+                                </template>
+                                <!-- Seller Row Data -->
+                                <template lwc:if={isSeller}>
+                                    <td class="tdBorderHeader" style="text-align:center;">
+                                        <lightning-input variant="label-hidden" value={applicant.applicantName}
+                                            data-id={applicant.Id} data-field="Name" disabled={applicant.isDisabled}
+                                            onblur={handleFieldChange}>
+                                        </lightning-input>
+                                    </td>
+                                    <td class="tdBorderHeader" style="text-align:center;">
+                                        <lightning-input variant="label-hidden" value={applicant.panNumber}
+                                            data-id={applicant.Id} data-field="PAN_Number__c"
+                                            disabled={applicant.isDisabled} onblur={handleFieldChange}>
+                                        </lightning-input>
+                                    </td>
+                                    <td class="tdBorderHeader" style="text-align:center;">
+                                        <lightning-input variant="label-hidden" value={applicant.customerType}
+                                            data-id={applicant.Id} data-field="Customer_Type__c" disabled
+                                            onblur={handleFieldChange}>
+                                        </lightning-input>
+                                    </td>
+                                    <td class="tdBorderHeader" style="text-align:center;">
+                                        <lightning-input type="date" variant="label-hidden" value={applicant.dob}
+                                            data-id={applicant.Id} data-field="DOB__c" disabled={applicant.isDisabled}
+                                            onblur={handleFieldChange}>
+                                        </lightning-input>
+                                    </td>
+                                    <td class="tdBorderHeader" style="text-align:center;">
+                                        <lightning-input type="date" variant="label-hidden" value={applicant.doi}
+                                            data-id={applicant.Id} data-field="DOI__c" disabled={applicant.disableContactFields}
+                                            onblur={handleFieldChange}>
+                                        </lightning-input>
+                                    </td>
+                                    <td class="tdBorderHeader" style="text-align:center;">
+                                        <lightning-input variant="label-hidden" value={applicant.aadharNumber}
+                                            data-id={applicant.Id} data-field="CKYC_Aadhar__c"
+                                            disabled={applicant.isDisabled} onblur={handleFieldChange}>
+                                        </lightning-input>
+                                    </td>
+                                    <td class="tdBorderHeader" style="text-align:center;">
+                                        <lightning-input variant="label-hidden" value={applicant.contactPersonName}
+                                            data-id={applicant.Id} data-field="Contact_Person_Name__c"
+                                            disabled={applicant.disableContactFields} onblur={handleFieldChange}>
+                                        </lightning-input>
+                                    </td>
+                                    <td class="tdBorderHeader" style="text-align:center;">
+                                        <lightning-input variant="label-hidden" value={applicant.contactPersonNumber}
+                                            data-id={applicant.Id} data-field="Contact_Person_Number__c"
+                                            disabled={applicant.disableContactFields} onblur={handleFieldChange}>
+                                        </lightning-input>
+                                    </td>
+                                    <td class="tdBorderHeader" style="text-align:center;">
+                                        <lightning-input variant="label-hidden" value={applicant.mobileNumber}
+                                            data-id={applicant.Id} data-field="Mobile_Number__c"
+                                            disabled={applicant.isDisabled} onblur={handleFieldChange}>
+                                        </lightning-input>
+                                    </td>
+                                    <!-- EDIT BUTTON -->
+                                    <td class="tdBorderHeader" style="text-align:center;">
+                                        <lightning-button-icon icon-name="utility:edit" alternative-text="Edit"
+                                            title="Edit" onclick={handleEdit} disabled={applicant.disableEdit}
+                                            data-id={applicant.Id}>
+                                        </lightning-button-icon>
+                                    </td>
+                                    <!-- DELETE BUTTON -->
+                                    <!-- <td class="tdBorderHeader" style="text-align:center;">
+                                        <lightning-button-icon size="small" icon-name="utility:delete"
+                                            alternative-text="Delete" title="Delete" onclick={handleDelete}
+                                            data-id={applicant.Id} disabled={applicant.disableEdit}>
+                                        </lightning-button-icon>
+                                    </td> -->
+                                </template>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+
+        <!-- Address and Bank Accordion — always visible from page load -->
+        <lightning-accordion active-section-name={activeParentSectionName}>
+            <template lwc:if={showAddress}>
+                <lightning-accordion-section allow-multiple-sections-open
+                    style="background-color: white; font-weight: 700" name="Address Details" label="Address Details"
+                    onclick={handleParentAccordionClick}>
+                    <c-sales-login-address-details-cmp applicant-id={applicantId} onrefreshactions={refreshaction}
+                        oncallnextaccordian={handleAddressNextButton} passed-screen-name={passedScreenName}
+                        record-id={recordId} from-builder-seller="true">
+                    </c-sales-login-address-details-cmp>
+                </lightning-accordion-section>
+            </template>
+            <!-- Seller Additional Details Accordion -->
+            <template lwc:if={isSeller}>
+                <lightning-accordion-section name="SellerAdditional" label="Seller Additional Details"
+                    style="background-color: white; font-weight: 700; overflow: visible !important;" onclick={handleParentAccordionClick}>
+                    <c-seller-additional-details record-id={recordId}
+                        applicant-id={applicantId}></c-seller-additional-details>
+                </lightning-accordion-section>
+            </template>
+
+            <template lwc:if={showBank}>
+                <lightning-accordion-section allow-multiple-sections-open
+                    style="background-color: white; font-weight: 700" name="Bank Details" label="Bank Details"
+                    onclick={handleParentAccordionClick}>
+                    <c-add-manual-bank-d-a-cmp record-id={recordId} onaddedbank={addedBank}
+                        passed-screen-name={passedScreenName} from-builder-seller="true" form-identifier={formName}>
+                    </c-add-manual-bank-d-a-cmp>
+                </lightning-accordion-section>
+            </template>
+        </lightning-accordion>
+
+    </template>
+    </template>
+</template>

@@ -1,0 +1,92 @@
+@import 'c/cssLibrary';
+
+:host {
+	display: block;
+	min-height: 100%;
+	background: #12172b;
+	color: #ffffff;
+	--aml-page-bg: #12172b;
+	--aml-panel-bg: #1c2238;
+	--aml-field-bg: #16283f;
+	--aml-accent: #1467eb;
+	--aml-border: #2a2f45;
+	--aml-muted: #8a99b3;
+	--slds-c-input-label-color: #ffffff;
+	--slds-c-input-text-color: #ffffff;
+	--slds-c-input-color-background: var(--aml-field-bg);
+	--slds-c-input-color-border: var(--aml-border);
+	--slds-c-combobox-color-background: var(--aml-field-bg);
+	--slds-c-combobox-text-color: #ffffff;
+	--slds-c-combobox-color-border: var(--aml-border);
+}
+
+lightning-layout {
+	background: var(--aml-page-bg);
+}
+
+lightning-input,
+lightning-combobox {
+	--slds-c-input-label-color: #ffffff;
+	--slds-c-input-text-color: #ffffff;
+	--slds-c-input-color-background: var(--aml-field-bg);
+	--slds-c-input-color-border: var(--aml-border);
+	--slds-c-combobox-color-background: var(--aml-field-bg);
+	--slds-c-combobox-text-color: #ffffff;
+	--slds-c-combobox-color-border: var(--aml-border);
+}
+
+/* Positive CTA (Fetch Information) - #1467eb fill/border, 8px radius. */
+.save-button {
+	background-color: #1467eb !important;
+	border: 1px solid #1467eb !important;
+	border-radius: 8px !important;
+	color: #ffffff !important;
+	font-weight: 600;
+}
+
+.save-button:hover {
+	background-color: #1257c9 !important;
+}
+
+.slds-table {
+	width: 100%;
+	border-collapse: separate;
+	border-spacing: 0;
+	background: var(--aml-panel-bg) !important;
+	border: 1px solid var(--aml-border) !important;
+	border-radius: 8px;
+	overflow: hidden;
+	color: #ffffff;
+}
+
+.slds-table thead th {
+	background-color: var(--aml-accent) !important;
+	border-color: var(--aml-border) !important;
+	color: #ffffff !important;
+	font-weight: 600 !important;
+	padding: 10px !important;
+	text-align: center;
+}
+
+.slds-table tbody th,
+.slds-table tbody td {
+	background-color: var(--aml-panel-bg) !important;
+	border-color: var(--aml-border) !important;
+	color: #ffffff !important;
+}
+
+.slds-table tbody tr:hover th,
+.slds-table tbody tr:hover td {
+	background-color: #242c46 !important;
+}
+
+.slds-table lightning-input,
+.slds-table lightning-combobox {
+	--slds-c-input-color-background: var(--aml-field-bg);
+	--slds-c-input-text-color: #ffffff;
+	--slds-c-input-label-color: #ffffff;
+	--slds-c-input-color-border: var(--aml-border);
+	--slds-c-combobox-color-background: var(--aml-field-bg);
+	--slds-c-combobox-text-color: #ffffff;
+	--slds-c-combobox-color-border: var(--aml-border);
+}

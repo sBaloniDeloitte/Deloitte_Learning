@@ -1,0 +1,235 @@
+.receipt-box {
+    margin-top: 18px;
+    padding: 16px;
+
+    background: #09172b;
+    border: 1px solid #33455e;
+
+    border-radius: 12px;
+
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,.02),
+        0 8px 24px rgba(0,0,0,.4);
+}
+
+
+.receipt-scroll {
+    overflow-x: auto;
+    overflow-y: visible;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-gutter: stable both-edges;
+    padding-bottom: 36px;
+    border: 1px solid #33455e;
+    border-radius: 8px;
+    background: #0b1324;
+    position: relative;
+    z-index: 1;
+}
+
+.custom-table.receipt-table {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: auto;
+}
+.custom-table thead th {
+    background: #162d4a !important;;
+    color: #ffffff !important;;
+    padding: 12px 10px;
+    text-align: center;
+    border: 1px solid #33455e;
+    border-bottom: 1px solid #d0dfe6;
+    font-size: 14px;
+    font-weight: 600;
+    white-space: nowrap;
+    line-height: 1.25;
+}
+
+/* Body cells */
+.custom-table tbody td {
+    padding: 12px 10px;
+    border-bottom: 1px solid #f2f2f2;
+    font-size: 14px;
+    background-color: #0f1d33;
+    color: #ffffff;
+    border: 1px solid #33455e;
+    vertical-align: middle;
+    line-height: 1.35;
+}
+
+.custom-table tbody tr:nth-child(odd) td {
+    background-color: #0f1d33;
+}
+
+.custom-table tbody tr:nth-child(even) td {
+    background-color: #0f1d33;
+}
+
+.custom-table tbody tr:hover td {
+    background-color: #1c3252 !important;
+}
+
+.custom-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.total-row td {
+    font-weight: 600;
+    background: #16283f !important;
+    color: #ffffff !important;
+    font-weight: 700;
+    border-top: 1px solid #33455e;
+}
+
+lightning-card {
+    --slds-c-card-color-background: #09172b;
+    --slds-c-card-color-border: #33455e;
+
+    --slds-c-card-heading-text-color: #ffffff;
+}
+
+lightning-input,
+lightning-textarea,
+lightning-combobox {
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+
+    --slds-c-textarea-color-background: #16283f;
+    --slds-c-textarea-text-color: #ffffff;
+}
+
+.initiate-api-btn {
+    --slds-c-button-neutral-color-background: #1467EB;
+    --slds-c-button-neutral-color-border: #1467EB;
+    --slds-c-button-text-color: #ffffff;
+}
+
+.receipt-table td:nth-child(8) {
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.table-container > div:first-child,
+.table-container > div:nth-child(2) {
+    color: #ffffff !important;
+}
+
+.button-bar lightning-button {
+    --slds-c-button-brand-color-background: #1467EB;
+    --slds-c-button-brand-color-border: #1467EB;
+    --slds-c-button-brand-text-color: #ffffff;
+    --slds-c-button-brand-color-background-hover: #0f5fd9;
+    --slds-c-button-brand-color-border-hover: #0f5fd9;
+}
+
+.receipt-table td:first-child,
+.receipt-table th:first-child {
+    width: 72px;
+    min-width: 64px;
+    max-width: 88px;
+    text-align: center;
+    white-space: nowrap;
+}
+
+/* Keep “Upload” and “Delete” compact */
+.receipt-table th:nth-child(6),
+.receipt-table td:nth-child(6) { /* Upload Receipt */
+    width: 140px;
+    min-width: 120px;
+    text-align: center;
+}
+
+.receipt-table th:nth-child(11),
+.receipt-table td:nth-child(11) { /* Delete icon */
+    width: 90px;
+    min-width: 80px;
+    text-align: center;
+}
+
+/* Inputs/combos/textarea: avoid overflow; keep usable sizes */
+lightning-input,
+lightning-combobox,
+lightning-textarea {
+    width: 100%;
+    max-width: 100%;
+}
+
+lightning-input input,
+lightning-combobox .slds-combobox,
+lightning-textarea textarea {
+    padding: 6px 8px;          /* compact but readable */
+    font-size: 14px;
+    line-height: 1.3;
+}
+
+/* Minimum widths for key input columns to avoid crowding */
+.receipt-table th:nth-child(2),  /* Actual fee collected */
+.receipt-table td:nth-child(2),
+.receipt-table th:nth-child(3),  /* Sub Receipt Mode */
+.receipt-table td:nth-child(3),
+.receipt-table th:nth-child(4),  /* Receipt No */
+.receipt-table td:nth-child(4),
+.receipt-table th:nth-child(5),  /* Transaction Reference */
+.receipt-table td:nth-child(5),
+.receipt-table th:nth-child(8),  /* Remarks */
+.receipt-table td:nth-child(8) {
+    min-width: 160px;           /* ensures columns don't collapse at zoom */
+}
+
+/* Remarks field: a bit taller */
+lightning-textarea textarea {
+    min-height: 56px;
+}
+
+/* File preview inner table: wrap long filenames */
+.file-preview-table td {
+    padding: 4px 8px;
+    font-size: 13px;
+    word-break: break-word;
+    overflow-wrap: anywhere;
+}
+
+/* Center utility */
+.center { text-align: center; }
+
+
+/* On narrow containers or very high zoom, allow more scroll space */
+@media (max-width: 1080px) {
+    .custom-table.receipt-table {
+        min-width: 1000px;
+    }
+}
+
+/* Ultra-high zoom handling: increase min-widths slightly */
+@media (min-resolution: 2dppx) {
+    .custom-table.receipt-table {
+        min-width: 1040px;
+    }
+}
+
+.receipt-scroll .custom-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+}
+
+/* Raise combobox overlay above table (multiple fallbacks) */
+lightning-combobox {
+    position: relative;
+    z-index: 2;
+}
+
+/* If parts are exposed by the base component, boost them */
+lightning-combobox::part(listbox),
+lightning-combobox::part(dropdown),
+lightning-combobox::part(menu) {
+    z-index: 9999;
+}
+
+/* SLDS fallback: many LWC base components emit .slds-dropdown */
+.slds-dropdown,
+.slds-dropdown_fluid {
+    z-index: 9999 !important;
+}

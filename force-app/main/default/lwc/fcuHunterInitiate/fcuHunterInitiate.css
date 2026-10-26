@@ -1,0 +1,62 @@
+@import "c/cssLibrary";
+
+:host {
+    display: block;
+    color: #ffffff;
+    --hunter-page-bg: #12172b;
+    --hunter-panel-bg: #0e1c30;
+    --hunter-border: #33455e;
+    --hunter-accent: #1467eb;
+}
+
+.slds-modal__container {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.slds-modal__header {
+    background-color: var(--hunter-accent) !important;
+    border-bottom: 1px solid var(--hunter-border);
+    color: #ffffff !important;
+}
+
+.slds-modal__header h2,
+.slds-modal__header .slds-text-heading_medium {
+    color: #ffffff !important;
+}
+
+.slds-modal__content {
+    background-color: var(--hunter-page-bg) !important;
+    color: #ffffff !important;
+}
+
+.slds-modal__content p {
+    color: #ffffff !important;
+}
+
+.slds-modal__footer {
+    background-color: var(--hunter-page-bg) !important;
+    border-top: 1px solid var(--hunter-border) !important;
+}
+
+.slds-backdrop_open {
+    background: rgba(10, 15, 30, 0.78);
+}
+
+/* Positive CTA (Initiate) - #7c3aed fill, no border, 8px radius. */
+.initiate-button {
+    background-color: #7c3aed !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* Negative CTA (Waive) - #16283f fill, 1px solid #7c3aed border, 8px radius. */
+.wave-button {
+    background-color: #16283f !important;
+    border: 1px solid #7c3aed !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}

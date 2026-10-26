@@ -1,0 +1,122 @@
+:host {
+    display: block;
+    background-color: #171728;
+    color: #FFFFFF;
+    width: 100%;
+}
+
+.main-container {
+    background-color: #171728;
+    color: #FFFFFF;
+    min-height: 100vh;
+    width: 100%;
+    padding: 1rem;
+}
+
+::selection {
+    background-color: #171728;
+    color: #FFFFFF;
+}
+
+/* Tabs */
+.tab-container {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1rem;
+    border-bottom: 2px solid #2c3e50;
+    background-color: #171728;
+}
+
+.tab-item {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #d8dde6;
+    padding: 0.75rem 0;
+    position: relative;
+    cursor: pointer;
+    transition: color 0.2s ease-in-out;
+}
+
+.tab-item:hover {
+    color: #1467EB;
+}
+
+.tab-item.active {
+    color: #FFFFFF;
+    font-weight: 700;
+}
+
+.tab-item.active::after {
+    content: "";
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background-color: #1467EB;
+    border-radius: 2px 2px 0 0;
+}
+
+/* Section Container */
+.section-box {
+    background-color: #171728;
+    border: 2px solid #2c3e50;
+    border-radius: 6px;
+    padding: 1rem;
+    min-height: 200px;
+    color: #FFFFFF;
+}
+
+/* Buttons */
+.custom-button {
+    background-color: #1467EB;
+    color: #FFFFFF;
+    border: 2px solid #1467EB;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    height: 30px;
+    min-width: 100px;
+}
+
+.custom-button:hover {
+    background-color: #0f52c9;
+}
+
+.custom-button.active {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+    color: #FFFFFF;
+}
+
+/* Forms */
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    padding: 1rem;
+    background-color: #171728;
+}
+
+.form-grid {
+    row-gap: 1rem;
+    column-gap: 2rem;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.form-label {
+    flex: 0 0 25%;
+    font-weight: 600;
+    color: #FFFFFF;
+}
+
+.form-input {
+    flex: 1;
+}

@@ -1,0 +1,152 @@
+<template>
+
+    <div class="disposition-card">
+
+        <!-- Header -->
+
+        <div class="disposition-card-header">
+
+            <span class="disposition-card-header-icon">
+                📋
+            </span>
+
+            <div>
+
+                <h3 class="disposition-card-title">
+                    Disposition
+                </h3>
+
+                <p class="disposition-card-subtitle">
+                    Set the lead follow-up status
+                </p>
+
+            </div>
+
+        </div>
+
+        <!-- Body -->
+
+        <div class="disposition-card-body">
+
+            <lightning-record-edit-form
+                record-id={recordId}
+                object-api-name="Lead"
+                onsubmit={handleSubmit}
+                onsuccess={handleSuccess}
+                onerror={handleError}>
+
+                <lightning-messages>
+                </lightning-messages>
+
+                <!-- Disposition -->
+
+                <div class="field-wrapper">
+
+                    <lightning-input-field
+                        field-name="Disposition__c"
+                        onchange={handleDispositionChange}>
+                    </lightning-input-field>
+
+                </div>
+
+                <!-- Follow Up Section -->
+
+                <template if:true={showEventDateTime}>
+
+                    <div class="field-wrapper follow-up-field">
+
+                        <div class="follow-up-badge">
+
+                            <span class="follow-up-icon">
+                                📅
+                            </span>
+
+                            <span class="follow-up-label">
+                                Follow Up Scheduled
+                            </span>
+
+                        </div>
+
+                        <lightning-input
+                            type="date"
+                            label="Follow Up Date"
+                            value={followUpDate}
+                            onchange={handleDateChange}>
+                        </lightning-input>
+
+                        <lightning-input
+                            type="time"
+                            label="Follow Up Time"
+                            value={followUpTime}
+                            onchange={handleTimeChange}>
+                        </lightning-input>
+
+                    </div>
+
+                </template>
+
+                <!-- Save Button -->
+
+                <template if:true={showSaveButton}>
+
+                    <div class="action-row">
+
+                        <lightning-button
+                            variant="brand"
+                            label="Save"
+                            type="submit">
+                        </lightning-button>
+
+                    </div>
+
+                </template>
+
+            </lightning-record-edit-form>
+
+            <!-- Saved Confirmation -->
+
+            <template if:true={showSavedConfirmation}>
+
+                <div class="field-wrapper follow-up-field follow-up-field--saved">
+
+                    <div class="follow-up-badge">
+
+                        <span class="follow-up-icon">
+                            ✅
+                        </span>
+
+                        <span class="follow-up-label">
+                            Follow Up Scheduled
+                        </span>
+
+                    </div>
+
+                    <div class="saved-datetime-row">
+
+                        <lightning-formatted-date-time
+                            value={savedEventDateTime}
+                            year="numeric"
+                            month="short"
+                            day="2-digit"
+                            hour="2-digit"
+                            minute="2-digit">
+                        </lightning-formatted-date-time>
+
+                        <button
+                            type="button"
+                            class="edit-link"
+                            onclick={handleEditClick}>
+                            Edit
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </template>
+
+        </div>
+
+    </div>
+
+</template>

@@ -1,0 +1,32 @@
+<template>
+    <template if:true={showDocumentList}>
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+            <thead>
+                <tr>
+                    <th scope="col">Document Name</th>
+                    <th scope="col">Date Of Report</th>
+                    <th scope="col">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={documentList} for:item="doc">
+                    <tr key={doc.Id}>
+                        <td>{doc.documentName}</td>
+                        <td>{doc.fileUploadedDate}</td>
+                        <td>
+                            <span style="display:inline-flex;">
+                                <div class="green-icon" style="padding-top: 15%;margin-left: 3%;">
+                                    <lightning-button-icon icon-name="utility:preview" alternative-text="Preview"
+                                        title="Preview" onclick={previewHandler} data-id={doc.contentId}
+                                        data-name={doc.documentName} data-description={doc.fileDescription}
+                                        data-documentid={doc.documentId} variant="success">
+                                    </lightning-button-icon>
+                                </div>
+                            </span>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </template>
+</template>

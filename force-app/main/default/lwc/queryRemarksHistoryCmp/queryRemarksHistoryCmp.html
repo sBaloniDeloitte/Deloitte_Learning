@@ -1,0 +1,53 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 02-27-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <span class="styleContainer"></span>
+    <header class="slds-modal__header header-section">
+        <div class="slds-text-align_center">
+            <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">{headerTitle}</h2>
+        </div>
+    </header>
+    <div class="slds-modal__content slds-p-around_medium">
+        <template if:true={notes}>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr class="slds-text-title_caps">
+                        <th>Query Number</th>
+                        <th>Status</th>
+                        <th>Remarks</th>
+                        <th>Date & Time</th>
+                        <th>Remarks Added by</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={notes} for:item="note">
+                        <tr key={note.queryNumber}>
+                            <td>{note.queryNumber}</td>
+                            <td>{note.status}</td>
+                            <td>{note.remarks}</td>
+                            <td>{note.remarkDateTime}</td>
+                            <td>{note.remarksAddedBy}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </template>
+        <template if:true={error}>
+            <p class="slds-text-color_error">Error fetching records: {error}</p>
+        </template>
+    </div>
+    <footer class="footer-section">
+        <div if:true={showfooter} class="slds-align_absolute-center">
+            <button class="cancel-button slds-button slds-button_brand"
+                style="border:none" onclick={handleClose}>Close</button>
+            <!-- <button class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color: #113451;color: white;border-color: #113451;font-weight: 500;" onclick={handleSave}>Create</button> -->
+        </div>
+           
+    </footer>
+    
+</template>

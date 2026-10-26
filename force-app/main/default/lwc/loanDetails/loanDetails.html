@@ -1,0 +1,489 @@
+<template>
+   <template lwc:if={isLoading}>
+      <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+   </template>
+   
+   <!--
+   <div class="slds-box slds-theme_default progress-container">
+         <div class="progress-bar">
+            <template for:each={processedStages} for:item="stage" for:index="index">
+               <div key={stage.name} class="progress-step">
+                     <template if:true={stage.showLine}>
+                        <div class="connector"></div>
+                     </template>
+                     <div class="icon-wrapper">
+                        <template if:true={stage.isCompleted}>
+                           <lightning-icon icon-name="utility:success" size="small" variant="success"
+                                 alternative-text="Completed"></lightning-icon>
+                        </template>
+                        <template if:false={stage.isCompleted}>
+                           <lightning-icon icon-name="utility:error" size="small" variant="error"
+                                 alternative-text="Incomplete"></lightning-icon>
+                        </template>
+                     </div>
+                     <div class="slds-text-align_center">
+                        <p class="stage-name">{stage.name}</p>
+                     </div>
+               </div>
+            </template>
+         </div>
+   </div>
+  -->
+   <div class="slds-p-top_small slds-p-left_small slds-p-bottom_xx-small accordionButton">
+      <button  class="slds-button slds-button_brand save-button openAccordionBtn" style="background-color: #1467EB" onclick={handleAccordionBtn} lwc:ref="btnTag"></button>
+   </div>
+   <span class="styleContainer"></span>
+   <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
+      <lightning-accordion-section name="Basic Details" label="Basic Details">
+         <div class="slds-p-around_small">
+            <lightning-layout multiple-rows="true" class="lightningLayout">
+               <template for:each={basicDetailFields} for:item="item" for:index="index">
+                  <template lwc:if={item.isPicklist}>
+                     <template if:false={item.Is_Hidden__c}>
+                     <lightning-layout-item size="4" class="slds-p-around_xx-small" key={item.Id}>
+                        <lightning-combobox key={item.Id} class="removeborder"
+                           label={item.Field_Label__c} placeholder="Select Picklist"
+                           name={item.Field_Type__c} data-label={item.Storage_Field__c} data-accordion="Transactional Details" data-index={index}
+                           options={item.picklistOptions} data-id={item.Storage_Field__c} onfocusout={updateRecords}
+                           onchange={handleInputChange} value={item.value} data-name={item.Storage_Object__c}
+                           required={item.Is_Mandatory__c} disabled={item.Is_Disabled__c}></lightning-combobox>
+                     </lightning-layout-item>
+                  </template>
+                  </template>
+                  <template lwc:else>
+                     <template if:false={item.Is_Hidden__c}>
+                     <lightning-layout-item size="4"  class="slds-p-around_xx-small" key={item.Id}>
+                        <lightning-input class="hideInput" style="width:100%;" variant="bare" key={item.Id} type={item.Field_Type__c}
+                           name={item.Field_Type__c} label={item.Field_Label__c} value={item.value} data-index={index} data-accordion="Transactional Details"
+                           required={item.Is_Mandatory__c} data-id={item.Storage_Field__c} data-label={item.Storage_Field__c}
+                           data-name={item.Storage_Object__c} onchange={handleInputChange} onfocusout={updateRecords}
+                           disabled={item.Is_Disabled__c} max-length={item.Maximum_Length__c} checked={item.value}>
+                        </lightning-input>
+                     </lightning-layout-item>
+                  </template>
+                  </template>
+               </template>
+            </lightning-layout>
+         </div>
+      </lightning-accordion-section>
+      <lightning-accordion-section name="Product Details" label = "Product Details">
+         <c-sales-login-product-details-cmp record-id={recordId} is-disable-edit={isDisableEdit}>
+         </c-sales-login-product-details-cmp>
+      </lightning-accordion-section>
+      <lightning-accordion-section name="Key Details" label="Key Details">
+         <div class=" slds-p-around_small">
+            <lightning-layout multiple-rows="true" class="lightningLayout">
+               <template for:each={keyDetails} for:item="item" for:index="index">
+                  <template lwc:if={item.isPicklist}>
+                     <template if:false={item.Is_Hidden__c}>
+                     <lightning-layout-item size="4" class="slds-p-around_xx-small" key={item.Id}>
+                        <lightning-combobox key={item.Id} class="removeborder" 
+                           label={item.Field_Label__c} placeholder="Select Picklist"
+                           name={item.Field_Type__c} data-label={item.Storage_Field__c} data-accordion="Key Details" data-index={index}
+                           options={item.picklistOptions} data-id={item.Storage_Field__c} onfocusout={updateRecords}
+                           onchange={handleInputChange} value={item.value} data-name={item.Storage_Object__c}
+                           required={item.Is_Mandatory__c} disabled={item.Is_Disabled__c}></lightning-combobox>
+                     </lightning-layout-item>
+                  </template>
+                  </template>
+                  <template lwc:else>
+                     <template if:false={item.Is_Hidden__c}>
+                     <lightning-layout-item size="4"  class="slds-p-around_xx-small" key={item.Id}>
+                        <lightning-input class="hideInput" style="width:100%;" variant="bare" key={item.Id} type={item.Field_Type__c}
+                           name={item.Field_Type__c} label={item.Field_Label__c} value={item.value} data-index={index}
+                           required={item.Is_Mandatory__c} data-id={item.Storage_Field__c} data-label={item.Storage_Field__c}
+                           data-name={item.Storage_Object__c} onchange={handleInputChange} onfocusout={updateRecords}
+                           disabled={item.Is_Disabled__c} max-length={item.Maximum_Length__c} checked={item.value}>
+                        </lightning-input>
+                     </lightning-layout-item>
+                  </template>
+                  </template>
+               </template>
+            </lightning-layout>
+         </div>
+      </lightning-accordion-section>
+      <lightning-accordion-section name="Transactional Details" label="Transactional Details">
+         <div class=" slds-p-around_small">
+            <lightning-layout multiple-rows="true" class="lightningLayout">
+               <template for:each={transactionDetailsFields} for:item="item" for:index="index">
+                  <template lwc:if={item.isPicklist}>
+                     <template if:false={item.Is_Hidden__c}>
+                     <lightning-layout-item size="4" key={item.Id} class="slds-p-around_xx-small">
+                        <lightning-combobox key={item.Id} class="removeborder" 
+                           label={item.Field_Label__c} placeholder="Select Picklist"
+                           name={item.Field_Type__c} data-label={item.Storage_Field__c} data-accordion="Transactional Details" data-index={index}
+                           options={item.picklistOptions} data-id={item.Storage_Field__c} onfocusout={updateRecords}
+                           onchange={handleInputChange} value={item.value} data-name={item.Storage_Object__c}
+                           required={item.Is_Mandatory__c} disabled={item.Is_Disabled__c}></lightning-combobox>
+                     </lightning-layout-item>
+                  </template>
+                  </template>
+                  <template lwc:else>
+                     <template if:false={item.Is_Hidden__c}>
+                     <lightning-layout-item size="4" key={item.Id} class="slds-p-around_xx-small">
+                        <lightning-input class="hideInput" style="width:100%;" variant="bare" key={item.Id} type={item.Field_Type__c} data-accordion="Transactional Details"
+                           name={item.Field_Type__c} label={item.Field_Label__c} value={item.value} data-index={index}
+                           required={item.Is_Mandatory__c} data-id={item.Storage_Field__c} data-label={item.Storage_Field__c}
+                           data-name={item.Storage_Object__c} onchange={handleInputChange} onfocusout={updateRecords}
+                           disabled={item.Is_Disabled__c} max-length={item.Maximum_Length__c} checked={item.value}>
+                        </lightning-input>
+                     </lightning-layout-item>
+                  </template>
+                  </template>
+               </template>
+            </lightning-layout>
+            <!-- Refresh BPI Button -->
+            <div class="slds-p-around_small slds-text-align_left">
+               <lightning-button
+                  label="Refresh BPI"
+                  variant="brand"
+                  onclick={handleRefreshBPI}
+                  icon-name="utility:refresh"
+                  class="slds-m-right_small">
+               </lightning-button>
+            </div>
+         </div>
+         <template lwc:if={showGraceParameters}>
+            <div class="slds-p-top_small">
+               <div class="  slds-p-around_small">
+                  <h2 class="slds-section__title slds-theme_shade slds-p-around_x-small"><b>Grace Parameters</b></h2>
+                  <lightning-layout multiple-rows="true" class="lightningLayout">
+                     <template for:each={graceParameters} for:item="item" for:index="index">
+                        <template lwc:if={item.isPicklist}>
+                           <template if:false={item.Is_Hidden__c}>
+                           <lightning-layout-item size="4" key={item.Id} class="slds-p-around_xx-small">
+                              <lightning-combobox key={item.Id} class="removeborder" 
+                                 label={item.Field_Label__c} placeholder="Select Picklist"
+                                 name={item.Field_Type__c} data-label={item.Storage_Field__c} data-accordion="Grace Parameters" data-index={index}
+                                 options={item.picklistOptions} data-id={item.Storage_Field__c} onfocusout={updateRecords}
+                                 onchange={handleInputChange} value={item.value} data-name={item.Storage_Object__c}
+                                 required={item.Is_Mandatory__c} disabled={item.Is_Disabled__c}></lightning-combobox>
+                           </lightning-layout-item>
+                        </template>
+                        </template>
+                        <template lwc:else>
+                           <template if:false={item.Is_Hidden__c}>
+                           <lightning-layout-item size="4" key={item.Id} class="slds-p-around_xx-small">
+                              <lightning-input class="hideInput" style="width:100%;" variant="bare" key={item.Id} type={item.Field_Type__c} data-accordion="Grace Parameters"
+                                 name={item.Field_Type__c} label={item.Field_Label__c} value={item.value} data-index={index}
+                                 required={item.Is_Mandatory__c} data-id={item.Storage_Field__c} data-label={item.Storage_Field__c}
+                                 data-name={item.Storage_Object__c} onchange={handleInputChange} onfocusout={updateRecords}
+                                 disabled={item.Is_Disabled__c} max-length={item.Maximum_Length__c} checked={item.value}>
+                              </lightning-input>
+                           </lightning-layout-item>
+                        </template>
+                        </template>
+                     </template>
+                  </lightning-layout>
+               </div>
+            </div>
+         </template>
+         <template lwc:if={showPurePaymentDetails}>
+            <div class="slds-p-top_small">
+               <div class="  slds-p-around_small">
+                  <h2 class="slds-section__title slds-theme_shade slds-p-around_x-small"><b>Pure Payment Details</b></h2>
+                  <lightning-layout multiple-rows="true" class="lightningLayout">
+                     <template for:each={purePaymentDetails} for:item="item" for:index="index">
+                        <template lwc:if={item.isPicklist}>
+                           <template if:false={item.Is_Hidden__c}>
+                           <lightning-layout-item size="4" key={item.Id} class="slds-p-around_xx-small">
+                              <lightning-combobox key={item.Id} class="removeborder" 
+                                 label={item.Field_Label__c} placeholder="Select Picklist"
+                                 name={item.Field_Type__c} data-label={item.Storage_Field__c} data-accordion="Pure Payment Details" data-index={index}
+                                 options={item.picklistOptions} data-id={item.Storage_Field__c} onfocusout={updateRecords}
+                                 onchange={handleInputChange} value={item.value} data-name={item.Storage_Object__c}
+                                 required={item.Is_Mandatory__c} disabled={item.Is_Disabled__c}></lightning-combobox>
+                           </lightning-layout-item>
+                        </template>
+                        </template>
+                        <template lwc:else>
+                           <template if:false={item.Is_Hidden__c}>
+                           <lightning-layout-item size="4" key={item.Id} class="slds-p-around_xx-small">
+                              <lightning-input class="hideInput" style="width:100%;" variant="bare" key={item.Id} type={item.Field_Type__c} data-accordion="Pure Payment Details"
+                                 name={item.Field_Type__c} label={item.Field_Label__c} value={item.value} data-index={index}
+                                 required={item.Is_Mandatory__c} data-id={item.Storage_Field__c} data-label={item.Storage_Field__c}
+                                 data-name={item.Storage_Object__c} onchange={handleInputChange} onfocusout={updateRecords}
+                                 disabled={item.Is_Disabled__c} max-length={item.Maximum_Length__c} checked={item.value}>
+                              </lightning-input>
+                           </lightning-layout-item>
+                        </template>
+                        </template>
+                     </template>
+                  </lightning-layout>
+               </div>
+            </div>
+         </template>
+         <template lwc:if={showDropPaymentDetails}>
+            <div class="slds-p-top_small">
+               <div class="  slds-p-around_small">
+                  <h2 class="slds-section__title slds-theme_shade slds-p-around_x-small"><b>Drop Payment Details</b></h2>
+                  <lightning-layout multiple-rows="true" class="lightningLayout">
+                     <template for:each={dropPaymentDetails} for:item="item" for:index="index">
+                        <template lwc:if={item.isPicklist}>
+                           <template if:false={item.Is_Hidden__c}>
+                           <lightning-layout-item size="4" key={item.Id} class="slds-p-around_xx-small">
+                              <lightning-combobox key={item.Id} class="removeborder" 
+                                 label={item.Field_Label__c} placeholder="Select Picklist"
+                                 name={item.Field_Type__c} data-label={item.Storage_Field__c} data-accordion="Drop Payment Details" data-index={index}
+                                 options={item.picklistOptions} data-id={item.Storage_Field__c} onfocusout={updateRecords}
+                                 onchange={handleInputChange} value={item.value} data-name={item.Storage_Object__c}
+                                 required={item.Is_Mandatory__c} disabled={item.Is_Disabled__c}></lightning-combobox>
+                           </lightning-layout-item>
+                        </template>
+                        </template>
+                        <template lwc:else>
+                           <template if:false={item.Is_Hidden__c}>
+                           <lightning-layout-item size="4" key={item.Id} class="slds-p-around_xx-small">
+                              <lightning-input class="hideInput" style="width:100%;" variant="bare" key={item.Id} type={item.Field_Type__c} data-accordion="Drop Payment Details"
+                                 name={item.Field_Type__c} label={item.Field_Label__c} value={item.value} data-index={index}
+                                 required={item.Is_Mandatory__c} data-id={item.Storage_Field__c} data-label={item.Storage_Field__c}
+                                 data-name={item.Storage_Object__c} onchange={handleInputChange} onfocusout={updateRecords}
+                                 disabled={item.Is_Disabled__c} max-length={item.Maximum_Length__c} checked={item.value}>
+                              </lightning-input>
+                           </lightning-layout-item>
+                           </template>
+                        </template>
+                     </template>
+                  </lightning-layout>
+               </div>
+            </div>
+         </template>
+         <template lwc:if={showStepLoanSection}>
+         
+            
+            <div class="slds-p-top_small">
+               <div class=" slds-p-around_small">
+                  <h2 class="slds-section__title slds-theme_shade slds-p-around_x-small"><b>Step Loan Details</b></h2>
+                  <div class="slds-m-around_medium">
+                    
+                     <c-step-loan-details record-id={recordId}
+                                          picklist-values={picklistValuesToBeShown}
+                                          onupdatecount={handleStepLoanCount}
+                                          current-user-opp-role={currentUserOppRole}
+                                          opp-stage={oppStage}
+                                          opp-sub-stage={oppSubStage}
+                                          is-disable-edit={isDisableEdit}>
+                     </c-step-loan-details>
+                  </div>
+                  <!-- <lightning-layout multiple-rows="true">
+                     <template for:each={stepLoan} for:item="item" for:index="index">
+                        <template lwc:if={item.isPicklist}>
+                           <lightning-layout-item size="4" key={item.Id} class="slds-p-around_xx-small">
+                              <lightning-combobox key={item.Id} class="removeborder" 
+                                 label={item.Field_Label__c} placeholder="Select Picklist"
+                                 name={item.Field_Type__c} data-label={item.Storage_Field__c} data-accordion="Step Loan" data-index={index}
+                                 options={item.picklistOptions} data-id={item.Storage_Field__c} onfocusout={updateRecords}
+                                 onchange={handleInputChange} value={item.value} data-name={item.Storage_Object__c}
+                                 required={item.Is_Mandatory__c} disabled={item.Is_Disabled__c}></lightning-combobox>
+                           </lightning-layout-item>
+                        </template>
+                        <template lwc:else>
+                           <lightning-layout-item size="4" key={item.Id} class="slds-p-around_xx-small">
+                              <lightning-input class="hideInput" style="width:100%;" variant="bare" key={item.Id} type={item.Field_Type__c} data-accordion="Step Loan"
+                                 name={item.Field_Type__c} label={item.Field_Label__c} value={item.value} data-index={index}
+                                 required={item.Is_Mandatory__c} data-id={item.Storage_Field__c} data-label={item.Storage_Field__c}
+                                 data-name={item.Storage_Object__c} onchange={handleInputChange} onfocusout={updateRecords}
+                                 disabled={item.Is_Disabled__c} max-length={item.Maximum_Length__c} checked={item.value}>
+                              </lightning-input>
+                           </lightning-layout-item>
+                        </template>
+                     </template>
+                     </lightning-layout>
+                     <lightning-layout multiple-rows="true">
+                     <lightning-layout-item size="4" key={item.Id} class="slds-p-around_xx-small"></lightning-layout-item>
+                     <lightning-layout-item size="4" key={item.Id} class="slds-p-around_xx-small"></lightning-layout-item>
+                     <lightning-layout-item size="4" key={item.Id} class="slds-p-right_xx-small slds-p-bottom_small">
+                        <button class="slds-button slds-button_brand save-button buttonAlignment" onclick={stepLoanAddition} key={item.Id}>Add</button>
+                     </lightning-layout-item>
+                  </lightning-layout>
+                  <template for:each={stepLoanDetails} for:item="stepLoanItem" for:index="index">
+                     <div class="boaderStyle slds-p-around_small"  key={stepLoanItem.Id}>
+                     <lightning-layout multiple-rows="true" horizontal-align="space" key={stepLoanItem.Id}>
+                        <lightning-layout-item size="4" class="slds-p-around_xx-small" >
+                           <lightning-input class="hideInput" style="width:100%;" variant="bare" type="number" name="Loan Tenor" label="Loan Tenor" value={stepLoanItem.Loan_Tenor__c} data-recid = {stepLoanItem.Id} data-apiname="Loan_Tenor__c" data-stepindex={index} onfocusout={updateStepLoan} onchange={handleStepLoanChange}></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="4"  class="slds-p-around_xx-small">
+                           <lightning-input class="hideInput" style="width:100%;" variant="bare" type="number" name="Step Number" label="Step Number" value={stepLoanItem.Step_Number__c} data-recid = {stepLoanItem.Id} data-apiname="Step_Number__c" data-stepindex={index} disabled></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="4" class="slds-p-around_xx-small">
+                           <lightning-input class="hideInput" style="width:100%;" variant="bare" type="number" name="Number of Instruments" label="Number of Instruments" value={stepLoanItem.Number_of_Instruments__c} data-recid = {stepLoanItem.Id} data-apiname="Number_of_Instruments__c" data-stepindex={index} onfocusout={updateStepLoan} onchange={handleStepLoanChange}></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="4"  class="slds-p-around_xx-small">
+                           <lightning-input style="width:100%;" variant="bare" class="stepLoanInput hideInput" type="number" name="Tenor Split" label="Tenor Split %" value={stepLoanItem.Tenor_Split__c} data-recid = {stepLoanItem.Id} data-apiname="Tenor_Split__c" data-stepindex={index} onfocusout={updateStepLoan} onchange={handleStepLoanChange} ></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="4"  class="slds-p-around_xx-small">
+                           <lightning-input style="width:100%;" variant="bare" class="stepLoanInput hideInput" type="text" name="Step Specifier" label="Step Specifier" value={stepLoanItem.Step_Specifier__c} data-recid = {stepLoanItem.Id} data-apiname="Step_Specifier__c" data-stepindex={index} onfocusout={updateStepLoan} onchange={handleStepLoanChange} ></lightning-input>
+                        </lightning-layout-item>
+                       
+                        <lightning-layout-item size="4"  class="slds-p-around_xx-small">
+                           <lightning-input class="stepLoanInput hideInput" style="width:100%;" variant="bare" type="number" name="Step Amount" label="Step Amount" value={stepLoanItem.Step_Amount__c} data-recid = {stepLoanItem.Id} data-apiname="Step_Amount__c" data-stepindex={index} onfocusout={updateStepLoan} onchange={handleStepLoanChange} ></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="4"  class="slds-p-around_xx-small"></lightning-layout-item>
+                     </lightning-layout>
+                     <lightning-layout multiple-rows="true" >
+                        <lightning-layout-item size="4" class="slds-p-around_xx-small"></lightning-layout-item>
+                     <lightning-layout-item size="4" class="slds-p-around_xx-small"></lightning-layout-item>
+                     <lightning-layout-item size="4">
+                        <button class="slds-button slds-button_brand cancel-button buttonAlignment " data-stepindex={index} 
+                           data-recid = {stepLoanItem.Id} onclick={handleStepLoanDeletion} key={stepLoanItem.loanTenor}>Delete</button>
+                     </lightning-layout-item>
+                     </lightning-layout> 
+                     </div>
+                  </template>-->
+               </div>
+            </div>
+         </template>
+         <template lwc:if={showEmiHolidayparams}>
+            <div class="slds-p-top_small">
+               <div class=" slds-p-around_small">
+                  <h2 class="slds-section__title slds-theme_shade slds-p-around_x-small"><b>EMI Holiday Parameters</b></h2>
+                  <lightning-layout multiple-rows="true" class="lightningLayout">
+                     <template for:each={emiHolidayParams} for:item="item" for:index="index">
+                        <template lwc:if={item.isPicklist}>
+                           <template if:false={item.Is_Hidden__c}>
+                           <lightning-layout-item size="4" key={item.Id} class="slds-p-around_xx-small">
+                              <lightning-combobox key={item.Id} class="removeborder" 
+                                 label={item.Field_Label__c} placeholder="Select Picklist"
+                                 name={item.Field_Type__c} data-label={item.Storage_Field__c} data-accordion="EMI Holiday Parameters" data-index={index}
+                                 options={item.picklistOptions} data-id={item.Storage_Field__c} onfocusout={updateRecords}
+                                 onchange={handleInputChange} value={item.value} data-name={item.Storage_Object__c}
+                                 required={item.Is_Mandatory__c} disabled={item.Is_Disabled__c}></lightning-combobox>
+                           </lightning-layout-item>
+                        </template>
+                        </template>
+                        <template lwc:else>
+                           <template if:false={item.Is_Hidden__c}>
+                           <lightning-layout-item size="4" key={item.Id} class="slds-p-around_xx-small">
+                              <lightning-input class="hideInput" style="width:100%;" variant="bare" key={item.Id} type={item.Field_Type__c} data-accordion="EMI Holiday Parameters"
+                                 name={item.Field_Type__c} label={item.Field_Label__c} value={item.value} data-index={index}
+                                 required={item.Is_Mandatory__c} data-id={item.Storage_Field__c} data-label={item.Storage_Field__c}
+                                 data-name={item.Storage_Object__c} onchange={handleInputChange} onfocusout={updateRecords}
+                                 disabled={item.Is_Disabled__c} max-length={item.Maximum_Length__c} checked={item.value}>
+                              </lightning-input>
+                           </lightning-layout-item>
+                        </template>
+                        </template>
+                     </template>
+                  </lightning-layout>
+               </div>
+            </div>
+         </template>
+         <template lwc:if={showPrincipalHolidayparams}>
+            <div class="slds-p-top_small">
+               <div class=" slds-p-around_small">
+                  <h2 class="slds-section__title slds-theme_shade slds-p-around_x-small"><b>Principal Holiday Parameters</b></h2>
+                  <lightning-layout multiple-rows="true" class="lightningLayout">
+                     <template for:each={principalHolidayParams} for:item="item" for:index="index">
+                        <template lwc:if={item.isPicklist}>
+                           <template if:false={item.Is_Hidden__c}>
+                           <lightning-layout-item size="4" key={item.Id} class="slds-p-around_xx-small">
+                              <lightning-combobox key={item.Id} class="removeborder" 
+                                 label={item.Field_Label__c} placeholder="Select Picklist"
+                                 name={item.Field_Type__c} data-label={item.Storage_Field__c} data-accordion="Principal Holiday Parameters" data-index={index}
+                                 options={item.picklistOptions} data-id={item.Storage_Field__c} onfocusout={updateRecords}
+                                 onchange={handleInputChange} value={item.value} data-name={item.Storage_Object__c}
+                                 required={item.Is_Mandatory__c} disabled={item.Is_Disabled__c}></lightning-combobox>
+                           </lightning-layout-item>
+                        </template>
+                        </template>
+                        <template lwc:else>
+                           <template if:false={item.Is_Hidden__c}>
+                           <lightning-layout-item size="4" key={item.Id} class="slds-p-around_xx-small">
+                              <lightning-input class="hideInput" style="width:100%;" variant="bare" key={item.Id} type={item.Field_Type__c} data-accordion="Principal Holiday Parameters"
+                                 name={item.Field_Type__c} label={item.Field_Label__c} value={item.value} data-index={index}
+                                 required={item.Is_Mandatory__c} data-id={item.Storage_Field__c} data-label={item.Storage_Field__c}
+                                 data-name={item.Storage_Object__c} onchange={handleInputChange} onfocusout={updateRecords}
+                                 disabled={item.Is_Disabled__c} max-length={item.Maximum_Length__c} checked={item.value}>
+                              </lightning-input>
+                           </lightning-layout-item>
+                        </template>
+                        </template>
+                     </template>
+                  </lightning-layout>
+               </div>
+            </div>
+         </template>
+      </lightning-accordion-section>
+      
+       <!-- <lightning-accordion-section name="Bank Details" label="Bank Details">
+         <div style="max-width: 100%; overflow: auto;">
+            <c-bsa-select-bank-cmp record-id={recordId} onhandleanalysisclick={handleAnalysisButtonClick} from-sales={fromSales} has-loan-stage-psv-or-disbursement={hasLoanStagePsvOrDisbursement} is-disable-edit={isDisableEdit}></c-bsa-select-bank-cmp>
+         </div>
+      </lightning-accordion-section>-->
+      
+      <!-- <lightning-accordion-section name="Penalty Details" label="Penalty Details">
+         <div class="slds-p-around_small">
+            <lightning-layout multiple-rows="true">
+               <template for:each={penaltyDetails} for:item="item" for:index="index">
+                  <template lwc:if={item.isPicklist}>
+                     <template if:false={item.Is_Hidden__c}>
+                     <lightning-layout-item size="4" class="slds-p-around_xx-small" key={item.Id}>
+                        <lightning-combobox key={item.Id} class="removeborder" 
+                           label={item.Field_Label__c} placeholder="Select Picklist"
+                           name={item.Field_Type__c} data-label={item.Storage_Field__c} data-accordion="Penalty Details" data-index={index}
+                           options={item.picklistOptions} data-id={item.Storage_Field__c} onfocusout={updateRecords}
+                           onchange={handleInputChange} value={item.value} data-name={item.Storage_Object__c}
+                           required={item.Is_Mandatory__c} disabled={item.Is_Disabled__c}></lightning-combobox>
+                     </lightning-layout-item>
+                  </template>
+                  </template>
+                  <template lwc:else>
+                     <template if:false={item.Is_Hidden__c}>
+                     <lightning-layout-item size="4"  class="slds-p-around_xx-small" key={item.Id}>
+                        <lightning-input class="hideInput" style="width:100%;" variant="bare" key={item.Id} type={item.Field_Type__c}
+                           name={item.Field_Type__c} label={item.Field_Label__c} value={item.value} data-index={index}
+                           required={item.Is_Mandatory__c} data-id={item.Storage_Field__c} data-label={item.Storage_Field__c} data-accordion="Penalty Details"
+                           data-name={item.Storage_Object__c} onchange={handleInputChange} onfocusout={updateRecords}
+                           disabled={item.Is_Disabled__c} max-length={item.Maximum_Length__c} checked={item.value}>
+                        </lightning-input>
+                     </lightning-layout-item>
+                  </template>
+                  </template>
+               </template>
+            </lightning-layout>
+         </div>
+      </lightning-accordion-section> -->
+   </lightning-accordion>
+   <template if:true={modalVisibility}>
+      <section role="dialog" tabindex="-1" aria-modal="true" aria-label="This is a confirmation modal for step loan record deletion"
+         class="slds-modal slds-fade-in-open">
+         <div class="slds-modal__container">
+            <header class="slds-modal__header header-section">
+               <div class="slds-text-align_center">
+                  <h2 slot="title" class="header-title slds-text-heading_medium slds-hyphenate">Confirmation Screen</h2>
+               </div>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless textAlignment">
+               Are you sure you want to delete the Step Loan?
+            </div>
+            <footer class="slds-modal__footer footer-section">
+               <div class="slds-align_absolute-center">
+                  <button class="cancel-button slds-button slds-button_brand" onclick={closeModal} disabled={isDisableEdit}>No</button>
+                  <button class="save-button slds-button slds-button_brand" onclick={confirmDelete} disabled ={isDisableEdit}>Yes</button>
+               </div>
+            </footer>
+         </div>
+      </section>
+   </template>
+   <template if:true={stepLoanUncheckModal}>
+      <section role="dialog" tabindex="-1" aria-modal="true" aria-label="This is a confirmation modal for step loan record deletion"
+         class="slds-modal slds-fade-in-open">
+         <div class="slds-modal__container">
+            <header class="slds-modal__header header-section">
+               <div class="slds-text-align_center">
+                  <h2 slot="title" class="header-title slds-text-heading_medium slds-hyphenate">Confirmation Screen</h2>
+               </div>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless textAlignment">
+               Are you sure you want to delete all Step Loans?
+            </div>
+            <footer class="slds-modal__footer footer-section">
+               <div class="slds-align_absolute-center">
+                  <button class="cancel-button slds-button slds-button_brand" onclick={closeStepLoanAllDeleteModal} disabled={isDisableEdit}>No</button>
+                  <button class="save-button slds-button slds-button_brand" onclick={confirmAllDelete} disabled={isDisableEdit}>Yes</button>
+               </div>
+            </footer>
+         </div>
+      </section>
+   </template>
+</template>

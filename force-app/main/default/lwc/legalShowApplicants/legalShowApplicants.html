@@ -1,0 +1,84 @@
+<template>
+    <template if:true={showTabs}>
+    <lightning-accordion allow-multiple-sections-open active-section-name="Collateral Owner">
+        <lightning-accordion-section name="Collateral Owner" label='Collateral Owner' style="background-color: white;">
+            <template if:true={showManagerNotification}>
+                <p style="color:red; font-weight:bold;">
+                    The Collateral Owner(s) have been modified. Please review and confirm or reject the changes before accepting the report.
+                </p>
+            </template>
+
+            <template if:true={applicants}>
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                <thead>
+                    <tr>
+                        <th scope="col" style="width: 65px; text-align: center;">Select Owner</th>
+                        <th scope="col">Name</th>
+                        <th scope="col">Applicant Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={applicants} for:item="app">
+                        <tr key={app.Id}>
+                            <td style="text-align: center;">
+                                <!-- <template if:false={showManagerNotification}> -->
+                                    <lightning-input type="checkbox" data-id={app.applicantId} checked={app.isOwner} onchange={handleCheckboxChange} disabled={isCheckboxDisabled}></lightning-input>
+                                <!-- </template> -->
+                            </td>
+                            <td>{app.applicantName}</td>
+                            <td>{app.applicantType}</td>
+                        </tr>
+                    </template>
+                </tbody>
+                </table>
+            </template>
+
+            <template if:true={showManagerNotification}>
+                <div class="slds-m-top_medium">
+                    <lightning-button variant="success" label="Accept" onclick={handleAccept}></lightning-button>
+                    <lightning-button variant="destructive" label="Reject" onclick={handleReject}
+                        class="slds-m-left_small"></lightning-button>
+                </div>
+            </template>
+        </lightning-accordion-section>
+    </lightning-accordion>
+     <lightning-accordion allow-multiple-sections-open active-section-name="Borrower/Co Borrower">
+        <lightning-accordion-section name="Borrower/Co Borrower" label='Borrower/Co Borrower' style="background-color: white;">
+            <template if:true={showManagerNotification}>
+                <p style="color:red; font-weight:bold;">
+                    The Collateral Owner(s) have been modified. Please review and confirm or reject the changes before accepting the report.
+                </p>
+            </template>
+
+            <template if:true={applicantDetails}>
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped">
+                <thead>
+                    <tr>
+                        <!-- <th scope="col" style="width: 65px; text-align: center;">Select Owner</th> -->
+                        <th scope="col">Name</th>
+                        <th scope="col">Applicant Type</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!--<template for:each={applicants} for:item="app">-->
+                        <template for:each={applicantDetails} for:item="app">
+                        <tr key={app.Id}>
+                            <td>{app.applicantName}</td>
+                            <td>{app.applicantType}</td>
+                        </tr>
+                    </template>
+                </tbody>
+                </table>
+            </template>
+
+            <template if:true={showManagerNotification}>
+                <div class="slds-m-top_medium">
+                    <lightning-button variant="success" label="Accept" onclick={handleAccept}></lightning-button>
+                    <lightning-button variant="destructive" label="Reject" onclick={handleReject}
+                        class="slds-m-left_small"></lightning-button>
+                </div>
+            </template>
+        </lightning-accordion-section>
+    </lightning-accordion>
+    </template>
+</template>

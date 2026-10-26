@@ -1,0 +1,588 @@
+<template>
+    <template if:true={isloading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </template>
+
+    <div class="container" style=" margin: 8px 5px 1px 10px;">
+        <span class="styleContainer"></span>
+            <template if:true={isCredit}>
+                <div style="padding-bottom: 2%;padding-left: 2%;">
+                    <button class="slds-button slds-button_brand save-button" onclick={fetchDuplicateLoans}>Get Duplicate Loans</button>
+                </div>
+            </template>
+        <!-- <template if:false={loginStage}> -->
+           
+            <template if:false={showMessageDupCustList}>
+                <template if:false={openPopUp}>
+                    <template if:false={loginStage}>
+                        <div class="slds-grid slds-wrap slds-m-bottom_medium">
+                            <div class="slds-col slds-size_1-of-6 slds-p-left_small">
+                                <lightning-combobox name="exampleCombo" value={selectedValue} placeholder="Choose an option" disabled={hideButton}
+                                    options={options} onchange={handleChangeDisposition}>
+                                </lightning-combobox>
+                            </div>
+                            <!--
+                             <div class="slds-col slds-size_1-of-4 slds-m-around_xx-small" style="margin-top: auto;">
+                                <button class="save-button slds-button slds-button_brand"
+                                    disabled={isNeedComments} 
+                                    onclick={handleViewCommentDuplicate}>View Comments</button>
+                            </div>-->
+                        </div>
+                    </template>
+        
+                    <template if:true={showRemarksModal}>
+                        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-03" aria-modal="true"
+                            aria-describedby="modal-content-id-3" class="slds-modal slds-fade-in-open">
+                            <div class="slds-modal__container">
+                                <header class="slds-modal__header"
+                                    style="background-color: skyblue; font-size: 15px; font-weight: bold;">
+                                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                        title="Close" onclick={hideModalBoxCancel}>
+                                        <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                                            size="small"></lightning-icon>
+                                        <span class="slds-assistive-text">Close</span>
+                                    </button>
+                                    <h2 id="modal-heading-04" class="slds-text-heading_medium slds-hyphenate">Enter a
+                                        Comment</h2>
+                                </header>
+        
+                                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-5">
+                                    <p>
+                                        <lightning-textarea placeholder="Enter a comment" value={remarks}
+                                            onchange={handleRemarksChange}>
+                                        </lightning-textarea>
+                                    </p>
+                                </div>
+        
+                                <footer class="slds-modal__footer">
+                                    <button class="save-button slds-button slds-button_brand" disabled={isNeedComments}
+                                        onclick={handleSaveRemarks}>Submit</button>
+                                    <button class="slds-button slds-button_neutral cancelButton"
+                                        onclick={hideModalBoxCancel}>Cancel</button>
+                                </footer>
+                            </div>
+                        </section>
+                        <div class="slds-backdrop slds-backdrop_open"></div>
+                    </template>
+        
+        
+                    <div class="table-header-box">Existing Customer Details</div>
+                    <div style="overflow-x: auto;">
+                        <table class="table-class slds-table slds-table_bordered slds-table_cell-buffer">
+                            <thead class="table-head">
+                                <tr>
+                                    <th class="tdBorderHeader slds-cell-wrap">CIF</th>
+                                    <th class="tdBorderHeader slds-cell-wrap">Name</th>
+                                    <th class="tdBorderHeader slds-cell-wrap">Loan Application / LAN</th>
+                                    <th class="tdBorderHeader slds-cell-wrap">Creation Date</th>
+                                    <th class="tdBorderHeader slds-cell-wrap">Product</th>
+                                    <th class="tdBorderHeader slds-cell-wrap">Stage</th>
+                                    <th class="tdBorderHeader slds-cell-wrap">Status</th>
+                                    <th class="tdBorderHeader slds-cell-wrap">PAN</th>
+                                    <th class="tdBorderHeader slds-cell-wrap">Mobile Number</th>
+                                    <th class="tdBorderHeader slds-cell-wrap">DOB/DOI</th>
+                                    <th class="tdBorderHeader slds-cell-wrap">Customer Type</th>
+                                    <th class="tdBorderHeader slds-cell-wrap">Source System</th>
+                                    <th class="tdBorderHeader slds-cell-wrap">Match Reason</th>
+                                    <!--<th class="tdBorderHeader slds-cell-wrap">Select Applicant</th>
+                                     <th class="tdBorderHeader slds-cell-wrap">Disposition Status</th>
+                                    <th class="tdBorderHeader slds-cell-wrap">Disposition Remarks</th>
+                                    <th class="tdBorderHeader slds-cell-wrap">Select</th> -->
+                                    <template if:true={fromSales}>
+                                        <th class="tdBorderHeader slds-cell-wrap">Select</th>
+                                    </template>                                    
+                                    <th class="tdBorderHeader slds-cell-wrap">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={dupCustList} for:item="record">
+                                    <tr key={record.customerId}>
+                                        <td class="tdBorderHeader slds-cell-wrap">{record.customerNumber}</td>
+                                        <td class="tdBorderHeader slds-cell-wrap">
+                                            <a href={record.custLink} target="_blank">{record.customerName}</a>
+                                        </td>
+                                        <template if:true={record.loanFromSfdc}>
+                                            <td class="tdBorderHeader slds-cell-wrap">
+                                                <a href={record.loanLink} target="_blank">{record.loanNum}</a>
+                                            </td>
+                                        </template>
+                                        <template if:false={record.loanFromSfdc}>
+                                            <td class="tdBorderHeader slds-cell-wrap">
+                                                {record.loanNum}
+                                            </td>
+                                        </template>
+                                        <td class="tdBorderHeader slds-cell-wrap" style="width: 80px;">{record.loanCreatedDate}</td>
+                                        <td class="tdBorderHeader slds-cell-wrap">{record.product}</td>
+                                        <td class="tdBorderHeader slds-cell-wrap">{record.stage}</td>
+                                        <td class="tdBorderHeader slds-cell-wrap">{record.status}</td>
+                                        <td class="tdBorderHeader slds-cell-wrap">{record.panNumber}</td>
+                                        <td class="tdBorderHeader slds-cell-wrap">{record.mobileNumber}</td>
+                                        <td class="tdBorderHeader slds-cell-wrap">{record.dob}</td>
+                                        <td class="tdBorderHeader slds-cell-wrap">{record.customerType}</td>
+                                        <td class="tdBorderHeader slds-cell-wrap">{record.sourceSystem}</td>
+                                        <td class="tdBorderHeader slds-cell-wrap">{record.matchReason}</td>
+                                        <!--<td class="tdBorderHeader slds-cell-wrap"><lightning-combobox name="applicantselect" value={record.selectedValue} data-id={record.customerId} placeholder="Choose an option" disabled={record.isDisabled}
+                                            options={record.applicantOptions} onchange={handleChangeApplicant}>
+                                        </lightning-combobox></td>-->
+                                        
+                                        <!-- <td class="tdBorderHeader slds-cell-wrap">{record.dispositionStatus}</td>
+                                        <td class="tdBorderHeader slds-cell-wrap">{record.dispositionRemarks}</td> -->
+                                        <template if:true={fromSales}>
+                                            <td class="tdBorderHeader slds-cell-wrap">
+                                                <template if:false={hideButton}>
+                                                    <lightning-input type="checkbox" onchange={handleRowSelectionFromApi} data-applicant={record.isCoApplicant}
+                                                        data-id={record.customerNumber} name="rowSelection" checked={record.isSelected} data-type={record.sourceSystem}
+                                                        data-name={record.panNumber} data-key={record.accountId} data-loan={record.loanNum} data-count ={record.uniqueCount}
+                                                        disabled={record.isDisabled}>
+                                                    </lightning-input>
+                                                </template>
+                                            </td>
+                                        </template>
+                                        <td class="tdBorderHeader slds-cell-wrap">
+                                            
+                                            <template if:true={record.isFromSFDC}>
+                                                <button class="SaveButton slds-button slds-button_brand"
+                                                name={record.customerNumber}
+                                                style="font-size: 11px; width: 140px; background-color:#9bbf56; color: white; border-color: #9bbf56; font-weight: 500;"
+                                                onclick={handleViewLoanDetail}>Loan 360</button>
+                                            </template>
+                                            <template if:false={record.isFromSFDC}>
+                                               <p>-</p>
+                                            </template>
+    
+                                          
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+        
+                    <template if:true={showOffersTable}>
+                        <div class="table-header-box" style="margin-top: 2%;">
+                            Existing Offer Details
+                        </div>
+                        <table class="table-class slds-table slds-table_bordered slds-table_cell-buffer">
+                            <thead class="table-head">
+                                <tr>
+                                    <template for:each={tableHeaders} for:item="header">
+                                        <th key={header.label} class="tdBorderHeader slds-cell-wrap">{header.label}</th>
+                                    </template>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={tableDataValues} for:item="record">
+        
+                                    <tr key={record.columnValues}>
+                                        <td class="tdBorderHeader slds-cell-wrap">
+                                            <a href={record.offerLink} target="_blank">{record.offerName}</a>
+                                        </td>
+                                        <template for:each={record.columnValues} for:item="column">
+                                            <td key={column} class="tdBorderHeader slds-cell-wrap">
+                                                {column}
+                                            </td>
+        
+                                        </template>
+                                        <td class="tdBorderHeader slds-cell-wrap">
+                                            <template if:false={record.disableOfferButton}>
+                                                <button class="SaveButton slds-button slds-button_brand"
+                                                    style="font-size: 11px;width: 140px;background-color: #dc387e;color: white;border-color: #dc387e;font-weight: 500;    font-size: 11px;margin-top:1%;"
+                                                    onclick={handleSendOffer} data-id={record.offerId}
+                                                    data-name={record.offerStatus}>Send Offer</button>
+                                            </template>
+                                            <template if:true={record.disableOfferButton}>
+                                                <button class="SaveButton slds-button slds-button_brand"
+                                                    style="font-size: 11px;width: 140px;background-color: grey;color: white;border-color: grey;font-weight: 500;    font-size: 11px;margin-top:1%;"
+                                                    data-id={record.offerId}>Offer Sent</button>
+                                            </template>
+                                        </td>
+                                        <td class="tdBorderHeader slds-cell-wrap">
+                                            <template if:true={record.disableOfferButton}>
+                                                <button class="SaveButton slds-button slds-button_brand"
+                                                    style="font-size: 11px;width: 140px;background-color: #dc387e;color: white;border-color: #dc387e;font-weight: 500;    font-size: 11px;margin-top:1%;"
+                                                    onclick={getExisitingCustDetails} data-id={record.offerId}
+                                                    value={record.offerStatus}>Check Status</button>
+                                            </template>
+                                            <template if:false={record.disableOfferButton}>
+                                                <button class="SaveButton slds-button slds-button_brand"
+                                                    style="font-size: 11px;width: 140px;background-color: grey;color: white;border-color: grey;font-weight: 500;    font-size: 11px;margin-top:1%;"
+                                                    data-id={record.offerId} value={record.offerStatus}>Check
+                                                    Status</button>
+                                            </template>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+        
+                    <template if:true={showLoanInfo}>
+                        <table class="table-class slds-table slds-table_bordered slds-table_cell-buffer"
+                            style="margin-top:1%">
+                            <thead class="table-head">
+                                <tr>
+                                    <th class="tdBorderHeader slds-cell-wrap">Select</th>
+                                    <th class="tdBorderHeader slds-cell-wrap">Loan ID</th>
+                                    <th class="tdBorderHeader slds-cell-wrap">Loan Product</th>
+                                    <!-- <th class="tdBorderHeader slds-cell-wrap">Action</th> -->
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={customerDemographicResp} for:item="iter">
+                                    <tr key={iter.finReference}>
+                                        <td>
+                                            <lightning-input type="radio" onchange={handleLoanSelection}
+                                                data-id={iter.finReference} name="rowSelection"></lightning-input>
+                                        </td>
+                                        <td class="tdBorderHeader slds-cell-wrap">{iter.finReference}</td>
+                                        <td class="tdBorderHeader slds-cell-wrap">{iter.finType}</td>
+        
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                        <div style="display: flex; justify-content: flex-end; margin-top: 1%;">
+                            <!-- <footer class="slds-modal__footer slds-align_absolute-center slds-m-top_medium slds-m-top_xx-small" style="border: revert; padding:20px;"> -->
+                            <template if:true={createLoanTopUpVisibility}>
+                                <button class="SaveButton slds-button slds-button_brand"
+                                    style="font-size: 11px;width: 140px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;"
+                                    onclick={convertLoanToTopUp}>Continue</button>
+                            </template>
+                            <template if:false={createLoanTopUpVisibility}>
+                                <button class="slds-button slds-button_neutral"
+                                    style="font-size: 11px;width: 140px;color: black;background-color: lightgrey;font-weight: 500;">Continue</button>
+                            </template>
+                        </div>
+                    </template>
+        
+                    <template if:true={showExistingLoans}>
+                        <div class="table-header-box" style="margin-top: 2%;">
+                            Existing Loan Details
+                        </div>
+                        <table class="table-class slds-table slds-table_bordered slds-table_cell-buffer">
+                            <thead class="table-head">
+                                <tr>
+                                    <th class="tdBorderHeader slds-cell-wrap">Loan Application Id</th>
+                                    <th class="tdBorderHeader slds-cell-wrap">Product</th>
+                                    <th class="tdBorderHeader slds-cell-wrap">Loan Amount</th>
+                                    <th class="tdBorderHeader slds-cell-wrap">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={existingLoans} for:item="iter">
+                                    <tr key={iter.loanNo}>
+                                        <td class="tdBorderHeader slds-cell-wrap">{iter.loanNo}</td>
+                                        <td class="tdBorderHeader slds-cell-wrap">{iter.product}</td>
+                                        <td class="tdBorderHeader slds-cell-wrap">{iter.loanAmount}</td>
+                                        <td class="tdBorderHeader slds-cell-wrap">{iter.loanStatus}</td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </template>
+        
+                    <div style="display: flex; justify-content: flex-end; margin-top: 2%;">
+                        <button class="SaveButton slds-button slds-button_brand"
+                            style="font-size: 11px; width: 140px; background-color:#9bbf56; color: white; border-color: #9bbf56; font-weight: 500;"
+                            onclick={handleNext}>Next</button>
+                    </div>
+                </template>
+            </template>
+            <template if:true={showMessageDupCustList}>
+                <p class="center-text"><b>Existing customer not found</b></p>
+            </template>
+    
+
+        <div class="slds-p-around_small ">
+            <template if:true={showNegativeList}>
+                <template for:each={objectEntries} for:item="entry" >
+                    <div key={entry.key} class="slds-m-bottom_medium">
+                        <!-- <template if:false={isMobileView}>
+                            <div class="slds-grid slds-wrap">
+                                <div class="slds-col slds-size_1-of-6">
+                                    <span>
+                                        <lightning-combobox name="exampleCombo" value={entry.selectedValue}
+                                            data-key={entry.key} placeholder="Choose an option" options={options}
+                                            onchange={handleChange} disabled={hasLoanStagePsvOrDisbursement}>
+                                        </lightning-combobox>
+                                    </span>
+                                </div>
+                                <div class="slds-col slds-size_1-of-4 view-comments-container">
+                                    <button class="slds-button slds-button_brand" style="background-color:#1467EB" disabled={isNeedComments}
+                                        data-key={entry.key} onclick={handleViewComment}>View Comments</button>
+                                </div>
+                            </div>
+                        </template> -->
+
+                        <template if:true={isShowModal}>
+                            <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-03" aria-modal="true"
+                                aria-describedby="modal-content-id-3" class="slds-modal slds-fade-in-open">
+                                <div class="slds-modal__container">
+
+                            <header class="slds-modal__header" style="background-color: #0845ad;font-size: 15px;font-weight: bold; color:white;">
+                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+                            <lightning-icon icon-name="utility:close"
+                                alternative-text="close"
+                                variant="inverse"
+                                size="small" ></lightning-icon>
+                                            <span class="slds-assistive-text">Close</span>
+                                        </button>
+                                <h2 id="modal-heading-03" class="slds-text-heading_medium slds-hyphenate">Enter a Comment</h2>
+                                    </header>
+
+                                    <div class="slds-modal__content slds-p-around_medium comment-modal-content" id="modal-content-id-3">
+                                        <p>
+                                            <!-- <lightning-textarea disabled ={isNeedComments} placeholder="Enter a comment" onchange={handleCommentChange}></lightning-textarea> -->
+                                            <textarea class="dark-textarea" onchange={handleCommentChange} placeholder="Enter a comment" disabled ={isNeedComments}></textarea>
+                                        </p>
+
+                                        <p>
+                                            <!-- <lightning-textarea disabled value={viewComments} ></lightning-textarea> -->
+                                            <textarea class="dark-textarea" disabled>{viewComments}</textarea>
+                                        </p>
+                                    </div>
+
+                                    <footer class="slds-modal__footer">
+                                <button class="save-button slds-button slds-button_brand" disabled ={isNeedComments} data-key={entry.key} onclick={handleModalSubmit}>Submit</button>
+                                <button class="slds-button slds-button_neutral cancelButton" onclick={hideModalBox}>Cancel</button>
+                                    </footer>
+
+                                </div>
+                            </section>
+
+                            <div class="slds-backdrop slds-backdrop_open"></div>
+                        </template>
+                    
+                        <template if:false={entry.records}>
+                            <p class="center-text"><b>Existing customer not found</b></p>
+                        </template>
+                        <template if:false={showMessageDupCustList}>
+                            <template if:true={openPopUp}>
+                                <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                                    aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                
+                                    <div class="slds-modal__container custom-modal-container">
+                                        <!-- Modal Header -->
+                                        <header class="slds-modal__header custom-modal-header">
+                                            <h2 id="modal-heading-01" class="slds-text-heading_medium">Existing Customer</h2>
+                                        </header>
+
+                                        <!-- Modal Body -->
+                                        <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                                            <table class="table-class slds-table slds-table_bordered slds-table_cell-buffer">
+                                                <thead class="table-head">
+                                                    <tr>
+                                                        <th class="tdBorderHeader slds-cell-wrap">UCIC</th>
+                                                        <th class="tdBorderHeader slds-cell-wrap">Name</th>
+                                                        <th class="tdBorderHeader slds-cell-wrap">Mobile Number</th>
+                                                        <th class="tdBorderHeader slds-cell-wrap">Pan</th>
+                                                        <th class="tdBorderHeader slds-cell-wrap">Date of Birth/Date of incorporation</th>
+                                                        <th class="tdBorderHeader slds-cell-wrap">Select</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <template for:each={dupCustList} for:item="record">
+                                                        <tr key={record.customerId}>
+                                                            <td class="tdBorderHeader slds-cell-wrap">{record.customerId}</td>
+                                                            <td class="tdBorderHeader slds-cell-wrap">
+                                                                <a href={record.custLink} target="_blank">{record.name}</a>
+                                                            </td>
+                
+                                                            <td class="tdBorderHeader slds-cell-wrap">{record.mobileNumber}</td>
+                                                            <td class="tdBorderHeader slds-cell-wrap">{record.panNumber}</td>
+                                                            <td class="tdBorderHeader slds-cell-wrap">{record.dob}</td>
+                                                            <td class="tdBorderHeader slds-cell-wrap">
+                                                                <lightning-input type="checkbox" onchange={handleRowSelectionFromApi}
+                                                                    data-id={record.customerNumber} name="rowSelection" data-count ={record.uniqueCount}
+                                                                    checked={record.isSelected} disabled={record.isDisabled}>
+                                                                </lightning-input>
+                                                            </td>
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                
+                                            <template if:true={showOffersTable}>
+                                                <table class="table-class slds-table slds-table_bordered slds-table_cell-buffer"
+                                                    style="margin-top: 2%;">
+                                                    <thead class="table-head">
+                                                        <tr>
+                                                            <template for:each={tableHeaders} for:item="header">
+                                                                <th key={header.label} class="tdBorderHeader slds-cell-wrap">{header.label}
+                                                                </th>
+                                                            </template>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <template for:each={tableDataValues} for:item="record">
+                                                            <tr key={record.columnValues}>
+                                                                <td class="tdBorderHeader slds-cell-wrap">
+                                                                    <a href={record.offerLink} target="_blank">{record.offerName}</a>
+                                                                </td>
+                                                                <template for:each={record.columnValues} for:item="column">
+                                                                    <td key={column} class="tdBorderHeader slds-cell-wrap">{column}</td>
+                                                                </template>
+                
+                                                                <td class="tdBorderHeader slds-cell-wrap">
+                                                                    <template if:false={record.disableOfferButton}>
+                                                                        <button class="SaveButton slds-button slds-button_brand"
+                                                                            style="font-size: 11px;width: 140px;background-color: #dc387e;color: white;border-color: #dc387e;font-weight: 500;    font-size: 11px;margin-top:1%;"
+                                                                            onclick={handleSendOffer} data-id={record.offerId}
+                                                                            data-name={record.offerStatus}>Send Offer</button>
+                                                                    </template>
+                                                                    <template if:true={record.disableOfferButton}>
+                                                                        <template if:true={offersent}>
+                                                                            <button class="SaveButton slds-button slds-button_brand"
+                                                                                style="font-size: 11px;width: 140px;background-color: grey;color: white;border-color: grey;font-weight: 500;    font-size: 11px;margin-top:1%;">Offer
+                                                                                Sent</button>
+                                                                        </template>
+                                                                        <template if:true={offeraccepted}>
+                                                                            <button class="SaveButton slds-button slds-button_brand"
+                                                                                style="font-size: 11px;width: 140px;background-color: grey;color: white;border-color: grey;font-weight: 500;    font-size: 11px;margin-top:1%;">Offer
+                                                                                Accepted</button>
+                                                                        </template>
+                                                                    </template>
+                                                                </td>
+                                                                <td class="tdBorderHeader slds-cell-wrap">
+                                                                    <button class="SaveButton slds-button slds-button_brand"
+                                                                        style="font-size: 11px;width: 140px;background-color: #dc387e;color: white;border-color: #dc387e;font-weight: 500;    font-size: 11px;margin-top:1%;"
+                                                                        onclick={getExisitingCustDetails} data-id={record.offerId}
+                                                                        value={record.offerStatus}>Check Status</button>
+                                                                </td>
+                                                            </tr>
+                                                        </template>
+                                                    </tbody>
+                                                </table>
+                                            </template>
+                
+                                            <template if:true={showLoanInfo}>
+                                                <div class="slds-scrollable_x slds-m-top_medium">
+                                                <table class="table-class slds-table slds-table_bordered slds-table_cell-buffer"
+                                                    style="margin-top:1%">
+                                                    <thead class="table-head">
+                                                        <tr>
+                                                            <th class="tdBorderHeader slds-cell-wrap">Select</th>
+                                                            <th class="tdBorderHeader slds-cell-wrap">Loan ID</th>
+                                                            <th class="tdBorderHeader slds-cell-wrap">Loan Product</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <template for:each={customerDemographicResp} for:item="iter">
+                                                            <tr key={iter.finReference}>
+                                                                <td>
+                                                                    <lightning-input type="radio" onchange={handleLoanSelection}
+                                                                        data-id={iter.finReference} name="rowSelection">
+                                                                    </lightning-input>
+                                                                </td>
+                                                                <td class="tdBorderHeader slds-cell-wrap">{iter.finReference}</td>
+                                                                <td class="tdBorderHeader slds-cell-wrap">{iter.finType}</td>
+                                                            </tr>
+                                                        </template>
+                                                    </tbody>
+                                                </table>
+                                                </div>
+                                            </template>
+                                        </div>
+                
+                                        <!-- Modal Footer -->
+                                        <footer class="slds-modal__footer"
+                                            style="background-color: skyblue; display: flex; justify-content: center;">
+                                            <button class="cancelButton slds-button slds-button_brand"
+                                                style="font-size: 11px; width: 140px; background-color:#16283f ; color: white; border: 1px solid #7c3aed; font-weight: 500;"
+                                                onclick={handleCloseModal}>Cancel</button>
+                                            <button class="SaveButton slds-button slds-button_brand"
+                                                style="font-size: 11px; width: 140px; background-color:#7c3aed; color: white; border:none; font-weight: 500;"
+                                                onclick={handleNextBasicDetails}>Next</button>
+                
+                                        </footer>
+                                    </div>
+                
+                                </section>
+                                <div class="slds-backdrop slds-backdrop_open"></div> <!-- Backdrop -->
+                            </template>
+                
+                            
+                
+                        </template>
+                        <template if:true={entry.records}>
+                    <!-- <div class="table-header-box external-list-header" style="margin-top: 25px;">
+                        External List ({entry.appName})
+                    </div> -->
+                    <!-- <table class="table-class slds-table slds-table_bordered slds-table_cell-buffer external-list-table">
+                        <thead class="table-head">
+                            <tr>
+                                <th class="tdBorderHeader slds-cell-wrap">Sr.No.</th>
+                                <th class="tdBorderHeader slds-cell-wrap">First Name</th>
+                                <th class="tdBorderHeader slds-cell-wrap">Last Name</th>
+                                <th class="tdBorderHeader slds-cell-wrap">DOB</th>
+                                <th class="tdBorderHeader slds-cell-wrap">Address</th>
+                                <th class="tdBorderHeader slds-cell-wrap">PAN</th>
+                                <th class="tdBorderHeader slds-cell-wrap">Mobile Number</th>
+                                <th class="tdBorderHeader slds-cell-wrap">CIF Id</th>
+                                <th class="tdBorderHeader slds-cell-wrap">Rule</th>
+                                <th class="tdBorderHeader slds-cell-wrap">Disposition</th>
+                                <th class="tdBorderHeader slds-cell-wrap">
+
+                                <lightning-input type="checkbox" checked={entry.isSelectAll} disabled={entry.isDisabledAll} data-key={entry.key}
+                                        onchange={handleSelectAllNegDed} label-hidden class="slds-checkbox">
+                                    </lightning-input>
+
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={entry.records} for:item="record">
+                                <tr key={record.id}>
+
+                                    <td class="tdBorderHeader slds-cell-wrap">{record.SrNo}</td>
+                                    <td class={record.firstNameClass}>
+                                        {record.FirstName}
+                                    </td>
+                                    <td class={record.lastNameClass}>{record.LastName}</td>
+                                    <td class={record.DOBClass}>{record.DOB}</td>
+                                    <td class={record.AddressClass}>{record.Address}</td>
+                                    <td class={record.PanClass}>{record.Pan}</td>
+                                    <td class={record.MobileNumberClass}>{record.MobileNumber}</td>
+                                    <td class={record.PanClass}>{record.CIF_Id}</td>
+                                    <td class={record.PanClass}>{record.Rule}</td>
+                                    <td class={record.PanClass}>{record.disposition}</td>
+                                    <td class="tdBorderHeader slds-cell-wrap">
+                                        <lightning-input type="checkbox" onchange={handleRowSelectionNegativeDedupe}
+                                     data-key={entry.key} 
+                                data-id={record.id} 
+                                         name="rowSelection" checked={record.isSelected}
+                                        disabled={record.isDisabled}>
+                                        </lightning-input>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table> -->
+                        </template>
+                        <template if:false={entry.records}>
+                            <p class="center-text"><b>External list not found</b></p>
+                        </template>
+                    </div>
+                </template>
+            </template>
+            <template if:false={showNegativeList}>
+                <p class="center-text"><b>Negative list not found</b></p>
+            </template>
+
+        </div>
+
+        
+
+        <!-- </template>
+    <template if:true={loginStage}> -->
+        
+        <!-- </template> -->
+        
+         <c-sales-loan-parent-360-cmp show-in-popup="true" if:true={modalOpen} cust-id={custIdForCustomer} onhandleclose={onhandleclose}></c-sales-loan-parent-360-cmp>
+    </div>
+    <template if:true={showTopupScreen}>
+        <c-sales-loan-login-top-up-flow-cmp from-dedupe={showTopupScreen} selected-cif={selectedId} selected-loan={selectedLMSId} source-system={sourceSystem} record-id={recordId} is-ghf-loan={isGHFSelected} onupdatecustomerdetails={updateCustomerDetails} onresetcustomer={resetSelect}></c-sales-loan-login-top-up-flow-cmp>
+    </template>
+
+</template>

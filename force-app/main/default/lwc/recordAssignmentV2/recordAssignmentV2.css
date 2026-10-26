@@ -1,0 +1,199 @@
+/* _______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________ */
+@import "c/cssLibrary";
+
+/* ── Dark theme tokens (matching "Sourcing Branch" reference screenshot) ── */
+:host {
+    --ra-bg-page:      #0d0d17;
+    --ra-card-bg:      #14141f;
+    --ra-card-border:  rgba(139, 92, 246, 0.18);
+    --ra-accent-start: #7c3aed;
+    --ra-accent-end:   #a855f7;
+    --ra-text-title:   #ffffff;
+    --ra-text-sub:     #9ca3af;
+    --ra-text-body:    #d1d5db;
+    --ra-field-bg:     #1b1b2b;
+    --ra-field-border: rgba(255, 255, 255, 0.08);
+    --ra-radius-lg:    20px;
+    --ra-radius-sm:    10px;
+
+    display: block;
+    width: 100%;
+    border-radius: var(--ra-radius-lg);
+    overflow: hidden;
+    background: var(--ra-bg-page) !important;
+}
+
+/* ── Card wrapper — replaces the old inline white background ────────────── */
+.border-field {
+    background: var(--ra-card-bg) !important;
+    border: 2px solid var(--ra-card-border);
+    border-radius: var(--ra-radius-lg) !important;
+    overflow: hidden;
+    box-shadow: 0 8px 28px rgba(0, 0, 0, 0.35);
+    color: var(--ra-text-title);
+}
+
+/* ── Header — icon badge + title + subtitle (matches "Sourcing Branch") ── */
+.header-section,
+.slds-modal__header {
+    background: transparent !important;
+    border-bottom: none;
+    padding: 20px 20px 4px;
+}
+
+.header-badge-row {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 12px;
+}
+
+.header-icon-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: var(--ra-radius-sm);
+    background: linear-gradient(135deg, var(--ra-accent-start) 0%, var(--ra-accent-end) 100%);
+    box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4);
+}
+
+.slds-text-align_center {
+    text-align: left !important;
+}
+
+.header-title {
+    color: var(--ra-text-title);
+    font-weight: 700;
+    font-size: 1rem;
+}
+
+.header-subtitle {
+    color: var(--ra-text-sub);
+    font-size: 0.78rem;
+    margin: 4px 0 0;
+}
+
+/* ── Content area — SLDS ships a white .slds-modal__content, force it dark */
+.body-section,
+.slds-modal__content {
+    background: var(--ra-card-bg) !important;
+    color: var(--ra-text-title) !important;
+}
+
+.assigned-text {
+    text-align: center;
+    margin: 0px 0px 15px 0px;
+    color: var(--ra-text-body);
+}
+
+.info-row {
+    color: var(--ra-text-body);
+}
+
+.info-icon {
+    --slds-c-icon-color-foreground-default: var(--ra-accent-end);
+}
+
+.info-text {
+    color: var(--ra-text-sub);
+}
+
+/* ── Branch lookup / user table wrappers — dark surround, best-effort ──── */
+.branch-lookup-wrapper {
+    width: 230px;
+    margin-bottom: 10px;
+
+    --slds-c-input-color-background: var(--ra-field-bg);
+    --slds-c-input-text-color: var(--ra-text-title);
+    --slds-c-input-label-color: var(--ra-text-title);
+    --slds-c-input-color-border: var(--ra-field-border);
+    --sds-c-input-color-background: var(--ra-field-bg);
+    --sds-c-input-text-color: var(--ra-text-title);
+    --sds-c-input-color-border: var(--ra-field-border);
+    --lwc-colorTextLabel: var(--ra-text-title);
+    --lwc-colorTextInput: var(--ra-text-title);
+    --lwc-colorBackgroundInput: var(--ra-field-bg);
+    --lwc-colorBorderInput: var(--ra-field-border);
+}
+
+.branch-details-card {
+    width: 230px;
+    margin: 0 auto 10px;
+    padding: 8px 12px;
+    border-radius: var(--ra-radius-sm);
+    background: var(--ra-field-bg);
+    border: 1px solid var(--ra-field-border);
+}
+
+.branch-details-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+}
+
+.branch-details-label {
+    color: var(--ra-text-sub);
+    font-size: 0.78rem;
+}
+
+.branch-details-value {
+    color: var(--ra-text-title);
+    font-size: 0.78rem;
+    font-weight: 600;
+}
+
+.user-table-wrapper {
+    margin: 12px 0;
+    border-radius: var(--ra-radius-sm);
+    overflow: hidden;
+}
+
+/* ── Assign button — purple gradient pill, matching "Continue →" CTA ────── */
+.button-container {
+    margin-top: 14px;
+}
+
+/* ================= ASSIGN APPLICANT BUTTON ================= */
+
+.save-button {
+    background: #1f6feb !important;
+    border: none !important;
+    border-radius: 6px !important;
+
+    color: #ffffff !important;
+    font-weight: 600;
+
+    padding: 10px 26px !important;
+    width: 100%;
+
+    box-shadow: none !important;
+}
+
+/* Hover */
+.save-button:hover {
+    background: #1a5fc4 !important;
+}
+
+/* Focus / Click */
+.save-button:focus,
+.save-button:active {
+    background: #1a5fc4 !important;
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.footer-section,
+.slds-modal__footer {
+    background: transparent !important;
+}
+
+/* ── Force every heading / paragraph / bold / span text to white ────────── */
+.border-field h2,
+.border-field p,
+.border-field b,
+.border-field span,
+.border-field label {
+    color: var(--ra-text-title);
+}
+/* __________________________GenAI: Generated code ends here______________________________ */

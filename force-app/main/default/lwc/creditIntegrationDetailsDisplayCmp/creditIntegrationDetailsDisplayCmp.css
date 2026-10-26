@@ -1,0 +1,94 @@
+@import "c/cssLibrary";
+
+.containerClass{
+min-height: 150px;
+}
+
+/* Table theme matched EXACTLY to the "Field Investigation Initiation"
+   table in creditFIInitiationCmp.css (.accordion-container .slds-table /
+   .fi-table-wrapper) - dark-navy #0a1524 outer backdrop, #0e1c30 table
+   surface for both header and body, #33455e borders on every cell, 18px
+   rounded corners on the outer cells only, left-aligned bold white
+   header text with 12px/10px padding, 13px body text, and the same
+   #16283f row-hover highlight. Applied here to the "Legal Entity check"
+   accordion table (rendered via this same shared component, also used
+   for the Doctor/CA/Udhyam accordions with the identical table markup). */
+.fi-table-wrapper {
+    background-color: #0a1524 !important;
+    padding: 1rem 1.5rem;
+    border-radius: 18px;
+}
+
+.fi-table-wrapper .slds-table {
+    width: 100%;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border-radius: 18px;
+    border: 1px solid #33455e !important;
+    background-color: #0e1c30 !important;
+    color: #ffffff;
+}
+
+.fi-table-wrapper .slds-table th,
+.fi-table-wrapper .slds-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.fi-table-wrapper .slds-table thead th {
+    background-color: #0e1c30 !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    font-size: 12.5px;
+    letter-spacing: 0.2px;
+    padding: 12px 10px;
+    text-align: left;
+    border-right: 1px solid #33455e !important;
+    border-bottom: 1px solid #33455e !important;
+    border-color: #33455e !important;
+    box-shadow: none !important;
+    vertical-align: middle;
+}
+
+.fi-table-wrapper .slds-table thead tr:first-child th:first-child {
+    border-top-left-radius: 18px;
+}
+
+.fi-table-wrapper .slds-table thead tr:first-child th:last-child {
+    border-top-right-radius: 18px;
+}
+
+.fi-table-wrapper .slds-table tbody td {
+    background-color: #0e1c30 !important;
+    color: #ffffff !important;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: left !important;
+    padding: 12px 10px;
+    border-right: 1px solid #33455e !important;
+    border-bottom: 1px solid #33455e !important;
+    border-color: #33455e !important;
+    vertical-align: middle;
+}
+
+.fi-table-wrapper .slds-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 18px;
+}
+
+.fi-table-wrapper .slds-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 18px;
+}
+
+.fi-table-wrapper .slds-table tbody tr:hover td {
+    background-color: #16283f !important;
+}
+
+.fi-table-wrapper .slds-table a {
+    color: #7db2ff !important;
+}
+
+/* In-cell "View" buttons (Additional Qualifications / Suspensions /
+   Industries popups) keep the shared .initiate-button styling used
+   elsewhere; no border-token mismatch risk here since this component
+   has no lightning-input/textarea inside the main table cells. */

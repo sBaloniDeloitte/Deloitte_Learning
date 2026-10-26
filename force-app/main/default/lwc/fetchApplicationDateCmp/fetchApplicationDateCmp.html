@@ -1,0 +1,21 @@
+<template>
+    <template lwc:if={isLoading}>
+      <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+   </template>
+    <div class="container port-home-container">
+        <div class="icon-hover">
+            <lightning-icon 
+                class="slds-align_absolute-center"
+                icon-name="utility:date_input" 
+                alternative-text="Fetch Application Date" 
+                size="medium" 
+                title="Fetch Application Date"
+                onclick={callFetchAppDateApi}>
+            </lightning-icon>
+        </div>
+        <p class="text-center">Fetch Application Date</p>
+        <div class="slds-align_absolute-center" style="border: solid skyblue; width: 245px; margin-top: 10px;">
+            <span style="padding: 10px;">Current System Date: </span><span style="padding: 10px;">{applicationDate}</span> 
+        </div>
+    </div>
+</template>

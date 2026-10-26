@@ -1,0 +1,196 @@
+<template>
+    <template if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </template>
+    <lightning-layout multiple-rows>
+        <lightning-layout-item size="2" class="slds-p-around_x-small">
+
+        </lightning-layout-item>
+        <lightning-layout-item size="4" class="slds-p-around_x-small">
+            <lightning-combobox value={applicantValue} options={options} onchange={handleApplicantChange}
+                                    class="validate" label="Select Applicant" placeholder="Select Applicant" ></lightning-combobox>
+        </lightning-layout-item>
+        <lightning-layout-item size="4" class="slds-p-around_x-small">
+            <lightning-input type="text" value={uanNumber} label="UAN" disabled ></lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-p-around_x-small" style="text-align: center;">
+            <template if:false={hideButton}>
+            <button class="save-button slds-button slds-button_brand" style="border: none;"
+                onclick={fetchShopDataAPI}>
+                Fetch Information
+            </button>
+            </template>
+        </lightning-layout-item>
+    </lightning-layout>
+
+    <template if:true={hasData}>
+
+        <div style="padding: 10px 20px;">
+            <template if:true={jsonData.result.personalDetails}>
+                <div style="padding: 10px 0px;">
+                <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                    <thead>
+                        <tr>
+                            <th class="slds-text-title_caps tableCss" scope="col" colspan="4"
+                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;font-weight: 700;"> <!-- color: white; -->
+                            Personal Details</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        
+                        <tr>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #6ec5f0;border: 1px solid black;width: 25%;font-weight: 700;"> <!-- color: white; -->
+                            Name</th>
+
+                            <td style="border:1px solid black;width: 25%;font-weight: 400;">{jsonData.result.personalDetails.name}</td>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #6ec5f0;border: 1px solid black;width: 25%;font-weight: 700;"> <!-- color: white; -->
+                            Father/Husband Name</th>
+
+                            <td style="border:1px solid black;width: 25%;font-weight: 400;">{jsonData.result.personalDetails.fatherOrHusbandName}</td>
+
+                        </tr>
+                        <tr>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #6ec5f0;border: 1px solid black;width: 25%;font-weight: 700;"> <!-- color: white; -->
+                            Aadhaar Status</th>
+
+                            <td style="border:1px solid black;width: 25%;font-weight: 400;">{jsonData.result.personalDetails.aadhaarVerificationStatus}</td>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #6ec5f0;border: 1px solid black;width: 25%;font-weight: 700;"> <!-- color: white; -->
+                            Bank Account Status</th>
+
+                            <td style="border:1px solid black;width: 25%;font-weight: 400;">{jsonData.result.personalDetails.bankAccountStatus}</td>
+
+                        </tr>
+                        <tr>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #6ec5f0;border: 1px solid black;width: 25%;font-weight: 700;"> <!-- color: white; -->
+                            PAN Status</th>
+
+                            <td style="border:1px solid black;width: 25%;font-weight: 400;">{jsonData.result.personalDetails.panVerificationStatus}</td>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #6ec5f0;border: 1px solid black;width: 25%;font-weight: 700;"> <!-- color: white; -->
+                            Contact No</th>
+
+                            <td style="border:1px solid black;width: 25%;font-weight: 400;">{jsonData.result.personalDetails.contactNo}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            </template>
+
+            <template if:true={jsonData.result.summary}>
+                <div style="padding: 10px 0px;">
+                <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                    <thead>
+                        <tr>
+                            <th class="slds-text-title_caps tableCss" scope="col" colspan="4"
+                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;font-weight: 700;"> <!-- color: white; -->
+                            Summary</th>
+                        </tr>
+                    </thead>
+                    <tbody >
+                        
+                        <tr>
+                            <th class="slds-text-title_caps tableCss" scope="col" colspan="2"
+                            style="text-align: center;background-color: #6ec5f0;border: 1px solid black;width: 25%;font-weight: 700;"> <!-- color: white; -->
+                            Minimum Experience (Months)</th>
+
+                            <td style="border:1px solid black;width: 25%;font-weight: 400;" colspan="2">{jsonData.result.summary.minimumWorkExperienceInMonths}</td>
+                            
+                        </tr>
+                        <template if:true={jsonData.result.summary.lastEmployer}>
+                        <tr>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #6ec5f0;border: 1px solid black;width: 25%;font-weight: 700;"> <!-- color: white; -->
+                            Last Employer Name</th>
+
+                            <td style="border:1px solid black;width: 25%;font-weight: 400;">{jsonData.result.summary.lastEmployer.employerName}</td>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #6ec5f0;border: 1px solid black;width: 25%;font-weight: 700;"> <!-- color: white; -->
+                            Start Month</th>
+
+                            <td style="border:1px solid black;width: 25%;font-weight: 400;">{jsonData.result.summary.lastEmployer.startMonthYear}</td>
+
+                        </tr>
+                        <tr>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #6ec5f0;border: 1px solid black;width: 25%;font-weight: 700;"> <!-- color: white; -->
+                            End Month</th>
+
+                            <td style="border:1px solid black;width: 25%;font-weight: 400;">{jsonData.result.summary.lastEmployer.lastMonthYear}</td>
+                            <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #6ec5f0;border: 1px solid black;width: 25%;font-weight: 700;"> <!-- color: white; -->
+                            Vintage in Months</th>
+
+                            <td style="border:1px solid black;width: 25%;font-weight: 400;">{jsonData.result.summary.lastEmployer.vintageInMonths}</td>
+
+                        </tr>
+                    </template>
+                    </tbody>
+                </table>
+            </div>
+                
+            </template>
+
+            <template if:true={employers}>
+                <div style="padding: 10px 0px;">
+                    <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                        <thead>
+                            <tr>
+                                <th class="slds-text-title_caps tableCss" scope="col" colspan="8"
+                                style="text-align: center;background-color: #5bb6e3;border: 1px solid black;font-weight: 700;"> <!-- color: white; -->
+                                Employers</th>
+                            </tr>
+                            <tr>
+                                <th class="slds-text-title_caps tableCss" scope="col"
+                                    style="text-align: center;background-color: #5bb6e3;border: 1px solid black;"> <!-- color: white; -->
+                                    Start Month-Year</th>
+                                <th class="slds-text-title_caps tableCss" scope="col"
+                                    style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                    Last Month-Year</th>
+                                <th class="slds-text-title_caps tableCss" scope="col"
+                                    style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                    Establishment Name</th>
+                                <th class="slds-text-title_caps tableCss" scope="col"
+                                    style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                    City</th>
+                                <th class="slds-text-title_caps tableCss" scope="col"
+                                    style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                    State</th>
+                                <th class="slds-text-title_caps tableCss" scope="col"
+                                    style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                    Pincode</th>
+                                <th class="slds-text-title_caps tableCss" scope="col"
+                                    style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                    Member ID</th>
+                                <th class="slds-text-title_caps tableCss" scope="col"
+                                    style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                    Status</th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={employers} for:item="row">
+                                <tr key={row.startMonthYear}>
+                                    <td style="border:1px solid black">{row.startMonthYear}</td>
+                                    <td style="border:1px solid black">{row.lastMonthYear}</td>
+                                    <td style="border:1px solid black">{row.establishmentName}</td>
+                                    <td style="border:1px solid black">{row.city}</td>
+                                    <td style="border:1px solid black">{row.state}</td>
+                                    <td style="border:1px solid black">{row.pincode}</td>
+                                    <td style="border:1px solid black">{row.memberId}</td>
+                                    <td style="border:1px solid black">{row.status}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </template>
+        </div>
+
+    </template>
+</template>

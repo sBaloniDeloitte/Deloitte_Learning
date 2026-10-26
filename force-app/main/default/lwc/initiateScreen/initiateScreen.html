@@ -1,0 +1,68 @@
+<template>
+    <template if:true={spinnerRun}>
+        <section role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open"
+            style="z-index: 900003;">
+            <lightning-spinner></lightning-spinner>
+        </section>
+    </template>
+    <div class="card-div">
+        <div class="headerActivity">Activity Panel</div>
+        <div class="slds-grid">
+            <template if:true={initiateFIAction}>
+                <div class="slds-col slds-size_1-of-4">
+                    <lightning-icon icon-name="action:approval" alternative-text="Approved" title="Approved" size="xx-small"></lightning-icon>
+                    <button class="slds-button slds-button_brand action-button" onclick={openModal}>Initiate FI</button>
+                </div>
+            </template>
+            <template if:true={initiateFCUAction}>
+                <div class="slds-col slds-size_1-of-4">
+                    <template if:true={isFCUInitiated}>
+                    <!--<lightning-icon icon-name="action:approval" alternative-text="Approved" title="Approved" size="xx-small"></lightning-icon>-->
+                    <lightning-icon icon-name="action:approval" alternative-text="Approved" title="Approved" size="xx-small"></lightning-icon>
+                    </template>
+                    <template if:false={isFCUInitiated}>
+                    <lightning-icon icon-name="action:close" alternative-text="Approved" title="Approved" size="xx-small"></lightning-icon>
+                </template>
+                    <button class="slds-button slds-button_brand action-button" onclick={openFCUModal}>Initiate
+                        FCU</button>
+                </div>
+            </template>
+            <template if:true={initiateHunterAction}>
+                <div class="slds-col slds-size_1-of-4">
+                    <template if:true={isHunterInitiated}>
+                    <lightning-icon icon-name="action:approval" alternative-text="Approved" title="Approved" size="xx-small"></lightning-icon>
+                </template>
+                <template if:false={isHunterInitiated}>
+                    <lightning-icon icon-name="action:close" alternative-text="Approved" title="Approved" size="xx-small"></lightning-icon>
+                </template>
+
+                    <button class="slds-button slds-button_brand action-button" onclick={openHunterModal}>Initiate
+                        Hunter</button>
+                </div>
+            </template>
+            <template lwc:if={generateSanctionLetter}>
+                <div class="slds-col slds-size_1-of-4">
+                    <lightning-icon icon-name="action:new_note" alternative-text="New note" title="Generate Sanction Letter" size="xx-small"></lightning-icon>
+                    <button class="slds-button slds-button_brand action-button" onclick={openGenerateSanctionLetterCmp}>Generate Sanction Letter</button>
+                </div>
+            </template>
+        </div>
+    </div>
+
+
+    <template lwc:if={initiateFICmp}>
+        <c-popup-screen record-id={recordId} show-fi-comp="true" width-percentage="95"
+            header-title="Initiate Field Investigation" show-close-btn=true onhandleclose={handleClose}>
+        </c-popup-screen>
+    </template>
+    <template lwc:if={initiateFCUCmp}>
+        <c-initiate-vetting-main record-id={recordId} onhandleclose={handleFCUClose}> </c-initiate-vetting-main>
+    </template>
+    <template lwc:if={initiateHunterCmp}>
+        <c-fcu-hunter-initiate record-id={recordId} onhandleclose={handleHunterClose}> </c-fcu-hunter-initiate>
+    </template>
+    <template lwc:if={openGenerateSanctionLetter}>
+        <c-fcu-hunter-initiate record-id={recordId} onhandleclose={handleHunterClose}> </c-fcu-hunter-initiate>
+    </template>
+
+</template>

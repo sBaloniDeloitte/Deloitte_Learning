@@ -1,0 +1,117 @@
+<template>
+    <div if:true={applicants} class="container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Applicant</th>
+                    <th>Monthly Gross Salary</th>
+                    <th>Monthly Net Salary</th>
+                    <th>Variable Income<br/>(Incentive/Bonus/Perquisites)</th>
+                    <th>Other Income</th>
+                    <th>Rent</th>
+                    <th>Interest</th>
+                    <th>Total Income</th>
+                    <th>Remarks</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={applicants} for:item="app" for:index="index">
+                    <tr key={app.Id}>
+                        <td>{app.Name}</td>
+                        <td>
+                          <lightning-input
+                            type="number"
+                            data-index={index}
+                            value={app.Monthly_Gross_Salary__c}
+                            data-id="Monthly_Gross_Salary__c"
+                            onblur={handleInputChange}
+                            disabled={enableDisabled}>
+                          </lightning-input>
+                        </td>
+                        <td>
+                          <lightning-input
+                            type="number"
+                            data-index={index}
+                            value={app.Monthly_Net_Salary__c}
+                            data-id="Monthly_Net_Salary__c"
+                            onblur={handleInputChange}
+                            disabled={enableDisabled}>
+                          </lightning-input>
+                        </td>
+                        <td>
+                          <lightning-input
+                            type="number"
+                            data-index={index}
+                            value={app.Variable_Income__c}
+                            data-id="Variable_Income__c"
+                            onblur={handleInputChange}
+                            disabled={enableDisabled}>
+                          </lightning-input>
+                        </td>
+                        <td>
+                          <lightning-input
+                            type="number"
+                            data-index={index}
+                            value={app.Other_Income__c}
+                            data-id="Other_Income__c"
+                            onblur={handleInputChange}
+                            disabled={enableDisabled}>
+                          </lightning-input>
+                        </td>
+                        <td>
+                          <lightning-input
+                            type="number"
+                            data-index={index}
+                            value={app.Rent__c}
+                            data-id="Rent__c"
+                            onblur={handleInputChange}
+                            disabled={enableDisabled}>
+                          </lightning-input>
+                        </td>
+                        <td>
+                          <lightning-input
+                            type="number"
+                            data-index={index}
+                            value={app.Interest__c}
+                            data-id="Interest__c"
+                            onblur={handleInputChange}
+                            disabled={enableDisabled}>
+                          </lightning-input>
+                        </td>
+                        <!--
+                        <td>
+                          <lightning-input
+                            type="number"
+                            data-index={index}
+                            value={app.Total_Income__c}
+                            data-id="Total_Income__c"
+                            onblur={handleInputChange}>
+                          </lightning-input>
+                        </td>
+                        -->
+
+                        <td>
+                          <!-- read-only display of a formula field -->
+                          <lightning-formatted-number value={app.Total_Income__c} style="display:block; text-align:center;">
+                          </lightning-formatted-number>
+                        </td>
+                        <td>
+                          <lightning-input
+                            type="text"
+                            data-index={index}
+                            value={app.Remarks__c}
+                            data-id="Remarks__c"
+                            onblur={handleInputChange}
+                            disabled={enableDisabled}>
+                          </lightning-input>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+
+    <div if:true={noApplicants} class="message">
+        No salaried applicants found.
+    </div>
+</template>

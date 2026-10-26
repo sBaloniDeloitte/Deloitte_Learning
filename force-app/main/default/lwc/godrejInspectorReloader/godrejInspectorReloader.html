@@ -1,0 +1,45 @@
+<template>
+    <lightning-card title="Godrej Inspector" icon-name="utility:inspector_panel">
+        <div class="slds-p-horizontal_medium slds-p-bottom_medium">
+
+            <!-- ── Tab Nav ── -->
+            <div class="tab-bar">
+                <button
+                    class={tabShowAllClass}
+                    data-tab="show"
+                    onclick={switchTab}>
+                    🔍 Show All Data
+                </button>
+                <button
+                    class={tabSoqlClass}
+                    data-tab="export"
+                    onclick={switchTab}>
+                    ⚡ SOQL Inspector
+                </button>
+                <button
+                    class={tabImportClass}
+                    data-tab="import"
+                    onclick={switchTab}>
+                    📥 Data Import
+                </button>
+            </div>
+
+            <!-- ── Tab Panels ── -->
+            <div class="tab-content">
+
+                <template if:true={isShow}>
+                    <c-showalldata></c-showalldata>
+                </template>
+
+                <template if:true={isExport}>
+                    <c-sfinspector></c-sfinspector>
+                </template>
+
+                <template if:true={isImport}>
+                    <c-dataimporter-cmp></c-dataimporter-cmp>
+                </template>
+
+            </div>
+        </div>
+    </lightning-card>
+</template>

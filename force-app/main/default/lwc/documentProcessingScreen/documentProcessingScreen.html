@@ -1,0 +1,859 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 03-27-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={showhistory}>
+        <c-view-document-history record-id={vcontentId} onclose={closeHistory}></c-view-document-history>
+    </template>
+    <div class={cssMain}>
+        <!--
+        <template lwc:if={showHeaderFooter}>
+            <header class="slds-modal__header header-section">
+                <div class="slds-text-align_center">
+                    <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">{headerText}</h2>
+                </div>
+            </header>
+        </template>
+        -->
+
+
+        <div class={cssContainer}>
+
+
+            <template lwc:if={showNoRecords}>
+                <div style="text-align: center; padding: 10px; border: solid 1px #ddd;">No records found!</div>
+            </template>
+
+            <!--to show document in widget style -->
+            <!--
+                <template lwc:if={showWidgetStyle}>
+
+                    <div class="input-container slds-box" style="padding: 0;">
+                        <template if:true={isLead}><div style="color: red; padding: 10px 10px 0px 10px; font-size: 12px; font-weight: 500; text-align: center;">*Documents in red color are mandatory!</div>
+                        </template>
+                        <lightning-layout multiple-rows>
+                            <template for:each={documentList} for:item="doc">
+                                
+                                <lightning-layout-item size={layoutItemSize} padding="around-small" key={doc.id}>
+                                    <div class="file-widget-outer">
+                                        <template lwc:if={doc.isRequired}>
+                                            <div style="text-align: center; padding: 0 5px; height: 35px; font-weight: 500; cursor: default; color: red;" title={doc.docName}>{doc.name}</div>
+                                        </template>
+                                        <template lwc:else>
+                                            <div style="text-align: center; padding: 0 5px; height: 35px; font-weight: 500; cursor: default;" title={doc.docName}>{doc.name}</div>
+                                        </template>                                       
+                                        <c-upload-view-delete-document 
+                                            doc-detail-id={doc.id}
+                                            content-doc-id={doc.contentId} 
+                                            show-upload={doc.showUpload}
+                                            show-view={doc.showView}
+                                            ocr-applicable={ocrForNewUploads}
+                                            show-delete={doc.showDelete} 
+                                            show-retake={doc.showRetake} 
+                                            show-widget-style="true"
+                                            show-location={doc.showLocation}
+                                            ondocumentuploaded={handleDocumentUploaded}
+                                            onocrcompleted={handleOCRCompleted}
+                                            lattitude={doc.lattitude}
+                                            longitude={doc.longitude}
+                                            file-type={doc.fileType}
+                                            doc-name={doc.docName}
+                                            fi-status={fiStatus}
+                                        ></c-upload-view-delete-document>
+
+                                        <template if:true={doc.showLatLong}>
+                                            <div style="text-align: center; cursor: default; margin-top: 10px; padding-top: 5px; border-top: solid 1px #ddd;">
+                                                <div title="Latitude">Latitude: {doc.lattitude}</div>
+                                                <div title="Longitude">Longitude: {doc.longitude}</div>
+                                            </div>
+                                        </template>
+                                        
+                                    </div>
+                                    
+                                </lightning-layout-item>
+
+                            </template>
+                        </lightning-layout>
+                        
+                        <template if:true={addDocuments}>
+                            <c-upload-view-delete-document 
+                                show-add-btn="true"
+                                show-add-big-btn={showAddBigBtn}
+                                doc-link-recod-id={recordId}
+                                doc-required-for={processName}
+                                process-object={processObject}
+                                doc-category={docCategory}
+                                ocr-applicable={ocrForNewUploads}
+                                ondocumentuploaded={handleDocumentUploaded}
+                                onocrcompleted={handleOCRCompleted}
+                                show-retake="true"
+                            ></c-upload-view-delete-document>
+                        </template>
+                       
+                    </div>
+
+                </template>
+               
+                <template lwc:elseif={showAccordionStyle}>
+                    <lightning-accordion allow-multiple-sections-open="true">
+                        <template for:each={docDetaiList} for:item="iter">
+                            <lightning-accordion-section key={iter.documentCategoryName} name={iter.documentCategoryName} label={iter.documentCategoryName}>
+                                <div class="slds-box">
+                                    <table class="slds-table slds-table_bordered slds-border_right slds-border_left">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col" class="slds-col slds-size_8-of-12 slds-m-top_x-small">Document Name</th>
+                                                <th scope="col"  class="slds-col slds-size_2-of-12 slds-m-top_x-small">Actions</th>
+                                               
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <template for:each={iter.docDetails} for:item="iterDet">
+                                                <tr key={iterDet.Id}>
+                                                    <td  class="slds-col slds-size_8-of-12">
+                                                        <template if:true={iterDet.documentStatus}>
+                                                            <div class="slds-text-color_success slds-cell-wrap" style="overflow:auto">{iterDet.name}</div>
+                                                        </template>
+                                                        <template if:false={iterDet.documentStatus}>
+                                                            <div class="slds-truncate slds-cell-wrap">{iterDet.name}</div>
+                                                        </template>
+                                                    </td>
+
+
+
+                                                     <template if:true={iter.showViewheader}>  
+                                                        <td scope="col">
+                                                            <c-upload-view-delete-document 
+                                                                doc-detail-id={iterDet.id}
+                                                                content-doc-id={iterDet.contentId} 
+                                                                show-upload={iterDet.showUpload}
+                                                                show-view={iterDet.showView}
+                                                                show-delete={iterDet.showDelete} 
+                                                                show-retake="true" 
+                                                                show-location={iterDet.showLocation}
+                                                                lattitude={iterDet.lattitude}
+                                                                longitude={iterDet.longitude}
+                                                                file-type={iterDet.fileType}
+                                                                doc-name={iterDet.docName}
+                                                            ></c-upload-view-delete-document>
+                                                        </td>
+                                                   
+                                                </tr>
+                                            </template>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </lightning-accordion-section>
+                        </template>
+                    </lightning-accordion>
+                </template>
+
+                -->
+
+            <template lwc:if={showSummaryStyle}>
+
+              <div class="doc-processing-container">
+                <div class="filter-card slds-grid slds-gutters">
+                    <template if:false={isSalesStage}>
+                        <template if:true={isNotOpsAuthor}><!--sanwar(3/12/2025)-->
+
+                            <div class="slds-col slds-size_6-of-12 slds-p-top_small slds-float_left" style="display: flex">
+                                <div style="padding-top:2%">
+                                    <template if:true={shoButton}>
+                                    <template if:false={hideButton}>
+                                    <button class="doc-action-btn slds-button " onclick={handleAddDocs}> 
+                                        Add Documents
+                                    </button>
+                                                                                                        </template>
+                                                                                                    </template>
+                                </div>
+                                <div style="padding-left:2%;padding-top:2%">
+                                    <!--
+                                                                                        <a href={getDownloaLink} class="save-button slds-button slds-button_brand slds-float_left"></a>
+                                                                                        -->
+
+
+                                    <button class="doc-action-btn slds-button " onclick={getDownloaLink}>
+                                        Download as Zip
+                                    </button>
+                                </div>
+                                <!--
+                                                                                    <c-upload-view-delete-document show-add-btn="true" show-add-big-btn={showAddBigBtn}
+                                                                                        doc-link-recod-id={recordId} doc-required-for={processName} process-object={processObject}
+                                                                                        doc-category={docCategory} show-retake="false" show-upload="true" add-button-display="button">
+                                                                                    </c-upload-view-delete-document>
+                                                                                    -->
+                            </div>
+                        </template>
+                    </template>
+                  
+                    <template if:false={isMobileOrTablet}>
+                        <div class = 'slds-col slds-size_2-of-12'>
+                         <div class="filter-field search-field">
+                            <div class = 'filter-label'> Search </div>
+                        <lightning-input value={docname} onchange={changeDocname}>
+                        </lightning-input>
+                    </div>
+                        </div>
+                        <div class="slds-col slds-size_2-of-12">
+                    <div class="filter-field category-field">
+                        <div class = 'filter-label'> Category </div>
+                        <lightning-combobox options={categoryPickValOptions} value={categoryVal}
+                            onchange={categoryChange}></lightning-combobox>
+                    </div>
+                        </div>
+                        <div class="slds-col slds-size_2-of-12">
+                    <div class="filter-field customer-field">
+                        <div class = 'filter-label'> Customer </div>
+                        <lightning-combobox options={applicantPickValOptions} value={applicantVal}
+                            onchange={applicantChange}></lightning-combobox>
+                    </div>
+                        </div>
+                    </template>
+                    <template if:true={isMobileOrTablet}>
+                     <div class="slds-p-around_medium">
+                      <lightning-card title="Filter Documents">
+                        <div class="custom-mobile-row">
+                        <lightning-input
+                    label="Search"
+                    value={docname}
+                    onchange={changeDocname}
+                    class="custom-mobile-input"
+                ></lightning-input>
+                <lightning-combobox
+                    label="Category"
+                    options={categoryPickValOptions}
+                    value={categoryVal}
+                    onchange={categoryChange}
+                    class="custom-mobile-input"
+                ></lightning-combobox>
+                <lightning-combobox
+                    label="Customer"
+                    options={applicantPickValOptions}
+                    value={applicantVal}
+                    onchange={applicantChange}
+                    class="custom-mobile-input"
+                ></lightning-combobox>
+              </div>
+             </lightning-card>
+          </div>
+        </template>
+            </div>
+
+                <!-- <template for:each={docDetaiList} for:item="iter"> -->
+                <div style="overflow-x: auto;" class="slds-box slds-m-bottom_medium scroll-container slds-scrollable_x">
+                    <template if:true={isHLReleated}>
+                        <div style="font-weight: bold; color: red; padding: 0 0 5px 0;">*Max allowed file name 100 character</div>
+                    </template>
+
+                    <table class="slds-table slds-table_bordered doc-table">
+                        <thead style=" top: 0; z-index: 2;">
+                            <tr>
+                                <th scope="col" class="table-header">
+                                    <lightning-input type="checkbox" checked={isAllSelected} style="padding-left: 6px;" variant="label-hidden" onchange={handleSelectAllChange}></lightning-input>
+                                </th>
+                                <th scope="col" class="table-header" data-field="custName" onclick={handleSort}>
+                                    Applicant Name
+                                    <lightning-icon icon-name="utility:arrowdown" size="xx-small" class="sort-icon" data-field="custName"></lightning-icon>
+                                </th>
+                                <th scope="col" class="table-header" onclick={handleSort}>
+                                    Applicant Type
+                                </th>
+                                <th scope="col" class="table-header"> Document Name</th>
+                                <th scope="col" class="table-header">Document Type</th>
+                                <th scope="col" class="table-header"> Actions</th>
+                                <th scope="col" class="table-header"> Split View</th>
+                                <template if:true={canShowVerify}>
+                                    <th scope="col" class="table-header" >Verified by CO</th>
+                                </template>
+                                <!-- <th scope="col" style=" background-color: #5bb6e3;border: 1px solid black"  class="slds-col slds-size_2-of-12 slds-m-top_x-small">Status</th> -->
+                                <!--
+                                <th scope="col" style=" background-color: #5bb6e3;border: 1px solid black"
+                                    class="slds-col slds-size_2-of-12 slds-m-top_x-small">Document History</th>
+                                -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={displayList} for:item="section">
+                                <template for:each={section.docDetails} for:item="iterDet">
+                                    <tr key={iterDet.id}>
+                                        <td>
+                                            <lightning-input type="checkbox" name="documentCheckbox" style="padding-left: 6px;" variant="label-hidden"
+                                                checked={iterDet.selected} onchange={handleCheckboxChange} disabled={iterDet.disabledChk} data-id={iterDet.id}>
+                                                <!-- value={iterDet.selected} -->
+                                            </lightning-input>
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate slds-cell-wrap" style="overflow:auto">{iterDet.custName}</div>
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate slds-cell-wrap" style="overflow:auto">{iterDet.applicantType}</div>
+                                        </td>
+                                        <td>
+                                            <template if:true={iterDet.documentStatus}>
+                                                <div class="slds-text-color_success slds-cell-wrap" style="overflow:auto">{iterDet.name}</div>
+                                            </template>
+                                            <template if:false={iterDet.documentStatus}>
+                                                <div class="slds-truncate slds-cell-wrap" style="overflow:auto">{iterDet.name}</div>
+                                            </template>
+
+                                            <template if:true={isHLReleated}>
+                                                <template if:true={iterDet.showView}>
+                                                    <div class="file-name-highlight">[{iterDet.fileName}]</div>
+                                                </template>
+                                            </template>
+                                        </td>
+                                        <td>
+                                            <div class="slds-truncate slds-cell-wrap" style="overflow:auto">{iterDet.documentType}</div>
+                                        </td>
+                                        <td>
+                                            <template if:false={iterDet.bsa}>
+                                                <!-- Render normal upload-view-delete-document component -->
+                                                <c-upload-view-delete-document doc-detail-id={iterDet.id}
+                                                    content-doc-id={iterDet.contentId} show-upload={iterDet.showUpload}
+                                                    show-view={iterDet.showView} show-delete={iterDet.showDelete}
+                                                    retain-doc-details-rec={iterDet.retainDocDetailsRec}
+                                                    auto-show-delete={iterDet.autoShowDelete}
+                                                    show-masked-message={iterDet.isManualMasked}
+                                                    show-retake={iterDet.showRetake} show-location={iterDet.showLocation}
+                                                    lattitude={iterDet.lattitude} longitude={iterDet.longitude}
+                                                    file-type={iterDet.fileType} doc-name={iterDet.docName}
+                                                    cust-name={iterDet.custName}
+                                                    ocr-applicable={iterDet.ocrApplicable}
+                                                    ckyc-sync={iterDet.ckycSync}
+                                                    ondocumentuploaded={handleDocumentUploaded}
+                                                    onerrorfileuploaded={handleError}
+                                                    onocrcompleted={handleOCRCompleted} name={processObject}
+                                                    ondelete={handleDeleted} onclose={handleDeleted}
+                                                    doc-uri={iterDet.docURI} onrecallmethod={refreshMethod}
+                                                    is-from-homeloan={isHLReleated}
+                                                    document-processing-theme="true">
+                                                </c-upload-view-delete-document>
+                                            </template>
+                                            <template if:true={iterDet.bsa}>
+                                                <!-- For BSA docs, loop over bsaDocs (assuming it's a list inside iterDet) -->
+                                                <template for:each={iterDet.bsaDocs} for:item="bsaDoc">
+                                                    <c-upload-view-delete-document key={bsaDoc.contentDocLinkId} doc-detail-id={iterDet.id}
+                                                        content-doc-id={bsaDoc.contentId} show-upload={iterDet.showUpload}
+                                                        show-view={iterDet.showView} show-delete={iterDet.showDelete}
+                                                        auto-show-delete={iterDet.autoShowDelete}
+                                                        retain-doc-details-rec={iterDet.retainDocDetailsRec}
+                                                        show-retake={iterDet.showRetake} show-location={iterDet.showLocation}
+                                                        lattitude={iterDet.lattitude} longitude={iterDet.longitude}
+                                                        file-type={bsaDoc.fileType} doc-name={bsaDoc.docName}
+                                                        cust-name={iterDet.custName}
+                                                        ocr-applicable={iterDet.ocrApplicable}
+                                                        ckyc-sync={iterDet.ckycSync}
+                                                        ondocumentuploaded={handleDocumentUploaded}
+                                                        onerrorfileuploaded={handleError}
+                                                        onocrcompleted={handleOCRCompleted} name={processObject}
+                                                        ondelete={handleDeleted} onclose={handleDeleted}
+                                                        doc-uri={iterDet.docURI} onrecallmethod={refreshMethod}
+                                                        is-from-homeloan={isHLReleated}
+                                                        document-processing-theme="true">
+                                                    </c-upload-view-delete-document>
+                                                </template>
+                                            </template>
+                                        </td>
+                                        <td style="text-align: center;">
+                                            <template if:true={iterDet.showSplitView}>
+                                                <button class="slds-button slds-button_icon slds-button_icon-border-filled"
+                                                        title="Split View"
+                                                        data-document-id={iterDet.id}
+                                                        data-document-name={iterDet.name}
+                                                        data-app-name={iterDet.custName}
+                                                        data-is-finance={iterDet.financialApplicant}
+                                                        data-content-id={iterDet.contentId}
+                                                        data-app-type={iterDet.applicantType}
+                                                        data-cust-type={iterDet.custType}
+                                                        onclick={handleSplitViewClick}
+                                                        style="color:#1f1f1f;">
+                                                            <svg class="slds-icon slds-icon_x-small" viewBox="0 0 52 52" aria-hidden="true" focusable="false">
+                                                                <!-- outer rounded rectangle -->
+                                                                <rect x="6" y="10" width="40" height="32" rx="6" ry="6"
+                                                                    fill="none" stroke="currentColor" stroke-width="4.5" stroke-linejoin="round"
+                                                                    vector-effect="non-scaling-stroke"></rect>
+                                                                <!-- thicker center divider; tweak width/height to adjust size -->
+                                                                <rect x="24" y="12" width="4" height="28" rx="2"
+                                                                    fill="currentColor" vector-effect="non-scaling-stroke"></rect>
+                                                            </svg>
+                                                    <span class="slds-assistive-text"> Split View</span>
+                                                </button>
+                                            </template>
+                                            <template if:false={iterDet.showSplitView}>
+                                                <span style="color: #ccc; font-size: 12px;">-</span>
+                                            </template>
+                                        </td>
+                                        <template if:true={canShowVerify}>
+                                            <td style="text-align:center;">
+                                                <template if:true={iterDet.isVerified}>Yes</template>
+                                                <template if:false={iterDet.isVerified}>No</template>
+                                            </td>
+                                        </template>
+
+                                        <!--
+                                            <td class="slds-col slds-size_2-of-12" style="border: 1px solid #1d2f45;">
+                                                <div class="slds-truncate slds-cell-wrap" style="overflow:auto">{iterDet.Uploadedby}</div>
+                                            </td>
+                                            <td class="slds-col slds-size_2-of-12" style="border: 1px solid #1d2f45;">
+                                                <div class="slds-truncate slds-cell-wrap" style="overflow:auto">{iterDet.Timestamp}</div>
+                                            </td>
+                                            -->
+                                        <!-- <td class="slds-col slds-size_2-of-12" style="border: 1px solid #1d2f45;">
+                                                <div class="slds-truncate slds-cell-wrap" style="overflow:auto">{iterDet.status}</div>
+                                            </td> -->
+                                        <!--
+                                        <td class="slds-col slds-size_2-of-12" style="border: 1px solid #1d2f45;">
+                                            <div class="slds-truncate slds-cell-wrap" style="overflow:auto">
+                                                <button class="save-button slds-button slds-button_brand slds-float_left"
+                                                        style="border:none" data-id={iterDet.id}  data-name={iterDet.id}  onclick={handlehistory}>
+                                                    View 
+                                                </button>
+                                            </div>
+                                        </td>
+                                        -->
+                                    </tr>
+                                </template>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+              </div>
+
+            </template>
+
+            <!-- to show document in table style -->
+            <!--
+                <template lwc:else>
+                    
+                    <template if:true={isLead}><div style="color: red; padding: 10px 10px 0px 10px; font-size: 12px; font-weight: 500; text-align: center;">*Documents in red color are mandatory!</div>
+                    </template>
+                    <div style="max-height: 450px; overflow:auto; border: solid 1px gray;">
+                        <table class="slds-table">
+                            <thead>
+                                <tr class="sticky">
+                                    <th scope="col" style="text-align: left;">Document Name</th>
+                                    <template lwc:if={showDateAndLoanCol}>
+                                        <th scope="col" style="width: 175px;">Loan Application</th>
+                                        <th scope="col" style="width: 175px;">Upload Date</th>
+                                    </template>
+                                    <th scope="col" style="width: 135px;">Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={documentList} for:item="doc">
+                                    <tr key={doc.id}>
+                                
+                                        <td scope="col" style="text-align: left;">
+                                            
+                                            <template lwc:if={doc.isRequired}>
+                                                <div style="color: red; font-weight: 500;" title={doc.Name}>{doc.name}</div>
+                                                <div style="color: red; font-weight: 500; font-size: 10px;" title={doc.docCategory}>({doc.docCategory})</div>
+
+                                            </template>
+                                            <template lwc:else>
+                                                <div style="font-weight: 500;" title={doc.name}>{doc.name}</div>
+                                                <div style="font-size: 10px;" title={doc.docCategory}>({doc.docCategory})</div>
+                                            </template>
+                                            
+                                        </td>
+                                        
+                                        
+
+                                        <template lwc:if={showDateAndLoanCol}>
+                                            <td scope="col" style="text-align: center;">{doc.loanApplicationNo}</td>
+                                            <td scope="col" style="text-align: center;">{doc.uploadedDate}</td>
+                                        </template>
+
+                                        <td scope="col">
+                                            <c-upload-view-delete-document 
+                                                doc-detail-id={doc.id}
+                                                content-doc-id={doc.contentId} 
+                                                ocr-applicable={ocrForNewUploads}
+                                                ondocumentuploaded={handleDocumentUploaded}
+                                                onocrcompleted={handleOCRCompleted}
+                                                show-upload={doc.showUpload}
+                                                show-view={doc.showView}
+                                                show-delete={doc.showDelete} 
+                                                show-retake={doc.showRetake} 
+                                                show-location={doc.showLocation}
+                                                lattitude={doc.lattitude}
+                                                longitude={doc.longitude}
+                                                file-type={doc.fileType}
+                                                doc-name={doc.docName}
+                                            ></c-upload-view-delete-document>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </template>
+
+            </template>
+            -->
+
+        </div>
+        <!--
+        <template lwc:if={showHeaderFooter}>
+            <footer class="footer-section">
+            </footer>
+        </template>
+        -->
+
+    </div>
+
+    <template lwc:if={isLoading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+        </lightning-spinner>
+    </template>
+
+    <template if:true={isCUStage}>
+        <template if:true={modalVisibility}>
+            <section role="dialog" tabindex="-1" aria-modal="true"
+                aria-label="Meaningful description of the modal content" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container select-doc-container" style="min-width: 60%;">
+                    <!--
+                    <header class="slds-modal__header" style="background-color: #5bb6e3; color:white;font-weight:500;">
+                        <div class="slds-text-align_center">
+                            <h2 slot="title"
+                                style="font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px"
+                                class="slds-text-heading_medium slds-hyphenate">Add New Document</h2>
+                        </div>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless " id="confirm-body"
+                        style="min-height: 30% !important;">
+    
+                        <template if:true={loandoc}>
+                            <c-search-lookup label="Documents" show-label="true" required="true"
+                             placeholder="Search Documents" object-name="Document_Master__c"  selected-id={selectedId}
+                                return-fields="['Id','Name']" search-fields="['Name']" 
+                                onlookupselected={handleSelectDocument}
+                                onlookupdeselected={handleldeselectDocument}></c-search-lookup>
+                        </template>
+    
+            
+    
+    
+                            <c-search-lookup label="Documents" show-label="true" required="true"
+                             placeholder="Search Documents" object-name="Document_Master__c"  selected-id={selectedId}
+                                return-fields="['Id','Name']" search-fields="['Name']" 
+                                onlookupselected={handleSelectDocument}
+                                onlookupdeselected={handleldeselectDocument}></c-search-lookup>
+                        <template if:true={applicant}>
+                            <br>
+                            <p slot="title" style="font-size:14px; font-style: italic; color: #113451;">Please select the
+                                applicants applicable for this documents.</p>
+                            <div class="slds-scrollable_y" style="overflow: auto;">
+                                <table class="slds-table slds-table_cell-buffer slds-no-row-hover" style="border-collapse: collapse; border: none;">
+                                    <template for:each={allChecklist} for:item="checklistrecord">
+                                        <tr key={checklistrecord.id} style="border: none;">
+                                            <td style="width: 5%; border: none;"></td>
+                                            <td style="width: 95%; border: none;">
+                                                <label style="display: flex; align-items: center;">
+                                                    <lightning-input type="checkbox" data-id={checklistrecord.id}
+                                                        data-name={checklistrecord.id} onchange={handleChecklistselection}
+                                                        class="applicant-checkbox">
+                                                    </lightning-input>
+                                                    <span style="margin-left: 8px;">{checklistrecord.name}</span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                    </template>
+                                </table>
+                                
+                            </div>
+                        </template>
+                        <br>
+                        <div>
+                            <button class="save-button slds-button slds-button_brand"
+                                style="border: none"
+                                onclick={handlesave}>Add</button>
+                        </div>
+                        <template if:true={createdRecordsVisibility}>
+                            <div style="padding-top: 3%;">
+                                <p slot="title" style="font-size:14px; font-style: italic; color: #113451;">New Documents.</p>
+                                <table
+                                    class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right">
+                                    <thead>
+                                        <tr class="slds-line-height_reset">
+                                            <th class="" scope="col" style="width: 10%; text-align: center;">
+                                                <div class="slds-truncate" title="Serial No.">Sr No.</div>
+                                            </th>
+                                            <th class="" scope="col" style="width: 25%; text-align: center;">
+                                                <div class="slds-truncate" title="Serial No.">Applicable For</div>
+                                            </th>
+                                            <th class="" scope="col" style="width: 25%; text-align: center;">
+                                                <div class="slds-truncate" title="Serial No.">Applicants</div>
+                                            </th>
+                                            <th class="" scope="col" style="width: 30%; text-align: center;">
+                                                <div class="slds-truncate" title="Serial No.">Document Name</div>
+                                            </th>
+                                            <th class="" scope="col" style="width: 10%; text-align: center;">
+                                                <div class="slds-truncate" title="Serial No.">Actions</div>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <template for:each={createdNewDocTable} for:item="record">
+                                        <tbody key={record.id}>
+                                            <td style="width: 10%;text-align:centre">{record.no}</td>
+                                            <td style="width: 25%;text-align:centre;">{record.reqLevel}</td>
+                                            <td style="width: 25%;text-align:centre;">{record.custName}</td>
+                                            <td style="width: 30%;text-align:centre;">{record.name}</td>
+                                            <td style="width: 10%;text-align:centre;">                                                    
+                                                <c-upload-view-delete-document 
+                                                doc-detail-id={record.id}
+                                                content-doc-id={record.contentId} 
+                                                show-upload={record.showUpload}
+                                                show-view={record.showView}
+                                                show-delete={record.showDelete} 
+                                                show-retake={record.showRetake} 
+                                                show-location={record.showLocation}
+                                                lattitude={record.lattitude}
+                                                longitude={record.longitude}
+                                                file-type={record.fileType}
+                                                doc-name={record.docName}
+                                                name={processObject}>
+                                            </c-upload-view-delete-document>
+                                        </td>
+                                        </tbody>
+                                    </template>
+                                </table>
+                            </div>
+                        </template>
+                    </div>
+                    <footer class="slds-modal__footer" style="border: revert;">
+                        <div class="slds-align_absolute-center">
+                            <button class="cancel-button slds-button slds-button_brand"
+                                style="border:none" onclick={handleClose}>Close</button>
+                            <button class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color: #113451;color: white;border-color: #113451;font-weight: 500;" onclick={handleSave}>Create</button> 
+                        </div>
+                    </footer>
+                    -->
+                    <template if:true={isSpinnerLoading}>
+                        <div class="slds-spinner_container">
+                            <lightning-spinner alternative-text="Loading applicants" variant="brand" size="large"></lightning-spinner>
+                        </div>
+                    </template>
+
+                    <header class="slds-modal__header modal-header-custom select-doc-header">
+                        <div class="slds-text-align_center">
+                            <h2 class="slds-text-heading_medium slds-hyphenate"
+                                style="font-size:15px;font-weight:bold;margin:5px 0;">
+                                Select Documents
+                            </h2>
+                        </div>
+                    </header>
+
+                    <!-- Applicant picker -->
+                    <div class="slds-modal__content slds-p-around_medium">
+                        <template if:true={showApplicantPicker}>
+                            <lightning-combobox name="applicant" label="Pick an Applicant" options={applicantOptions}
+                                value={selectedApplicantId} placeholder="Select an applicant"
+                                onchange={handleApplicantChange}>
+                            </lightning-combobox>
+                        </template>
+                    </div>
+
+                    <!-- Checklist -->
+                    <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless"
+                        id="confirm-body2" style="min-height:30% !important;">
+                        <template if:false={showApplicantPicker}>
+                            <template for:each={docCheckList} for:item="section">
+                                <div key={section.docType} class="doc-category-header">                                    {section.docType}
+                                </div>
+                                <template for:each={section.docList} for:item="doc">
+                                    <div key={doc.Id} style="margin:1.5%;">
+                                        <lightning-input type="checkbox" data-id={doc.Id} data-name={doc.Name}
+                                            label={doc.Name} onchange={docSelectHandler} checked={doc.checked}
+                                            disabled={doc.isDisabled}>
+                                        </lightning-input>
+                                    </div>
+                                </template>
+                            </template>
+                        </template>
+                    </div>
+
+                    <footer class="slds-modal__footer split-footer select-doc-footer" style="border: revert;">
+                        <div class="slds-align_absolute-center">
+                            <button class="cancel-button slds-button slds-button_brand select-doc-close-btn" style="border:none" onclick={handleClose}>Close</button>
+                            <button class="save-button slds-button slds-button_brand select-doc-confirm-btn" style="border:none" onclick={addDocHandler}>Confirm</button>
+                        </div>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+        </template>
+    </template>
+
+
+    <template if:true={showSplitViewModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="split-view-header"
+            class="slds-modal slds-fade-in-open split-modal">
+
+            <div class="slds-modal__container split-container"
+                style="max-width: 95vw; width: 95vw; min-height: 80vh; height: 80vh; max-height: 90vh;">
+
+
+                <header class="slds-modal__header modal-header-custom">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                    title="Close" onclick={closeSplitViewModal}>
+                    <lightning-icon icon-name="utility:close" size="small" alternative-text="Close">
+                    </lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                    <h2 id="split-view-header" class="slds-text-heading_medium" style="margin: 0;">
+                        Split View - {selectedDocumentName}
+                    </h2>
+                </header>
+
+
+                <div class="slds-modal__content slds-p-around_medium slds-scrollable_y split-content"
+                    style="height: calc(100% - 140px); min-height: 400px; padding: 0.5rem;">
+
+
+                    <div class="applicant-summary slds-m-bottom_small">
+                       <div class="slds-grid slds-gutters slds-text-align_center"> 
+                            
+                            <div class="slds-col slds-size_1-of-4">
+                                <strong>Applicant Name:</strong> {selectedApplicantName}
+                            </div>
+                            <div class="slds-col slds-size_1-of-4">
+                                <strong>Customer Type:</strong> {selectedCustomerType}
+                            </div>
+                            <div class="slds-col slds-size_1-of-4">
+                                <strong>Applicant Type:</strong> {selectedApplicantType}
+                            </div> 
+                            <div class="slds-col slds-size_1-of-4">
+                                <strong>{financialStatus}</strong>
+                            </div>
+                            
+                        </div>
+                    </div>
+                    <div class="slds-grid slds-gutters slds-wrap split-row" style="height: calc(100% - 120px); min-height: 300px;">
+
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2 slds-m-bottom_small" style="height: 100%;">
+                            <div class="slds-box split-card "
+                                style="height: 100%;  padding: 8px; overflow: hidden;">
+                                <h3 class="slds-text-heading_small slds-m-bottom_small">
+                                    <lightning-icon icon-name="utility:file" size="small" class="slds-m-right_x-small">
+                                    </lightning-icon>
+                                    Document View
+                                </h3>
+                                <div class="split-card-body" style="height: calc(100% - 40px); overflow: auto;">
+                                    <template if:true={selectedContentId}>
+                                        <c-document-view-cmp record-id={recordId} doc-check-id={selectedDocumentId}
+                                            content-doc-id={selectedContentId} extension={selectedDocExtension}
+                                            is-split-view-mode={showSplitViewModal}
+                                            single-document-data={selectedDocumentData}
+                                            show-masking-check={selectedShowMaskingCheck}
+                                            is-acknowledged={selectedIsAcknowledged} ocr-applicable={ocrForNewUploads}
+                                            from-sales={fromSales} disabled={isDisabled}
+                                            ondocumentuploaded={handleDocumentUploaded} 
+                                            onocrcompleted={handleOCRCompleted} onocrready={handleOCRReady}>
+                                        </c-document-view-cmp>
+                                    </template>
+                                    <template if:false={selectedContentId}>
+                                        <div
+                                            style="height: 100%; display: flex; align-items: center; justify-content: center; border: 1px dashed #ccc;">
+                                            <div style="text-align: center; color: #666;">
+                                                <lightning-icon icon-name="utility:upload" size="large"
+                                                    class="slds-m-bottom_small">
+                                                </lightning-icon>
+                                                <p>No document uploaded yet</p>
+                                            </div>
+                                        </div>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2" style="height: 100%;">
+                            <div class="slds-box split-card"
+                                style="height: 100%; padding: 8px; overflow: hidden;">
+                                <h3 class="slds-text-heading_small slds-m-bottom_small">
+                                    <lightning-icon icon-name="utility:edit" size="small" class="slds-m-right_x-small">
+                                    </lightning-icon>
+                                    Document Details
+                                </h3>
+                                <template if:true={sendForFCU}>
+                                    <label class="slds-checkbox" style="display:flex; align-items:center; gap:.45rem;">
+                                        <input type="checkbox" checked={isForFCU} onchange={handleFCUChange}/>
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class="slds-form-element__label"
+                                            style="font-weight:700; font-size:1.05rem;">
+                                            Send For FCU
+                                        </span>
+                                    </label>
+                                </template>
+
+                                <div class="split-card-body" style="height: calc(100% - 40px); overflow: auto;">
+                                    <template if:true={singleDoc}>
+                                        <template for:each={singleDoc} for:item="doc">
+                                            <c-document-details-update-cmp key={doc.id} record-id={recordId}
+                                                app-id={doc.applicantId} doc-check-id={doc.id} form-identifier={doc.name}
+                                                address-record-id={doc.addressRecordId} name={doc.name} 
+                                                catg={doc.docCategory} edit-fields={editFields}
+                                                applicant-type={selectedApplicantType}>
+                                            </c-document-details-update-cmp>
+                                        </template>
+                                    </template>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="slds-grid slds-gutters slds-m-top_small">
+                        <div class="slds-col slds-size_1-of-2">
+                            <template if:true={canShowVerify}>
+                                <label class="slds-checkbox" style="display:flex; align-items:center; gap:.45rem;">
+                                <input type="checkbox"
+                                    checked={isVerified}
+                                    onchange={handleVerifiedChange}
+                                    disabled={disableVerified}/>
+                                <span class="slds-checkbox_faux"></span>
+                                <span class="slds-form-element__label" style="font-weight:700; font-size:1.05rem;">
+                                Verify Document
+                                </span>
+                            </label>
+                            </template>
+                        </div>
+
+                        <div class="slds-col slds-size_1-of-2"></div>
+                    </div>
+
+                </div>
+
+                <footer class="slds-modal__footer split-footer">
+                    <div class="split-footer-container">
+                        <lightning-button class="previous-btn split-footer-btn" label="Previous" variant="brand"
+                            onclick={handlePrev} disabled={disablePrev}>
+                        </lightning-button>
+                        <div class="split-footer-right">
+                            <lightning-button class="close-btn split-footer-btn" label="Close" variant="neutral"
+                                onclick={closeSplitViewModal}>
+                            </lightning-button>
+                            <lightning-button class="next-btn split-footer-btn" label="Next" variant="brand"
+                                icon-name="utility:chevronright" icon-position="right" onclick={handleNext}
+                                disabled={disableNext}>
+                            </lightning-button>
+                        </div>
+                    </div>
+                </footer>
+
+
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" style="z-index: 9000;"></div>
+
+
+    </template>
+
+
+</template>

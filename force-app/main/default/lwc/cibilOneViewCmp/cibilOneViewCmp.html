@@ -1,0 +1,37 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 04-08-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <span class="styleContainer"></span>
+    <div class="main-tab">
+    <lightning-tabset onclick={handleTabClick}>
+         <template if:false={isSeller}>
+        <template if:true={enableTab}>
+        <lightning-tab label="Gen AI One Pager">
+            <c-gen-ai-one-pager-cmp from-sales={fromSales} record-id={recordId} app-id={appId} ></c-gen-ai-one-pager-cmp>
+        </lightning-tab>
+        <lightning-tab label="Live Loans">
+            <c-live-and-closed-loans-cmp record-id={recordId} app-id={appId} type="live" from-sales={fromSales} is-disabled={isDisabled}></c-live-and-closed-loans-cmp>
+        </lightning-tab>
+        <lightning-tab label="Closed Loans">
+            <c-live-and-closed-loans-cmp record-id={recordId} app-id={appId} type="closed" from-sales={fromSales} is-disabled={isDisabled}></c-live-and-closed-loans-cmp>
+        </lightning-tab>
+        <lightning-tab label="Consider for FOIR" title="Obligations">
+            <c-obligations-cmp record-id={recordId} from-sales={fromSales} is-disabled={isDisabled}></c-obligations-cmp>
+        </lightning-tab>
+        </template>
+        
+        <lightning-tab label="Consumer Information Report">
+            <c-consumer-information-report-cmp app-id={appId} record-id={recordId} from-sales={fromSales} is-disabled={isDisabled}></c-consumer-information-report-cmp>
+        </lightning-tab>
+        </template>
+        <template if:true={isSeller}>
+            <c-consumer-information-report-cmp is-seller={isSeller} app-id={appId} record-id={recordId} from-sales={fromSalesCrif} is-disabled={isCrifDisabled}></c-consumer-information-report-cmp>
+        </template>
+    </lightning-tabset>
+    </div>
+</template>

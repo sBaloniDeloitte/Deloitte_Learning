@@ -1,0 +1,192 @@
+<template>
+  <div if:true={applicants} class="container">
+    <table>
+      <thead>
+        <tr>
+          <th>Applicant</th>
+          <th>Income Details</th>
+          <th>Sales</th>
+          <th>Expenses</th>
+          <th>Operating Income</th>
+          <th>Net Earnings</th>
+          <th>Other Income</th>
+          <th>Rent</th>
+          <th>Interest</th>
+          <th>Total Income</th>
+        </tr>
+      </thead>
+      <tbody>
+        <template for:each={applicants} for:item="app" for:index="idx">
+          
+          <!-- Annual row -->
+          <tr key={app.annualKey}>
+            <!-- use rowSpan (camelCase) -->
+            <td rowspan="2">{app.Name}</td>
+            <td>Annual</td>
+            
+            <!-- Each numeric cell is a lightning-input, with data-row and data-field tags -->
+            <td>
+              <lightning-input 
+                type="number"
+                data-index={idx}
+                data-row="annual"
+                data-field="Sales"
+                value={app.Annual_Sales__c}
+                onblur={handleBlur}
+                disabled={enableDisabled}>
+              </lightning-input>
+            </td>
+            <td>
+              <lightning-input 
+                type="number"
+                data-index={idx}
+                data-row="annual"
+                data-field="Expenses"
+                value={app.Annual_Expenses__c}
+                onblur={handleBlur}
+                disabled={enableDisabled}>
+              </lightning-input>
+            </td>
+            <td>
+              <lightning-input 
+                type="number"
+                data-index={idx}
+                data-row="annual"
+                data-field="Operating_Income"
+                value={app.Annual_Operating_Income__c}
+                onblur={handleBlur}
+                disabled={enableDisabled}>
+              </lightning-input>
+            </td>
+            <td>
+              <lightning-formatted-number value={app.Annual_Net_Earnings__c} style="display:block; text-align:center;">
+              </lightning-formatted-number>
+            </td>
+            <td>
+              <lightning-input 
+                type="number"
+                data-index={idx}
+                data-row="annual"
+                data-field="Other_Income"
+                value={app.Annual_Other_Income__c}
+                onblur={handleBlur}
+                disabled={enableDisabled}>
+              </lightning-input>
+            </td>
+            <td>
+              <lightning-input 
+                type="number"
+                data-index={idx}
+                data-row="annual"
+                data-field="Rent"
+                value={app.Annual_Rent__c}
+                onblur={handleBlur}
+                disabled={enableDisabled}>
+              </lightning-input>
+            </td>
+            <td>
+              <lightning-input 
+                type="number"
+                data-index={idx}
+                data-row="annual"
+                data-field="Interest"
+                value={app.Annual_Interest__c}
+                onblur={handleBlur}
+                disabled={enableDisabled}>
+              </lightning-input>
+            </td>
+            <td>
+              <lightning-formatted-number value={app.Annual_Total_Income__c} style="display:block; text-align:center;">
+              </lightning-formatted-number>
+            </td>
+          </tr>
+          
+          <!-- Monthly row -->
+          <tr key={app.monthlyKey}>
+    <td>Monthly</td>
+            <td>
+              <lightning-input 
+                type="number"
+                data-index={idx}
+                data-row="monthly"
+                data-field="Sales"
+                value={app.Monthly_Sales__c}
+                onblur={handleBlur}
+                disabled={enableDisabled}>
+              </lightning-input>
+            </td>
+            <td>
+              <lightning-input 
+                type="number"
+                data-index={idx}
+                data-row="monthly"
+                data-field="Expenses"
+                value={app.Monthly_Expenses__c}
+                onblur={handleBlur}
+                disabled={enableDisabled}>
+              </lightning-input>
+            </td>
+            <td>
+              <lightning-input 
+                type="number"
+                data-index={idx}
+                data-row="monthly"
+                data-field="Operating_Income"
+                value={app.Monthly_Operating_Income__c}
+                onblur={handleBlur}
+                disabled={enableDisabled}>
+              </lightning-input>
+            </td>
+            <td>
+              <lightning-formatted-number value={app.Monthly_Net_Earnings__c} style="display:block; text-align:center;">
+              </lightning-formatted-number>
+            </td>
+            
+            <td>
+              <lightning-input 
+                type="number"
+                data-index={idx}
+                data-row="monthly"
+                data-field="Other_Income"
+                value={app.Monthly_Other_Income__c}
+                onblur={handleBlur}
+                disabled={enableDisabled}>
+              </lightning-input>
+            </td>
+            <td>
+              <lightning-input 
+                type="number"
+                data-index={idx}
+                data-row="monthly"
+                data-field="Rent"
+                value={app.Monthly_Rent__c}
+                onblur={handleBlur}
+                disabled={enableDisabled}>
+              </lightning-input>
+            </td>
+            <td>
+              <lightning-input 
+                type="number"
+                data-index={idx}
+                data-row="monthly"
+                data-field="Interest"
+                value={app.Monthly_Interest__c}
+                onblur={handleBlur}
+                disabled={enableDisabled}>
+              </lightning-input>
+            </td>
+            <td>
+              <lightning-formatted-number value={app.Monthly_Total_Income__c} style="display:block; text-align:center;">
+              </lightning-formatted-number>
+            </td>
+          </tr>
+          
+        </template>
+      </tbody>
+    </table>
+  </div>
+  
+  <div if:true={noApplicants} class="message">
+    No SEP/SENP applicants found.
+  </div>
+</template>

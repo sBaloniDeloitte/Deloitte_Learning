@@ -1,0 +1,90 @@
+.capsule-button {
+    padding: 0px 8px;
+    border: none;
+    display: inline-block;
+    text-align: center;
+    color: white;
+    /* font-size: 16px; */
+    background-color: #113451;
+    align-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+@media screen and (max-width: 768px) {
+    .custom-continue-button {
+        padding: 0.6rem 1.2rem;
+        width: 11rem;
+        height: 2.5rem;
+    }
+    .custom-disabled-button {
+        padding: 0.6rem 1.2rem;
+        width: 11rem;
+        height: 2.5rem;
+    }
+}
+.custom-continue-button {
+    background-color: #9bbf56; /* Light green */
+    color: #ffffff; /* White text */
+    border: none;
+    padding: 0.55rem 1.5rem; /* Padding for dynamic size */
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    /* max-width: 38%; */
+     /* Half-width for side-by-side display */
+    /* flex: 1; */
+     /* Equal space for each button */
+    height: 2.5rem;
+    width: 11rem;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+.custom-disabled-button {
+    background-color: #c7d68a; /* Light green */
+    color: #ffffff; /* White text */ 
+    border: none;
+    padding: 0.55rem 1.5rem; /* Padding for dynamic size */
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    height: 2.5rem;
+    width: 11rem;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+.button-container {
+    display: flex;                /* Use flexbox layout */
+    justify-content: center;      /* Center buttons horizontally */
+    gap: 1rem;                   /* Adjust the gap as needed for space between buttons */
+    padding-top: 1.2rem;         /* Padding from the top */
+    width: 100%;                 /* Optional: allows buttons to be centered within a full-width container */
+}
+.thank-you-message {
+    font-family: 'Lato', sans-serif; /* Ensure Lato font is loaded */
+    font-size: 1rem;
+    font-weight: 400; /* Regular font weight */
+    text-align: center;
+    color: green; /* A professional shade of blue */
+    line-height: 1.5;
+    margin: 1rem 0; /* Add some space around the message */
+    padding: 0.5rem;
+}
+.checkbox-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.checkbox-item {
+    display: flex;
+    flex-direction: column;
+}
+
+.input-field {
+    margin-top: 5px;
+    padding: 8px;
+    width: 100%;
+    min-height: 60px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}

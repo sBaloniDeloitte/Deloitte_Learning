@@ -1,0 +1,1317 @@
+<!-- This Code was generated using GenAI tool: Codify, Please check for accuracy -->
+<template>
+    <!-- Page Header -->
+    <div class="app-header">
+        <span class="app-logo">🎓</span>
+        <div class="app-header-text">
+            <h1 class="app-title">Education Loan Application</h1>
+            <p class="app-subtitle">View and update lead application details</p>
+        </div>
+        <button class="btn-convert btn-convert-banner" onclick={handleCustomNotes}>
+            📌 Notes
+        </button>
+        <button class="btn-convert btn-convert-banner" onclick={handleActivityTimeline}>
+            🕒 Activity Timeline
+        </button>
+        <button class="btn-convert btn-convert-banner" onclick={handleOpenConvertModal}>
+            🔄 Convert to Opportunity
+        </button>
+    </div>
+
+    <!-- Custom Notes Popup -->
+    <template if:true={showCustomNotes}>
+    <section class="slds-modal slds-fade-in-open">
+
+    <div class="slds-modal__container custom-modal">
+
+    <div class ='timeline-modal-wrapper'>
+        
+        <button
+            class="close-btn"
+            onclick={closeCustomNotes}>
+            ✕
+        </button>
+    </div>
+        <div class="slds-modal__content">
+            <c-custom-notes
+                record-id={recordId}>
+            </c-custom-notes>
+        </div>
+    </div>
+    </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+
+    <!-- Activity Timeline Popup -->
+    <template if:true={showActivityTimeline}>
+    <section class="slds-modal slds-fade-in-open">
+
+    <div class="slds-modal__container custom-modal">
+
+    <div class ='timeline-modal-wrapper'>
+        <!-- <h2 class="slds-text-heading_medium">
+            Activity Timeline class="slds-modal__header modal-header"
+        </h2> -->
+        <button
+            class="close-btn"
+            onclick={closeActivityTimeline}>
+            ✕
+        </button>
+    </div>
+        <div class="slds-modal__content">
+            <c-activity-time-Line
+                record-id={recordId}>
+            </c-activity-time-Line>
+        </div>
+    </div>
+    </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!-- Loading Overlay -->
+    <template if:true={isLoading}>
+        <div class="loading-overlay">
+            <span class="spinner-small"></span>
+            <span class="loading-text">Loading lead data…</span>
+        </div>
+    </template>
+
+    <!-- 3-column layout -->
+    <template if:false={isLoading}>
+        <div class="app-body">
+
+            <!-- LEFT: Vertical Nav -->
+            <div class="nav-panel">
+                <div class="nav-header">Application Sections</div>
+                <ul class="nav-list">
+                    <template for:each={navSections} for:item="section">
+                        <li
+                            key={section.id}
+                            class={section.itemClass}
+                            onclick={handleNavClick}
+                            data-section={section.id}>
+                            <span class="nav-icon">{section.icon}</span>
+                            <span class="nav-label">{section.label}</span>
+                            <span class={section.statusClass}>{section.statusText}</span>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+
+            <!-- CENTER: Section Panels -->
+            <div class="form-panel">
+                <div class="form-panel-inner">
+
+                    <!-- ═══════════════════════════════════════
+                         WELCOME LANDING — no section selected
+                    ═══════════════════════════════════════ -->
+                    <template if:false={activeSection}>
+                        <div class="welcome-card">
+                            <c-ai-sales-insights></c-ai-sales-insights>
+                            <!--
+                            <div class="welcome-illustration">🎓</div>
+                            <h2 class="welcome-title">Lead Application Details</h2>
+                            <p class="welcome-desc">
+                                Select a section from the left panel to view and update the lead's information.
+                                All previously entered data is pre-filled and ready to edit.
+                            </p>
+                            <div class="welcome-steps">
+                                <div class="welcome-step">
+                                    <span class="welcome-step-icon">👤</span>
+                                    <span class="welcome-step-label">Basic Info</span>
+                                </div>
+                                <div class="welcome-step-arrow">→</div>
+                                <div class="welcome-step">
+                                    <span class="welcome-step-icon">📚</span>
+                                    <span class="welcome-step-label">Education</span>
+                                </div>
+                                <div class="welcome-step-arrow">→</div>
+                                <div class="welcome-step">
+                                    <span class="welcome-step-icon">💰</span>
+                                    <span class="welcome-step-label">Funding</span>
+                                </div>
+                                <div class="welcome-step-arrow">→</div>
+                                <div class="welcome-step">
+                                    <span class="welcome-step-icon">👥</span>
+                                    <span class="welcome-step-label">Co-Applicant</span>
+                                </div>
+                            </div>
+                            -->
+                            <div class="welcome-action-row">
+                                <button class="btn-primary welcome-start-btn" data-section="basic" onclick={handleNavClick}>
+                                    View Application →
+                                </button>
+                                <button class="btn-convert welcome-start-btn" onclick={handleOpenConvertModal}>
+                                    🔄 Convert to Opportunity
+                                </button>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- ═══════════════════════════════════════
+                         CONVERT TO OPPORTUNITY MODAL
+                    ═══════════════════════════════════════ -->
+                    <template if:true={showConvertModal}>
+                        <div class="modal-backdrop" onclick={handleCloseConvertModal}>
+                            <div class="modal-box" onclick={stopPropagation}>
+
+                                <!-- Modal Header -->
+                                <div class="modal-header">
+                                    <span class="modal-header-icon">🔄</span>
+                                    <div>
+                                        <h2 class="modal-title">Convert to Opportunity</h2>
+                                        <p class="modal-subtitle">This will create an Account, Contact, and Opportunity from this Lead.</p>
+                                    </div>
+                                    <button class="modal-close-btn" onclick={handleCloseConvertModal} disabled={isConverting}>✕</button>
+                                </div>
+
+                                <!-- Success State -->
+                                <template if:true={convertSuccess}>
+                                    <div class="modal-body">
+                                        <div class="convert-success-block">
+                                            <div class="convert-success-icon">✅</div>
+                                            <h3 class="convert-success-title">Lead Converted Successfully!</h3>
+                                            <p class="convert-success-desc">
+                                                An Account, Contact, and Opportunity have been created.
+                                            </p>
+                                            <div class="convert-result-card">
+                                                <span class="convert-result-label">Opportunity</span>
+                                                <span class="convert-result-value">{convertedOppName}</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn-secondary" onclick={handleCloseConvertModal}>Close</button>
+                                        <button class="btn-primary" onclick={handleNavigateToOpportunity}>
+                                            View Opportunity →
+                                        </button>
+                                    </div>
+                                </template>
+
+                                <!-- Confirmation State -->
+                                <template if:false={convertSuccess}>
+                                    <div class="modal-body">
+                                        <div class="convert-info-grid">
+                                            <div class="convert-info-item">
+                                                <span class="convert-info-icon">🏢</span>
+                                                <div>
+                                                    <p class="convert-info-label">Account</p>
+                                                    <p class="convert-info-value">New Account will be created</p>
+                                                </div>
+                                            </div>
+                                            <div class="convert-info-item">
+                                                <span class="convert-info-icon">👤</span>
+                                                <div>
+                                                    <p class="convert-info-label">Contact</p>
+                                                    <p class="convert-info-value">New Contact will be created</p>
+                                                </div>
+                                            </div>
+                                            <div class="convert-info-item">
+                                                <span class="convert-info-icon">💼</span>
+                                                <div>
+                                                    <p class="convert-info-label">Opportunity</p>
+                                                    <p class="convert-info-value">New Education Loan Opportunity will be created</p>
+                                                </div>
+                                            </div>
+                                            <div class="convert-info-item convert-info-warn">
+                                                <span class="convert-info-icon">⚠️</span>
+                                                <div>
+                                                    <p class="convert-info-label">Lead Status</p>
+                                                    <p class="convert-info-value">Lead will be marked as Converted and closed</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <template if:true={convertError}>
+                                            <div class="global-error-banner">🚨 {convertError}</div>
+                                        </template>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button class="btn-secondary" onclick={handleCloseConvertModal} disabled={isConverting}>Cancel</button>
+                                        <button class="btn-convert btn-convert-lg" onclick={handleConfirmConvert} disabled={isConverting}>
+                                            <template if:true={isConverting}>
+                                                <span class="spinner-small spinner-white"></span> Converting…
+                                            </template>
+                                            <template if:false={isConverting}>
+                                                🔄 Confirm Conversion
+                                            </template>
+                                        </button>
+                                    </div>
+                                </template>
+
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- ═══════════════════════════════════════
+                         SECTION 1 — Basic Information
+                    ═══════════════════════════════════════ -->
+                    <template if:true={showBasic}>
+                        <div class="section-card">
+
+                            <div class="section-header">
+                                <span class="section-header-icon">👤</span>
+                                <div>
+                                    <h2 class="section-header-title">Basic Information</h2>
+                                    <p class="section-header-desc">View and update the applicant's personal details.</p>
+                                </div>
+                            </div>
+
+                            <div class="progress-bar-wrapper">
+                                <div class="progress-track">
+                                    <div class="progress-fill" style={progressStyle}></div>
+                                </div>
+                                <div class="step-indicators">
+                                    <div class={step1Class}><span class="step-dot">👤</span><span class="step-label">Basic</span></div>
+                                    <div class={step2Class}><span class="step-dot">📚</span><span class="step-label">Education</span></div>
+                                    <div class={step3Class}><span class="step-dot">💰</span><span class="step-label">Funding</span></div>
+                                    <div class={step4Class}><span class="step-dot">👥</span><span class="step-label">Co-Applicant</span></div>
+                                    <div class={step5Class}><span class="step-dot">🏠</span><span class="step-label">Collateral</span></div>
+                                    <div class={step6Class}><span class="step-dot">📡</span><span class="step-label">Sourcing</span></div>
+                                    <div class={step7Class}><span class="step-dot">🧑</span><span class="step-label">Owner</span></div>
+                                </div>
+                            </div>
+
+                            <div class="step-content">
+
+                                <!-- Save Success Banner -->
+                                <template if:true={saveSuccess}>
+                                    <div class="save-success-banner">✅ {saveSuccess}</div>
+                                </template>
+
+                                <div class="form-grid">
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="s1-firstName">
+                                            First Name <span class="required-star">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">👤</span>
+                                            <input type="text" id="s1-firstName" class="form-input"
+                                                placeholder="Enter first name"
+                                                data-field="firstName" value={formData.firstName}
+                                                oninput={handleInput} />
+                                        </div>
+                                        <template if:true={errors.firstName}>
+                                            <span class="error-msg">⚠ {errors.firstName}</span>
+                                        </template>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="s1-lastName">
+                                            Last Name <span class="required-star">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">👤</span>
+                                            <input type="text" id="s1-lastName" class="form-input"
+                                                placeholder="Enter last name"
+                                                data-field="lastName" value={formData.lastName}
+                                                oninput={handleInput} />
+                                        </div>
+                                        <template if:true={errors.lastName}>
+                                            <span class="error-msg">⚠ {errors.lastName}</span>
+                                        </template>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="s1-mobile">
+                                            Mobile Number <span class="required-star">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">📱</span>
+                                            <input type="tel" id="s1-mobile" class="form-input"
+                                                placeholder="10-digit mobile number" maxlength="10"
+                                                data-field="mobileNumber" value={formData.mobileNumber}
+                                                oninput={handleInput} />
+                                        </div>
+                                        <template if:true={errors.mobileNumber}>
+                                            <span class="error-msg">⚠ {errors.mobileNumber}</span>
+                                        </template>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="s1-pincode">
+                                            Pincode <span class="required-star">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">📍</span>
+                                            <input type="text" id="s1-pincode" class="form-input"
+                                                placeholder="6-digit pincode" maxlength="6"
+                                                data-field="pincode" value={formData.pincode}
+                                                oninput={handleInput} />
+                                        </div>
+                                        <template if:true={errors.pincode}>
+                                            <span class="error-msg">⚠ {errors.pincode}</span>
+                                        </template>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="s1-age">
+                                            Age <span class="required-star">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">🎂</span>
+                                            <input type="text" id="s1-age" class="form-input"
+                                                placeholder="Applicant age (18–70)"
+                                                data-field="age" value={formData.age}
+                                                oninput={handleInput} />
+                                        </div>
+                                        <template if:true={errors.age}>
+                                            <span class="error-msg">⚠ {errors.age}</span>
+                                        </template>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="s1-email">Email</label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">✉️</span>
+                                            <input type="email" id="s1-email" class="form-input"
+                                                placeholder="Enter email address"
+                                                data-field="email" value={formData.email}
+                                                oninput={handleInput} />
+                                        </div>
+                                        <template if:true={errors.email}>
+                                            <span class="error-msg">⚠ {errors.email}</span>
+                                        </template>
+                                    </div>
+
+                                </div>
+
+                                <template if:true={globalError}>
+                                    <div class="global-error-banner">🚨 {globalError}</div>
+                                </template>
+                            </div>
+
+                            <div class="step-footer">
+                                <span></span>
+                                <button class="btn-primary" onclick={updateBasic} disabled={isSaving}>
+                                    <template if:true={isSaving}>
+                                        <span class="spinner-small spinner-white"></span> Saving…
+                                    </template>
+                                    <template if:false={isSaving}>💾 Update Basic Info</template>
+                                </button>
+                            </div>
+
+                        </div>
+                    </template>
+                    <!-- END SECTION 1 -->
+
+
+                    <!-- ═══════════════════════════════════════
+                         SECTION 2 — Education Information
+                    ═══════════════════════════════════════ -->
+                    <template if:true={showEducation}>
+                        <div class="section-card">
+
+                            <div class="section-header">
+                                <span class="section-header-icon">📚</span>
+                                <div>
+                                    <h2 class="section-header-title">Education Information</h2>
+                                    <p class="section-header-desc">View and update the applicant's educational background and study plans.</p>
+                                </div>
+                            </div>
+
+                            <div class="progress-bar-wrapper">
+                                <div class="progress-track">
+                                    <div class="progress-fill" style={progressStyle}></div>
+                                </div>
+                                <div class="step-indicators">
+                                    <div class={step1Class}><span class="step-dot">👤</span><span class="step-label">Basic</span></div>
+                                    <div class={step2Class}><span class="step-dot">📚</span><span class="step-label">Education</span></div>
+                                    <div class={step3Class}><span class="step-dot">💰</span><span class="step-label">Funding</span></div>
+                                    <div class={step4Class}><span class="step-dot">👥</span><span class="step-label">Co-Applicant</span></div>
+                                    <div class={step5Class}><span class="step-dot">🏠</span><span class="step-label">Collateral</span></div>
+                                    <div class={step6Class}><span class="step-dot">📡</span><span class="step-label">Sourcing</span></div>
+                                    <div class={step7Class}><span class="step-dot">🧑</span><span class="step-label">Owner</span></div>
+                                </div>
+                            </div>
+
+                            <div class="step-content">
+
+                                <template if:true={saveSuccess}>
+                                    <div class="save-success-banner">✅ {saveSuccess}</div>
+                                </template>
+
+                                <div class="form-grid">
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="s2-eduLevel">
+                                            Current Education Level <span class="required-star">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">🎓</span>
+                                            <select id="s2-eduLevel" class="form-select"
+                                                data-field="currentEducationLevel"
+                                                value={formData.currentEducationLevel}
+                                                onchange={handleSelectChange}>
+                                                <option value="">-- Select Level --</option>
+                                                <option value="10th">10th</option>
+                                                <option value="12th">12th</option>
+                                                <option value="Graduate">Graduate</option>
+                                                <option value="Post Graduate">Post Graduate</option>
+                                                <option value="Doctorate">Doctorate</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="s2-country">
+                                          Country for Study <span class="required-star">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">🌍</span>
+                                            <input type="text" id="s2-country" class="form-input"
+                                                placeholder="e.g. USA, UK, Canada"
+                                                data-field="plannedCountryForStudy"
+                                                value={formData.plannedCountryForStudy}
+                                                oninput={handleInput} />
+                                        </div>
+                                        <template if:true={errors.plannedCountryForStudy}>
+                                            <span class="error-msg">⚠ {errors.plannedCountryForStudy}</span>
+                                        </template>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="s2-course">
+                                            Planned Course for Study <span class="required-star">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">📖</span>
+                                            <input type="text" id="s2-course" class="form-input"
+                                                placeholder="e.g. MBA, MS Computer Science"
+                                                data-field="plannedCourseForStudy"
+                                                value={formData.plannedCourseForStudy}
+                                                oninput={handleInput} />
+                                        </div>
+                                        <template if:true={errors.plannedCourseForStudy}>
+                                            <span class="error-msg">⚠ {errors.plannedCourseForStudy}</span>
+                                        </template>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="s2-startDate">
+                                            Course Start Date <span class="required-star">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">📅</span>
+                                            <input type="date" id="s2-startDate" class="form-input"
+                                                data-field="courseStartDate"
+                                                value={formData.courseStartDate}
+                                                onchange={handleSelectChange} />
+                                        </div>
+                                        <template if:true={errors.courseStartDate}>
+                                            <span class="error-msg">⚠ {errors.courseStartDate}</span>
+                                        </template>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="s2-admissionStatus">
+                                            Admission Status <span class="required-star">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">📋</span>
+                                            <select id="s2-admissionStatus" class="form-select"
+                                                data-field="admissionStatus"
+                                                value={formData.admissionStatus}
+                                                onchange={handleSelectChange}>
+                                                <option value="">-- Select Status --</option>
+                                                <option value="Applied">Applied</option>
+                                                <option value="Admitted">Admitted</option>
+                                                <option value="Conditionally Admitted">Conditionally Admitted</option>
+                                                <option value="Not Yet Applied">Not Yet Applied</option>
+                                            </select>
+                                        </div>
+                                        <template if:true={errors.admissionStatus}>
+                                            <span class="error-msg">⚠ {errors.admissionStatus}</span>
+                                        </template>
+                                    </div>
+
+                                </div>
+
+                                <template if:true={globalError}>
+                                    <div class="global-error-banner">🚨 {globalError}</div>
+                                </template>
+                            </div>
+
+                            <div class="step-footer">
+                                <button class="btn-secondary" data-section="basic" onclick={handleNavClick}>← Basic Info</button>
+                                <button class="btn-primary" onclick={updateEducation} disabled={isSaving}>
+                                    <template if:true={isSaving}>
+                                        <span class="spinner-small spinner-white"></span> Saving…
+                                    </template>
+                                    <template if:false={isSaving}>💾 Update Education</template>
+                                </button>
+                            </div>
+
+                        </div>
+                    </template>
+                    <!-- END SECTION 2 -->
+
+
+                    <!-- ═══════════════════════════════════════
+                         SECTION 3 — Funding Requirement
+                    ═══════════════════════════════════════ -->
+                    <template if:true={showFunding}>
+                        <div class="section-card">
+
+                            <div class="section-header">
+                                <span class="section-header-icon">💰</span>
+                                <div>
+                                    <h2 class="section-header-title">Funding Requirement</h2>
+                                    <p class="section-header-desc">View and update the cost breakdown and required loan amount.</p>
+                                </div>
+                            </div>
+
+                            <div class="progress-bar-wrapper">
+                                <div class="progress-track">
+                                    <div class="progress-fill" style={progressStyle}></div>
+                                </div>
+                                <div class="step-indicators">
+                                    <div class={step1Class}><span class="step-dot">👤</span><span class="step-label">Basic</span></div>
+                                    <div class={step2Class}><span class="step-dot">📚</span><span class="step-label">Education</span></div>
+                                    <div class={step3Class}><span class="step-dot">💰</span><span class="step-label">Funding</span></div>
+                                    <div class={step4Class}><span class="step-dot">👥</span><span class="step-label">Co-Applicant</span></div>
+                                    <div class={step5Class}><span class="step-dot">🏠</span><span class="step-label">Collateral</span></div>
+                                    <div class={step6Class}><span class="step-dot">📡</span><span class="step-label">Sourcing</span></div>
+                                    <div class={step7Class}><span class="step-dot">🧑</span><span class="step-label">Owner</span></div>
+                                </div>
+                            </div>
+
+                            <div class="step-content">
+
+                                <template if:true={saveSuccess}>
+                                    <div class="save-success-banner">✅ {saveSuccess}</div>
+                                </template>
+
+                                <div class="form-grid">
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="s3-product">Product</label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">🎯</span>
+                                            <input type="text" id="s3-product" class="form-input"
+                                                placeholder="Enter product"
+                                                data-field="product" value={formData.product}
+                                                oninput={handleInput} />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="s3-courseFee">
+                                            Total Course Fee (₹) <span class="required-star">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">💰</span>
+                                            <input type="number" id="s3-courseFee" class="form-input"
+                                                placeholder="Enter total course fee" min="0"
+                                                data-field="totalCourseFee" value={formData.totalCourseFee}
+                                                oninput={handleInput} />
+                                        </div>
+                                        <template if:true={errors.totalCourseFee}>
+                                            <span class="error-msg">⚠ {errors.totalCourseFee}</span>
+                                        </template>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="s3-tuition">Tuition Fee (₹)</label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">📚</span>
+                                            <input type="number" id="s3-tuition" class="form-input"
+                                                placeholder="Enter tuition fee" min="0"
+                                                data-field="tuitionFee" value={formData.tuitionFee}
+                                                oninput={handleInput} />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="s3-hostel">Hostel Cost (₹)</label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">🏠</span>
+                                            <input type="number" id="s3-hostel" class="form-input"
+                                                placeholder="Enter hostel cost" min="0"
+                                                data-field="hostelCost" value={formData.hostelCost}
+                                                oninput={handleInput} />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="s3-living">Living Expenses (₹)</label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">🛒</span>
+                                            <input type="number" id="s3-living" class="form-input"
+                                                placeholder="Enter living expenses" min="0"
+                                                data-field="livingExpenses" value={formData.livingExpenses}
+                                                oninput={handleInput} />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Total Education Cost (₹) — Auto Calculated</label>
+                                        <div class="input-wrapper computed-field">
+                                            <span class="input-icon">🧮</span>
+                                            <input type="text" class="form-input" readonly value={totalEducationCost} />
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label" for="s3-contribution">
+                                            Own Contribution (₹) <span class="required-star">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">💳</span>
+                                            <input type="number" id="s3-contribution" class="form-input"
+                                                placeholder="Amount you can contribute" min="0"
+                                                data-field="ownContribution" value={formData.ownContribution}
+                                                oninput={handleInput} />
+                                        </div>
+                                        <template if:true={errors.ownContribution}>
+                                            <span class="error-msg">⚠ {errors.ownContribution}</span>
+                                        </template>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="form-label">Required Loan Amount (₹) — Auto Calculated</label>
+                                        <div class="input-wrapper computed-field">
+                                            <span class="input-icon">💰</span>
+                                            <input type="text" class="form-input" readonly value={requiredLoanAmount} />
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <template if:true={globalError}>
+                                    <div class="global-error-banner">🚨 {globalError}</div>
+                                </template>
+                            </div>
+
+                            <div class="step-footer">
+                                <button class="btn-secondary" data-section="education" onclick={handleNavClick}>← Education</button>
+                                <button class="btn-primary" onclick={updateFunding} disabled={isSaving}>
+                                    <template if:true={isSaving}>
+                                        <span class="spinner-small spinner-white"></span> Saving…
+                                    </template>
+                                    <template if:false={isSaving}>💾 Update Funding</template>
+                                </button>
+                            </div>
+
+                        </div>
+                    </template>
+                    <!-- END SECTION 3 -->
+
+
+                    <!-- ═══════════════════════════════════════
+                         SECTION 4 — Co-Applicant
+                    ═══════════════════════════════════════ -->
+                    <template if:true={showCoapplicant}>
+                        <div class="section-card">
+
+                            <div class="section-header">
+                                <span class="section-header-icon">👥</span>
+                                <div>
+                                    <h2 class="section-header-title">Co-Applicant Details</h2>
+                                    <p class="section-header-desc">View and update co-applicant information.</p>
+                                </div>
+                            </div>
+
+                            <div class="progress-bar-wrapper">
+                                <div class="progress-track">
+                                    <div class="progress-fill" style={progressStyle}></div>
+                                </div>
+                                <div class="step-indicators">
+                                    <div class={step1Class}><span class="step-dot">👤</span><span class="step-label">Basic</span></div>
+                                    <div class={step2Class}><span class="step-dot">📚</span><span class="step-label">Education</span></div>
+                                    <div class={step3Class}><span class="step-dot">💰</span><span class="step-label">Funding</span></div>
+                                    <div class={step4Class}><span class="step-dot">👥</span><span class="step-label">Co-Applicant</span></div>
+                                    <div class={step5Class}><span class="step-dot">🏠</span><span class="step-label">Collateral</span></div>
+                                    <div class={step6Class}><span class="step-dot">📡</span><span class="step-label">Sourcing</span></div>
+                                    <div class={step7Class}><span class="step-dot">🧑</span><span class="step-label">Owner</span></div>
+                                </div>
+                            </div>
+
+                            <div class="step-content">
+
+                                <template if:true={saveSuccess}>
+                                    <div class="save-success-banner">✅ {saveSuccess}</div>
+                                </template>
+
+                                <!-- Co-applicant Toggle -->
+                                <div class="toggle-row">
+                                    <label class="form-label">Is Co-applicant Available?</label>
+                                    <div class="radio-group">
+                                        <label class="radio-label">
+                                            <input type="radio" name="isCoapplicantAvailable" value="Yes"
+                                                data-field="isCoapplicantAvailable" onchange={handleInput} />
+                                            <span>Yes</span>
+                                        </label>
+                                        <label class="radio-label">
+                                            <input type="radio" name="isCoapplicantAvailable" value="No"
+                                                data-field="isCoapplicantAvailable" onchange={handleInput} />
+                                            <span>No</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <template if:true={isCoapplicantVisible}>
+                                    <div class="form-grid">
+
+                                        <div class="form-group">
+                                            <label class="form-label" for="s4-coName">
+                                                Co-applicant Name <span class="required-star">*</span>
+                                            </label>
+                                            <div class="input-wrapper">
+                                                <span class="input-icon">👤</span>
+                                                <input type="text" id="s4-coName" class="form-input"
+                                                    placeholder="Enter co-applicant full name"
+                                                    data-field="coapplicantName" value={formData.coapplicantName}
+                                                    oninput={handleInput} />
+                                            </div>
+                                            <template if:true={errors.coapplicantName}>
+                                                <span class="error-msg">⚠ {errors.coapplicantName}</span>
+                                            </template>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label" for="s4-relation">
+                                                Relationship with Student <span class="required-star">*</span>
+                                            </label>
+                                            <div class="input-wrapper">
+                                                <span class="input-icon">🤝</span>
+                                                <select id="s4-relation" class="form-select"
+                                                    data-field="relationshipWithStudent"
+                                                    value={formData.relationshipWithStudent}
+                                                    onchange={handleSelectChange}>
+                                                    <option value="">-- Select Relationship --</option>
+                                                    <option value="Parent">Parent</option>
+                                                    <option value="Spouse">Spouse</option>
+                                                    <option value="Sibling">Sibling</option>
+                                                    <option value="Other">Other</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label" for="s4-coAge">
+                                                Co-applicant Age <span class="required-star">*</span>
+                                            </label>
+                                            <div class="input-wrapper">
+                                                <span class="input-icon">🎂</span>
+                                                <input type="number" id="s4-coAge" class="form-input"
+                                                    placeholder="Co-applicant's age" min="18" max="80"
+                                                    data-field="coapplicantAge" value={formData.coapplicantAge}
+                                                    oninput={handleInput} />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label" for="s4-coMobile">
+                                                Co-applicant Mobile <span class="required-star">*</span>
+                                            </label>
+                                            <div class="input-wrapper">
+                                                <span class="input-icon">📱</span>
+                                                <input type="tel" id="s4-coMobile" class="form-input"
+                                                    placeholder="10-digit mobile number" maxlength="10"
+                                                    data-field="coapplicantMobile" value={formData.coapplicantMobile}
+                                                    oninput={handleInput} />
+                                            </div>
+                                            <template if:true={errors.coapplicantMobile}>
+                                                <span class="error-msg">⚠ {errors.coapplicantMobile}</span>
+                                            </template>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label" for="s4-coOccupation">Co-applicant Occupation</label>
+                                            <div class="input-wrapper">
+                                                <span class="input-icon">💼</span>
+                                                <input type="text" id="s4-coOccupation" class="form-input"
+                                                    placeholder="e.g. Engineer, Doctor"
+                                                    data-field="coapplicantOccupation"
+                                                    value={formData.coapplicantOccupation}
+                                                    oninput={handleInput} />
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label" for="s4-empType">
+                                                Employment Type <span class="required-star">*</span>
+                                            </label>
+                                            <div class="input-wrapper">
+                                                <span class="input-icon">🏢</span>
+                                                <select id="s4-empType" class="form-select"
+                                                    data-field="employmentType"
+                                                    value={formData.employmentType}
+                                                    onchange={handleSelectChange}>
+                                                    <option value="">-- Select Employment Type --</option>
+                                                    <option value="Salaried">Salaried</option>
+                                                    <option value="Self-Employed">Self-Employed</option>
+                                                    <option value="Business">Business</option>
+                                                    <option value="Retired">Retired</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label" for="s4-incomeType">
+                                                Income Type <span class="required-star">*</span>
+                                            </label>
+                                            <div class="input-wrapper">
+                                                <span class="input-icon">📊</span>
+                                                <select id="s4-incomeType" class="form-select"
+                                                    data-field="incomeType"
+                                                    value={formData.incomeType}
+                                                    onchange={handleSelectChange}>
+                                                    <option value="">-- Select Income Type --</option>
+                                                    <option value="Monthly">Monthly</option>
+                                                    <option value="Annual">Annual</option>
+                                                </select>
+                                            </div>
+                                        </div>
+
+                                        <!-- <div class="form-group">
+                                            <label class="form-label" for="s4-income">
+                                                Monthly / Annual Income (₹) <span class="required-star">*</span>
+                                            </label>
+                                            <div class="input-wrapper">
+                                                <span class="input-icon">💰</span>
+                                                <input type="number" id="s4-income" class="form-input"
+                                                    placeholder="Enter income amount" min="0"
+                                                    data-field="monthlyAnnualIncome"
+                                                    value={formData.monthlyAnnualIncome}
+                                                    oninput={handleInput} />
+                                            </div>
+                                            <template if:true={errors.monthlyAnnualIncome}>
+                                                <span class="error-msg">⚠ {errors.monthlyAnnualIncome}</span>
+                                            </template>
+                                        </div> -->
+
+                                        <div class="form-group">
+    <label class="form-label" for="s4-incomeRange">
+        Income Range <span class="required-star">*</span>
+    </label>
+    <div class="input-wrapper">
+        <span class="input-icon">💰</span>
+        <input type="number"
+            id="s4-incomeRange"
+            class="form-input"
+            placeholder="Enter income range"
+            min="0"
+            data-field="incomeRange"
+            value={formData.incomeRange}
+            oninput={handleInput} />
+    </div>
+
+    <template if:true={errors.incomeRange}>
+        <span class="error-msg">⚠ {errors.incomeRange}</span>
+    </template>
+</div>
+
+                                    </div>
+                                </template>
+
+                                <template if:true={globalError}>
+                                    <div class="global-error-banner">🚨 {globalError}</div>
+                                </template>
+                            </div>
+
+                            <div class="step-footer">
+                                <button class="btn-secondary" data-section="funding" onclick={handleNavClick}>← Funding</button>
+                                <button class="btn-primary" onclick={updateCoApplicant} disabled={isSaving}>
+                                    <template if:true={isSaving}>
+                                        <span class="spinner-small spinner-white"></span> Saving…
+                                    </template>
+                                    <template if:false={isSaving}>💾 Update Co-Applicant</template>
+                                </button>
+                            </div>
+
+                        </div>
+                    </template>
+                    <!-- END SECTION 4 -->
+
+                    <!-- ═══════════════════════════════════════
+                         SECTION 5 — Property Collateral
+                    ═══════════════════════════════════════ -->
+                    <template if:true={showCollateral}>
+                        <div class="section-card">
+
+                            <div class="section-header">
+                                <span class="section-header-icon">🏠</span>
+                                <div>
+                                    <h2 class="section-header-title">Property Collateral</h2>
+                                    <p class="section-header-desc">View and update property collateral details.</p>
+                                </div>
+                            </div>
+
+                            <div class="progress-bar-wrapper">
+                                <div class="progress-track">
+                                    <div class="progress-fill" style={progressStyle}></div>
+                                </div>
+                                <div class="step-indicators">
+                                    <div class={step1Class}><span class="step-dot">👤</span><span class="step-label">Basic</span></div>
+                                    <div class={step2Class}><span class="step-dot">📚</span><span class="step-label">Education</span></div>
+                                    <div class={step3Class}><span class="step-dot">💰</span><span class="step-label">Funding</span></div>
+                                    <div class={step4Class}><span class="step-dot">👥</span><span class="step-label">Co-Applicant</span></div>
+                                    <div class={step5Class}><span class="step-dot">🏠</span><span class="step-label">Collateral</span></div>
+                                    <div class={step6Class}><span class="step-dot">📡</span><span class="step-label">Sourcing</span></div>
+                                    <div class={step7Class}><span class="step-dot">🧑</span><span class="step-label">Owner</span></div>
+                                </div>
+                            </div>
+
+                            <div class="step-content">
+
+                                <template if:true={saveSuccess}>
+                                    <div class="save-success-banner">✅ {saveSuccess}</div>
+                                </template>
+
+                                <!-- Collateral Toggle -->
+                                <div class="toggle-row">
+                                    <label class="form-label">Would you like to add Property Collateral?</label>
+                                    <div class="radio-group">
+                                        <label class="radio-label">
+                                            <input type="radio" name="isCollateralAvailable" value="Yes"
+                                                data-field="isCollateralAvailable" onchange={handleInput} />
+                                            <span>Yes</span>
+                                        </label>
+                                        <label class="radio-label">
+                                            <input type="radio" name="isCollateralAvailable" value="No"
+                                                data-field="isCollateralAvailable" onchange={handleInput} />
+                                            <span>No</span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <template if:true={isCollateralVisible}>
+                                    <div class="form-grid">
+
+                                        <div class="form-group">
+                                            <label class="form-label" for="s5c-unit">
+                                                Unit / Floor <span class="required-star">*</span>
+                                            </label>
+                                            <div class="input-wrapper">
+                                                <span class="input-icon">🏢</span>
+                                                <input type="text" id="s5c-unit" class="form-input"
+                                                    placeholder="e.g. Flat 4B, Floor 2"
+                                                    data-field="collateralUnit" value={formData.collateralUnit}
+                                                    oninput={handleInput} />
+                                            </div>
+                                            <template if:true={errors.collateralUnit}>
+                                                <span class="error-msg">⚠ {errors.collateralUnit}</span>
+                                            </template>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label" for="s5c-city">
+                                                City <span class="required-star">*</span>
+                                            </label>
+                                            <div class="input-wrapper">
+                                                <span class="input-icon">🏙️</span>
+                                                <input type="text" id="s5c-city" class="form-input"
+                                                    placeholder="Enter city"
+                                                    data-field="collateralCity" value={formData.collateralCity}
+                                                    oninput={handleInput} />
+                                            </div>
+                                            <template if:true={errors.collateralCity}>
+                                                <span class="error-msg">⚠ {errors.collateralCity}</span>
+                                            </template>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label" for="s5c-state">
+                                                State <span class="required-star">*</span>
+                                            </label>
+                                            <div class="input-wrapper">
+                                                <span class="input-icon">🗺️</span>
+                                                <input type="text" id="s5c-state" class="form-input"
+                                                    placeholder="Enter state"
+                                                    data-field="collateralState" value={formData.collateralState}
+                                                    oninput={handleInput} />
+                                            </div>
+                                            <template if:true={errors.collateralState}>
+                                                <span class="error-msg">⚠ {errors.collateralState}</span>
+                                            </template>
+                                        </div>
+
+                                        <div class="form-group">
+                                            <label class="form-label" for="s5c-pincode">
+                                                Pincode <span class="required-star">*</span>
+                                            </label>
+                                            <div class="input-wrapper">
+                                                <span class="input-icon">📍</span>
+                                                <input type="text" id="s5c-pincode" class="form-input"
+                                                    placeholder="6-digit pincode" maxlength="6"
+                                                    data-field="collateralPincode" value={formData.collateralPincode}
+                                                    oninput={handleInput} />
+                                            </div>
+                                            <template if:true={errors.collateralPincode}>
+                                                <span class="error-msg">⚠ {errors.collateralPincode}</span>
+                                            </template>
+                                        </div>
+
+                                        <div class="form-group-full">
+                                            <label class="form-label" for="s5c-address">
+                                                Address <span class="required-star">*</span>
+                                            </label>
+                                            <div class="input-wrapper">
+                                                <span class="input-icon">🏠</span>
+                                                <input type="text" id="s5c-address" class="form-input"
+                                                    placeholder="Enter full property address"
+                                                    data-field="collateralAddress" value={formData.collateralAddress}
+                                                    oninput={handleInput} />
+                                            </div>
+                                            <template if:true={errors.collateralAddress}>
+                                                <span class="error-msg">⚠ {errors.collateralAddress}</span>
+                                            </template>
+                                        </div>
+
+                                        <div class="form-group">
+    <label class="form-label" for="s5c-propertyType">
+        Property Type <span class="required-star">*</span>
+    </label>
+    <div class="input-wrapper">
+        <span class="input-icon">🏠</span>
+        <select id="s5c-propertyType"
+            class="form-select"
+            data-field="propertyType"
+            value={formData.propertyType}
+            onchange={handleSelectChange}>
+
+            <option value="">-- Select Property Type --</option>
+            <option value="Residential">Residential</option>
+            <option value="Commercial">Commercial</option>
+            <option value="Industrial">Industrial</option>
+            <option value="Land">Land</option>
+            <option value="Other">Other</option>
+        </select>
+    </div>
+
+    <template if:true={errors.propertyType}>
+        <span class="error-msg">⚠ {errors.propertyType}</span>
+    </template>
+</div>
+
+                                    </div>
+                                </template>
+
+                                <template if:true={globalError}>
+                                    <div class="global-error-banner">🚨 {globalError}</div>
+                                </template>
+                            </div>
+
+                            <div class="step-footer">
+                                <button class="btn-secondary" data-section="coapplicant" onclick={handleNavClick}>← Co-Applicant</button>
+                                <button class="btn-primary" onclick={updateCollateral} disabled={isSaving}>
+                                    <template if:true={isSaving}>
+                                        <span class="spinner-small spinner-white"></span> Saving…
+                                    </template>
+                                    <template if:false={isSaving}>💾 Update Collateral</template>
+                                </button>
+                            </div>
+
+                        </div>
+                    </template>
+                    <!-- END SECTION 5 -->
+
+                    <!-- ═══════════════════════════════════════
+                         SECTION 6 — Sourcing Details
+                    ═══════════════════════════════════════ -->
+                    <template if:true={showSourcing}>
+                        <div class="section-card">
+
+                            <div class="section-header">
+                                <span class="section-header-icon">📡</span>
+                                <div>
+                                    <h2 class="section-header-title">Sourcing Details</h2>
+                                    <p class="section-header-desc">View and update how this lead was sourced.</p>
+                                </div>
+                            </div>
+
+                            <div class="progress-bar-wrapper">
+                                <div class="progress-track">
+                                    <div class="progress-fill" style={progressStyle}></div>
+                                </div>
+                                <div class="step-indicators">
+                                    <div class={step1Class}><span class="step-dot">👤</span><span class="step-label">Basic</span></div>
+                                    <div class={step2Class}><span class="step-dot">📚</span><span class="step-label">Education</span></div>
+                                    <div class={step3Class}><span class="step-dot">💰</span><span class="step-label">Funding</span></div>
+                                    <div class={step4Class}><span class="step-dot">👥</span><span class="step-label">Co-Applicant</span></div>
+                                    <div class={step5Class}><span class="step-dot">📡</span><span class="step-label">Sourcing</span></div>
+                                    <div class={step6Class}><span class="step-dot">🧑</span><span class="step-label">Owner</span></div>
+                                </div>
+                            </div>
+
+                            <div class="step-content">
+
+                                <template if:true={saveSuccess}>
+                                    <div class="save-success-banner">✅ {saveSuccess}</div>
+                                </template>
+
+                                <div class="form-grid">
+
+                                    <!-- Lead Source (standard field) -->
+                                    <div class="form-group">
+                                        <label class="form-label" for="s5-leadSource">
+                                            Lead Source <span class="required-star">*</span>
+                                        </label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">📡</span>
+                                            <select id="s5-leadSource" class="form-select"
+                                                data-field="leadSource"
+                                                value={formData.leadSource}
+                                                onchange={handleSelectChange}>
+                                                <option value="">-- Select Lead Source --</option>
+                                                <template for:each={leadSourceOptions} for:item="opt">
+                                                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                                                </template>
+                                            </select>
+                                        </div>
+                                        <template if:true={errors.leadSource}>
+                                            <span class="error-msg">⚠ {errors.leadSource}</span>
+                                        </template>
+                                    </div>
+
+                                    <!-- Sub-Channel -->
+                                    <div class="form-group">
+                                        <label class="form-label" for="s5-subChannel">Sub-Channel</label>
+                                        <div class="input-wrapper">
+                                            <span class="input-icon">🔗</span>
+                                            <input type="text" id="s5-subChannel" class="form-input"
+                                                placeholder="e.g. Google Ads, Branch Walk-in"
+                                                data-field="subChannel"
+                                                value={formData.subChannel}
+                                                oninput={handleInput} />
+                                        </div>
+                                    </div>
+
+                                    <!-- Referral Name (shown only when source is Word of mouth / Partner) -->
+                                    <template if:true={isReferralVisible}>
+                                        <div class="form-group">
+                                            <label class="form-label" for="s5-referralName">Referral Name</label>
+                                            <div class="input-wrapper">
+                                                <span class="input-icon">🤝</span>
+                                                <input type="text" id="s5-referralName" class="form-input"
+                                                    placeholder="Name of referring person / partner"
+                                                    data-field="referralName"
+                                                    value={formData.referralName}
+                                                    oninput={handleInput} />
+                                            </div>
+                                        </div>
+                                    </template>
+
+                                </div>
+
+                                <template if:true={globalError}>
+                                    <div class="global-error-banner">🚨 {globalError}</div>
+                                </template>
+                            </div>
+
+                            <div class="step-footer">
+                                <button class="btn-secondary" data-section="coapplicant" onclick={handleNavClick}>← Co-Applicant</button>
+                                <button class="btn-primary" onclick={updateSourcing} disabled={isSaving}>
+                                    <template if:true={isSaving}>
+                                        <span class="spinner-small spinner-white"></span> Saving…
+                                    </template>
+                                    <template if:false={isSaving}>💾 Update Sourcing</template>
+                                </button>
+                            </div>
+
+                        </div>
+                    </template>
+                    <!-- END SECTION 5 -->
+
+                    <!-- ═══════════════════════════════════════
+                         SECTION 6 — Lead Owner
+                    ═══════════════════════════════════════ -->
+                    <template if:true={showOwner}>
+                        <div class="section-card">
+
+                            <div class="section-header">
+                                <span class="section-header-icon">🧑</span>
+                                <div>
+                                    <h2 class="section-header-title">Lead Owner</h2>
+                                    <p class="section-header-desc">The Salesforce user currently assigned as the owner of this lead.</p>
+                                </div>
+                            </div>
+
+                            <div class="progress-bar-wrapper">
+                                <div class="progress-track">
+                                    <div class="progress-fill" style={progressStyle}></div>
+                                </div>
+                                <div class="step-indicators">
+                                    <div class={step1Class}><span class="step-dot">👤</span><span class="step-label">Basic</span></div>
+                                    <div class={step2Class}><span class="step-dot">📚</span><span class="step-label">Education</span></div>
+                                    <div class={step3Class}><span class="step-dot">💰</span><span class="step-label">Funding</span></div>
+                                    <div class={step4Class}><span class="step-dot">👥</span><span class="step-label">Co-Applicant</span></div>
+                                    <div class={step5Class}><span class="step-dot">📡</span><span class="step-label">Sourcing</span></div>
+                                    <div class={step6Class}><span class="step-dot">🧑</span><span class="step-label">Owner</span></div>
+                                </div>
+                            </div>
+
+                            <div class="step-content">
+
+                                <!-- Owner Card -->
+                                <div class="owner-card">
+                                    <div class="owner-avatar">{ownerInitials}</div>
+                                    <div class="owner-details">
+                                        <div class="owner-name">{ownerDisplayName}</div>
+                                        <div class="owner-meta">
+                                            <!-- <span class="owner-meta-label">Owner ID</span> -->
+                                            <span class="owner-meta-value">{ownerIdDisplay}</span>
+                                        </div>
+                                        <div class="owner-meta">
+                                            <span class="owner-meta-label">Role</span>
+                                            <span class="owner-meta-value">Lead Owner</span>
+                                        </div>
+                                    </div>
+                                    <div class="owner-readonly-badge">🔒 Read Only</div>
+                                </div>
+
+                                <div class="owner-info-note">
+                                    ℹ️ Lead ownership is managed by Salesforce. To reassign this lead, use the standard record detail page or contact your administrator.
+                                </div>
+
+                            </div>
+
+                            <div class="step-footer">
+                                <button class="btn-secondary" data-section="sourcing" onclick={handleNavClick}>← Sourcing Details</button>
+                                <span></span>
+                            </div>
+
+                        </div>
+                    </template>
+                    <!-- END SECTION 6 -->
+
+                </div><!-- /form-panel-inner -->
+            </div><!-- /form-panel -->
+
+            <!-- RIGHT: Priority + Score + Branch -->
+            <div class="right-panel">
+                <c-lead-priority-selector
+                    record-id={recordId}>
+                </c-lead-priority-selector>
+                <div class="right-panel-spacer"></div>
+                <c-lead-score-card
+                    record-id={recordId}
+                    score={leadScore}
+                    age-eligible={ageEligible}
+                    mobile-verified={mobileVerified}
+                    location-not-covered={locationNotCovered}
+                    lwc:ref="scoreCard"
+                    
+                    
+                >
+                </c-lead-score-card>
+                <div class="right-panel-spacer"></div>
+                <c-disposition
+                  record-id={recordId}>
+                </c-disposition>
+                <div class="right-panel-spacer"></div>
+                <c-branch-selector
+                    record-id={recordId}
+                    selected-branch-id={selectedBranchId}
+                    selected-branch-name={selectedBranchName}
+                    onbranchselect={handleBranchSelect}>
+                </c-branch-selector>
+            </div>
+
+        </div><!-- /app-body -->
+    </template>
+</template>
+<!-- GenAI: Generated code ends here -->

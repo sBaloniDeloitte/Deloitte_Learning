@@ -1,0 +1,287 @@
+@import "c/cssLibrary";
+
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+/* Dark theme overrides for pricingApproval (colors only, no structural/functional change)
+   Matches the loanProductDetails dark theme so both components render consistently. */
+:host {
+    color: #ffffff;
+    /* Accordion (outer container + section header/summary) — component hooks */
+    --slds-c-accordion-color-background: #12172b;
+    --slds-c-accordion-section-color-background: #1c2238;
+    --slds-c-accordion-summary-color: #ffffff;
+    --slds-c-accordion-summary-color-background: #1c2238;
+    --slds-c-accordion-summary-color-background-hover: #232a45;
+    --slds-c-accordion-summary-heading-color: #ffffff;
+    --slds-c-accordion-summary-heading-color-hover: #ffffff;
+    --slds-c-accordion-color-border: #2a2f45;
+    --slds-c-accordion-summary-text-color: #ffffff;
+
+    /* Form field labels — component hooks */
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+
+    /* Input / Combobox / Textarea fields — component hooks */
+    --slds-c-input-color-background: #1c2238;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #2a2f45;
+    --slds-c-input-shadow-focus: 0 0 0 1px #1467eb;
+    --slds-c-textarea-color-background: #1c2238;
+    --slds-c-textarea-text-color: #ffffff;
+    --slds-c-textarea-color-border: #2a2f45;
+    --slds-c-checkbox-color-background: #1c2238;
+    --slds-c-checkbox-color-border: #2a2f45;
+
+    /* Combobox (picklist) — has its own hook set, separate from lightning-input */
+    --slds-c-combobox-input-color-background: #1c2238;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #2a2f45;
+    --slds-c-combobox-color-background: #1c2238;
+    --slds-c-combobox-text-color: #ffffff;
+    --slds-c-combobox-option-color-background: #1c2238;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #232a45;
+    --slds-c-combobox-option-color-background-selected: #232a45;
+    --slds-c-combobox-listbox-color-background: #1c2238;
+    --slds-c-icon-color-foreground: #ffffff;
+    --slds-c-icon-color-foreground-default: #ffffff;
+
+    /* SLDS 2 GLOBAL styling hooks — the foundational surface/text/border
+       tokens that component-level hooks fall back to. */
+    --slds-g-color-surface-1: #12172b;
+    --slds-g-color-surface-2: #1c2238;
+    --slds-g-color-surface-3: #232a45;
+    --slds-g-color-border-base-1: #2a2f45;
+    --slds-g-color-border-1: #2a2f45;
+    --slds-g-color-border-2: #2a2f45;
+    --slds-g-color-on-surface-1: #ffffff;
+    --slds-g-color-on-surface-2: #ffffff;
+    --slds-g-color-neutral-base-100: #1c2238;
+    --slds-g-color-neutral-base-95: #232a45;
+
+    display: block;
+    background-color: #12172b;
+}
+
+.andcontainers {
+    text-align: left;
+    font-weight: bold;
+    margin-top: 5%;
+    margin-bottom: 14px;
+}
+
+/* ==========================================================================
+   Standard CTA button color convention (matches loanProductDetails /
+   salesLoginApplicantInformationCmp)
+   Positive CTAs (Save, Approve, etc.)        -> Green  #4CAF50
+   Negative CTAs (Close/Cancel)               -> Red    #DB2929
+   Other buttons (Edit, Open/Close All, etc.) -> Blue   #1467EB
+   ========================================================================== */
+.previous-button {
+    padding: 0px 8px;
+    border: none;
+    display: inline-block;
+    text-align: center;
+    color: white;
+    background-color: #1467EB;
+    align-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 140px;
+}
+
+.save-button {
+    padding: 0px 8px;
+    border: none;
+    display: inline-block;
+    text-align: center;
+    color: white;
+    background-color: #7c3aed
+;
+    align-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    width: 140px;
+}
+
+.openAll {
+    background-color: #7c3aed;
+}
+
+.closeAll {
+    background-color: #16283f;
+}
+
+button:disabled {
+    cursor: default !important;
+}
+
+.bsa-page {
+    background-color: #12172b !important;
+    border-radius: 8px;
+}
+
+.example-accordion {
+    background-color: #12172b;
+}
+
+/* Fallback overrides for nested base components — reasserted directly on the
+   element tag so the custom properties are guaranteed to inherit into that
+   element's own shadow tree. Colors only — no structural/functional change.
+   pricingApproval's sections (Charges, LoandDetails, ApprovalHistory) are the
+   equivalent of loanProductDetails' PSL/CRE/COST sections — all of them get
+   the same blue gradient header treatment since none is a "lesser" section. */
+lightning-accordion,
+lightning-accordion-section {
+    /* --slds-c-accordion-color-background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+    --slds-c-accordion-summary-color-background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%); 
+    --slds-c-accordion-summary-color-background-hover: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);*/
+    --slds-c-accordion-summary-heading-color: #ffffff;
+    --slds-c-accordion-summary-text-color: #ffffff;
+    --slds-g-color-surface-1: #12172b;
+    --slds-g-color-surface-2: #004db3;
+    --slds-g-color-on-surface-1: #ffffff;
+}
+
+.slds-accordion__list-item {
+    border: 1px solid #2a2f45 !important;
+}
+
+.slds-accordion__list-item .section-control {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.slds-accordion__summary {
+    padding: 10px 0px 10px 0px;
+}
+
+/* Direct global-class overrides as a last-resort safety net. These target
+   the standard SLDS markup class names that lightning-accordion renders
+   internally. Inert (no-op) in orgs where the element is fully
+   shadow-encapsulated, effective wherever that markup is page-level styled. */
+/* .slds-accordion__summary,
+.slds-accordion__summary-action,
+.slds-accordion__summary-heading {
+    color: #ffffff !important;
+} */
+
+.slds-accordion__summary-action{
+    color: #ffffff !important;
+}
+
+.slds-accordion__summary-content{
+    color: #ffffff !important;
+}
+
+.slds-accordion__summary-action:hover{
+    color: rgb(219, 217, 217);
+}
+
+lightning-accordion,
+lightning-accordion-section {
+    --slds-c-accordion-summary-color-background: #ffffff;
+    --slds-c-accordion-summary-color-background-hover: #dfe2e6;
+    --slds-c-accordion-summary-heading-color: #ffffff;
+    --slds-c-accordion-summary-text-color: #ffffff;
+}
+
+.slds-accordion__content {
+    background-color: #12172b !important;
+}
+
+.table-container {
+    background: #12172b;
+    border: 1px solid #2a2f45;
+    border-radius: 14px;
+    padding: 18px;
+
+    box-shadow:
+        0 0 0 1px rgba(255,255,255,.02),
+        0 8px 24px rgba(0,0,0,.4);
+}
+
+.custom-table thead th {
+    background-color: #1c2238 !important;
+    color: #ffffff !important;
+    border: 1px solid #2a2f45 !important;
+    font-weight: 600;
+}
+
+.custom-table tbody td {
+    background-color: #12172b !important;
+    color: #ffffff !important;
+    border: 1px solid #2a2f45 !important;
+}
+
+.custom-table tbody tr:nth-child(odd) td {
+    background-color: #12172b !important;
+}
+
+.custom-table tbody tr:nth-child(even) td {
+    background-color: #1c2238 !important;
+}
+
+.custom-table tbody tr:hover td {
+    background-color: #232a45 !important;
+}
+
+lightning-input,
+lightning-combobox,
+lightning-textarea {
+    --slds-c-input-color-background: #1c2238;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-label-color: #ffffff;
+    --slds-g-color-surface-2: #1c2238;
+    --slds-g-color-on-surface-1: #ffffff;
+
+    --slds-c-input-color-background-disabled: #1c2238;
+    --slds-c-input-text-color-disabled: #ffffff;
+}
+
+lightning-input::part(input) {
+    background-color: #1c2238 !important;
+    color: #ffffff !important;
+    border: 1px solid #2a2f45 !important;
+}
+
+lightning-combobox {
+    --slds-c-combobox-input-color-background: #1c2238;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #2a2f45;
+    --slds-c-combobox-color-background: #1c2238;
+    --slds-c-combobox-text-color: #ffffff;
+    --slds-c-combobox-option-color-background: #1c2238;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: #1c2238;
+    --slds-c-icon-color-foreground: #ffffff;
+}
+
+.slds-input,
+.slds-textarea,
+.slds-combobox__input {
+    background-color: #1c2238 !important;
+    color: #ffffff !important;
+    border-color: #2a2f45 !important;
+}
+
+.slds-combobox__input-value,
+.slds-listbox__option,
+.slds-listbox_vertical .slds-listbox__item,
+.slds-dropdown,
+.slds-dropdown__list {
+    background-color: #1c2238 !important;
+    color: #ffffff !important;
+}
+
+.slds-combobox__input::placeholder,
+.slds-input::placeholder,
+.slds-textarea::placeholder {
+    color: rgba(255, 255, 255, 0.5) !important;
+}
+
+.slds-input__icon,
+.slds-combobox__input-entity-icon {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

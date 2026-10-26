@@ -1,0 +1,345 @@
+@import 'c/cssLibrary';
+
+/*
+.grey-accordion .slds-accordion__summary {
+    background-color: #f1f1f1; 
+    color: #333; 
+    background: #c5c5c5"
+}
+
+.grey-accordion .slds-accordion__summary:hover {
+    background-color: #dcdcdc; 
+}
+
+.grey-accordion .slds-accordion__content {
+    background-color: #f9f9f9; 
+   background: #c5c5c5"
+}
+.custom-accordion-header .slds-accordion__summary {
+    background: #c5c5c5 !important; 
+    font-weight: 700;
+    padding: 0.5rem; 
+    border-radius: 5px; 
+}*/
+
+
+@media print {
+    
+    body * :not(.printable-area){
+        display: none !important; 
+    }
+    
+}
+
+.example-accordion,
+.custom-accordion-header {
+    /* background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%); */
+    
+    --slds-c-accordion-summary-color-background: linear-gradient(135deg, #02133f 0%,#00215e 55%, #002d67 100%);
+    --slds-c-accordion-summary-color-background-hover: linear-gradient(135deg, #02133f 0%,#00215e 55%, #002d67 100%);
+    --slds-c-accordion-summary-color-background-active: linear-gradient(135deg, #02133f 0%,#00215e 55%, #002d67 100%);
+    --slds-c-accordion-summary-text-color: #ffffff;
+    --slds-c-accordion-summary-text-color-hover: #ffffff;
+    --slds-c-accordion-summary-heading-color: #ffffff;
+    --slds-c-accordion-summary-heading-color-hover: #ffffff;
+    --slds-c-accordion-summary-icon-color: #ffffff;
+    --slds-c-accordion-summary-icon-color-hover: #ffffff;
+    --slds-c-accordion-color-border: #002266;
+}
+/* ===== ONE VIEW DARK BACKGROUND ===== */
+
+.bsa-page {
+    background-color: #0A1524 !important;
+}
+
+/* Main area containing Open All / Close All / PDF buttons */
+.bsa-page:first-of-type {
+    background-color: #0A1524 !important;
+    padding: 10px 0;
+}
+
+/* Accordion outer container */
+.bsa-page.printable-area {
+    background-color: #0A1524 !important;
+    padding: 10px 15px 20px 15px;
+}
+
+/* Accordion itself */
+.bsa-page .example-accordion {
+    background-color: #0A1524 !important;
+}
+
+/* Accordion section */
+.bsa-page .slds-accordion__list-item {
+    background-color: #0A1524 !important;
+    border-color: #0A1524 !important;
+}
+
+/* Accordion header */
+.bsa-page .slds-accordion__summary {
+    background-color: #0A1524 !important;
+    border-color: #0A1524 !important;
+}
+
+/* Accordion header button */
+.bsa-page .slds-accordion__summary-action {
+    background-color: #0A1524 !important;
+    color: #ffffff !important;
+    border-color: #0A1524 !important;
+}
+
+/* Accordion header text */
+.bsa-page .slds-accordion__summary-content {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+/* Accordion arrow */
+.bsa-page .slds-accordion__summary-action-icon {
+    fill: #ffffff !important;
+}
+
+/* Accordion content area */
+.bsa-page .slds-accordion__content {
+    background-color: #0A1524 !important;
+    color: #ffffff !important;
+}
+
+/* Space between accordion sections */
+.bsa-page .slds-accordion__list-item {
+    margin-bottom: 8px;
+}
+
+/* Open All / Close All / PDF button area */
+.bsa-page .save-button {
+    margin-right: 8px;
+}
+
+/* Open All / Close All - dark navy background with purple outline
+   ("Previous" button look). Only colors/border changed, label and
+   click handlers are untouched. */
+.bsa-page .save-button.slds-button_brand:not(.pdf-action-button) {
+    background-color: #16283f;
+    border: 1px solid #8b5cf6;
+    color: #ffffff;
+}
+
+.bsa-page .save-button.slds-button_brand:not(.pdf-action-button):hover {
+    background-color: #1f3550;
+    border-color: #a855f7;
+}
+
+/* PDF button - solid purple ("Start Application" look). Only
+   colors/border changed, label and click handler are untouched. */
+.bsa-page .save-button.pdf-action-button.slds-button_brand {
+    background-color: #8b5cf6;
+    border-color: #8b5cf6;
+    color: #ffffff;
+}
+
+.bsa-page .save-button.pdf-action-button.slds-button_brand:hover {
+    background-color: #7c3aed;
+    border-color: #7c3aed;
+}
+
+/* ===== SOURCING DETAILS TABLE ===== */
+
+.sourcing-details-table {
+    width: 100%;
+    background-color: #16283f !important;
+    border-collapse: collapse;
+}
+
+/* Sourcing Details - Keys / Headers */
+.sourcing-details-table .sourcing-key {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    text-align: center;
+    padding: 8px 10px;
+    border: 1px solid #33455e !important;
+    white-space: nowrap;
+    width: 20%;
+}
+
+/* Sourcing Details - Values */
+.sourcing-details-table .sourcing-value {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    font-family: Arial, sans-serif;
+    font-size: 13px;
+    font-weight: 400;
+    text-align: center;
+    padding: 8px 10px;
+    border: 1px solid #33455e !important;
+    width: 30%;
+}
+/* Sourcing Details - KEY cells */
+.bsa-page .sourcing-details-table td.sourcing-key {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    font-family: Arial, sans-serif !important;
+    font-size: 13px !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    padding: 8px 10px !important;
+    border: 1px solid #33455e !important;
+    white-space: nowrap;
+}
+
+/* Sourcing Details - VALUE cells */
+.bsa-page .sourcing-details-table td.sourcing-value {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    font-weight: 400 !important;
+    text-align: center !important;
+    padding: 8px 10px !important;
+    border: 1px solid #33455e !important;
+}
+.bsa-page .sourcing-details-table,
+.bsa-page .sourcing-details-table tbody,
+.bsa-page .sourcing-details-table tr,
+.bsa-page .sourcing-details-table td {
+    border-color: #33455e !important;
+}
+
+.bsa-page .sourcing-details-table td {
+    border: 1px solid #33455e !important;
+}
+/* ===== DARK NAVY SCROLLBARS ===== */
+
+/* Scrollable areas */
+.bsa-page .slds-scrollable,
+.bsa-page .slds-scrollable_x,
+.bsa-page .slds-scrollable_y,
+.bsa-page .slds-scrollable-x,
+.bsa-page .slds-scrollable-y {
+    scrollbar-color: #4a5d75 #0A1524 !important;
+    scrollbar-width: thin;
+}
+
+/* Chrome / Edge / Salesforce Chromium */
+.bsa-page .slds-scrollable::-webkit-scrollbar,
+.bsa-page .slds-scrollable_x::-webkit-scrollbar,
+.bsa-page .slds-scrollable_y::-webkit-scrollbar,
+.bsa-page .slds-scrollable-x::-webkit-scrollbar,
+.bsa-page .slds-scrollable-y::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+/* Scrollbar background */
+.bsa-page .slds-scrollable::-webkit-scrollbar-track,
+.bsa-page .slds-scrollable_x::-webkit-scrollbar-track,
+.bsa-page .slds-scrollable_y::-webkit-scrollbar-track,
+.bsa-page .slds-scrollable-x::-webkit-scrollbar-track,
+.bsa-page .slds-scrollable-y::-webkit-scrollbar-track {
+    background: #0A1524 !important;
+    border-radius: 10px;
+}
+
+/* Scrollbar moving part */
+.bsa-page .slds-scrollable::-webkit-scrollbar-thumb,
+.bsa-page .slds-scrollable_x::-webkit-scrollbar-thumb,
+.bsa-page .slds-scrollable_y::-webkit-scrollbar-thumb,
+.bsa-page .slds-scrollable-x::-webkit-scrollbar-thumb,
+.bsa-page .slds-scrollable-y::-webkit-scrollbar-thumb {
+    background: #4a5d75 !important;
+    border-radius: 10px;
+    border: 2px solid #0A1524;
+}
+
+/* Hover */
+.bsa-page .slds-scrollable::-webkit-scrollbar-thumb:hover,
+.bsa-page .slds-scrollable_x::-webkit-scrollbar-thumb:hover,
+.bsa-page .slds-scrollable_y::-webkit-scrollbar-thumb:hover,
+.bsa-page .slds-scrollable-x::-webkit-scrollbar-thumb:hover,
+.bsa-page .slds-scrollable-y::-webkit-scrollbar-thumb:hover {
+    background: #647895 !important;
+}
+/* ===== PROPERTY DETAILS TABLE ===== */
+
+.property-details-table {
+    width: 100%;
+    border-collapse: collapse !important;
+    background-color: #0A1524 !important;
+}
+
+/* TABLE HEADER / KEYS */
+.property-details-table thead th {
+    background-color: #16283f !important;
+    color: #FFFFFF !important;
+    border: 1px solid #33455e !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+    padding: 8px 10px !important;
+}
+
+/* TABLE CONTENT / VALUES */
+.property-details-table tbody td {
+    background-color: #16283f !important;
+    color: #FFFFFF !important;
+    border: 1px solid #33455e !important;
+    text-align: center !important;
+    padding: 8px 10px !important;
+}
+
+/* ROW */
+.property-details-table tbody tr {
+    background-color: #16283f !important;
+}
+
+/* REMOVE SLDS DEFAULT DIFFERENT COLORS */
+.property-details-table tbody tr:hover td {
+    background-color: #16283f !important;
+}
+
+/* GRID LINES */
+.property-details-table th,
+.property-details-table td {
+    border-color: #33455e !important;
+}
+
+/* ===== UNIFIED BORDER COLOR FOR ALL TABLES IN THIS SCREEN ===== */
+/* Covers doc-table-css / tableCss (FCU, Sourcing sub-tables) and any
+   plain slds-table_bordered tables that were showing default white/grey
+   borders (including the HTML "border" attribute default color). */
+.bsa-page table,
+.bsa-page table thead,
+.bsa-page table tbody,
+.bsa-page table tr,
+.bsa-page table th,
+.bsa-page table td {
+    border-color: #33455e !important;
+}
+/* ===== FORCE ALL TABLE CELL BORDERS TO DARK NAVY ===== */
+
+/* .bsa-page table,
+.bsa-page table thead,
+.bsa-page table tbody,
+.bsa-page table tr,
+.bsa-page table th,
+.bsa-page table td {
+    border-color: #33455e !important;
+} */
+
+/* SLDS bordered tables */
+.bsa-page .slds-table_bordered > thead > tr > th,
+.bsa-page .slds-table_bordered > tbody > tr > td {
+    border-top-color: #33455e !important;
+    border-bottom-color: #33455e !important;
+}
+
+/* Vertical borders between cells */
+.bsa-page .slds-table_col-bordered > thead > tr > th,
+.bsa-page .slds-table_col-bordered > tbody > tr > td {
+    border-left-color: #33455e !important;
+    border-right-color: #33455e !important;
+}
+
+/* Table outer border */
+.bsa-page table {
+    border-color: #33455e !important;
+}

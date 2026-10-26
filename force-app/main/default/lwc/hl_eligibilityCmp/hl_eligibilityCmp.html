@@ -1,0 +1,41 @@
+<template>
+    <template if:true={hasData}>
+        <div style="margin: 10px 0px;overflow: inherit;justify-content: center;display: flex;">
+            <div style="width: 50%;">
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                <thead>
+                    <tr>
+                        <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                            <!-- color: white; -->
+                            Application & Applicant
+                        </th>
+                        <th class="slds-text-title_caps tableCss" scope="col"
+                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                            Select Income Method</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={appdata} for:item="row">
+                        <tr key={row.recId}>
+                            <td style="border:1px solid black">{row.appName}</td>
+                            <td style="border:1px solid black">
+                                <lightning-combobox
+                            data-id={row.recId}
+                            options={row.options}
+                            value={row.selectedValue}
+                            onchange={handleChange}
+                            variant="label-hidden"
+                            disabled = {disabledAll}
+                        ></lightning-combobox>
+                            </td>
+
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            </div>
+        </div>
+    </template>
+</template>

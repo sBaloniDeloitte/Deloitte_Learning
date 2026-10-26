@@ -1,0 +1,199 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import "c/cssLibrary";
+
+/* ----------------- Dark Theme (matches incomeAssessmentMainCmp / sanctionConditionConvenantsCmp) ----------------- */
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-placeholder-text-color: #8a99b3;
+    --slds-c-input-label-color: #ffffff;
+
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-positive: #1467eb;
+    --dt-negative: #db2929;
+
+    --slds-g-color-neutral-base-100: #16283f;
+    --slds-g-color-neutral-base-95: #16283f;
+}
+
+/* ----------------- Inputs / Combobox / Textarea (fixes white background on disabled fields) ----------------- */
+lightning-input::part(input),
+lightning-combobox::part(input) {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+lightning-input[disabled]::part(input) {
+    background-color: var(--dt-panel-bg) !important;
+    color: #8a99b3 !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #8a99b3 !important;
+}
+
+lightning-combobox[disabled]::part(input) {
+    background-color: var(--dt-panel-bg) !important;
+    color: #8a99b3 !important;
+}
+
+lightning-textarea::part(textarea) {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+lightning-textarea[disabled]::part(textarea) {
+    background-color: var(--dt-panel-bg) !important;
+    color: #8a99b3 !important;
+}
+
+/* ----------------- Table ----------------- */
+.slds-table_cell-buffer tr>th:first-child, .slds-table_cell-buffer tr>td:first-child, .slds-table--cell-buffer tr>th:first-child, .slds-table--cell-buffer tr>td:first-child{
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+table, th, td {
+    border: 1px solid var(--dt-border) !important;
+}
+
+.color-theme{
+    text-align: center;
+    font-weight: 500;
+    background-color: #16283f;
+    color: #ffffff;
+}
+
+.no-hover:hover {
+  background-color: var(--dt-header-bg) !important;
+  cursor: default;
+}
+
+.no-hover-child:hover {
+  background-color: var(--dt-panel-bg) !important;
+  cursor: default;
+}
+
+.slds-table thead th {
+    white-space: normal;
+}
+.col-width-10 {
+    width: 40px;
+}
+.col-width-100 {
+    min-width: 100px;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+:host .slds-modal__content{
+    overflow: initial;
+}
+
+/* ----------------- Disabled Inputs Block (DISABLED_INPUT_BLOCK) ----------------- */
+lightning-input[disabled] {
+    opacity: 1 !important;
+}
+
+lightning-combobox[disabled] {
+    opacity: 1 !important;
+}
+
+lightning-textarea[disabled] {
+    opacity: 1 !important;
+}
+
+/* ===== Theme restyle: buttons, modal, combobox/select (Codify) ===== */
+.btn-positive-action,
+.save-button,
+.next-button,
+.submit-button {
+    background-color: #8b5cf6 !important;
+border-color: #8b5cf6 !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+.btn-negative-action,
+.cancel-button,
+.close-button,
+.back-button {
+    background-color: #16283f;
+border-color: #8b5cf6 !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+.btn-add-action {
+    background-color: #1467eb !important;
+    border-color: #1467eb !important;
+    color: #ffffff !important;
+}
+
+.slds-modal__header,
+.cs-modal-header {
+    background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%) !important;
+    color: #ffffff !important;
+}
+.slds-modal__header h1,
+.slds-modal__header h2,
+.slds-modal__header .slds-text-heading_medium,
+.cs-modal-header h2 {
+    color: #ffffff !important;
+}
+.slds-modal__footer,
+.cs-modal-footer {
+    background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%) !important;
+}
+
+/* Combobox / select - closed state */
+.slds-select,
+.slds-combobox__input {
+    background-color: #16283f !important;
+    border: 1px solid #33455e !important;
+    color: #ffffff !important;
+    height: 2.25rem !important;
+}
+lightning-combobox::part(input),
+lightning-select::part(select) {
+    background-color: #16283f !important;
+    border: 1px solid #33455e !important;
+    color: #ffffff !important;
+}
+
+/* Combobox open dropdown listbox - dark theme */
+.slds-dropdown,
+.slds-dropdown__list,
+.slds-listbox_vertical {
+    background-color: #16283f !important;
+    border-color: #33455e !important;
+}
+.slds-listbox__option,
+.slds-listbox__item {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+}
+.slds-listbox__option:hover,
+.slds-listbox__option:focus,
+.slds-listbox__option.slds-has-focus,
+.slds-listbox__option[aria-selected="true"] {
+    background-color: #1589ee !important;
+    color: #ffffff !important;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

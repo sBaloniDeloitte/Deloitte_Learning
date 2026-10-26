@@ -1,0 +1,210 @@
+@import 'c/cssLibrary';
+
+:host {
+    display: block;
+    color: #ffffff;
+    background-color: #12172b;
+    --ivm-page-bg: #12172b;
+    --ivm-panel-bg: #12172b;
+    --ivm-field-bg: #16283f;
+    --ivm-border: #33455e;
+    --ivm-accent: #1467eb;
+    /* Matches fcuAccordionCmp's ".fcu-panel" background (--fcu-page-bg)
+       so the lightning-card opened from "Recommend for FCU" reads as the
+       same surface as the FCU accordion section it's launched from. */
+    --ivm-card-bg: #12172b;
+
+    /* lightning-card - the big panel wrapping the tabset. Style hooks are
+       the only way to reach its background since it renders in its own
+       shadow DOM (same technique already used in applicantAddresses,
+       salesLoginProductDetailsCmp, upfrontFeeCollectionCmp). */
+    --slds-c-card-color-background: var(--ivm-card-bg);
+    --slds-c-card-color-background-header: var(--ivm-card-bg);
+    --slds-c-card-color-border: var(--ivm-border);
+    --slds-c-card-text-color: #ffffff;
+    --slds-c-card-heading-text-color: #ffffff;
+}
+
+/* Fallback for the light-DOM-visible ".slds-card" wrapper some
+   lightning-card versions render. */
+.slds-card,
+lightning-card .slds-card {
+    background: var(--ivm-card-bg) !important;
+    color: #ffffff !important;
+    border-color: var(--ivm-border) !important;
+}
+
+.overlay {
+    background: rgba(10, 15, 30, 0.72);
+}
+
+.slds-tabs_default__nav{
+    position: fixed;
+    top: 173px;
+    z-index: 98;
+    background: var(--ivm-panel-bg);
+    width: 98.5%;
+    border: 1px solid var(--ivm-border);
+    border-radius: 10px;
+
+}
+.slds-tabs_default__item{
+    padding-top: 11px;
+}
+
+/* Make sure tabs are displayed inline and wrap when they overflow */
+.slds-tabs_scoped__nav, .slds-tabs--scoped__nav {
+    display: flex;
+    flex-wrap: unset; /*Allow wrapping to the next line*/
+    gap: 10px; /* Add some space between tabs */
+    justify-content: flex-start; /* Align tabs to the start */
+}
+
+/* Set minimum width for each tab to ensure they don't shrink too much */
+.slds-tabs_scoped__link {
+    min-width: 150px; /* Adjust this width as per your requirement */
+    flex: 1 1 auto; /* Allow the tab to grow/shrink but maintain minimum width */
+}
+
+/* Ensure that the tabset doesn't overflow */
+.lightning-tabset {
+    overflow: hidden;
+}
+
+/* Style the tab container to ensure they wrap properly */
+.tabStick {
+    /* width: 100%; Make sure the container takes the full available width */
+    width: auto;
+    flex: 1 0 30%; /* Prevent tabs from expanding too much */
+}
+
+/* Optional: Add styling to manage additional tabs */
+.lightning-tab {
+    display: inline-block;
+    width: auto; /* Let the tab size automatically adjust */
+}
+.slds-is-active{
+    background-color: var(--ivm-accent) !important;
+}
+.lightning-card {
+    max-width: 100%;
+    overflow: hidden;
+}
+
+lightning-card {
+    --slds-c-card-color-background: #12172b;
+    --slds-c-card-color-background-header: #12172b;
+    --slds-c-card-color-border: #2a2f45;
+}
+
+lightning-tabset {
+    --slds-c-tabs-color-background: var(--ivm-panel-bg);
+    --slds-c-tabs-item-text-color: #ffffff;
+    --slds-c-tabs-item-text-color-hover: #ffffff;
+    --slds-c-tabs-item-text-color-active: #ffffff;
+    --slds-c-tabs-item-text-color-selected: #ffffff;
+    --slds-c-tabs-item-color-border-active: var(--ivm-accent);
+    --slds-c-tabs-item-spacing-block-end: 2px;
+
+    /* Scoped tab-bar background and labels. The global tokens are fallbacks
+       used by the current SLDS tab implementation. */
+    --slds-c-tabs-scoped-color-background: #12172b;
+    --slds-c-tabs-scoped-item-text-color: #ffffff;
+    --slds-c-tabs-scoped-item-text-color-hover: #ffffff;
+    --slds-c-tabs-scoped-item-text-color-active: #ffffff;
+    --slds-c-tabs-scoped-item-text-color-selected: #ffffff;
+    --slds-g-color-surface: #12172b;
+    --slds-g-color-surface-container: #12172b;
+    --slds-g-color-surface-container-1: #12172b;
+    --slds-g-color-neutral-base-100: #12172b;
+    --slds-g-color-neutral-base-95: #12172b;
+    /* The scoped tab's selected label falls back to this SLDS neutral text
+       token in the current runtime, rather than the tab-specific hooks. */
+    --slds-g-color-neutral-base-10: #ffffff;
+    --slds-g-color-neutral-base-20: #ffffff;
+    --slds-g-color-neutral-base-30: #ffffff;
+    --slds-g-color-on-surface: #ffffff;
+    --slds-g-color-on-surface-1: #ffffff;
+    --lwc-colorTextLinkActive: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+}
+
+/* Positive CTA (Clear/Submit) - #7c3aed fill, no border, 8px radius. */
+.save-button {
+    background-color: #7c3aed !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* Negative CTA (Not Clear/Cancel) - #16283f fill, 1px solid #7c3aed border, 8px radius. */
+.cancel-button {
+    background-color: #16283f !important;
+    border: 1px solid #7c3aed !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.slds-modal__container {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.slds-modal__content {
+    color: #ffffff !important;
+}
+
+.slds-p-around_small,
+.slds-p-around_small lightning-card {
+    background-color: transparent !important;
+}
+
+/* The outer card inside the FCU modal is another independently rendered
+   surface. Keep it transparent so it does not reintroduce the removed modal
+   background. */
+.slds-modal__content > lightning-card {
+    --slds-c-card-color-background: transparent;
+    --slds-c-card-color-background-header: transparent;
+    --slds-c-card-color-border: transparent;
+}
+
+.slds-modal__content lightning-input {
+    --slds-c-input-color-background: var(--ivm-field-bg);
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: var(--ivm-border);
+    --slds-c-input-label-color: #ffffff;
+}
+
+/* "Hunter Response" tables (Initiated Hunter tab) - matched to the
+   "Aadhar Details" table theme in salesLoginAadharDetailsCmp
+   (:host .slds-table / thead th / tbody td): dark navy #0e1626 body,
+   #111d30 header with white bold text, #1d2f45 borders - replacing the
+   previous light-blue (#5bb6e3) header on a plain white table. */
+.hunter-response-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    background-color: #0e1626;
+    border: 1px solid #1d2f45;
+    border-radius: 8px;
+    overflow: hidden;
+    color: #ffffff;
+}
+
+.hunter-response-table td {
+    border: 1px solid #1d2f45;
+    color: #ffffff;
+    background-color: #0e1626;
+}
+
+.hunter-response-header {
+    background-color: #111d30 !important;
+    color: #ffffff !important;
+    font-weight: 700;
+    text-align: center;
+}
+
+.hunter-response-table a {
+    color: #7db2ff;
+}

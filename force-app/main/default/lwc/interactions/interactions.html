@@ -1,0 +1,30 @@
+<!-- //_______________This Code was generated using GenAI tool: Codify, Please check for accuracy_______________// -->
+<template>
+    <div class="int-card">
+
+        <div class="int-header">
+            <span class="int-title">Interactions</span>
+            <span class="int-meta">last 30 days</span>
+        </div>
+
+        <div class="int-list">
+            <template for:each={items} for:item="item">
+                <div key={item.id} class="int-row">
+                    <div class="int-icon-wrap">
+                        <lightning-icon
+                            icon-name={item.icon}
+                            size="xx-small"
+                            alternative-text={item.title}>
+                        </lightning-icon>
+                    </div>
+                    <div class="int-info">
+                        <div class="int-name">{item.title}</div>
+                        <div class="int-sub">{item.subtitle}</div>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+    </div>
+</template>
+<!-- //__________________________GenAI: Generated code ends here______________________________// -->

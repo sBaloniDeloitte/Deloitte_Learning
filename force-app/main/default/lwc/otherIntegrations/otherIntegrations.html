@@ -1,0 +1,558 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 02-28-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <lightning-accordion active-section-name="kycCheck">
+        <lightning-accordion-section name="kycCheck" label="KYC">
+            <!-- <c-sales-login-integration-details record-id={recordId}></c-sales-login-integration-details> -->
+             <!-- <c-sales_triangulation-screen-main record-id={recordId}></c-sales_triangulation-screen-main> -->
+             <c-sales-loan-login-integration-details-check-cmp record-id={recordId} stage-from="Credit"></c-sales-loan-login-integration-details-check-cmp>
+        </lightning-accordion-section>
+        <!-- Main Accordion: Industry Check -->
+        <lightning-accordion-section name="industryCheck" label="Industry Check">
+
+            <!-- Nested Accordion -->
+            <lightning-accordion allow-multiple-sections-open>
+                <!--
+                <lightning-accordion-section name="fda" label="FDA">
+                    <div class="slds-grid slds-gutters slds-m-left_small slds-m-right_small">
+                        <div class="slds-col slds-size_6-of-12 slds-p-top_small slds-float_left" style="display: flex;">
+                            <div style="padding-top:4%">
+                                <label style="font-size: large;">License Number  :</label>
+                            </div>
+                            <div style="padding-left:2%">
+                                <lightning-input type="text" value={hscode} onchange={handlehsCodeChange}></lightning-input>
+                            </div>
+                        </div>
+                        </div>
+                        
+                        <lightning-layout-item size="12">
+                            <lightning-layout justify="start">
+                                <lightning-layout-item>
+                                    <div style="margin-top: 1rem;">
+                                        <button class="save-button slds-button slds-button_brand" style="border: none;" onclick={handlehsCodeChange}>
+                                            Trigger API
+                                        </button>
+                                    </div>    
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-layout-item>
+                </lightning-accordion-section>
+            -->
+
+                <lightning-accordion-section name="fssai" label="FSSAI">
+                    <!-- Button on the next line but not full width -->
+                    <template if:false={hideFssaiControls}>
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="4" class="slds-p-around_x-small">
+                            <lightning-input type="text" value={fssaiNumber} onchange={handlefssaiCodeChange}
+                                label="Registration Code :" required field-level-help="Enter the FSSAI registration number to fetch license details."></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" class="slds-p-around_x-small">
+                            <button class="save-button fssai-fetch-btn slds-button slds-button_brand"
+                                onclick={getFSSAIData}>
+                                Fetch Information
+                            </button>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    </template>
+
+                    <template if:true={hasFssaiData}>
+                        <div style="margin: 10px 0px;overflow: auto;">
+                            <table class="slds-table slds-table_bordered slds-table_cell-buffer integration-table">
+                                <thead>
+                                    <tr>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;color: white;border: 1px solid black;">
+                                            Status</th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;color: white;border: 1px solid black;">
+                                            Licence Type</th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;color: white;border: 1px solid black;">
+                                            Licence Number</th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;color: white;border: 1px solid black;">
+                                            Firm Name</th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;color: white;border: 1px solid black;">
+                                            Address</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={tableData} for:item="row">
+                                        <tr key={row.LicNO}>
+                                            <td style="border:1px solid black">{row.Status}</td>
+                                            <td style="border:1px solid black">{row.LicType}</td>
+                                            <td style="border:1px solid black">{row.LicNO}</td>
+                                            <td style="border:1px solid black">{row.FirmName}</td>
+                                            <td style="border:1px solid black">{row.Address}</td>
+
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </template>
+                </lightning-accordion-section>
+                <!--
+                <lightning-accordion-section name="hsn" label="HSN">
+                    <div class="slds-grid slds-gutters slds-m-left_small slds-m-right_small">
+                        <div class="slds-col slds-size_6-of-12 slds-p-top_small slds-float_left" style="display: flex;">
+                            <div style="padding-top:4%">
+                                <label style="font-size: large;">HS Code :</label>
+                            </div>
+                            <div style="padding-left:2%">
+                                <lightning-input type="text" value={hscode} onchange={handlehsCodeChange}></lightning-input>
+                            </div>
+                        </div>
+                        </div>
+                        
+                        <lightning-layout-item size="12">
+                            <lightning-layout justify="start">
+                                <lightning-layout-item>
+                                    <div style="margin-top: 1rem;">
+                                        <button class="save-button slds-button slds-button_brand" style="border: none;" onclick={triggerApi}>
+                                            Trigger API
+                                        </button>
+                                    </div>    
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-layout-item>
+                </lightning-accordion-section>
+            -->
+                <lightning-accordion-section name="shopEstablishment" label="Shop & Establishment Check">
+                    <template if:false={hideShopControls}>
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="4" class="slds-p-around_x-small">
+                            <lightning-input type="text" value={shopAndEstNumber} onchange={handleShopCodeChange}
+                                label="Registration Number :" required field-level-help="Enter the Shop & Establishment registration number to fetch details."></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="4" class="slds-p-around_x-small">
+                                <lightning-combobox name="Area Code" label="Area Code" value={areaCode} placeholder="Select Area Code"
+                                    options={areaCodes} onchange={handleAreaCodeChange} required field-level-help="Select the area code associated with the registration."></lightning-combobox>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" class="slds-p-around_x-small">
+                            <button class="save-button shop-est-fetch-btn slds-button slds-button_brand"
+                                onclick={fetchShopDataAPI}>
+                                Fetch Information
+                            </button>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                    </template>
+                    <template if:true={hasShopAndEstData}>
+                        <div style="margin: 10px 0px;overflow: auto;">
+                            <table class="slds-table slds-table_bordered slds-table_cell-buffer integration-table">
+                                <thead>
+                                    <tr>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;"> <!-- color: white; -->
+                                            Registration Number</th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                            Category</th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                            Status</th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                            Owner Name</th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                            Entity Name</th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                            Registration Date</th>
+                                            <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                            Valid To</th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                            Contact</th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                            Commence Date</th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                            Total Workers</th>
+                                        <!--<th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;color: white;border: 1px solid black;">
+                                            Father's Name Of Occupier</th>    -->
+                                        
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                            Nature Of Business</th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                            Address</th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                            Valid From</th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                            Email</th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                            Website Url</th>
+                                        <th class="slds-text-title_caps tableCss" scope="col"
+                                            style="text-align: center;background-color: #5bb6e3;border: 1px solid black;">
+                                            Applicant Name</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={shopAndEstData} for:item="row">
+                                        <tr key={row.LicNO}>
+                                            <td style="border:1px solid black">{row.regNo}</td>
+                                            <td style="border:1px solid black">{row.category}</td>
+                                            <td style="border:1px solid black">{row.status}</td>
+                                            <td style="border:1px solid black">{row.ownerName}</td>
+                                            <td style="border:1px solid black">{row.entityName}</td>
+                                            <td style="border:1px solid black">{row.registrationDate}</td>
+                                            <td style="border:1px solid black">{row.validTo}</td>
+                                            <td style="border:1px solid black">{row.contact}</td>
+                                            <td style="border:1px solid black">{row.commenceDate}</td>
+                                            <td style="border:1px solid black">{row.totalWorkers}</td>
+                                            <!--<td style="border:1px solid black">{row.fatherNameOfOccupier}</td>-->
+                                            <td style="border:1px solid black">{row.natureOfBusiness}</td>
+                                            <td style="border:1px solid black">{row.address}</td>
+                                            <td style="border:1px solid black">{row.validFrom}</td>
+                                            <td style="border:1px solid black">{row.email}</td>
+                                            <td style="border:1px solid black">{row.websiteUrl}</td>
+                                            <td style="border:1px solid black">{row.applicantName}</td>
+
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </template>
+                </lightning-accordion-section>
+            </lightning-accordion>
+
+        </lightning-accordion-section>
+
+
+        <lightning-accordion-section name="applicantCheck" label="Applicant Check">
+
+            <!-- Nested Accordion -->
+            <lightning-accordion allow-multiple-sections-open>
+                <!--
+                <lightning-accordion-section name="employment" label="Employment">
+                    <div>
+                        <lightning-layout>
+                            <lightning-layout-item size="4" class="slds-p-around_medium" style="padding-top: 1.5%;">
+                                <div class="combobox-container">
+                                    <label style="font-size: revert;">Select Applicant :</label>
+                                    <lightning-combobox value={applicantValue} options={options} onchange={handleApplicantChange}
+                                            class="validate" label="" placeholder="Select Applicant" variant="label-hidden"></lightning-combobox>
+                                </div>                                
+                            </lightning-layout-item>
+                             <lightning-layout-item size="6" class="slds-p-around_medium">
+                                <lightning-input type="text" name="name" value={applicantName} label="Name" disabled required></lightning-input>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="4" class="slds-p-around_medium">
+                                <lightning-input type="text" name="mobileNumberapplicant" value={applicantMobileNumber} label="Mobile Number" onchange={handleApplicantMobileChange} required></lightning-input>
+                            </lightning-layout-item>
+                            <lightning-layout-item size="4" class="slds-p-around_medium">
+                                <lightning-input type="text" name="applicantemail"  value={applicantEmail} label="Official E-mail Id" onchange={handleApplicantEmailChange}></lightning-input>
+                            </lightning-layout-item>
+                        </lightning-layout>
+
+                        <lightning-layout-item size="12">
+                            <lightning-layout >
+                                <lightning-layout-item>
+                                    <div style="margin-top: 1rem;">
+                                        <button class="save-button slds-button slds-button_brand" style="border: none;" onclick={handleEmployeeClick}>
+                                            Trigger API
+                                        </button>
+                                    </div>    
+                                </lightning-layout-item>
+                            </lightning-layout>
+                        </lightning-layout-item>
+
+                        <div style="padding-top: 1%;">
+                            <template if:true={showEmployeeData}>
+                                <table class="slds-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="background-color: skyblue;border-color: black;color: black;">Applicant Name</th>
+                                            <th style="background-color: skyblue;border-color: black;color: black;">UAN Number</th>
+                                            <th style="background-color: skyblue;border-color: black;color: black;">Employer History</th>
+                                            <th style="background-color: skyblue;border-color: black;color: black;">EPF History</th>                                         
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={employeedetails} for:item="employee">
+                                            <tr key={employee.result}>
+                                                <td style=" border-color: black">{employee.applicantName}</td>
+                                                <td style=" border-color: black">{employee.result.uanNumber}</td>
+                                                <td style=" border-color: black">
+                                                    <button class="slds-button slds-button_brand initiate-button" data-id={employee.request_id} onclick={openUANPopup}>View</button>
+                                                </td>
+                                                <td style=" border-color: black">
+                                                    <button class="slds-button slds-button_brand initiate-button" data-id={employee.request_id} onclick={openEPFPopup}>View</button>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+    
+                            </template>
+                        </div>
+                        
+                    </div>
+                </lightning-accordion-section>
+            -->
+                <lightning-accordion-section name="caDegreeCheck" label="CA Degree Check">
+                    <div style="padding-top: 1%;">
+                        <c-credit-integration-details-display-cmp record-id={recordId}
+                            process-name="Loan CA Membership Authentication"></c-credit-integration-details-display-cmp>
+                    </div>
+                </lightning-accordion-section>
+
+                <lightning-accordion-section name="doctorDegreeCheck" label="Doctor Degree Check">
+                    <div style="padding-top: 1%;">
+                        <c-credit-integration-details-display-cmp record-id={recordId}
+                            process-name="Loan Doctor Membership Authentication"></c-credit-integration-details-display-cmp>
+                    </div>
+                </lightning-accordion-section>
+
+                <lightning-accordion-section name="leiCheck" label="Legal Entity check">
+                    <div style="padding-top: 1%;">
+                        <c-credit-integration-details-display-cmp record-id={recordId}
+                            process-name="Loan Legal Entity"></c-credit-integration-details-display-cmp>
+                    </div>
+                </lightning-accordion-section>
+
+                <lightning-accordion-section name="udhyamCheck" label="Udhyam Registration check">
+                    <div style="padding-top: 1%;">
+                        <c-credit-integration-details-display-cmp record-id={recordId}
+                            process-name="Loan Udhyam"></c-credit-integration-details-display-cmp>
+                    </div>
+                </lightning-accordion-section>
+
+                <template if:true={isHLUser}>
+                    <lightning-accordion-section name="fetchMCA" label="Fetch MCA">
+                        <template if:true={isloading}>
+                        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+                    </template>
+                    <!-- ✅ Always show Applicant + CIN + Fetch Button -->
+                    <template if:true={hasApplicants}>
+                        <div class="slds-grid slds-wrap slds-p-around_small mca-input-section">
+                            
+                            <!-- Applicant Combobox -->
+                            <div class="slds-col slds-size_1-of-4 slds-p-right_small">
+                                <lightning-combobox
+                                    name="applicant"
+                                    label="Select Applicant"
+                                    value={selectedApplicantId}
+                                    options={applicantOptions}
+                                    onchange={handleApplicantChangeMCA}
+                                    class="responsive-combobox"
+                                    required
+                                    field-level-help="Select the non-individual applicant to fetch MCA details for.">
+                                </lightning-combobox>
+                            </div>
+
+                            <!-- CIN Field -->
+                             <template if:true={showFields}>
+                            <div class="slds-col slds-size_1-of-3 slds-p-right_small">
+                                <lightning-input
+                                    label="CIN Number"
+                                    value={cinNumber}
+                                    onchange={handleCINChange}
+                                    maxlength="21"
+                                    message-when-pattern-mismatch="Invalid CIN format"
+                                    required
+                                    field-level-help="Enter the Corporate Identification Number (CIN) to fetch MCA details.">
+                                </lightning-input>
+                            </div>
+                               <!-- Fetch Button -->
+                            <div class="slds-align_absolute-center slds-p-around_small">
+                                <button 
+                                    class="fetch-mca-button"
+                                    onclick={handleFetchMCA}>
+                                    Fetch MCA
+                                </button>
+                            </div>
+                            </template>
+
+                        </div>
+                    </template>
+
+                    <!-- If No Applicants -->
+                    <template if:false={hasApplicants}>
+                        <p class="no-applicant-text slds-p-around_small">
+                            No Non-Individual Applicant found for this loan.
+                        </p>
+                    </template>
+
+                    <!-- ✅ Show Table only if data available -->
+                    <template if:true={hasMCAData}>
+                        <div class="slds-box slds-m-around_small" style="overflow: auto;">
+                            <table class="mca-table slds-box slds-table slds-table_bordered slds-table_cell-buffer slds-table_striped integration-table">
+                                <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>DIN/PAN</th>
+                                        <th>Designation</th>
+                                        <th>Date of Appointment</th>
+                                        <th>Address</th>
+                                        <th>Whether DSC Registered</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={mcaData} for:item="item">
+                                        <tr key={item.full_name}>
+                                            <td>{item.full_name}</td>
+                                            <td>{item.DIN_DPIN_PAN}</td>
+                                            <td>{item.designation}</td>
+                                            <td>{item.date_of_appointment}</td>
+                                            <td class="wrap-text">{item.address}</td>
+                                            <td>{item.wheather_dsc_registered}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </template>
+
+                </lightning-accordion-section>
+               </template>
+               <template if:true={isHLUser}>
+                    <lightning-accordion-section name="panAadharLinkCheck" label="Pan Aadhar Link check">
+                        <div style="padding-top: 1%;">
+                            <c-credit-integration-details-display-cmp record-id={recordId}
+                                process-name="Pan Aadhar Link"></c-credit-integration-details-display-cmp>
+                        </div>
+                    </lightning-accordion-section>
+                </template>
+            </lightning-accordion>
+
+        </lightning-accordion-section>
+
+        <lightning-accordion-section name="triggerdAPIs" label="Triggerd APIs">
+            <c-sales-loan-login-integration-details-check-cmp record-id={recordId} hide-actions={hideActions}></c-sales-loan-login-integration-details-check-cmp>
+        </lightning-accordion-section>
+    </lightning-accordion>
+
+    <template if:true={showUAN}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close"
+                    onclick={closePopup}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                        size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <header class="slds-modal__header header-section">
+                    <div class="slds-text-align_center">
+                        <h2 class="slds-text-heading_medium">UAN Data</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <!-- <table class="slds-table slds-table_bordered">
+                        <thead>
+                            <tr>
+                                <th style="background-color: skyblue;border-color: black;color: black;">UAN</th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Employer Name</th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Is Name Exact</th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Name Match Score</th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Name Matches as per RPE records</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={formattedUanData} for:item="empRecord">
+                                <tr key={empRecord.key}>
+                                    <template if:true={empRecord.showUAN}>
+                                        <td rowspan={empRecord.rowspan} style=" border-color: black">{empRecord.uan}</td>
+                                    </template>
+                                    <td style=" border-color: black">{empRecord.name}</td>
+                                    <td style=" border-color: black">{empRecord.isNameExact}</td>
+                                    <td style=" border-color: black">{empRecord.nameConfidence}</td>
+                                    <td style=" border-color: black">{empRecord.uanNameMatch}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table> -->
+
+                    <table class="slds-table slds-table_bordered integration-table">
+                        <thead>
+                            <tr>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Sr No.</th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Employer Name
+                                </th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Is Name Exact
+                                </th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Name Match Score
+                                </th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Name Matches as
+                                    per RPE records</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={selectedEmployerData} for:item="emp">
+                                <tr key={emp}>
+                                    <td style=" border-color: black">{emp.srno}</td>
+                                    <td style=" border-color: black">{emp.name}</td>
+                                    <td style=" border-color: black">{emp.isNameExact}</td>
+                                    <td style=" border-color: black">{emp.nameConfidence}</td>
+                                    <td style=" border-color: black">{emp.uanNameMatch}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={showEPF}>
+        <section role="dialog" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close"
+                    onclick={closePopup}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                        size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <header class="slds-modal__header header-section">
+                    <div class="slds-text-align_center">
+                        <h2 class="slds-text-heading_medium">EPF History</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <table class="slds-table slds-table_bordered integration-table">
+                        <thead>
+                            <tr>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Sr No.</th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Wage Month</th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Total Amount
+                                </th>
+                                <th style="background-color: skyblue;border-color: black;color: black;">Total Members
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={selectedEPFData} for:item="epf">
+                                <tr key={epf}>
+                                    <td style=" border-color: black">{epf.srno}</td>
+                                    <td style=" border-color: black">{epf.wageMonth}</td>
+                                    <td style=" border-color: black">{epf.totalAmount}</td>
+                                    <td style=" border-color: black">{epf.totalMembers}</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

@@ -1,0 +1,106 @@
+@import 'c/cssLibrary';
+
+/* Dark theme overrides (colors only, no structural/functional change) — matches customer360 / salesLoginApplicantInformationCmp theme */
+:host {
+    color: #ffffff;
+    --bg-primary: #12172b;
+    --bg-card: #1c2238;
+    --accent: #1467eb;
+    --accent-hover: #0d54c9;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-muted: rgba(255, 255, 255, 0.5);
+    --border-color: #2a2f45;
+    --card-glow: 0 0 20px rgba(20, 103, 235, 0.15);
+
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+
+    /* Combobox styling hooks - matches addBankAccountCmp's modal theme so
+       the dropdown OPTIONS LIST (not just the input box) renders dark
+       instead of SLDS's default white background/black text. */
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+    --slds-c-combobox-input-value-text-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: #16283f;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+    --slds-c-combobox-label-color: #ffffff;
+
+    /* Global SLDS2 surface/neutral tokens - the combobox DROPDOWN LISTBOX
+       falls back to these global tokens rather than the
+       --slds-c-combobox-listbox-* hook above, which is why it was still
+       rendering white despite the input box already being dark. */
+    --slds-g-color-neutral-base-100: #16283f;
+    --slds-g-color-neutral-base-95: #16283f;
+    --slds-g-color-neutral-base-90: #1d2f45;
+    --slds-g-color-surface: #16283f;
+    --slds-g-color-surface-1: #16283f;
+    --slds-g-color-surface-2: #12172b;
+    --slds-g-color-surface-container: #16283f;
+    --slds-g-color-surface-container-1: #16283f;
+    --slds-g-color-border-base-1: #2a2f45;
+    --slds-g-color-neutral-base-30: #ffffff;
+    --slds-g-color-neutral-base-40: #ffffff;
+    --slds-g-color-neutral-base-50: #ffffff;
+    --slds-g-color-neutral-base-10: #ffffff;
+    --slds-g-color-neutral-base-20: #ffffff;
+    --slds-g-color-on-surface: #ffffff;
+    --slds-g-color-on-surface-1: #ffffff;
+}
+
+lightning-combobox::part(input) {
+    background-color: #16283f !important;
+    border: 1px solid #33455e !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+/* Direct fallback for the listbox option text - crosses shadow boundary via
+   the SLDS "part" exposed on lightning-combobox's listbox rows. */
+lightning-combobox::part(listbox),
+lightning-combobox::part(option) {
+    color: #ffffff !important;
+}
+
+.slds-form-element__label {
+    color: #ffffff !important;
+}
+
+.tdtile {
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.save-button {
+    background-color: var(--accent) !important;
+    border-color: var(--accent) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.save-button:hover {
+    background-color: var(--accent-hover) !important;
+    border-color: var(--accent-hover) !important;
+}
+
+/* GST result table */
+.slds-table {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color) !important;
+}
+
+.slds-table th,
+.slds-table td {
+    background-color: var(--bg-card) !important;
+    border: 1px solid var(--border-color) !important;
+    color: var(--text-primary) !important;
+}
+
+.tableCss {
+    background-color: var(--accent) !important;
+    color: #ffffff !important;
+    border: 1px solid var(--border-color) !important;
+}

@@ -1,0 +1,25 @@
+@import "c/cssLibrary";
+
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+/* Remarks History modal content area renders on the browser/SLDS default
+   white background because .slds-modal__content never had an explicit
+   background set - only the header/footer sections were styled. Setting
+   the requested dark navy (#132740) here fixes the white middle section
+   visible in the modal. This is also the table's effective background
+   color (the table itself sets no background, so it shows through from
+   here) - used below as the single reference color for the whole popup. */
+.slds-modal__content {
+    background-color: #132740;
+    color: #ffffff;
+}
+
+/* Uniformity requirement: every surface in this popup (header bar, footer
+   bar) must match the table's background color (#132740) instead of the
+   cssLibrary default skyblue, so the whole screen reads as one consistent
+   color rather than a light-navy table sitting inside skyblue bands. */
+.header-section,
+.footer-section {
+    background-color: #132740;
+    color: #ffffff;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

@@ -1,0 +1,419 @@
+<template>
+    <template if:true={spinnerRun}>
+        <section role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open" style="z-index: 900003;">
+            <div class="slds-modal__container">
+                <div class="slds-spinner--brand slds-spinner slds-spinner--medium" role="alert">
+                    <span class="slds-assistive-text">Loading...</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+        </section> 
+    </template>
+    <span class="styleContainer"></span>
+    <template if:true={showSampling}>
+      
+        <template if:true={modalVisibility}>
+            <template if:false={isInitiatedSamplingScreen}>
+                <div class="slds-p-around_small">
+                    <p slot="title" style="font-size:12px; font-style: italic; color: #113451;">Please select document(s) and / or profile(s) for sampling.</p>
+                </div>
+            </template>
+        
+            <template if:false={isInitiatedSamplingScreen}>
+                <div class="slds-p-left_small">
+                    <lightning-input 
+                        data-checkbox-type = "selectAllCheckbox"
+                        type="checkbox" 
+                        label="Select All"
+                        name="allRowSelection" onchange={handleSelectAllCheckbox}>
+                    </lightning-input>
+                </div>
+            </template>
+            
+            <template if:true={showDocumentsTable}>
+                <div class="slds-p-around_small">
+                    <!-- <p slot="title" style="font-size:12px; font-style: italic; color: #113451; padding-bottom: 2%;">Please select document(s) and / or profile(s) for sampling.</p> -->
+    
+                    <h5 slot="title" style="font-style: Lato Bold; font-size:14px; font-weight: bold; padding-bottom: 0.55%" class="slds-text-title_bold">Documents sent for Sampling</h5>
+                    <div class="slds-modal__content slds-scrollable_x" style="overflow: auto;">  
+                        <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right fcu-table" >
+                            <thead >
+                                <tr class="slds-line-height_reset">
+                                    <template if:false={isInitiatedSamplingScreen}>
+                                        <th class="" scope="col"  style="width: 5%; text-align: center;background: #5bb6e3;">
+                                            <div class="slds-truncate" title="Opportunity Name">Select</div>
+                                        </th>
+                                    </template>
+                                    <th class="" scope="col"  style="width: 15%; text-align: center;background: #5bb6e3;">
+                                        <div class="slds-truncate" title="Opportunity Name">Name</div>
+                                    </th>
+                                    <th class="" scope="col"  style="width: 15%; text-align: center;background: #5bb6e3;">
+                                        <div class="slds-truncate" title="Account Name">Document Name</div>
+                                    </th>
+                                      <template if:false={isVendor}> 
+                                     <th  class="" scope="col"  style="width: 20%; text-align: center;background: #5bb6e3;">   
+                                        <div class="slds-truncate" title="Account Name">Referred By</div></th>
+                                    </template>
+                                        
+                                    <template if:false={isInitiatedSamplingScreen}>
+                                        <th class="" scope="col"  style="width: 10%; text-align: center;background: #5bb6e3;">
+                                            <div class="slds-truncate" title="Documents">Add Documents</div>
+                                        </th>
+                                    </template>
+                                    <template if:true={isInitiatedSamplingScreen}>
+                                        <th class="" scope="col"  style="width: 30%; text-align: center;background: #5bb6e3;">
+                                            <div class="slds-truncate" title="Close Date">FCU Report</div>
+                                        </th>
+                                    </template>
+                                    <template if:false={isInitiatedSamplingScreen}>
+                                        <th class="" scope="col"  style="width: 30%; text-align: center;background: #5bb6e3;">
+                                            <div class="slds-truncate" title="Close Date">Remarks</div>
+                                        </th>
+                                    </template>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={filteredDocuments} for:item="content">
+                                    <tr key={content.docCheckListId}>
+                                        <template if:false={isInitiatedSamplingScreen}>
+                                            <td style="word-wrap: break-word; white-space: normal;text-align: left;margin-left: 25%;">
+                                                <lightning-input 
+                                                    data-id={content.docCheckListId} 
+                                                    data-checkbox-type="documentsCheckbox"
+                                                    type="checkbox" 
+                                                    onchange={handleselectionChange}
+                                                    name="rowSelection" class="documents-checkbox" >
+                                                </lightning-input>
+                                            </td>
+                                        </template>
+                                        <td style="word-wrap: break-word; white-space: normal;text-align: left;">{content.ownerName}</td>
+                                        <td style="word-wrap: break-word; white-space: normal;text-align: left;">{content.Name}</td>
+                                        <template if:false={isVendor}>
+                                             <td style="word-wrap: break-word; white-space: normal;text-align: left;">
+                                            {content.referredBy}  {content.referredByRole}
+                                        </td>
+                                    </template>
+                                    
+                                        <template if:false={isInitiatedSamplingScreen}>
+                                            <td >
+                                                <lightning-file-upload
+                                                    label=""
+                                                    name="fileUploader"
+                                                    accept={acceptedFormats}
+                                                    record-id={recordId}
+                                                    onuploadfinished={handleUploadFinished}
+                                                    data-id={content.docCheckListId}
+                                                >
+                                                </lightning-file-upload>
+                                            
+                                            </td>
+                                        </template>
+                                        <template if:true={isInitiatedSamplingScreen}>
+                                            <td class="slds-text-align_center" style="word-wrap: break-word; white-space: normal;text-align: left;"><p style="color:#3176b8; cursor: pointer;" data-id={content.fcuId} onclick={navigateToRecord}>{content.fcuName}</p></td>
+                                        </template>
+                                        <template if:false={isInitiatedSamplingScreen}>
+                                            <td style="word-wrap: break-word; white-space: normal;text-align: left;">
+                                                <lightning-textarea value={content.remarks}></lightning-textarea>
+                                            </td>
+                                        </template>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </template>
+            
+            <template if:true={showVendorLocationTable}>
+                
+                <div class="slds-p-around_small">
+                    <h5 slot="title" style="font-style: Lato Bold; font-size:14px; font-weight: bold; padding-bottom: 0.55%" class="slds-text-title_bold">Locations Selected for Sampling</h5>
+    
+                    <div class="slds-modal__content slds-scrollable_x" style="overflow: auto;">  
+                        <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <template if:false={isInitiatedSamplingScreen}>
+                                        <th class="" scope="col" style="width: 5%; text-align: center;background: #5bb6e3;">
+                                            <div class="slds-truncate" title="Opportunity Name">Select</div>
+                                        </th>
+                                    </template>
+                                    <th class="" scope="col"  style="width: 10%; text-align: center;background: #5bb6e3;">
+                                        <div class="slds-truncate" title="Opportunity Name">Address</div>
+                                    </th>
+                                    <th class="" scope="col"  style="width: 20%; text-align: center;background: #5bb6e3;">
+                                        <div class="slds-truncate" title="Close Date">Location Type</div>
+                                    </th>
+                                    <template if:true={isInitiatedSamplingScreen}>
+                                        <th class="" scope="col"  style="width: 30%; text-align: center;background: #5bb6e3;">
+                                            <div class="slds-truncate" title="Close Date">FCU Report</div>
+                                        </th>
+                                    </template>
+                                    <template if:false={isInitiatedSamplingScreen}>
+                                        <th class="" scope="col"  style="width: 30%; text-align: center;background: #5bb6e3;">
+                                            <div class="slds-truncate" title="Close Date">Remarks</div>
+                                        </th>
+                                    </template>
+
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={vendorData} for:item="content">
+                                    <tr key={content.id}>
+                                        <template if:false={isInitiatedSamplingScreen}>
+                                            <td style="word-wrap: break-word; white-space: normal;text-align: left;">
+                                                <lightning-input 
+                                                    data-id={content.id} 
+                                                    type="checkbox" 
+                                                    onchange={handleVendorDataChange} class="applicant-checkbox" disabled={content.fcuInitiatedStatus}>
+                                                </lightning-input></td>
+                                        </template>
+                                        <td style="word-wrap: break-word; white-space: normal;text-align: left;">{content.addrType}</td>
+                                        <td style="word-wrap: break-word; white-space: normal;text-align: left;">{content.type}</td>
+                                        <template if:true={isInitiatedSamplingScreen}>
+                                            <td style="word-wrap: break-word; white-space: normal;text-align: left;">{content.addressValue}</td>
+                                        </template>
+                                        <template if:false={isInitiatedSamplingScreen}>
+                                            <td style="word-wrap: break-word; white-space: normal;text-align: left;"><lightning-combobox variant="label-hidden" data-id={content.id} data-name="vendor" options={addressOptions} value={content.addressValue} onchange={handleAddressTypeChange} disabled={content.fcuInitiatedStatus}></lightning-combobox></td>
+                                        </template>
+                                        <!-- <td class="slds-text-align_center" style="word-wrap: break-word; white-space: normal;text-align: left;">{content.fcuStatus}</td> -->
+                                        <!-- <td class="slds-text-align_center" style="word-wrap: break-word; white-space: normal;text-align: left;"><p style="color:#3176b8; cursor: pointer;" data-id={content.fcuId} onclick={navigateToRecord}>{content.fcuName}</p></td> -->
+                                        <template if:true={isInitiatedSamplingScreen}>
+                                            <td class="slds-text-align_center" style="word-wrap: break-word; white-space: normal;text-align: left;"><p style="color:#3176b8; cursor: pointer;" data-id={content.fcuId} onclick={navigateToRecord}>{content.fcuName}</p></td>
+                                        </template>
+                                        <template if:false={isInitiatedSamplingScreen}>
+                                            <td style="word-wrap: break-word; white-space: normal;text-align: left;">
+                                                <lightning-textarea value={content.remarks} disabled="true"></lightning-textarea>
+                                            </td>
+                                        </template>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </template>
+            <template if:false={isVendor}>
+                <template if:true={showApplicantsTable}>
+                    <div class="slds-p-around_small">
+                        <h5 slot="title" style="font-style: Lato Bold; font-size:14px; font-weight: bold; padding-bottom: 0.55%" class="slds-text-title_bold">Profiles sent for Sampling</h5>
+                        <div class="slds-modal__content slds-scrollable_x" style="overflow: auto;">  
+                            <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right">
+                                <thead>
+                                    <tr class="slds-line-height_reset">
+                                        <template if:false={isInitiatedSamplingScreen}>
+                                            <th class="" scope="col"  style="width: 5%; text-align: center;background: #5bb6e3;">
+                                                <div class="slds-truncate" title="Opportunity Name">Select</div>
+                                            </th>
+                                        </template>
+                                        <th class="" scope="col"  style="width: 10%; text-align: center;background: #5bb6e3;">
+                                            <div class="slds-truncate" title="Opportunity Name">Name</div>
+                                        </th>
+                                      
+                                        <th class="" scope="col"  style="width: 10%; text-align: center;background: #5bb6e3;">
+                                            <div class="slds-truncate" title="Account Name">Applicant Type</div>
+                                        </th>
+                                        <th class="" scope="col"  style="width: 10%; text-align: center;background: #5bb6e3;">
+                                            <div class="slds-truncate" title="Close Date">Address Type</div>
+                                        </th>
+                                          <template if:false={isVendor}> 
+                                            <th  class="" scope="col"  style="width: 20%; text-align: center;background: #5bb6e3;">   
+                                               <div class="slds-truncate" title="Referred By">Referred By</div></th>
+                                           </template>
+
+                                        <template if:true={isInitiatedSamplingScreen}>
+                                            <th class="" scope="col"  style="width: 15%; text-align: center;background: #5bb6e3;">
+                                                <div class="slds-truncate" title="Close Date">FCU Report</div>
+                                            </th>
+                                        </template>
+
+                                        <template if:false={isInitiatedSamplingScreen}>
+                                            <th class="" scope="col"  style="width: 25%; text-align: center;background: #5bb6e3;">
+                                                <div class="slds-truncate" title="Close Date">Remarks</div>
+                                            </th>
+                                        </template>
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={applicantsData} for:item="content">
+                                        <tr key={content.id}>
+                                            <template if:false={isInitiatedSamplingScreen}>
+                                                <td style="word-wrap: break-word; white-space: normal;text-align: left;margin-left: 25%;">
+                                                    <lightning-input 
+                                                        data-id={content.id} 
+                                                        data-checkbox-type="profileCheckbox"
+                                                        type="checkbox" 
+                                                        onchange={handleselectionChangeApplicant} class="applicant-checkbox" disabled={content.fcuInitiatedStatus}>
+                                                    </lightning-input>
+                                                </td>
+                                            </template>
+                                            <td style="word-wrap: break-word; white-space: normal;text-align: left;">{content.name}</td>
+                                           
+                                            <td style="word-wrap: break-word; white-space: normal;text-align: left;">{content.type}</td>
+                                            <td style="word-wrap: break-word; white-space: normal;text-align: left;">{content.addrType}</td>
+                                             <template if:false={isVendor}> <td style="word-wrap: break-word; white-space: normal;text-align: left;">
+                                                {content.referredBy}  {content.referredByRole}
+                                            </td></template>
+                                            <template if:true={isInitiatedSamplingScreen}>
+                                                <td class="slds-text-align_center" style="word-wrap: break-word; white-space: normal;text-align: left;"><p style="color:#3176b8; cursor: pointer;" data-id={content.fcuId} onclick={navigateToRecord}>{content.fcuName}</p></td>
+                                            </template>
+
+                                            <template if:false={isInitiatedSamplingScreen}>
+                                                <td style="word-wrap: break-word; white-space: normal;text-align: left;"><lightning-textarea value={content.remarks} ></lightning-textarea></td>
+                                            </template>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </template>
+                <template if:true={fromCollateralTab}>
+                    <template if:true={showCollateralTable}>
+                        <div class="slds-p-around_small">
+                            <h5 slot="title" style="font-style: Lato Bold; font-size:14px; font-weight: bold; padding-bottom: 0.55%" class="slds-text-title_bold">Collateral Selected for Sampling</h5>
+            
+                            <div class="slds-modal__content slds-scrollable_x" style="overflow: auto;">  
+                                <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right">
+                                    <thead>
+                                        <tr class="slds-line-height_reset">
+                                            <template if:false={isInitiatedSamplingScreen}>
+                                                <th class="" scope="col"  style="width: 5%; text-align: center;background: #5bb6e3;">
+                                                    <div class="slds-truncate" title="Opportunity Name">Select</div>
+                                                </th>
+                                            </template>
+                                            <th class="" scope="col"  style="width: 20%; text-align: center;background: #5bb6e3;">
+                                                <div class="slds-truncate" title="Opportunity Name">Name</div>
+                                            </th>
+
+                                            <th class="" scope="col"  style="width: 15%; text-align: center;background: #5bb6e3;">
+                                                <div class="slds-truncate" title="Close Date">Property Type</div>
+                                            </th>
+
+                                            <template if:true={isInitiatedSamplingScreen}>
+                                                <th class="" scope="col"  style="width: 15%; text-align: center;background: #5bb6e3;">
+                                                    <div class="slds-truncate" title="Close Date">FCU Report</div>
+                                                </th>
+                                            </template>
+                                            <template if:false={isInitiatedSamplingScreen}>
+                                                <th class="" scope="col"  style="width: 30%; text-align: center;background: #5bb6e3;">
+                                                    <div class="slds-truncate" title="Close Date">Remarks</div>
+                                                </th>
+                                            </template>
+                                            
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={collateralData} for:item="content">
+                                            <tr key={content.id}>
+                                                <template if:false={isInitiatedSamplingScreen}>
+                                                    <td style="word-wrap: break-word; white-space: normal; text-align: left;">
+                                                        <lightning-input 
+                                                            data-id={content.id} 
+                                                            type="checkbox" 
+                                                            onchange={handleselectionChangeApplicantionCollateral} class="collateral-checkbox" disabled={content.fcuInitiatedStatus}>
+                                                        </lightning-input></td>
+                                                </template>
+                                                <td style="word-wrap: break-word; white-space: normal;text-align: left;">{content.name}</td>
+                                                <td style="word-wrap: break-word; white-space: normal;text-align: left;">{content.addrType}</td>
+                                                <template if:false={isInitiatedSamplingScreen}>
+                                                    <td style="word-wrap: break-word; white-space: normal;text-align: left;"><lightning-combobox variant="label-hidden" data-id={content.id} data-name="collateral" options={addressOptions} value={content.addressValue} onchange={handleAddressTypeChange} disabled={content.fcuInitiatedStatus}></lightning-combobox></td>
+                                                </template>
+                                                <template if:true={isInitiatedSamplingScreen}>
+                                                    <td style="word-wrap: break-word; white-space: normal;text-align: left;">{content.addressValue}</td>
+                                                </template>
+                                                <!-- <td style="word-wrap: break-word; white-space: normal;text-align: left;">{content.fcuStatus}</td> -->
+                                                <template if:true={isInitiatedSamplingScreen}>
+                                                    <td class="slds-text-align_center" style="word-wrap: break-word; white-space: normal;text-align: left;"><p style="color:#3176b8; cursor: pointer;" data-id={content.fcuId} onclick={navigateToRecord}>{content.fcuName}</p></td>
+                                                </template>
+                                                <template if:false={isInitiatedSamplingScreen}>
+                                                    <td style="word-wrap: break-word; white-space: normal;text-align: left;"><lightning-textarea value={content.remarks} ></lightning-textarea></td>
+                                                </template>
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+            </template>
+            <template if:true={enableSamplerSelect}>
+                <div class="slds-p-around_small">
+                    <p slot="title" style="font-size:12px; font-style: italic; color: #113451;">You have selected items for sampling. Kindly follow the steps to proceed:</p>
+                    <p slot="title" style="font-size:12px; font-style: italic; color: #113451; padding-left: 2%;">1. Search and select an vendor.</p>
+                    <p slot="title" style="font-size:12px; font-style: italic; color: #113451; padding-left: 2%;">2. Add remarks and upload image(s) if applicable.</p>
+                    <p slot="title" style="font-size:12px; font-style: italic; color: #113451; padding-left: 2%;">3. Click on 'Initiate Verification' button to initiate sampling.</p>
+                </div>
+
+                <div class="slds-p-around_small" style="width: 100%;">
+                    <p slot="title" style="font-style: Lato Bold; font-size:14px; font-weight: bold; padding-bottom: 0.75%" class="slds-text-title_bold">Search Vendor Admin  <span style="color: red;">*</span></p>
+                    <lightning-layout-item size="12">
+                        <c-search-picklist
+                            options={userOptions} 
+                            onselected={handleSelectedUser} 
+                            required
+                        ></c-search-picklist>
+                    </lightning-layout-item>
+                </div>
+                <div class="slds-p-around_small" style="width: 100%;">
+                    <p slot="title" style="font-style: Lato Bold; font-size:14px; font-weight: bold; padding-bottom: 0.75%" class="slds-text-title_bold">Add Remarks</p>
+                    <lightning-layout-item size="12">
+                        
+                        <lightning-input type="text" label="Add remarks" value={remarksValue} onchange={handleremarksChange} class="validate" variant="label-hidden"
+                            max-length="1000"></lightning-input>
+                    </lightning-layout-item>
+                </div>
+                
+                <lightning-layout-item>
+
+                </lightning-layout-item>
+            </template>
+            <lightning-layout style="position: sticky;bottom: 0;z-index: 4;background: white;">
+                <lightning-layout-item size="2">
+
+                </lightning-layout-item>
+                <lightning-layout-item size="10">
+ 
+                    <div class="slds-float_right slds-p-around_small">
+                        <template if:false={isInitiatedSamplingScreen}>
+                            <template if:true={eneableSampleButton}>
+                                <template if:false={fromCollateralTab}>
+                                    <button class="cancel-button button-text-nowrap slds-button slds-button_brand"  onclick={handleRemoveFromSamplingQueue}>Remove From Queue</button>
+                                </template>
+                                <button class="save-button slds-button slds-button_brand"  onclick={handleSample}>Initiate Verification</button>
+                            </template>
+                        </template>
+                        <template if:false={isInitiatedSamplingScreen}>
+                            <template if:false={eneableSampleButton}>
+                                <template if:false={fromCollateralTab}>
+                                    <button class="cancel-button button-text-nowrap slds-button slds-button_brand"  onclick={handleRemoveFromSamplingQueue}>Remove From Queue</button>
+                                </template>
+                                <button class="disabled-button slds-button slds-button_brand" disabled>Initiate Verification</button>
+                            </template>
+                        </template>
+                    </div>
+                </lightning-layout-item>     
+            </lightning-layout>       
+        </template>
+    </template>
+    <template if:false={showSampling}>
+        <p class="slds-text-align_center" slot="title" style="font-size:14px; font-style: italic; color: red;">Please add atleast one document or profile to the queue to continue with sampling.</p>
+    </template>
+
+    <template if:true={showgenericConfirm}>
+        <c-confirmation-screen confirm-message={previousConfirmMessage} positive-label={positiveLabel} negative-label={negativelabel} onnegativeclick={handleNegative} onpositiveclick={handlePositive}></c-confirmation-screen>
+    </template>
+
+    <input 
+        type="file" 
+        accept="image/*" 
+        capture="environment" 
+        onchange={handleUpload} 
+        class="hidden-input"
+    />  
+</template>

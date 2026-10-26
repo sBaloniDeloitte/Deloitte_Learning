@@ -1,0 +1,229 @@
+@import 'c/cssLibrary';
+
+/*.custom-container{
+	color : black;
+}*/
+
+.tabStyle{
+	font-weight: 700;
+}
+.textAlignment{
+    text-align: center;
+}
+
+.boaderStyle{
+	border-top: 1px solid black;
+	border-left: 1px solid black;
+	border-right: 1px solid black;
+}
+
+.buttonAlignment{
+	float: right;
+}
+
+.boaderStyle:last-of-type {
+    border-bottom: 1px solid black !important;
+}
+
+/*Progress-bar*/
+
+
+.icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.connector-line {
+    flex-grow: 1;
+    height: 4px;
+    background-color: lightgray;
+    margin: 0 10px;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+}
+
+.progress-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex-grow: 1;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    gap: 0; /* No unnecessary gap */
+}
+
+.progress-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    background-color: white; /* Ensures icon stays on top */
+    padding: 5px;
+}
+
+.progress-line {
+    position: absolute;
+    width: 50px; /* Adjust line length as needed */
+    height: 4px;
+    background-color: #ccc;
+    top: 50%;
+    left: 50%;
+    transform: translateX(50%); /* Ensures line is exactly between two icons */
+    z-index: 1;
+}
+
+.stage-label {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    color: #113451;
+}
+.progress-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+.progress-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Wrapper to hold icon and line */
+.icon-line-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+/* Full-width black line */
+.connector {
+    position: absolute;
+    top: -25%;
+    left: -50%;
+    width: 100%;
+    height: 3px;
+    background-color: black;
+    z-index: 1;
+}
+
+/* Icons should appear on top of the line */
+.icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    padding: 5px;
+    z-index: 2;
+    border-radius: 50%;
+}
+
+/* Stage Name Below Icon */
+.stage-name {
+    margin-top: 5px;
+    font-weight: 500;
+    color: #113451;
+    text-align: center;
+}
+
+
+.progress-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 5px 0;
+    margin-top: 1%;
+}
+
+.progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    position: relative;
+}
+
+/* Step wrapper */
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+/* Connector Line */
+.connector {
+    position: absolute;
+    top: 23%;  /* Aligns exactly at the center of icons */
+   
+    width: 202%; /* Adjusted to stop at the last icon */
+    height: 2px;
+    background-color:grey;
+    z-index: 0;
+    /* transform: translateX(-50%);
+    z-index: 0; */
+}
+
+/* First and Last Icon should NOT have a connector before/after */
+.progress-step:first-child .connector {
+    /* display: none; */
+    margin-left: 103%;
+    width: 100%;
+}
+.progress-step:last-child .connector {
+    display: none;
+    
+} 
+
+/* Ensure the icon appears above the line */
+.icon-wrapper {
+    z-index: 1;
+    background-color: white;
+    padding: 4px;
+    position: relative;
+}

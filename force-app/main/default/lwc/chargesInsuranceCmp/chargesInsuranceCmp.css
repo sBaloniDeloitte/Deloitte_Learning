@@ -1,0 +1,185 @@
+@import 'c/cssLibrary';
+
+.boaderStyle{
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+}
+
+.bottomBoaderStyle{
+ border-bottom: 1px solid black !important;
+ background-color: #171728 !important;
+}
+
+.boaderStyle:last-of-type {
+    border-bottom: 1px solid black !important;
+    background-color: #171728 !important;
+}
+
+.slds-text-title_bold{
+  color : white !important;
+}
+.slds-.hideInput .slds-input, .removeborder .slds-combobox__input {
+    background-color: #16283f !important;
+}
+.tabstyle{
+    background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%) !important;
+    font-weight: 500;
+    height: 45px;
+    font-size: 20px;
+    width: 100%;
+    border-left: 1px solid black;
+    border-right: 1px solid black;
+    border-top: 1px solid black;
+    pointer-events: none;
+    color: #ffffff;
+    text-align: center;
+    padding-top: 0.7%;
+}
+
+.secondTabStyle{
+  background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%) !important ;
+  font-weight: 500;
+  min-height: 45px;
+  font-size: 20px;
+  border-left: 1px solid black;
+  border-right: 1px solid black;
+  border-top: 1px solid black;
+  pointer-events: none;
+  min-width: 100%;
+  color: #ffffff;
+  text-align: center;
+    padding-top: 0.7%;
+}
+
+.commonStyle{
+    border-color: black !important;
+}
+
+/* Table Header */
+.tableHeader{
+    background-color: #171728 !important;
+    color: #ffffff !important;
+}
+
+/* Table Rows */
+.slds-table tbody tr{
+    background-color: #171728 !important;
+    color: #ffffff !important;
+}
+
+/* Table Cells */
+.slds-table tbody td{
+    background-color: #171728 !important;
+    color: #ffffff !important;
+}
+
+/* Entire table */
+.slds-table{
+    background-color: #171728 !important;
+}
+.textAlignment{
+  text-align: center !important;
+}
+/* Upload/View/Delete component icons */
+c-upload-view-delete-document lightning-icon{
+    --slds-c-icon-color-foreground-default: #ffffff !important;
+    --slds-c-icon-color-foreground: #ffffff !important;
+}
+.tableHeader{
+    background-color: #171728 !important;
+    color: #ffffff !important;
+}
+
+.slds-table tbody tr,
+.slds-table tbody td{
+    background-color: #171728 !important;
+    color: #ffffff !important;
+}
+.save-button {
+    background: linear-gradient(135deg, #8b5cf6
+, #8b5cf6
+) !important;
+    background-color: #8b5cf6
+ !important;
+    border-color: #8b5cf6
+ !important;
+    color: #ffffff !important;
+}
+/* Action column icons */
+.editIcon,
+.deleteIcon,
+.previewIcon {
+    --slds-c-icon-color-foreground-default: #ffffff !important;
+    color: #ffffff !important;
+}
+
+/* Ensure SVG inside lightning-icon is white */
+.editIcon lightning-icon,
+.deleteIcon lightning-icon,
+.previewIcon lightning-icon {
+    --slds-c-icon-color-foreground-default: #ffffff !important;
+}
+/* Table Container */
+.slds-table {
+    width: 100%;
+    border: 1px solid rgba(255,255,255,0.8) !important;
+    border-radius: 16px !important;
+    overflow: hidden;
+    background: #171728 !important;
+    border-collapse: separate !important;
+    border-spacing: 0 !important;
+}
+
+/* Header */
+.tableHeader {
+    background: #171728 !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    text-align: center;
+    border-right: 1px solid rgba(255,255,255,0.8) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.8) !important;
+}
+
+/* Rows */
+.slds-table tbody tr,
+.slds-table tbody td {
+    background: #171728 !important;
+    color: #ffffff !important;
+}
+
+/* Cell Borders */
+.slds-table th,
+.slds-table td {
+    border-right: 1px solid rgba(255,255,255,0.8) !important;
+    border-bottom: 1px solid rgba(255,255,255,0.8) !important;
+    padding: 12px !important;
+    text-align: center;
+}
+
+/* Remove last column border */
+.slds-table th:last-child,
+.slds-table td:last-child {
+    border-right: none !important;
+}
+
+/* Remove last row border */
+.slds-table tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+/* Rounded Corners */
+.slds-table thead tr th:first-child {
+    border-top-left-radius: 16px;
+}
+
+.slds-table thead tr th:last-child {
+    border-top-right-radius: 16px;
+}
+
+.slds-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 16px;
+}
+
+.slds-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 16px;
+}

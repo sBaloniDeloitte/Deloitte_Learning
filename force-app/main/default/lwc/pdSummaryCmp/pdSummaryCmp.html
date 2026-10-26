@@ -1,0 +1,21 @@
+<template>
+    <div class="card-div">
+        <template for:each={apRecords} for:item="record">
+            <div key={record.id} style="margin-bottom:10px;">
+                <div><span>PD Initiator</span> : <span class="data-div">{record.CreatedBy.Name}</span></div>
+                <div><span>Applicant</span> : <span class="data-div">
+                    <template if:true={record.Applicant__c}>
+                        {record.Applicant__r.Applicant_Name__c} ( {record.Applicant__r.Applicant_Type__c} )
+                    </template>
+                    
+                </span></div>
+            <div><span>PD Type</span> : <span class="data-div">{record.Personal_Discussion_Type__c}</span></div>
+            <div><span>Disposition</span> : <span class="data-div">{record.Disposition__c}</span></div>
+            <div><span>Timestamp</span> : <span class="data-div"><lightning-formatted-date-time value={record.LastModifiedDate} year="numeric" month="numeric" day="numeric" hour="2-digit"
+                minute="2-digit"></lightning-formatted-date-time></span></div>
+            <div><span>Remaks</span> : <span class="data-div">{record.Any_Remarks_Reasons__c}</span></div>
+            </div>
+        </template>
+
+    </div>
+</template>

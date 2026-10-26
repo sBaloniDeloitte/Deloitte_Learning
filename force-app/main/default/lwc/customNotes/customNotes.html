@@ -1,0 +1,128 @@
+<template>
+    <section class="notes-card">
+
+        <!-- Header -->
+        <div class="notes-header">
+
+            <div class="header-left">
+                <!-- <lightning-icon
+                    icon-name="utility:note"
+                    size="x-small"
+                    alternative-text="Notes"
+                    class="header-icon">
+                </lightning-icon> -->
+
+                <div class="header-text">
+                    <div class="header-title">Notes</div>
+                    <div class="header-subtitle">
+                        Conversation & follow-up updates
+                    </div>
+                </div>
+            </div>
+
+            <!-- <div class="count-badge">
+                {notes.length}
+            </div> -->
+
+        </div>
+
+        <!-- New Note Section -->
+        <div class="input-section">
+
+            <div class="input-card">
+
+                <lightning-textarea
+                    name="note"
+                    value={noteText}
+                    maxlength="500"
+                    variant="label-hidden"
+                    placeholder="Add a note... e.g. Spoke to Suresh, he'll send the salary slip by Friday"
+                    onchange={handleChange}>
+                </lightning-textarea>
+
+                <div class="input-footer">
+
+                    <span class="character-count">
+                        {charCount}/500
+                    </span>
+
+                    <div class="button-group">
+
+                       <button
+                            class="action-btn cancel-btn"
+                            onclick={handleClear}>
+                            Clear
+                        </button>
+
+                        <button
+                            class="action-btn save-btn"
+                            onclick={handleSave}>
+                            Save Note
+                        </button>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Notes -->
+        <div class="notes-list">
+
+            <template for:each={notes} for:item="note">
+
+                <div
+                    key={note.id}
+                    class="note-record">
+
+                    <div class="note-record-header">
+
+                        <div class="note-user-section">
+
+                            <div class="note-author">
+                                {note.author}
+                            </div>
+
+                            <div class="note-date">
+                                {note.date}
+                            </div>
+
+                            <template if:true={note.isNew}>
+                                <span class="new-tag">
+                                    NEW
+                                </span>
+                            </template>
+
+                        </div>
+
+                    </div>
+
+                    <div class="note-message">
+                        {note.message}
+                    </div>
+
+                </div>
+
+            </template>
+
+            <template if:false={notes.length}>
+
+                <div class="empty-state">
+
+                    <lightning-icon
+                        icon-name="utility:note"
+                        size="small">
+                    </lightning-icon>
+
+                    <p>No notes available</p>
+
+                </div>
+
+            </template>
+
+        </div>
+
+    </section>
+</template>

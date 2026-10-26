@@ -1,0 +1,36 @@
+<!-- _______________This Code was generated using GenAI tool: Codify, Please check for accuracy_______________ -->
+<template>
+    <div class="lifecycle-card">
+        <!-- Header Row -->
+        <div class="card-header">
+            <span class="card-title">Lifecycle</span>
+            <div class="filter-pills">
+                <template for:each={filters} for:item="filter">
+                    <button
+                        key={filter.id}
+                        class={filter.pillClass}
+                        data-id={filter.id}
+                        onclick={handleFilterClick}
+                    >{filter.label}</button>
+                </template>
+            </div>
+        </div>
+
+        <!-- Timeline List -->
+        <ul class="timeline-list">
+            <template for:each={filteredEvents} for:item="item">
+                <li key={item.id} class="timeline-item">
+                    <span class={item.dotClass}></span>
+                    <div class="event-body">
+                        <span class="event-title">{item.title}</span>
+                        <template if:true={item.subtitle}>
+                            <span class="event-subtitle">{item.subtitle}</span>
+                        </template>
+                    </div>
+                    <span class="event-date">{item.date}</span>
+                </li>
+            </template>
+        </ul>
+    </div>
+</template>
+<!-- __________________________GenAI: Generated code ends here______________________________ -->

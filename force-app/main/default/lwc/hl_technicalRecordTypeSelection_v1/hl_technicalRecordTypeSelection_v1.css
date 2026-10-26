@@ -1,0 +1,272 @@
+@import "c/cssLibrary";
+
+.slds-modal__container {
+    min-width: 46%;
+}
+.line {
+    width: 90%;
+    height: 2px;
+    background-color: #113451;
+    top: -25%;
+    left: 50%;
+}
+.linemobile {
+    width: 80%;
+    height: 2px;
+    background-color: #113451;
+    top: -25%;
+    left: 50%;
+}
+
+.table-container {
+    overflow-y: auto;
+    height: 200px;
+}
+
+.slds-table {
+    width: 100%; 
+    border-collapse: collapse;
+}
+
+.slds-table th {
+    position: sticky; 
+    top: 0;
+    z-index: 1;
+}
+
+.slds-table th, .slds-table td {
+    padding: 8px;
+    text-align: center;
+    border: 1px solid #ddd;
+}
+
+
+.icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.connector-line {
+    flex-grow: 1;
+    height: 4px;
+    background-color: lightgray;
+    margin: 0 10px;
+}
+
+.progress-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex-grow: 1;
+}
+
+.progress-container,
+.slds-box.progress-container,
+.slds-theme_default.progress-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    gap: 0; /* No unnecessary gap */
+    background-color: #12172b !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+.progress-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    background-color: white; /* Ensures icon stays on top */
+    padding: 5px;
+}
+
+.progress-line {
+    position: absolute;
+    width: 50px; /* Adjust line length as needed */
+    height: 4px;
+    background-color: #ccc;
+    top: 50%;
+    left: 50%;
+    transform: translateX(50%); /* Ensures line is exactly between two icons */
+    z-index: 1;
+}
+
+.stage-label {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    color: #113451;
+}
+
+.progress-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+
+/* Wrapper to hold icon and line */
+.icon-line-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+/* Full-width black line */
+
+
+/* Icons should appear on top of the line */
+.icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    padding: 5px;
+    z-index: 2;
+    border-radius: 50%;
+}
+
+/* Stage Name Below Icon - white/light-gray text matched to the "Lead
+   Journey" stepper (processJourneyCmp) text colors. */
+.stage-name {
+    margin-top: 5px;
+    font-weight: 500;
+    color: #cfd8e6;
+    text-align: center;
+    font-size: 11px;
+}
+
+
+.progress-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px 0;
+}
+
+.progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 180%;
+    position: relative;
+}
+
+.progress-bar-mobile {
+    display: flex;
+    justify-content: space-between;
+    width: 90%;
+    position: relative;
+}
+
+/* Step wrapper */
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    align-items: center;
+    position: relative;
+    width: 150%;
+}
+
+
+.progress-step:first-child .connector {
+    display: none;
+}
+.progress-step:last-child .connector {
+    display: none;
+}
+
+/* Ensure the icon appears above the line */
+.icon-wrapper {
+    z-index: 1;
+    padding: 4px;
+    position: relative;
+}
+
+/* Colors matched to the "Lead Journey" stepper (processJourneyCmp) -
+   same palette (dark navy pending circle, purple gradient for the
+   completed/active state, #33455e connector) but laid out horizontally
+   instead of vertically, per the requested layout. */
+.icon-wrapper-completed {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-image: linear-gradient(135deg, #a78bfa, #7c3aed);
+    border: 2px solid #7c3aed;
+    box-shadow: 0 0 0 4px rgba(124, 58, 237, 0.25);
+    /* lightning-icon's "inverse" variant did not reliably render the
+       utility:check glyph as white on this background - forcing the
+       icon's own SLDS styling hooks directly guarantees visibility
+       regardless of variant support. */
+    --slds-c-icon-color-foreground: #ffffff;
+    --slds-c-icon-color-foreground-default: #ffffff;
+    --sds-c-icon-color-foreground: #ffffff;
+    --sds-c-icon-color-foreground-default: #ffffff;
+}
+
+.icon-wrapper-completed lightning-icon,
+.icon-wrapper-completed lightning-primitive-icon {
+    fill: #ffffff !important;
+}
+
+/* Plain-text checkmark (not lightning-icon) - guaranteed visible
+   regardless of base-component shadow-DOM styling-hook limitations. */
+.check-mark-text {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.icon-wrapper-pending {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: #0f1c33;
+    border: 2px solid #33455e;
+}
+
+/* Step sequence number shown inside a pending (not-yet-completed) circle -
+   same treatment as the "Lead Journey" stepper's numbered markers. */
+.step-number-text {
+    color: #8a99b3;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.connector{
+    position: absolute;
+    top: 30%;
+    left: 50%;
+    width: 200%;
+    height: 2px;
+    background-color: #33455e;
+    transform: translateX(-50%);
+    z-index: 0;
+}

@@ -1,0 +1,173 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import "c/cssLibrary";
+
+/* ----------------- Dark Theme (matches sanctionConditionConvenantsCmp) ----------------- */
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-placeholder-text-color: #8a99b3;
+    --slds-c-input-label-color: #ffffff;
+
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-positive: #1467eb;
+    --dt-negative: #db2929;
+
+    /* checkbox label colour */
+    --slds-g-color-neutral-base-30: #ffffff;
+    --slds-c-card-color-background: #0a1524;
+    --slds-c-tabs-item-text-color-active: #ffffff;
+    --slds-c-textarea-color-background: #16283f;
+    --slds-c-textarea-color-background-focus: #16283f;
+}
+
+.iam-scroll-wrapper {
+    background-color: var(--dt-bg) !important;
+    padding: 1rem 1.5rem;
+    border-radius: 0.75rem;
+}
+
+/* Hide the lightning-card header bar entirely */
+.hide-header .slds-card__header {
+    display: none;
+}
+
+lightning-input::part(input) {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+lightning-input[disabled]::part(input) {
+    background-color: var(--dt-panel-bg) !important;
+    color: #8a99b3 !important;
+}
+
+/* ----------------- Checkboxes (Income Assessment Types panel) ----------------- */
+.iam-panel-body lightning-input[type="checkbox"] {
+    --slds-c-checkbox-color-background: var(--dt-input-bg);
+    --slds-c-checkbox-color-border: var(--dt-border);
+    --slds-c-checkbox-color-background-checked: var(--dt-positive);
+    --slds-c-checkbox-color-border-checked: var(--dt-positive);
+    --slds-c-checkbox-mark-color-foreground: #ffffff;
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    opacity: 1 !important;
+}
+
+/* Keep full opacity + white label text even for already-selected (disabled) checkboxes */
+.iam-panel-body lightning-input[type="checkbox"][disabled] {
+    opacity: 1 !important;
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+}
+
+.iam-panel-body lightning-input[type="checkbox"] .slds-form-element__label,
+.iam-panel-body lightning-input[type="checkbox"]::part(label) {
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* ----------------- Panel headers (replaces inline skyblue headers) ----------------- */
+.iam-panel-header {
+    background-color: #16283f;
+    color: #ffffff;
+    border: 1px solid var(--dt-border);
+    border-bottom: none;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 0.75rem 0.75rem 0 0;
+}
+
+.iam-panel-body {
+    border: 1px solid var(--dt-border);
+    background-color: var(--dt-panel-bg);
+    border-radius: 0 0 0.75rem 0.75rem;
+}
+
+/* ----------------- Table -----------------
+   Top stays square so it sits flush under .iam-panel-header (which already
+   provides the rounded top edge for the panel) - only the bottom is rounded,
+   matching the .iam-panel-header + .iam-panel-body pairing on the left column. */
+.iam-table {
+    border-radius: 0 0 0.75rem 0.75rem;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border: 1px solid var(--dt-border) !important;
+    border-top: none !important;
+    background-color: var(--dt-panel-bg) !important;
+}
+
+.iam-table th {
+    background-color: var(--dt-header-bg) !important;
+    color: #ffffff !important;
+    border-color: var(--dt-border) !important;
+}
+
+.iam-table td {
+    background-color: var(--dt-panel-bg) !important;
+    color: #ffffff !important;
+    border-color: var(--dt-border) !important;
+}
+
+.iam-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 0.75rem;
+}
+
+.iam-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 0.75rem;
+}
+
+/* ----------------- Tabset ----------------- */
+.iam-tabset-wrapper {
+    background-color: var(--dt-panel-bg);
+    border: 1px solid var(--dt-border);
+    border-radius: 0.75rem;
+    padding: 0.5rem;
+}
+
+lightning-tabset {
+    --slds-c-tabs-item-text-color: #ffffff;
+    --slds-c-tabs-item-text-color-hover: #ffffff;
+    --slds-c-tabs-item-text-color-selected: #ffffff;
+    --slds-c-tabs-item-color-background-selected: var(--dt-header-bg);
+    --slds-c-tabs-line-color-border-active: var(--dt-positive);
+    --slds-c-tabs-color-background: transparent;
+}
+
+/* ----------------- CTA Buttons (theme parity with sanctionConditionConvenantsCmp) ----------------- */
+.save-button,
+.save-button.slds-button_brand {
+    background-color: var(--dt-positive) !important;
+    border: 1px solid var(--dt-positive) !important;
+    color: #ffffff !important;
+    border-radius: 1.25rem !important;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
+.cancel-button,
+.cancel-button.slds-button_brand {
+    background-color: var(--dt-negative) !important;
+    border: 1px solid var(--dt-negative) !important;
+    color: #ffffff !important;
+    border-radius: 1.25rem !important;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

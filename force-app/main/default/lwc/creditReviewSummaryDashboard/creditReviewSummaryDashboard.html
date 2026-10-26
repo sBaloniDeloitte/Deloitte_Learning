@@ -1,0 +1,595 @@
+<!-- _______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________ -->
+<template>
+    <div class="crs-container">
+
+        <!-- Header banner: greeting name + date are dynamic, quote is static -->
+        <div class="crs-header">
+            <div class="crs-header-left">
+                <div class="crs-avatar-icon">
+                    <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+                        <circle cx="12" cy="12" r="3" fill="none" stroke="#ffffff" stroke-width="1.6"></circle>
+                        <path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"></path>
+                    </svg>
+                </div>
+                <div class="crs-header-text">
+                    <h1 class="crs-greeting">{greetingText}</h1>
+                    <p class="crs-subgreeting">Here's your credit review summary for today.</p>
+                </div>
+            </div>
+            <div class="crs-header-right">
+                <span class="crs-date">{todayFormatted}</span>
+                <p class="crs-quote">&ldquo;Assess today<br />for a stronger tomorrow.&rdquo;</p>
+            </div>
+        </div>
+
+        <!-- My Overview -->
+        <div class="crs-section">
+            <div class="crs-section-head">
+                <div class="crs-section-title-group">
+                    <span class="crs-section-icon">
+                        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                            <rect x="3" y="12" width="3" height="8" fill="#4aa3ff"></rect>
+                            <rect x="9" y="7" width="3" height="13" fill="#4aa3ff"></rect>
+                            <rect x="15" y="3" width="3" height="17" fill="#4aa3ff"></rect>
+                        </svg>
+                    </span>
+                    <div>
+                        <h2 class="crs-section-title">My Overview</h2>
+                        <p class="crs-section-subtitle">Key application counts at a glance</p>
+                    </div>
+                </div>
+                <div class="crs-dropdown" onclick={handleOverviewDropdownToggle}>
+                    <span>{overviewRange}</span>
+                    <svg viewBox="0 0 24 24" width="12" height="12" class="crs-chevron-icon" aria-hidden="true">
+                        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    <template if:true={isOverviewDropdownOpen}>
+                        <ul class="crs-dropdown-menu">
+                            <template for:each={overviewDropdownOptions} for:item="opt">
+                                <li key={opt} data-value={opt} onclick={handleOverviewOptionSelect}>{opt}</li>
+                            </template>
+                        </ul>
+                    </template>
+                </div>
+            </div>
+
+            <div class="crs-stat-strip">
+                <template for:each={statCards} for:item="card">
+                    <div key={card.key} class="crs-stat-card">
+                        <div class={card.iconClass}>
+                            <template if:true={card.isDoc}>
+                                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                                    <path d="M6 2h9l3 3v17H6z" style={card.glyphStyle}></path>
+                                    <path d="M15 2v3h3" fill="#0c1526"></path>
+                                    <rect x="8.5" y="10" width="7" height="1.4" fill="#0c1526"></rect>
+                                    <rect x="8.5" y="13" width="7" height="1.4" fill="#0c1526"></rect>
+                                    <rect x="8.5" y="16" width="4.5" height="1.4" fill="#0c1526"></rect>
+                                </svg>
+                            </template>
+                            <template if:true={card.isClock}>
+                                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="9" style={card.glyphStyle}></circle>
+                                    <path d="M12 7v5l4 2" fill="none" stroke="#0c1526" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </template>
+                            <template if:true={card.isQuestion}>
+                                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="9" style={card.glyphStyle}></circle>
+                                    <text x="12" y="16.5" text-anchor="middle" font-size="11" font-weight="700" fill="#0c1526">?</text>
+                                </svg>
+                            </template>
+                            <template if:true={card.isHourglass}>
+                                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="9" style={card.glyphStyle}></circle>
+                                    <path d="M8.5 8h7l-3.5 4 3.5 4h-7l3.5-4z" fill="#0c1526"></path>
+                                </svg>
+                            </template>
+                            <template if:true={card.isCheck}>
+                                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="9" style={card.glyphStyle}></circle>
+                                    <path d="M8 12.5l2.5 2.5L16 9" fill="none" stroke="#0c1526" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </template>
+                            <template if:true={card.isCross}>
+                                <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="9" style={card.glyphStyle}></circle>
+                                    <path d="M9 9l6 6M15 9l-6 6" fill="none" stroke="#0c1526" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </template>
+                        </div>
+                        <div class="crs-stat-value">{card.value}</div>
+                        <div class="crs-stat-label">{card.label}</div>
+                        <div class={card.trendClass}>{card.trendLabel} <span class="crs-trend-suffix">vs last week</span></div>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- Action Required -->
+        <div class="crs-section">
+            <div class="crs-section-head">
+                <div class="crs-section-title-group">
+                    <span class="crs-section-icon crs-icon-amber">
+                        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                            <path d="M13 2 4 14h6l-1 8 9-12h-6z" fill="#f0a93b"></path>
+                        </svg>
+                    </span>
+                    <div>
+                        <h2 class="crs-section-title">Action Required <span class="crs-count-badge crs-badge-red">{actionRequiredTotal}</span></h2>
+                        <p class="crs-section-subtitle">Applications that need your attention</p>
+                    </div>
+                </div>
+                <button class="crs-view-all" type="button" onclick={handleViewAllActionRequired}>View All &rarr;</button>
+            </div>
+
+            <ul class="crs-action-list">
+                <template for:each={actionRequiredItems} for:item="item">
+                    <li key={item.key} class="crs-action-row" data-key={item.key} onclick={handleActionRowClick}>
+                        <div class={item.iconClass}>
+                            <template if:true={item.isQuestion}>
+                                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="9" style={item.glyphStyle}></circle>
+                                    <text x="12" y="16.5" text-anchor="middle" font-size="11" font-weight="700" fill="#0c1526">?</text>
+                                </svg>
+                            </template>
+                            <template if:true={item.isHourglass}>
+                                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="9" style={item.glyphStyle}></circle>
+                                    <path d="M8.5 8h7l-3.5 4 3.5 4h-7l3.5-4z" fill="#0c1526"></path>
+                                </svg>
+                            </template>
+                            <template if:true={item.isPeople}>
+                                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                    <circle cx="9" cy="9" r="3" style={item.glyphStyle}></circle>
+                                    <circle cx="16" cy="10" r="2.4" style={item.glyphStyle}></circle>
+                                    <path d="M3.5 19c0-3.3 2.5-5.6 5.5-5.6s5.5 2.3 5.5 5.6" style={item.glyphStyle}></path>
+                                    <path d="M14.5 14.2c2.4.3 4 2.2 4 4.8" style={item.glyphStyle}></path>
+                                </svg>
+                            </template>
+                            <template if:true={item.isCheck}>
+                                <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                                    <circle cx="12" cy="12" r="9" style={item.glyphStyle}></circle>
+                                    <path d="M8 12.5l2.5 2.5L16 9" fill="none" stroke="#0c1526" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"></path>
+                                </svg>
+                            </template>
+                        </div>
+                        <div class="crs-action-text">
+                            <div class="crs-action-title">{item.title}</div>
+                            <div class="crs-action-desc">{item.description}</div>
+                        </div>
+                        <span class="crs-action-count">{item.count}</span>
+                        <svg viewBox="0 0 24 24" width="16" height="16" class="crs-action-chevron" aria-hidden="true">
+                            <path d="M9 6l6 6-6 6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                    </li>
+                </template>
+            </ul>
+        </div>
+
+        <!-- My Application Queue (collapsible) -->
+        <div class="crs-section">
+            <div class="crs-collapsible-head">
+                <div class="crs-section-title-group" onclick={handleToggleQueue}>
+                    <span class="crs-section-icon">
+                        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                            <path d="M3 6h6l2 2h10v11H3z" fill="none" stroke="#4aa3ff" stroke-width="1.6"></path>
+                        </svg>
+                    </span>
+                    <div>
+                        <h2 class="crs-section-title">My Application Queue</h2>
+                        <p class="crs-section-subtitle">Review and analyse assigned applications</p>
+                    </div>
+                </div>
+                <div class="crs-head-right">
+                    <button class="crs-view-all" type="button" onclick={handleViewAllQueue}>View All &rarr;</button>
+                    <svg viewBox="0 0 24 24" width="16" height="16" class={queueChevronClass} aria-hidden="true" onclick={handleToggleQueue}>
+                        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <template if:true={isQueueExpanded}>
+            <div class="crs-queue-tabs">
+                <template for:each={queueTabs} for:item="tab">
+                    <button key={tab.key} class={tab.tabClass} type="button" data-key={tab.key} onclick={handleTabClick}>{tab.label} ({tab.count})</button>
+                </template>
+            </div>
+
+            <div class="crs-queue-filters">
+                <div class="crs-search-wrap">
+                    <svg viewBox="0 0 24 24" width="14" height="14" class="crs-search-icon" aria-hidden="true">
+                        <circle cx="10" cy="10" r="6" fill="none" stroke="currentColor" stroke-width="1.8"></circle>
+                        <path d="M15 15l5 5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"></path>
+                    </svg>
+                    <input class="crs-search-input" type="text" placeholder="Search application, customer or product..." value={searchTerm} onchange={handleSearchChange} />
+                </div>
+
+                <div class="crs-dropdown crs-filter-dropdown" onclick={handleProductDropdownToggle}>
+                    <span>{productFilter}</span>
+                    <svg viewBox="0 0 24 24" width="12" height="12" class="crs-chevron-icon" aria-hidden="true">
+                        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    <template if:true={isProductDropdownOpen}>
+                        <ul class="crs-dropdown-menu">
+                            <template for:each={productOptions} for:item="opt">
+                                <li key={opt} data-value={opt} onclick={handleProductOptionSelect}>{opt}</li>
+                            </template>
+                        </ul>
+                    </template>
+                </div>
+
+                <div class="crs-dropdown crs-filter-dropdown" onclick={handlePriorityDropdownToggle}>
+                    <span>{priorityFilter}</span>
+                    <svg viewBox="0 0 24 24" width="12" height="12" class="crs-chevron-icon" aria-hidden="true">
+                        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    <template if:true={isPriorityDropdownOpen}>
+                        <ul class="crs-dropdown-menu">
+                            <template for:each={priorityOptions} for:item="opt">
+                                <li key={opt} data-value={opt} onclick={handlePriorityOptionSelect}>{opt}</li>
+                            </template>
+                        </ul>
+                    </template>
+                </div>
+
+                <div class="crs-dropdown crs-filter-dropdown" onclick={handleAssignedDateDropdownToggle}>
+                    <span>{assignedDateFilter}</span>
+                    <svg viewBox="0 0 24 24" width="12" height="12" class="crs-chevron-icon" aria-hidden="true">
+                        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                    <template if:true={isAssignedDateDropdownOpen}>
+                        <ul class="crs-dropdown-menu">
+                            <template for:each={assignedDateOptions} for:item="opt">
+                                <li key={opt} data-value={opt} onclick={handleAssignedDateOptionSelect}>{opt}</li>
+                            </template>
+                        </ul>
+                    </template>
+                </div>
+
+                <button class="crs-reset-link" type="button" onclick={handleResetFilters}>Reset</button>
+            </div>
+
+            <div class="crs-queue-table-wrap">
+                <table class="crs-queue-table">
+                    <thead>
+                        <tr>
+                            <th>Application No.</th>
+                            <th>Customer Name</th>
+                            <th>Product</th>
+                            <th>Assigned Date</th>
+                            <th>TAT (Days)</th>
+                            <th>Priority</th>
+                            <th>Current Stage</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={queueRows} for:item="row">
+                            <tr key={row.key}>
+                                <td>{row.appNo}</td>
+                                <td>{row.customer}</td>
+                                <td>{row.product}</td>
+                                <td>{row.assignedDate}</td>
+                                <td>{row.tat}</td>
+                                <td><span class={row.priorityClass}>{row.priority}</span></td>
+                                <td><span class={row.stageClass}>{row.stage}</span></td>
+                                <td>
+                                    <button class="crs-review-btn" type="button" data-appno={row.appNo} onclick={handleReviewClick}>Review</button>
+                                    <button class="crs-more-btn" type="button">&hellip;</button>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="crs-queue-footer">
+                <span class="crs-queue-showing">{queueShowingLabel}</span>
+                <div class="crs-pagination">
+                    <button class="crs-page-arrow" type="button" disabled={isPrevDisabled} onclick={handlePrevPage}>&lsaquo;</button>
+                    <template for:each={queuePageNumbers} for:item="page">
+                        <button key={page.key} class={page.pageClass} type="button" data-page={page.value} onclick={handlePageNumberClick}>{page.value}</button>
+                    </template>
+                    <button class="crs-page-arrow" type="button" disabled={isNextDisabled} onclick={handleNextPage}>&rsaquo;</button>
+                </div>
+            </div>
+            </template>
+        </div>
+
+        <!-- Performance & Insights (collapsible) -->
+        <div class="crs-section">
+            <div class="crs-collapsible-head">
+                <div class="crs-section-title-group" onclick={handleTogglePerformance}>
+                    <span class="crs-section-icon">
+                        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                            <rect x="3" y="12" width="3" height="8" fill="#4aa3ff"></rect>
+                            <rect x="9" y="7" width="3" height="13" fill="#4aa3ff"></rect>
+                            <rect x="15" y="3" width="3" height="17" fill="#4aa3ff"></rect>
+                        </svg>
+                    </span>
+                    <div>
+                        <h2 class="crs-section-title">Performance &amp; Insights</h2>
+                        <p class="crs-section-subtitle">Monitor credit quality, turnaround time and productivity</p>
+                    </div>
+                </div>
+                <div class="crs-head-right">
+                    <template if:true={isPerformanceExpanded}>
+                        <div class="crs-dropdown" onclick={handlePerformanceRangeDropdownToggle}>
+                            <span>{performanceRange}</span>
+                            <svg viewBox="0 0 24 24" width="12" height="12" class="crs-chevron-icon" aria-hidden="true">
+                                <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                            <template if:true={isPerformanceRangeDropdownOpen}>
+                                <ul class="crs-dropdown-menu">
+                                    <template for:each={performanceDropdownOptions} for:item="opt">
+                                        <li key={opt} data-value={opt} onclick={handlePerformanceRangeOptionSelect}>{opt}</li>
+                                    </template>
+                                </ul>
+                            </template>
+                        </div>
+                    </template>
+                    <svg viewBox="0 0 24 24" width="16" height="16" class={performanceChevronClass} aria-hidden="true" onclick={handleTogglePerformance}>
+                        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <template if:true={isPerformanceExpanded}>
+                <div class="pi-tabs">
+                    <template for:each={performanceTabs} for:item="tab">
+                        <button key={tab.key} class={tab.tabClass} type="button" data-key={tab.key} onclick={handlePerformanceTabClick}>{tab.label}</button>
+                    </template>
+                </div>
+
+                <template if:true={isPerformanceOverviewTab}>
+                    <div class="pi-row-3col">
+
+                        <div class="pi-chart-panel">
+                            <h3 class="pi-chart-title">Applications Reviewed Trend</h3>
+                            <div class="pi-trend-chart">
+                                <svg class="pi-trend-svg" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+                                    <template for:each={reviewTrendSeries} for:item="series">
+                                        <g key={series.key}>
+                                            <polyline class="pi-trend-line" points={series.polyline} style={series.lineStyle}></polyline>
+                                            <template for:each={series.markers} for:item="marker">
+                                                <circle key={marker.key} class="pi-trend-dot" cx={marker.cx} cy={marker.cy} r="1.5" style={marker.style}></circle>
+                                            </template>
+                                        </g>
+                                    </template>
+                                </svg>
+                                <div class="pi-trend-axis">
+                                    <template for:each={reviewTrendDates} for:item="d">
+                                        <span key={d} class="pi-trend-axis-label">{d}</span>
+                                    </template>
+                                </div>
+                            </div>
+                            <div class="pi-trend-legend">
+                                <template for:each={reviewTrendSeries} for:item="series">
+                                    <span key={series.key} class="pi-legend-item">
+                                        <span class="pi-legend-dot" style={series.dotStyle}></span>{series.label}
+                                    </span>
+                                </template>
+                            </div>
+                        </div>
+
+                        <div class="pi-chart-panel">
+                            <h3 class="pi-chart-title">Credit Decision by Status</h3>
+                            <div class="pi-donut-wrapper">
+                                <svg class="pi-donut-svg" viewBox="0 0 180 180" aria-hidden="true">
+                                    <circle class="pi-donut-track" cx="90" cy="90" r="70" fill="none" stroke-width="26"></circle>
+                                    <template for:each={creditDecisionSegments} for:item="segment">
+                                        <circle
+                                            key={segment.key}
+                                            class="pi-donut-segment"
+                                            cx="90"
+                                            cy="90"
+                                            r="70"
+                                            fill="none"
+                                            stroke-width="26"
+                                            stroke-dasharray={segment.dashArray}
+                                            stroke-dashoffset={segment.dashOffset}
+                                            style={segment.pathStyle}
+                                            transform="rotate(-90 90 90)"
+                                        ></circle>
+                                    </template>
+                                    <text x="90" y="86" class="pi-donut-center-value" text-anchor="middle">{creditDecisionTotal}</text>
+                                    <text x="90" y="106" class="pi-donut-center-label" text-anchor="middle">Total</text>
+                                </svg>
+                                <ul class="pi-donut-legend">
+                                    <template for:each={creditDecisionSegments} for:item="segment">
+                                        <li key={segment.key} class="pi-donut-legend-item">
+                                            <span class="pi-legend-dot" style={segment.swatchStyle}></span>
+                                            <span class="pi-donut-legend-label">{segment.label}</span>
+                                            <span class="pi-donut-legend-value">{segment.count} ({segment.percent}%)</span>
+                                        </li>
+                                    </template>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="pi-chart-panel">
+                            <h3 class="pi-chart-title">Average TAT (Days)</h3>
+                            <div class="pi-bar-chart-vertical">
+                                <template for:each={tatBars} for:item="bar">
+                                    <div key={bar.key} class="pi-bar-col">
+                                        <span class="pi-bar-value">{bar.value}</span>
+                                        <div class="pi-bar-track">
+                                            <div class="pi-bar-fill" style={bar.barStyle}></div>
+                                        </div>
+                                        <span class="pi-bar-label">{bar.label}</span>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="pi-row-2col">
+
+                        <div class="pi-chart-panel">
+                            <h3 class="pi-chart-title">Applications by Product</h3>
+                            <div class="pi-bar-chart-vertical">
+                                <template for:each={productBars} for:item="bar">
+                                    <div key={bar.key} class="pi-bar-col">
+                                        <span class="pi-bar-value">{bar.value}</span>
+                                        <div class="pi-bar-track">
+                                            <div class="pi-bar-fill" style={bar.barStyle}></div>
+                                        </div>
+                                        <span class="pi-bar-label">{bar.label}</span>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                        <div class="pi-chart-panel">
+                            <h3 class="pi-chart-title">Top Rejection Reasons</h3>
+                            <div class="pi-rejection-list">
+                                <template for:each={rejectionReasons} for:item="reason">
+                                    <div key={reason.key} class="pi-rejection-row">
+                                        <span class="pi-rejection-label">{reason.label}</span>
+                                        <div class="pi-rejection-track">
+                                            <div class="pi-rejection-fill" style={reason.barWidthStyle}></div>
+                                        </div>
+                                        <span class="pi-rejection-percent">{reason.percentLabel}</span>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+
+                    </div>
+                </template>
+
+                <template if:false={isPerformanceOverviewTab}>
+                    <div class="crs-collapsible-body">Detailed view for this tab is not yet available.</div>
+                </template>
+            </template>
+        </div>
+
+        <!-- My Tasks & Alerts (collapsible) -->
+        <div class="crs-section">
+            <div class="crs-collapsible-head">
+                <div class="crs-section-title-group" onclick={handleToggleTasks}>
+                    <span class="crs-section-icon crs-icon-blue">
+                        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">
+                            <rect x="4" y="3" width="16" height="18" rx="1.5" fill="none" stroke="#4aa3ff" stroke-width="1.6"></rect>
+                            <path d="M8 12l2.5 2.5L16 9" fill="none" stroke="#4aa3ff" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"></path>
+                        </svg>
+                    </span>
+                    <div>
+                        <h2 class="crs-section-title">My Tasks &amp; Alerts</h2>
+                        <p class="crs-section-subtitle">Stay on top of your pending tasks and important updates</p>
+                    </div>
+                </div>
+                <div class="crs-head-right">
+                    <button class="crs-view-all" type="button" onclick={handleViewAllTasks}>View All</button>
+                    <svg viewBox="0 0 24 24" width="16" height="16" class={tasksChevronClass} aria-hidden="true" onclick={handleToggleTasks}>
+                        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                    </svg>
+                </div>
+            </div>
+
+            <template if:true={isTasksExpanded}>
+                <div class="ta-tabs">
+                    <template for:each={taskAlertTabs} for:item="tab">
+                        <button key={tab.key} class={tab.tabClass} type="button" data-key={tab.key} onclick={handleTasksTabClick}>{tab.label} ({tab.count})</button>
+                    </template>
+                </div>
+
+                <div class="ta-row-2col">
+                    <div class="ta-panel">
+                        <template if:true={isMyTasksTab}>
+                            <table class="ta-table">
+                                <thead>
+                                    <tr>
+                                        <th>Task</th>
+                                        <th>Application No.</th>
+                                        <th>Customer Name</th>
+                                        <th>Due Date</th>
+                                        <th>Priority</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={myTasksRows} for:item="row">
+                                        <tr key={row.key}>
+                                            <td>
+                                                <span class="ta-task-name">
+                                                    <span class={row.dotClass}></span>{row.task}
+                                                </span>
+                                            </td>
+                                            <td>{row.appNo}</td>
+                                            <td>{row.customer}</td>
+                                            <td>{row.dueDate}</td>
+                                            <td><span class={row.priorityClass}>{row.priority}</span></td>
+                                            <td><button class="ta-open-btn" type="button" data-appno={row.appNo} onclick={handleTaskRowOpenClick}>Open</button></td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </template>
+
+                        <template if:false={isMyTasksTab}>
+                            <ul class="ta-alert-list">
+                                <template for:each={alertItems} for:item="item">
+                                    <li key={item.key} class="ta-alert-row">
+                                        <span class={item.dotClass}></span>
+                                        <span class="ta-alert-text">{item.text}</span>
+                                        <span class="ta-alert-appno">{item.appNo}</span>
+                                        <span class="ta-alert-time">{item.time}</span>
+                                        <button class="ta-open-btn" type="button" data-appno={item.appNo} onclick={handleTaskRowOpenClick}>Open</button>
+                                    </li>
+                                </template>
+                            </ul>
+                        </template>
+                    </div>
+
+                    <div class="ta-panel">
+                        <h3 class="ta-panel-title">
+                            <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true">
+                                <rect x="5" y="3" width="14" height="18" rx="1.5" fill="none" stroke="#4aa3ff" stroke-width="1.6"></rect>
+                                <rect x="8" y="7" width="8" height="1.4" fill="#4aa3ff"></rect>
+                                <rect x="8" y="11" width="8" height="1.4" fill="#4aa3ff"></rect>
+                            </svg>
+                            Recent Updates
+                        </h3>
+                        <ul class="ta-updates-list">
+                            <template for:each={recentUpdates} for:item="update">
+                                <li key={update.key} class="ta-update-row">
+                                    <span class={update.iconClass}>
+                                        <template if:true={update.isInfo}>
+                                            <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
+                                                <circle cx="12" cy="12" r="9" fill="currentColor"></circle>
+                                                <rect x="11" y="10" width="2" height="7" fill="#0c1526"></rect>
+                                                <rect x="11" y="6.5" width="2" height="2" fill="#0c1526"></rect>
+                                            </svg>
+                                        </template>
+                                        <template if:true={update.isWarning}>
+                                            <svg viewBox="0 0 24 24" width="12" height="12" aria-hidden="true">
+                                                <path d="M12 2 22 20H2z" fill="currentColor"></path>
+                                                <rect x="11" y="9" width="2" height="6" fill="#0c1526"></rect>
+                                                <rect x="11" y="16.5" width="2" height="2" fill="#0c1526"></rect>
+                                            </svg>
+                                        </template>
+                                    </span>
+                                    <span class="ta-update-text">{update.text}</span>
+                                    <span class="ta-update-time">{update.time}</span>
+                                </li>
+                            </template>
+                        </ul>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+        <!-- Footer banner -->
+        <div class="crs-footer-banner">
+            <div class="crs-footer-text">
+                Responsible lending<br />builds brighter futures.
+                <span class="crs-footer-accent"></span>
+            </div>
+            <div class="crs-footer-tagline">People<br />Progress<br />Possibilities</div>
+        </div>
+
+    </div>
+</template>
+<!-- __________________________GenAI: Generated code ends here______________________________ -->

@@ -1,0 +1,149 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import "c/cssLibrary";
+
+:host {
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+}
+.slds-form-element__label {
+    color: #ffffff !important;
+}
+
+.header-section {
+    position: sticky;
+    top: 0;
+    z-index: -1;
+}
+
+.footer-section {
+    position: sticky; 
+    bottom: 0;
+    min-height: 45px !important;
+    z-index: -1;
+}
+
+/* ____GenAI: only the middle content strip (".slds-modal__content") was the
+   browser/SLDS default white - that's the one part that looked out of place
+   against the dark theme. The sky-blue header/footer (shared cssLibrary.css
+   ".header-section"/".footer-section"), the modal's actual size, and the
+   button colors are untouched, per explicit follow-up request - this is the
+   ONLY background changed, plus a text-color fallback for any plain-text
+   content sitting directly on it____ */
+.slds-modal__content {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+}
+
+.slds-modal__content h2,
+.slds-modal__content h3,
+.slds-modal__content p,
+.slds-modal__content span,
+.slds-modal__content li,
+.slds-modal__content b {
+    color: #ffffff;
+}
+
+.closure-remarks {
+    
+  z-index: 9999;
+}
+
+/* Positive CTA - #7c3aed fill, no border, 8px radius. */
+.save-button {
+    background-color: #7c3aed !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-radius: 8px !important;
+    font-weight: 600;
+}
+
+/* Negative CTA - #16283f fill, 1px solid #7c3aed border, 8px radius. */
+.cancel-button {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    border: 1px solid #7c3aed !important;
+    border-radius: 8px !important;
+    font-weight: 400;
+}
+
+/* ____GenAI: blur the page behind this popup (Convert to Cold Lead, Lead
+   Closure Remarks, and every other screen shown through this same shared
+   component) while it's open, per explicit request. Only the existing
+   ".slds-backdrop" element's own visual filter is touched - its
+   background/opacity, the modal's size/position, and all buttons/fields
+   above are left exactly as they are____ */
+.slds-backdrop {
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+}
+
+/* =========================================================
+   COLD LEAD POPUP ONLY
+   ========================================================= */
+
+/* Header */
+.cold-lead-popup-header {
+    background-color: #16283f !important;
+    border-bottom: 1px solid #33455e !important;
+}
+
+
+/* Header title */
+/* =========================================
+   COLD LEAD + LEAD CLOSURE POPUP
+   ========================================= */
+
+/* POPUP HEADER */
+/* =========================================================
+   COLD LEAD + DISCARD LEAD POPUP
+   HEADER
+   ========================================================= */
+
+.custom-popup-header {
+    background: linear-gradient(90deg, #2563eb 0%, #23449a 100%) !important;
+    border-bottom: 1px solid #23449a !important;
+    color: #ffffff !important;
+    border-radius: 8px 8px 0 0 !important;
+    padding: 1.25rem !important;
+}
+
+.custom-popup-header .header-title {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    text-align: center !important;
+}
+
+/* POPUP FOOTER */
+.custom-popup-footer {
+    background: linear-gradient(90deg, #2563eb 0%, #23449a 100%) !important;
+    border-top: 1px solid #23449a !important;
+    border-radius: 0 0 8px 8px !important;
+    min-height: 54px !important;
+}
+/* CANCEL BUTTON - SAME RED AS PREVIOUS BUTTON */
+.custom-popup-footer .cancel-button {
+    background-color: #e02424 !important;
+    border-color: #e02424 !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+/* CANCEL HOVER */
+.custom-popup-footer .cancel-button:hover {
+    background-color: #c81f1f !important;
+    border-color: #c81f1f !important;
+}
+
+/* SAVE BUTTON - SAME GREEN AS START APPLICATION */
+.custom-popup-footer .save-button {
+    background-color: #43c463 !important;
+    border-color: #43c463 !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+}
+
+/* SAVE HOVER */
+.custom-popup-footer .save-button:hover {
+    background-color: #36b957 !important;
+    border-color: #36b957 !important;
+}

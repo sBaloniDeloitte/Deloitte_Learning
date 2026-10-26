@@ -1,0 +1,431 @@
+<template>
+    <button class="slds-button slds-button_brand initiate-button slds-m-bottom_medium"
+                                style="width: 140px; font-weight: 500;" onclick={createRecord}
+                                >Initiate NOI</button>
+    <template if:true={showTable}>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered" role="grid">
+                <thead>
+                    <tr>
+                        <th scope="col">Name</th>
+                        <th scope="col">Remarks</th>
+                        <th scope="col">Status</th>
+                    </tr>
+                </thead>
+    
+                <tbody>
+                    <template for:each={data} for:item="item">
+                            <tr key={item.Id}>                
+                                <!-- Stage -->
+                                <td>
+                                    <!-- <a href="javascript:void(0);" 
+                                       onclick={handleNameClick} 
+                                       data-id={item.Id}>
+                                       {item.NOI_Number__c}
+                                    </a> -->
+                                    {item.NOI_Number__c}
+                                </td>
+                
+                                <!-- Initiated By -->
+                                <td>{item.Remark__c}</td>
+                
+                                <!-- Initiated On -->
+                                <td>{item.NOI_Status__c}</td>
+                
+                            </tr>
+                    </template>
+                </tbody>
+    
+            </table>
+            <br>
+    </template>
+    <template lwc:if={selectedRecord}>
+        <lightning-card class="slds-m-top_medium">
+            <span class="styleContainer"></span>
+            <lightning-accordion class="example-accordion" allow-multiple-sections-open active-section-name="NoticeOfIntimation">
+                <lightning-accordion-section name="LoanSummaryDetails" label="Loan Summary">
+                        <div class="slds-section slds-is-open">
+                            <div class="slds-grid slds-gutters slds-wrap slds-p-around_medium">
+                                    <lightning-layout multiple-rows="true">
+                                        <template if:true={fieldDetails}>
+                                            <template for:each={fieldDetails} for:item="item">
+                                                    <template if:false={item.isPicklist}>
+                                                        <template if:true={item.Section_Seperator__c}>
+                                                            <br key={item.Id} />
+                                                            <lightning-layout-item size="12" key={item.Id}>
+                                                                <div class="section-seperator"
+                                                                    style="padding-top: 1%;font-weight: 700;width: 100%;text-align: center;padding-bottom: 1%;">
+                                                                    {item.Section_Name__c}
+                                                                </div>
+                                                            </lightning-layout-item>
+                                                        </template>
+                                                        <template if:true={item.isCheckBox}>
+                                                            
+                                                            <lightning-layout-item size="6" key={item.Id} padding="around-small">
+                                                                <lightning-input class="hideInput" type="checkbox"
+                                                                    style="width:100%;" name={item.Field_Type__c}
+                                                                    label={item.Field_Label__c} value={item.value}
+                                                                    checked={item.value} required={item.Is_Mandatory__c}
+                                                                    data-id={item.Id} data-name={item.Storage_Field__c}
+                                                                    onchange={handleInputChangeCheckbox}
+                                                                    disabled={item.Is_Disabled__c} >
+                                                                </lightning-input>
+                                                            </lightning-layout-item>
+                                                        </template>
+                                                        <template if:false={item.isCheckBox}>
+                                                            <template if:false={item.is_Lookup__c}>
+                                                                <lightning-layout-item size="4" key={item.Id} padding="around-small">
+                                                                    <lightning-input class="hideInput" variant="bare"
+                                                                        type={item.Field_Type__c} label={item.Field_Label__c}
+                                                                        data-id={item.Id} data-name={item.Storage_Field__c}
+                                                                        data-type={item.Field_Type__c} name={item.Field_Type__c}
+                                                                        data-required={item.Is_Mandatory__c}
+                                                                        required={item.Is_Mandatory__c} 
+                                                                        max-length={item.Maximum_Length__c} value={item.value}
+                                                                        onblur={handleOnblur}
+                                                                        disabled={item.Is_Disabled__c}
+                                                                        onchange={handleInputChange} >
+                                                                    </lightning-input>
+                                                                </lightning-layout-item>
+                                                            </template>
+
+                                                        </template>
+
+
+                                                        <template if:true={item.is_Lookup__c}>
+                                                            
+                                                            <lightning-layout-item size="4" key={item.Id} padding="around-small">
+                                                                <lightning-input class="hideInput" variant="bare"
+                                                                    type={item.Field_Type__c} label={item.Field_Label__c}
+                                                                    data-id={item.Id} data-name={item.Storage_Field__c}
+                                                                    data-type={item.Field_Type__c} name={item.Field_Type__c}
+                                                                    data-required={item.Is_Mandatory__c}
+                                                                    required={item.Is_Mandatory__c} 
+                                                                    max-length={item.Maximum_Length__c} value={item.savedName}
+                                                                    onblur={handleOnblur}
+                                                                    disabled={item.Is_Disabled__c}
+                                                                    onchange={handleInputChange} >
+                                                                </lightning-input>
+                                                            </lightning-layout-item>
+                                                        </template>
+                                                    </template>
+                                                    <template if:true={item.isPicklist}>
+                                                        <template if:true={item.Section_Seperator__c}>
+                                                            <br key={item.Id} />
+                                                            <lightning-layout-item size="12" key={item.Id}>
+                                                                <div class="section-seperator" key={item.Id}
+                                                                    style="padding-top: 1%;font-weight: 700;width: 100%;text-align: center;padding-bottom: 1%;">
+                                                                    {item.Section_Name__c}
+                                                                </div>
+                                                            </lightning-layout-item>
+                                                        </template>
+                                                        <lightning-layout-item size="4" key={item.Id} padding="around-small">
+                                                            <lightning-combobox class="removeborder" style="width:100%;"
+                                                                label={item.Field_Label__c} placeholder="Select Picklist"
+                                                                options={item.picklistOptions} data-id={item.Id}
+                                                                data-name={item.Storage_Field__c} onchange={handleInputChange}
+                                                                value={item.value} 
+                                                                required={item.Is_Mandatory__c}
+                                                                onblur={handleOnblur}
+                                                                disabled={item.Is_Disabled__c}></lightning-combobox>
+                                                            </lightning-layout-item>
+                                                    </template>
+                                            </template>
+                                        </template>
+                                        
+                                    </lightning-layout>
+                            </div>
+                        </div>
+                </lightning-accordion-section>
+
+                <lightning-accordion-section name="MortagagorDetails" label="Mortgagor Details">
+                        <div class="slds-section slds-is-open">
+                            <div class="slds-grid slds-gutters slds-wrap slds-p-around_medium">
+                                    <lightning-layout multiple-rows="true">
+                                        <template if:true={mortgagorDetails}>
+                                            <template for:each={mortgagorDetails} for:item="item">
+                                                    <template if:false={item.picklistOptions}>
+                                                        <template if:true={item.Section_Seperator__c}>
+                                                            <br key={item.Id} />
+                                                            <lightning-layout-item size="12" key={item.Id}>
+                                                                <div class="section-seperator"
+                                                                    style="padding-top: 1%;font-weight: 700;width: 100%;text-align: center;padding-bottom: 1%;">
+                                                                    {item.Section_Name__c}
+                                                                </div>
+                                                            </lightning-layout-item>
+                                                        </template>
+                                                        <template if:true={item.isCheckBox}>
+                                                            
+                                                            <lightning-layout-item size="6" key={item.Id} padding="around-small">
+                                                                <lightning-input class="hideInput" type="checkbox"
+                                                                    style="width:100%;" name={item.Field_Type__c}
+                                                                    label={item.Field_Label__c} value={item.value}
+                                                                    checked={item.value} required={item.Is_Mandatory__c}
+                                                                    data-id={item.Id} data-name={item.Storage_Field__c}
+                                                                    onchange={handleInputChangeCheckbox}
+                                                                    disabled={disableDocField} >
+                                                                </lightning-input>
+                                                            </lightning-layout-item>
+                                                        </template>
+                                                        <template if:false={item.isCheckBox}>
+                                                            <template if:false={item.is_Lookup__c}>
+                                                                <lightning-layout-item size="4" key={item.Id} padding="around-small">
+                                                                    <lightning-input class="hideInput" variant="bare"
+                                                                        type={item.Field_Type__c} label={item.Field_Label__c}
+                                                                        data-id={item.Id} data-name={item.Storage_Field__c}
+                                                                        data-type={item.Field_Type__c} name={item.Field_Type__c}
+                                                                        data-required={item.Is_Mandatory__c}
+                                                                        required={item.Is_Mandatory__c} 
+                                                                        max-length={item.Maximum_Length__c} value={item.value}
+                                                                        onblur={handleOnblur}
+                                                                        disabled={disableDocField}
+                                                                        onchange={handleInputChange} >
+                                                                    </lightning-input>
+                                                                </lightning-layout-item>
+                                                            </template>
+
+                                                        </template>
+
+                                                        <template if:true={item.is_Lookup__c}>
+                                                            
+                                                            <lightning-layout-item size="4" key={item.Id} padding="around-small">
+                                                                <lightning-input class="hideInput" variant="bare"
+                                                                    type={item.Field_Type__c} label={item.Field_Label__c}
+                                                                    data-id={item.Id} data-name={item.Storage_Field__c}
+                                                                    data-type={item.Field_Type__c} name={item.Field_Type__c}
+                                                                    data-required={item.Is_Mandatory__c}
+                                                                    required={item.Is_Mandatory__c} 
+                                                                    max-length={item.Maximum_Length__c} value={item.savedName}
+                                                                    onblur={handleOnblur}
+                                                                    disabled={disableDocField}
+                                                                    onchange={handleInputChange} >
+                                                                </lightning-input>
+                                                            </lightning-layout-item>
+                                                        </template>
+                                                    </template>
+                                                    <template if:true={item.picklistOptions}>
+                                                        <template if:true={item.Section_Seperator__c}>
+                                                            <br key={item.Id} />
+                                                            <lightning-layout-item size="12" key={item.Id}>
+                                                                <div class="section-seperator" key={item.Id}
+                                                                    style="padding-top: 1%;font-weight: 700;width: 100%;text-align: center;padding-bottom: 1%;">
+                                                                    {item.Section_Name__c}
+                                                                </div>
+                                                            </lightning-layout-item>
+                                                        </template>
+                                                        <lightning-layout-item size="4" key={item.Id} padding="around-small">
+                                                            <lightning-combobox class="removeborder" style="width:100%;"
+                                                                label={item.Field_Label__c} placeholder="Select Picklist"
+                                                                options={item.picklistOptions} data-id={item.Id}
+                                                                data-name={item.Storage_Field__c} onchange={handleInputChange}
+                                                                value={item.value} 
+                                                                required={item.Is_Mandatory__c}
+                                                                onblur={handleOnblur}
+                                                                disabled={disableDocField}></lightning-combobox>
+                                                            </lightning-layout-item>
+                                                    </template>  
+                                            </template>
+                                        </template>
+                                        
+                                    </lightning-layout>
+                                
+                            </div>
+                        </div>
+                </lightning-accordion-section>
+
+                <lightning-accordion-section name="MortgageDetails" label="Mortgage Details" >
+                        <div class="slds-section slds-is-open">
+                            <div class="slds-grid slds-gutters slds-wrap slds-p-around_medium">
+                                    <lightning-layout multiple-rows="true">
+                                        <template if:true={mortgageDetails}>
+                                            <template for:each={mortgageDetails} for:item="item">
+                                                    <template if:true={item.picklistOptions}>
+                                                        <template if:true={item.Section_Seperator__c}>
+                                                            <br key={item.Id} />
+                                                            <lightning-layout-item size="12" key={item.Id}>
+                                                                <div class="section-seperator" key={item.Id}
+                                                                    style="padding-top: 1%;font-weight: 700;width: 100%;text-align: center;padding-bottom: 1%;">
+                                                                    {item.Section_Name__c}
+                                                                </div>
+                                                            </lightning-layout-item>
+                                                        </template>
+                                                        <lightning-layout-item size="4" key={item.Id} padding="around-small">
+                                                            <lightning-combobox class="removeborder" style="width:100%;"
+                                                                label={item.Field_Label__c} placeholder="Select Picklist"
+                                                                options={item.picklistOptions} data-id={item.Id}
+                                                                data-name={item.Storage_Field__c} onchange={handleInputChange}
+                                                                value={item.value} 
+                                                                required={item.Is_Mandatory__c}
+                                                                onblur={handleOnblur}
+                                                                disabled={disableDocField}></lightning-combobox>
+                                                            </lightning-layout-item>
+                                                    </template>
+                                                    <template if:false={item.picklistOptions}>
+                                                        <template if:true={item.Section_Seperator__c}>
+                                                            <br key={item.Id} />
+                                                            <lightning-layout-item size="12" key={item.Id}>
+                                                                <div class="section-seperator"
+                                                                    style="padding-top: 1%;font-weight: 700;width: 100%;text-align: center;padding-bottom: 1%;">
+                                                                    {item.Section_Name__c}
+                                                                </div>
+                                                            </lightning-layout-item>
+                                                        </template>
+                                                        <template if:true={item.isCheckBox}>
+                                                            
+                                                            <lightning-layout-item size="6" key={item.Id} padding="around-small">
+                                                                <lightning-input class="hideInput" type="checkbox"
+                                                                    style="width:100%;" name={item.Field_Type__c}
+                                                                    label={item.Field_Label__c} value={item.value}
+                                                                    checked={item.value} required={item.Is_Mandatory__c}
+                                                                    data-id={item.Id} data-name={item.Storage_Field__c}
+                                                                    onchange={handleInputChangeCheckbox}
+                                                                    disabled={disableDocField} >
+                                                                </lightning-input>
+                                                            </lightning-layout-item>
+                                                        </template>
+                                                        <template if:false={item.isCheckBox}>
+                                                            <template if:false={item.is_Lookup__c}>
+                                                                <lightning-layout-item size="4" key={item.Id} padding="around-small">
+                                                                    <lightning-input class="hideInput" variant="bare"
+                                                                        type={item.Field_Type__c} label={item.Field_Label__c}
+                                                                        data-id={item.Id} data-name={item.Storage_Field__c}
+                                                                        data-type={item.Field_Type__c} name={item.Field_Type__c}
+                                                                        data-required={item.Is_Mandatory__c}
+                                                                        required={item.Is_Mandatory__c} 
+                                                                        max-length={item.Maximum_Length__c} value={item.value}
+                                                                        onblur={handleOnblur}
+                                                                        disabled={disableDocField}
+                                                                        onchange={handleInputChange} >
+                                                                    </lightning-input>
+                                                                </lightning-layout-item>
+                                                            </template>
+
+                                                        </template>
+
+                                                        <template if:true={item.is_Lookup__c}>
+                                                            
+                                                            <lightning-layout-item size="4" key={item.Id} padding="around-small">
+                                                                <lightning-input class="hideInput" variant="bare"
+                                                                    type={item.Field_Type__c} label={item.Field_Label__c}
+                                                                    data-id={item.Id} data-name={item.Storage_Field__c}
+                                                                    data-type={item.Field_Type__c} name={item.Field_Type__c}
+                                                                    data-required={item.Is_Mandatory__c}
+                                                                    required={item.Is_Mandatory__c} 
+                                                                    max-length={item.Maximum_Length__c} value={item.savedName}
+                                                                    onblur={handleOnblur}
+                                                                    disabled={disableDocField}
+                                                                    onchange={handleInputChange} >
+                                                                </lightning-input>
+                                                            </lightning-layout-item>
+                                                        </template>
+                                                    </template>  
+                                            </template>
+                                        </template>
+                                        
+                                    </lightning-layout>
+                            </div>
+                        </div>
+                </lightning-accordion-section>
+
+                <lightning-accordion-section name="InitiateDetails" label="Initiate" >
+                        <div class="slds-section slds-is-open">
+                            <div >
+                                    <lightning-layout multiple-rows="true">
+                                        <template if:true={initiate}>
+                                            <template for:each={initiate} for:item="item">
+                                                    <template if:false={item.picklistOptions}>
+                                                        <template if:true={item.Section_Seperator__c}>
+                                                            <br key={item.Id} />
+                                                            <lightning-layout-item size="12" key={item.Id}>
+                                                                <div class="section-seperator"
+                                                                    style="padding-top: 1%;font-weight: 700;width: 100%;text-align: center;padding-bottom: 1%;">
+                                                                    {item.Section_Name__c}
+                                                                </div>
+                                                            </lightning-layout-item>
+                                                        </template>
+                                                        <template if:true={item.isCheckBox}>
+                                                            
+                                                            <lightning-layout-item size="6" key={item.Id} padding="around-small">
+                                                                <lightning-input class="hideInput" type="checkbox"
+                                                                    style="width:100%;" name={item.Field_Type__c}
+                                                                    label={item.Field_Label__c} value={item.value}
+                                                                    checked={item.value} required={item.Is_Mandatory__c}
+                                                                    data-id={item.Id} data-name={item.Storage_Field__c}
+                                                                    onchange={handleInputChangeCheckbox}
+                                                                    disabled={disableDocField} >
+                                                                </lightning-input>
+                                                            </lightning-layout-item>
+                                                        </template>
+                                                        <template if:false={item.isCheckBox}>
+                                                            <template if:false={item.is_Lookup__c}>
+                                                                <lightning-layout-item size="4" key={item.Id} padding="around-small">
+                                                                    <lightning-input class="hideInput" variant="bare"
+                                                                        type={item.Field_Type__c} label={item.Field_Label__c}
+                                                                        data-id={item.Id} data-name={item.Storage_Field__c}
+                                                                        data-type={item.Field_Type__c} name={item.Field_Type__c}
+                                                                        data-required={item.Is_Mandatory__c}
+                                                                        required={item.Is_Mandatory__c} 
+                                                                        max-length={item.Maximum_Length__c} value={item.value}
+                                                                        onblur={handleOnblur}
+                                                                        disabled={disableDocField}
+                                                                        onchange={handleInputChange} >
+                                                                    </lightning-input>
+                                                                </lightning-layout-item>
+                                                            </template>
+
+                                                        </template>
+
+                                                        <template if:true={item.is_Lookup__c}>
+                                                            
+                                                            <lightning-layout-item size="4" key={item.Id} padding="around-small">
+                                                                <lightning-input class="hideInput" variant="bare"
+                                                                    type={item.Field_Type__c} label={item.Field_Label__c}
+                                                                    data-id={item.Id} data-name={item.Storage_Field__c}
+                                                                    data-type={item.Field_Type__c} name={item.Field_Type__c}
+                                                                    data-required={item.Is_Mandatory__c}
+                                                                    required={item.Is_Mandatory__c} 
+                                                                    max-length={item.Maximum_Length__c} value={item.savedName}
+                                                                    onblur={handleOnblur}
+                                                                    disabled={disableDocField}
+                                                                    onchange={handleInputChange} >
+                                                                </lightning-input>
+                                                            </lightning-layout-item>
+                                                        </template>
+                                                    </template>
+                                                    <template if:true={item.picklistOptions}>
+                                                        <template if:true={item.Section_Seperator__c}>
+                                                            <br key={item.Id} />
+                                                            <lightning-layout-item size="12" key={item.Id}>
+                                                                <div class="section-seperator" key={item.Id}
+                                                                    style="padding-top: 1%;font-weight: 700;width: 100%;text-align: center;padding-bottom: 1%;">
+                                                                    {item.Section_Name__c}
+                                                                </div>
+                                                            </lightning-layout-item>
+                                                        </template>
+                                                        <lightning-layout-item size="4" key={item.Id} padding="around-small">
+                                                            <lightning-combobox class="removeborder" style="width:100%;"
+                                                                label={item.Field_Label__c} placeholder="Select Picklist"
+                                                                options={item.picklistOptions} data-id={item.Id}
+                                                                data-name={item.Storage_Field__c} onchange={handleInputChange}
+                                                                value={item.value} 
+                                                                required={item.Is_Mandatory__c}
+                                                                onblur={handleOnblur}
+                                                                disabled={disableDocField}></lightning-combobox>
+                                                            </lightning-layout-item>
+                                                    </template>  
+                                            </template>
+                                        </template>
+                                    </lightning-layout>
+                            </div>
+                        </div>
+                </lightning-accordion-section>
+            </lightning-accordion>
+        </lightning-card>
+    </template>
+    <template lwc:if={isDisable}>
+        <template lwc:if={selectedRecord}>
+            <div class="slds-m-top_medium slds-text-align_right">
+                <button class="slds-button slds-button_brand save-button" style="width: 140px;background-color: #9bbf56;font-weight: 500;" onclick={handleSave}>Save</button>
+            </div>
+        </template>
+    </template>
+</template>

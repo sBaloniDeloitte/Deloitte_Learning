@@ -1,0 +1,51 @@
+<template>
+    <div class="main-container">
+
+        <div class="tab-container">
+            <div
+                class={createTabClass}
+                data-section="create"
+                onclick={handleSectionClick}>
+                Create
+            </div>
+
+            <div
+                class={decisionTabClass}
+                data-section="decision"
+                onclick={handleSectionClick}>
+                Decision
+            </div>
+
+            <div
+                class={historyTabClass}
+                data-section="history"
+                onclick={handleSectionClick}>
+                History
+            </div>
+        </div>
+
+        <template if:true={isCreate}>
+            <div class="section-box">
+                <c-waiver-create record-id={recordId}></c-waiver-create>
+            </div>
+        </template>
+
+        <template if:true={isDecision}>
+            <div class="section-box">
+                <c-waiver-decision
+                    waivers={waiverRecords}
+                    record-id={recordId}>
+                </c-waiver-decision>
+            </div>
+        </template>
+
+        <template if:true={isHistory}>
+            <div class="section-box">
+                <c-waiver-history
+                    waivers={waiverRecords}>
+                </c-waiver-history>
+            </div>
+        </template>
+
+    </div>
+</template>

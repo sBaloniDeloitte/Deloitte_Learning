@@ -1,0 +1,113 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import "c/cssLibrary";
+
+/* ----------------- Dark Theme (matches incomeAssessmentMainCmp / sanctionConditionConvenantsCmp) ----------------- */
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-positive: #1467eb;
+    --dt-negative: #db2929;
+}
+
+.iec-scroll-wrapper {
+    background-color: var(--dt-bg) !important;
+    padding: 0.5rem 0;
+}
+
+/* ----------------- Table ----------------- */
+table, th, td {
+    border: 1px solid var(--dt-border) !important;
+}
+
+.iec-table {
+    border-radius: 0.75rem;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border: 1px solid var(--dt-border) !important;
+    background-color: var(--dt-panel-bg) !important;
+}
+
+.iec-table tbody tr:first-child td:first-child {
+    border-top-left-radius: 0.75rem;
+}
+
+.iec-table tbody tr:first-child td:last-child {
+    border-top-right-radius: 0.75rem;
+}
+
+.iec-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 0.75rem;
+}
+
+.iec-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 0.75rem;
+}
+
+.color-theme {
+    text-align: center;
+    font-weight: 500;
+    background-color: var(--dt-header-bg) !important;
+    color: #ffffff !important;
+    border-color: var(--dt-border) !important;
+}
+
+.iec-table td {
+    background-color: var(--dt-panel-bg) !important;
+    color: #ffffff !important;
+    border-color: var(--dt-border) !important;
+}
+
+.no-hover:hover {
+  background-color: var(--dt-header-bg) !important;
+  cursor: default;
+}
+
+.no-hover-child:hover {
+  background-color: var(--dt-panel-bg) !important;
+  cursor: default;
+}
+
+.slds-table thead th {
+    white-space: normal;
+}
+.col-width-10 {
+    width: 10px;
+}
+.col-width-100 {
+    min-width: 100px;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+:host .slds-modal__content{
+    overflow: initial;
+}
+
+/* ----------------- CTA Buttons (theme parity with incomeAssessmentMainCmp) ----------------- */
+.save-button,
+.save-button.slds-button_brand {
+    background-color: var(--dt-positive) !important;
+    border: 1px solid var(--dt-positive) !important;
+    color: #ffffff !important;
+    border-radius: 1.25rem !important;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
+.cancel-button,
+.cancel-button.slds-button_brand {
+    background-color: var(--dt-negative) !important;
+    border: 1px solid var(--dt-negative) !important;
+    color: #ffffff !important;
+    border-radius: 1.25rem !important;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

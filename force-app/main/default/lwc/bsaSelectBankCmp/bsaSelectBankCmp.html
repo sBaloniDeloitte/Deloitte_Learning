@@ -1,0 +1,300 @@
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </template>
+    <template if:false={fromSales}>
+        <div class="filter-drop" style="">
+            <button class="slds-button slds-button_brand save-button" onclick={handleAddMoreClick}>Add More Statments</button>
+        </div>
+    </template>
+    
+    <template if:true={showStatements}>
+        <div class="slds-scrollable_x" style="overflow: visible;">
+            <table
+                class=" sortable slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right"
+                style="border-color: #ffffff;">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th style="text-align: center; background-color: var(--dt-header-bg); color: #ffffff; border-color: #ffffff;min-width: 150px;"
+                            scope="col" colspan="1">
+                            A/C Holder Name
+                        </th>
+                        <th style="text-align: center; background-color: var(--dt-header-bg); color: #ffffff; border-color: #ffffff;min-width: 150px;"
+                            scope="col" colspan="1">
+                            Bank Name
+                        </th>
+                        <th style="text-align: center; background-color: var(--dt-header-bg); color: #ffffff; border-color: #ffffff;min-width: 150px;"
+                            scope="col" colspan="1">
+                            A/C Number
+                        </th>
+                        <th style="text-align: center; background-color: var(--dt-header-bg); color: #ffffff; border-color: #ffffff;min-width: 100px;"
+                            scope="col" colspan="1">
+                            A/C Type
+                        </th>
+                        <template if:true={hasLoanStagePsvOrDisbursement}>
+                            <th style="text-align: center; background-color: var(--dt-header-bg); color: #ffffff; border-color: #ffffff;min-width: 100px;"
+                                scope="col" colspan="1">
+                                IFSC Code
+                            </th>
+                        </template>
+                        <template if:true={hasLoanStagePsvOrDisbursement}>
+                            <th style="text-align: center; background-color: var(--dt-header-bg); color: #ffffff; border-color: #ffffff;min-width: 100px;"
+                                scope="col" colspan="1">
+                               MICR
+                            </th>
+                        </template>
+                        <th style="text-align: center; background-color: var(--dt-header-bg); color: #ffffff; border-color: #ffffff;min-width: 100px;"
+                            scope="col" colspan="1">
+                            OD CC Limit
+                        </th>
+                        <th style="text-align: center; background-color: var(--dt-header-bg); color: #ffffff; border-color: #ffffff;min-width: 80px;"
+                            scope="col" colspan="1">
+                            ABB
+                        </th>
+                        <!--<th style="text-align: center; background-color: var(--dt-header-bg); color: white; border-color: #ffffff;min-width: 200px;"
+                            scope="col" colspan="1">
+                            Financier
+                        </th>-->
+                        <th style="text-align: center; background-color: var(--dt-header-bg); color: #ffffff; border-color: #ffffff;min-width: 150px;"
+                            scope="col" colspan="1">
+                            Outcome System/Manual
+                        </th>
+                        <th style="text-align: center; background-color: var(--dt-header-bg); color: #ffffff; border-color: #ffffff;min-width: 150px;"
+                            scope="col" colspan="1">
+                            Consider for Eligibility
+                        </th>
+                        <th style="text-align: center; background-color: var(--dt-header-bg); color: #ffffff; border-color: #ffffff;min-width: 150px;"
+                            scope="col" colspan="1">
+                            Disbursal Account
+                        </th>
+                        <th style="text-align: center; background-color: var(--dt-header-bg); color: #ffffff; border-color: #ffffff;min-width: 150px;"
+                            scope="col" colspan="1">
+                            Repayment Account
+                        </th>
+                        <!--<th style="text-align: center; background-color: var(--dt-header-bg); color: white; border-color: #ffffff"
+                            scope="col" colspan="1">
+                            Tenure
+                        </th>
+                        <th style="text-align: center; background-color: var(--dt-header-bg); color: white; border-color: #ffffff"
+                            scope="col" colspan="1">
+                            Participant Status
+                        </th>-->
+                        <th style="text-align: center; background-color: var(--dt-header-bg); color: #ffffff; border-color: #ffffff;min-width: 150px;"
+                            scope="col" colspan="1">
+                            Banking Index (analytics o/p at acc level)
+                        </th>
+    
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={banksData} for:item="record">
+                        <tr key={record.id}>
+                            <!--<td style="border-color: #ffffff">{record.Application_Applicant__r.Name}</td>-->
+                             <td style="border-color: #ffffff">
+                                <template if:true={perfiosTableEditable}>
+                                    <lightning-input type="text" name={record.id} value={record.Account_Holder_Name__c} 
+                                    data-id={record.Id} variant="label-hidden" onchange={changeAccHolder} onblur={validateInput}></lightning-input>
+                                </template>                                  
+                                <template if:false={perfiosTableEditable}>
+                                        {record.Account_Holder_Name__c}
+                                </template>                                     
+                            </td>
+                           <!-- <td style="border-color: #ffffff">{record.Name}</td>-->
+                            <td style="border-color: #ffffff">
+                               <!-- <template if:true={perfiosTableEditable}>
+                                    <lightning-input type="text" name={record.id} value={record.Name} 
+                                    data-id={record.Id} variant="label-hidden" onblur={changeBankName}></lightning-input>
+                                </template>
+                                <template if:false={perfiosTableEditable}>-->
+                                    {record.Name}
+                                <!--</template>-->
+                            </td>
+                            <!--<td style="border-color: #ffffff">{record.Account_Number__c}</td>-->
+                            <td style="border-color: #ffffff">
+                             <template if:true={perfiosTableEditable}>
+                                <lightning-input
+                                    type="text"
+                                    value={record.Account_Number__c}
+                                    name={record.Id}
+                                    data-id={record.Id}
+                                    variant="label-hidden"
+                                    inputmode="numeric"
+                                    onchange={handleAccountNumberChange}
+                                    onblur={handleAccountNumberBlur} >
+                                </lightning-input>
+                            </template>
+                                <template if:false={perfiosTableEditable}>
+                                    <template if:true={hasLoanStagePsvOrDisbursement}>
+                                        <lightning-input
+                                        type="text"
+                                        value={record.Account_Number__c}
+                                        name={record.Id}
+                                        data-id={record.Id}
+                                        variant="label-hidden"
+                                        inputmode="numeric"
+                                        onchange={handleAccountNumberChange}
+                                        onblur={handleAccountNumberBlur} disabled>
+                                    </lightning-input>
+                                    </template>
+                                    <template if:false={hasLoanStagePsvOrDisbursement}>
+                                        {record.Account_Number__c}
+                                    </template>
+                                </template>
+                            </td>
+                           <!-- <td style="border-color: #ffffff">{record.Account_Type__c}</td>-->
+                           <td style="border-color: #ffffff">
+                                <template if:true={perfiosTableEditable}>
+                                    <div style="padding: 5px;">
+                                       <lightning-combobox name={record.id}  value={record.Account_Type__c} variant="label-hidden"
+                                    data-id={record.Id} options={accOptions} onchange={handleChange} dropdown-alignment="auto">
+                                    </lightning-combobox>
+                                    </div>
+                                </template>
+                                <template if:false={perfiosTableEditable}>
+                                    {record.Account_Type__c}
+                                </template>
+                            </td>
+                            <template if:true={hasLoanStagePsvOrDisbursement}>
+                                <td style="border-color: #ffffff; min-width:200px" class="custom-td">
+                                     <div style="padding: 5px;">
+                                        
+                                            <c-custom-ifsc-search-lookup onlookupselected={handleSelectDocument} selected-record-id={record.Id} ></c-custom-ifsc-search-lookup>
+                                       
+                                    </div>
+                                </td>
+                            </template>
+                            <template if:true={hasLoanStagePsvOrDisbursement}>
+                                <template if:true={record.Bank_Master__c}>
+                                    <td style="border-color: #ffffff">{record.Bank_Master__r.MICR__c}</td>
+                                </template>
+                                <template if:false={record.Bank_Master__c}>
+                                    <td style="border-color: #ffffff">-</td>
+                                </template>
+                            </template>
+                            
+                            <td style="border-color: #ffffff">{record.OD_CC_Limit__c}</td>
+                            <td style="border-color: #ffffff">{record.ABB__c}</td>
+                            <td style="border-color: #ffffff">{record.Source__c}</td>
+                            <td style="border-color: #ffffff">
+                                <template if:false={fromSales}>
+                                    <template if:true={record.Is_Consider_for_Eligibility__c}>
+                                        <lightning-input class="comboBoxSelect" type="checkbox" label="" name="Is_Consider_for_Eligibility__c" data-id={record.Id}
+                                        onchange={handleChildExistingChange} checked={record.Is_Consider_for_Eligibility__c}></lightning-input>
+                                    </template>
+                                    <template if:false={record.Is_Consider_for_Eligibility__c}>
+                                        <lightning-input class="comboBoxSelect" type="checkbox" label="" name="Is_Consider_for_Eligibility__c" data-id={record.Id}
+                                        onchange={handleChildExistingChange} checked={record.Is_Consider_for_Eligibility__c} disabled={record.disableEligibilityCheckbox}></lightning-input>
+                                    </template>
+                                </template>
+                                <template if:true={fromSales}>
+                                    <lightning-input class="comboBoxSelect" type="checkbox" label="" name="Is_Consider_for_Eligibility__c" data-id={record.Id}
+                                    onchange={handleChildExistingChange} checked={record.Is_Consider_for_Eligibility__c} disabled></lightning-input>
+                                </template>
+                            
+                            </td>
+                            <td style="border-color: #ffffff">
+                                <template if:false={fromSales}>
+                                    <template if:true={record.Is_Disbursal_Account__c}>
+                                        <lightning-input class = "comboBoxSelect" type="checkbox" label="" name="Is_Disbursal_Account__c"  data-id={record.Id} id={record.Id}
+                                        onchange={handleChildExistingChange} checked={record.Is_Disbursal_Account__c}></lightning-input>
+                                    </template>
+                                    <template if:false={record.Is_Disbursal_Account__c}>
+                                        <lightning-input class = "comboBoxSelect" type="checkbox" label="" name="Is_Disbursal_Account__c"  data-id={record.Id} id={record.Id}
+                                    onchange={handleChildExistingChange} checked={record.isObligation}></lightning-input>
+                                    </template>
+                                </template>
+                                <template if:true={fromSales}>
+                                    <template if:true={record.Is_Disbursal_Account__c}>
+                                        <lightning-input class = "comboBoxSelect" type="checkbox" label="" name="Is_Disbursal_Account__c"  data-id={record.Id} id={record.Id}
+                                        onchange={handleChildExistingChange} checked={record.Is_Disbursal_Account__c} disabled></lightning-input>
+                                    </template>
+                                    <template if:false={record.Is_Disbursal_Account__c}>
+                                        <lightning-input class = "comboBoxSelect" type="checkbox" label="" name="Is_Disbursal_Account__c"  data-id={record.Id} id={record.Id}
+                                    onchange={handleChildExistingChange} checked={record.isObligation} disabled></lightning-input>
+                                    </template>
+                                </template>
+                            </td>
+                            <td style="border-color: #ffffff">
+                                <template if:false={fromSales}>
+                                    <template if:true={record.Is_Repayment_Account__c}>
+                                        <lightning-input class = "comboBoxSelect" type="checkbox" label="" name="Is_Repayment_Account__c"  data-id={record.Id} id={record.Id}
+                                        onchange={handleChildExistingChange} checked={record.Is_Repayment_Account__c}></lightning-input>
+                                    </template>
+                                    <template if:false={record.Is_Repayment_Account__c}>
+                                        <lightning-input class = "comboBoxSelect" type="checkbox" label="" name="Is_Repayment_Account__c"  data-id={record.Id} id={record.Id}
+                                    onchange={handleChildExistingChange} checked={record.Is_Repayment_Account__c}></lightning-input>
+                                    </template>
+                                </template>
+                                <template if:true={fromSales}>
+                                    <lightning-input class = "comboBoxSelect" type="checkbox" label="" name="Is_Repayment_Account__c"  data-id={record.Id} id={record.Id}
+                                        onchange={handleChildExistingChange} checked={record.Is_Repayment_Account__c} disabled></lightning-input>
+                                </template>
+                            </td>
+                            <td style="border-color: #ffffff">---</td>
+        
+                        </tr>
+                    </template>
+                    
+                   
+    
+                </tbody>
+            </table>
+    
+        </div>
+    </template>
+    
+    <template if:true={showAnalysisButton}>
+        <div class="filter-drop" style="">
+            <template if:false={fromSales}>
+                <button class="save-button slds-button slds-button_brand" onclick={handleAnalysisClick}>Check Analysisâ€‹</button>
+            </template>
+        </div>
+    </template>
+    <template if:true={showAddMoreAcc}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true" aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="min-width: 70%;">
+             <!-- modal header start -->
+               <header class="slds-modal__header" style="background-color: var(--dt-header-bg); font-weight:500;">
+                  <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={hideModalBox}>
+                     <lightning-icon icon-name="utility:close"
+                        alternative-text="close"
+                        variant="inverse"
+                        size="small" ></lightning-icon>
+                     <span class="slds-assistive-text">Close</span>
+                  </button>
+                  <h2 id="modal-heading-01" class="slds-text-heading_medium slds-hyphenate">Add More Bank Statments</h2>
+               </header>
+           
+               <!-- modal body start -->
+               <div class="slds-modal__content slds-p-around_medium1" id="modal-content-id-1">
+                     <!-- <c-loan-login-account-aggregator record-id={recordId} show-acc-agg=true></c-loan-login-account-aggregator> -->
+                    <c-sales-login-b-s-a-screen-cmp record-id={recordId}></c-sales-login-b-s-a-screen-cmp>
+                    <!-- <div class="slds-modal__footer" style="background-color: var(--dt-header-bg);border-radius: 0px 0px 5px 5px;text-align: center;min-height: 30px;">
+                        <button class="slds-button slds-button_brand previous-button" style="width: 140px;background-color: var(--dt-negative);font-weight: 500;" onclick={hideModalBox}>Cancel</button>
+                    </div> -->
+                    <!-- <footer class="slds-modal__footer" style="background-color: var(--dt-header-bg);border-radius: 0px 0px 5px 5px;text-align: center;min-height: 30px;">
+                        <button class="slds-button slds-button_brand previous-button" style="width: 140px;background-color: var(--dt-negative);font-weight: 500;" onclick={hideModalBox}>Cancel</button>
+                    </footer> -->
+               </div>
+     
+               <!-- modal footer start-->
+               <div class="slds-modal__footer" style="background-color: var(--dt-header-bg);border-radius: 0px 0px 5px 5px;text-align: center;min-height: 30px;">
+               <!-- <footer class="slds-modal__footer" style="background-color: var(--dt-header-bg);border-radius: 0px 0px 5px 5px;text-align: center;min-height: 30px;"> -->
+                  <button class="slds-button slds-button_brand previous-button" style="width: 140px;background-color: var(--dt-negative);font-weight: 500;" onclick={hideModalBox}>Cancel</button>
+               <!-- </footer> -->
+               </div>
+            
+            </div>
+         </section>
+         <div class="slds-backdrop slds-backdrop_open"></div>
+
+    </template>
+    <template if:false={hasLoanStagePsvOrDisbursement}>
+        <lightning-accordion class="example-accordion" active-section-name="B">
+            <lightning-accordion-section name="A" label="Manual Banking">
+                    <c-add-manual-bank-d-a-cmp record-id={recordId} onaddedbank={addedBank} from-sales={fromSales}></c-add-manual-bank-d-a-cmp>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </template>
+</template>

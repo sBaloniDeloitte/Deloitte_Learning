@@ -1,0 +1,27 @@
+<template>
+    <lightning-card title="Locality Details">
+        <div class="slds-p-around_medium">
+            <div class="slds-grid slds-gutters">
+                <div class="slds-col">
+                    <lightning-input label="Zone No" value={zoneNo} data-field="ZONE_NO__c" onblur={handleChange}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col">
+                    <lightning-input label="Sub Registrar Office" value={subRegistrarOffice}
+                        data-field="SUB_REGISTRAR_OFFICE__c" onblur={handleChange}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col">
+                    <lightning-input type="number" label="DLC Rate" value={dlcRate} data-field="DLC_RATE__c"
+                        onblur={handleChange}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col">
+                    <lightning-input label="Location Name" value={locationName} data-field="Location_Name__c"
+                        onblur={handleChange}>
+                    </lightning-input>
+                </div>
+            </div>
+        </div>
+    </lightning-card>
+</template>

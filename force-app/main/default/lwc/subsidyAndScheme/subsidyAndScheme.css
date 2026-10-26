@@ -1,0 +1,98 @@
+/***_______________This Code was generated using GenAI tool: Codify, Please check for accuracy_______________***/
+
+.subsidy-card {
+    background-color: transparent;
+    overflow: hidden;
+    font-family: 'Salesforce Sans', Arial, sans-serif;
+}
+
+/* ── Header ── */
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #002266;
+    background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+}
+
+.green-bullet {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: #4dc8b4;
+    box-shadow: 0 0 0 2px rgba(77, 200, 180, 0.35);
+    flex-shrink: 0;
+    display: inline-block;
+    font-size: 0;
+}
+
+.header-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.01em;
+}
+
+/* ── Scheme Rows ── */
+.rows-container {
+    padding: 0;
+}
+
+.scheme-row {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--divider);
+}
+
+.scheme-row--last {
+    border-bottom: none;
+}
+
+.scheme-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.scheme-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin-bottom: 3px;
+}
+
+.scheme-subtitle {
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* ── Badge Column ── */
+.badge-col {
+    padding-left: 12px;
+}
+
+/* ── Badges ── */
+.badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.badge-grey {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: var(--text-muted);
+    border: 1px solid var(--divider);
+}
+
+.badge-orange {
+    background-color: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+    border: 1px solid rgba(245, 158, 11, 0.35);
+}
+
+/***__________________________GenAI: Generated code ends here______________________________***/

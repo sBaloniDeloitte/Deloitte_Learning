@@ -1,0 +1,169 @@
+<template>
+
+    <div class="slds-form-element">
+        <span class="styleContainer"></span>
+        <template lwc:if={showLabel}>
+            <label class="slds-form-element__label">
+                <template lwc:if={required}>
+                    <abbr class="slds-required" title="required">*</abbr>
+                </template>
+                {label}
+            </label>
+        </template>
+
+        <div class="slds-form-element__control">
+            <span class="styleContainer"></span>
+            <template lwc:if={valueSelected}>
+                <template if:true={borderLess}>
+                    <template if:false={branchLookup}>
+                        <div class=" slds-combobox_container slds-has-selection" style="padding: 11px;">
+                            <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click">
+                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none" style="width: 100%; border:none;border-radius:0px;padding: 14px;background-color : #16283f">
+                                    <div role="combobox" tabindex="0" class=removeborder>
+                                        <span class="slds-truncate" style="color: white; cursor: default;">{selectedName}</span>
+                                    </div>
+                                    <button class="slds-button slds-button_icon slds-input__icon slds-input__icon_right" title="Clear the text input" onclick={handleReset}>
+                                        <svg focusable="false" aria-hidden="true" viewBox="0 0 520 520" part="icon" data-key="clear" class="slds-button__icon">
+                                            <g>
+                                                <path d="M260 20a240 240 0 100 480 240 240 0 100-480zm49 248l78 78c4 4 4 10 0 14l-28 28a10 10 0 01-14 0l-78-78a10 10 0 00-14 0l-78 78a10 10 0 01-14 0l-28-28a10 10 0 010-14l78-78c4-4 4-10 0-14l-79-79a10 10 0 010-14l28-28a10 10 0 0114 0l79 79c4 4 10 4 14 0l78-78a10 10 0 0114 0l28 28c4 4 4 10 0 14l-78 78c-3 4-3 10 0 14z"></path>
+                                            </g>
+                                        </svg>
+                                        <span class="slds-assistive-text">Clear the text input</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                    <template if:true={branchLookup}>
+                        <div class=" slds-combobox_container slds-has-selection">
+                            <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click">
+                                <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none" style="width: 100%; border:none; border-radius:0px;padding: 14px; background-color : #16283f">
+                                    <div role="combobox" tabindex="0" class=removeborder>
+                                        <span class="slds-truncate" style="color: white; cursor: default;">{selectedName}</span>
+                                    </div>
+                                    <button class="slds-button slds-button_icon slds-input__icon slds-input__icon_right" title="Clear the text input" onclick={handleReset}>
+                                        <svg focusable="false" aria-hidden="true" viewBox="0 0 520 520" part="icon" data-key="clear" class="slds-button__icon">
+                                            <g>
+                                                <path d="M260 20a240 240 0 100 480 240 240 0 100-480zm49 248l78 78c4 4 4 10 0 14l-28 28a10 10 0 01-14 0l-78-78a10 10 0 00-14 0l-78 78a10 10 0 01-14 0l-28-28a10 10 0 010-14l78-78c4-4 4-10 0-14l-79-79a10 10 0 010-14l28-28a10 10 0 0114 0l79 79c4 4 10 4 14 0l78-78a10 10 0 0114 0l28 28c4 4 4 10 0 14l-78 78c-3 4-3 10 0 14z"></path>
+                                            </g>
+                                        </svg>
+                                        <span class="slds-assistive-text">Clear the text input</span>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+                <template if:false={borderLess}>
+                    <div class=" slds-combobox_container slds-has-selection" style="padding: 11px;">
+                        <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click">
+                            <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none" style="width: 100%;">
+                                <div role="combobox" tabindex="0" >
+                                    <span class="slds-truncate" style="color: white; cursor: default;">{selectedName}</span>
+                                </div>
+                                <button class="slds-button slds-button_icon slds-input__icon slds-input__icon_right" title="Clear the text input" onclick={handleReset}>
+                                    <svg focusable="false" aria-hidden="true" viewBox="0 0 520 520" part="icon" data-key="clear" class="slds-button__icon">
+                                        <g>
+                                            <path d="M260 20a240 240 0 100 480 240 240 0 100-480zm49 248l78 78c4 4 4 10 0 14l-28 28a10 10 0 01-14 0l-78-78a10 10 0 00-14 0l-78 78a10 10 0 01-14 0l-28-28a10 10 0 010-14l78-78c4-4 4-10 0-14l-79-79a10 10 0 010-14l28-28a10 10 0 0114 0l79 79c4 4 10 4 14 0l78-78a10 10 0 0114 0l28 28c4 4 4 10 0 14l-78 78c-3 4-3 10 0 14z"></path>
+                                        </g>
+                                    </svg>
+                                    <span class="slds-assistive-text">Clear the text input</span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </template>
+                
+            </template>
+
+            <template lwc:else>
+                <div class="slds-combobox_container">
+                    <div class="slds-combobox slds-dropdown-trigger slds-dropdown-trigger_click slds-is-open">
+                        <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_right" role="none">
+                            
+                            <input type="text" id="combobox-id-1" class="slds-input slds-combobox__input" aria-autocomplete="list" role="combobox" style="border:1px solid white; border-radius: 0 !important;padding: 5px;"
+                                placeholder={placeholder}
+                                value={searchText}
+                                disabled={disabled}
+                                onfocus={handleFocus}
+                                oninput={handleChange}
+                                onblur={handleBlur}
+                            />
+
+                            <span class="slds-icon_container slds-icon-utility-search slds-input__icon slds-input__icon_right">
+                                
+                                <template lwc:if={showProgress}>
+                                    <div role="status" class="slds-spinner slds-spinner_brand slds-spinner_x-small slds-input__spinner">
+                                        <span class="slds-assistive-text">Loading</span>
+                                        <div class="slds-spinner__dot-a"></div>
+                                        <div class="slds-spinner__dot-b"></div>
+                                    </div>
+                                </template>
+                                <template lwc:else>
+                                    <svg focusable="false" aria-hidden="true" viewBox="0 0 520 520" part="icon" data-key="search" class="slds-icon slds-icon slds-icon_x-small slds-icon-text-default">
+                                        <g>
+                                            <path d="M496 453L362 320a189 189 0 10-340-92 190 190 0 00298 135l133 133a14 14 0 0021 0l21-21a17 17 0 001-22zM210 338a129 129 0 11130-130 129 129 0 01-130 130z"></path>
+                                        </g>
+                                    </svg>
+                                </template>
+                                
+                            </span>
+                        </div>
+
+                        <div if:true={showResult} class="slds-dropdown slds-dropdown_length-10 slds-dropdown_fluid" role="listbox" tabindex="0" aria-busy="false">
+                            <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                                
+                                <template for:each={searchResults} for:item="record">
+                                    <li role="presentation" class="slds-listbox__item" key={record.id} data-recordid={record.id} data-recordname={record.primaryValue} onmousedown={handleSelect}>
+                                        <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                                            <table>
+                                                <tbody>
+                                                    <tr>
+                                                        <td style="padding: 0; width: 20px;" class={record.cssClass}>
+                                                            <span class="slds-media__figure slds-listbox__option-icon">
+                                                                <lightning-icon icon-name={record.iconName} size="small"></lightning-icon>
+                                                            </span>
+                                                        </td>
+                                                        <td style="padding: 0; height: 34px; padding-left: 2px;" class={record.cssClass}>
+                                                            <span class="slds-media__body">
+                                                                <span class="slds-truncate" style="font-size: 14px; font-weight: 500;">{record.primaryValue}</span>
+                                                                
+                                                                <div if:true={record.secondaryValue}>
+                                                                    <span class="slds-truncate" style="margin-top: -8px; font-size: 12px;">{record.secondaryValue}</span>
+                                                                </div>
+                                                            </span>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </li>
+                                </template>
+                                
+                                <template if:true={showAddNew}>
+                                    <li role="presentation" class="slds-listbox__item" onmousedown={handleNewRecord}>
+                                        <div class="slds-media slds-listbox__option slds-listbox__option_plain slds-media_small" role="option">
+                                            <div style="padding: 5px 0px;">
+                                                <span class="slds-media__figure slds-listbox__option-icon">
+                                                    <div class="css-green">
+                                                        <lightning-icon icon-name="utility:add" size="small"></lightning-icon>
+                                                    </div>
+                                                </span>
+                                                <span class="slds-media__body">
+                                                    <span class="slds-truncate" style="font-size: 14px; font-weight: 500; padding-left: 2px;">{addNewTitle}</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </template>
+
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+        </div>
+    </div>
+
+</template>

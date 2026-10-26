@@ -1,0 +1,53 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 03-19-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={ShowLoader}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </template>
+    <div style="display: flex;">
+        <template if:false={isSeller}>
+        <div if:false={fromSales} style="width: 20%;margin-bottom: 10px;">
+            <lightning-combobox name="progress" label="Status" value={value} placeholder="Select Applicant"
+                options={options} onchange={handleChange} variant="label-hidden"></lightning-combobox>
+        </div>
+        <div if:false={fromSales} class="slds-p-bottom_small slds-size_1-of-1 slds-medium-size_1-of-4 slds-m-left_small">
+            <lightning-combobox name="progress" label="Status" value={versionValue} placeholder="Select Version"
+                options={versionOptions} onchange={handleVersionChange} variant="label-hidden"></lightning-combobox>
+        </div>
+        </template>
+        <template if:false={hideButton}>
+            <div if:false={fromSales} class="slds-p-bottom_small slds-size_1-of-1 slds-medium-size_1-of-4 slds-m-left_small">
+                <template if:true={showCibilButton}>
+                    <template if:false={isDisabled}>
+                        <template if:false={isHLUser}>
+                    <button class="save-button previous-style-btn slds-button slds-button_brand" onclick={handleConfirmClick}>Fetch Bureau</button>
+                    </template>
+                    <template if:true={isHLUser}>
+                    <button class="save-button previous-style-btn slds-button slds-button_brand" onclick={callCibilAPIFirst}>Fetch Bureau</button>
+                    </template>
+                    </template>
+                </template>
+            </div>
+        </template>
+        <template if:false={isSeller}>
+        <div if:false={fromSales} class="slds-p-bottom_small slds-size_1-of-1 slds-medium-size_1-of-4 slds-m-left_small">
+                    <button class="save-button start-app-style-btn slds-button slds-button_brand" onclick={downloadPdf}>Download</button>
+        </div>
+        </template>
+         <template if:true={isSeller}>
+         <div style="width:50%; display:flex; justify-content:center; align-items:center;">
+                    <button class="save-button start-app-style-btn slds-button slds-button_brand slds-m-vertical_large" onclick={downloadPdf}>Download</button>
+        </div>
+        </template>
+    </div>
+    <div style="height: 600px;">
+       <iframe src={url} height="600px" width="100%" title="CRIF HTML Report"></iframe>
+    </div>
+
+</template>

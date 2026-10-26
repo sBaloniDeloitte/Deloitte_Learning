@@ -1,0 +1,318 @@
+<template>
+<!-- <lightning-card icon-name="standard:table"> -->
+<span class="styleContainer"></span>
+
+<template if:true={spinner}>
+    <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+</template>
+
+<template if:true={showSections}>
+    <div class="bsa-page">
+        <div style="margin-left: 15px;">
+            <template if:true={showOpenAll}>
+                <button class="save-button slds-button slds-button_brand" onclick={handlePassAllSections}>Open All</button>
+            </template>
+            <template if:false={showOpenAll}>
+                <button class="save-button slds-button slds-button_brand" onclick={handleCloseAllSections}>Close All</button>
+            </template>
+        </div>
+    </div>
+</template>
+
+<lightning-accordion class="example-accordion" allow-multiple-sections-open
+    active-section-name={mainAccordianActiveSection}>  
+    <lightning-accordion-section name="Product Details" label = "Product Details">
+        <c-sales-login-product-details-cmp record-id={recordId} is-one-view={isOneView} onproductupdated={handleProductUpdated}>
+        </c-sales-login-product-details-cmp>
+    </lightning-accordion-section>    
+
+    <lightning-accordion-section name="LoandDetails" label="Customer Negotiation Details">
+            <div class="slds-m-around_medium">
+
+                <div if:false={isLoaded} class="slds-is-relative">
+                <lightning-spinner
+                    alternative-text="Loading..." variant="brand">
+                </lightning-spinner>
+            </div>
+                <div class="table-container">
+
+                    <table cellpadding="0" cellspacing="0"
+                        style="border-collapse: collapse; width: 70%; border: 1px solid var(--dt-border);"
+                        class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right custom-table">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th
+                                    style="width: 6%; text-align: center; background-color: var(--dt-header-bg);color: #ffffff;border: 1px solid var(--dt-border);">
+                                    <div class="slds-truncate" title="Charge Name">Product</div>
+                                </th>
+                                <th
+                                    style="width: 6%; text-align: center; background-color: var(--dt-header-bg);color: #ffffff;border: 1px solid var(--dt-border);">
+                                    <div class="slds-truncate" title="Charge Name">Parameters</div>
+                                </th>
+                                <th
+                                    style="width: 3%; text-align: center; background-color: var(--dt-header-bg);color: #ffffff;border: 1px solid var(--dt-border);">
+                                    <div class="slds-truncate" title="Sactioned Value">Sanctioned Value</div>
+                                </th>
+                                <th
+                                    style="width: 3%; text-align: center; background-color: var(--dt-header-bg);color: #ffffff;border: 1px solid var(--dt-border);">
+                                    <div class="slds-truncate" title="Negotiated value">Negotiated value</div>
+                                </th>
+                                <th
+                                    style="width: 3%; text-align: center; background-color: var(--dt-header-bg);color: #ffffff;border: 1px solid var(--dt-border);">
+                                    <div class="slds-truncate" title="Negotiated value">Final value</div>
+                                </th>
+
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={loanParameters} for:item="row">
+                                <tr key={row.id}>
+                                    <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid var(--dt-border);">
+                                        {row.productName}
+                                    </td>
+                                    <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid var(--dt-border);">
+                                        {row.Parameter}</td>
+
+                                    <td
+                                        style="text-align: left; padding: 2px;padding-bottom:3px; width: 10%;border: 1px solid var(--dt-border);">
+                                        <lightning-input variant="label-hidden" type="number" step={row.step} 
+                                            value={row.sanctionedValue} data-id={row.id} data-field="sanctionedValue"
+                                            disabled>
+                                        </lightning-input>
+                                    </td>
+                                    <td
+                                        style="text-align: left; padding: 2px;padding-bottom:3px; width: 10%;border: 1px solid var(--dt-border);">
+                                        <lightning-input variant="label-hidden" type="number" step={row.step} 
+                                            value={row.negotiatedValue} onchange={handleloanDetailChange}
+                                            data-id={row.id} data-field="negotiatedValue" disabled={row.isdisabled}>
+                                        </lightning-input>
+                                    </td>
+                                    <td
+                                        style="text-align: left; padding: 2px; padding-bottom:3px; width: 10%; border: 1px solid var(--dt-border);">
+                                        <lightning-input variant="label-hidden" type="number" step={row.step}
+                                            value={row.finalValue} data-id={row.id} data-field="finalValue"
+                                            disabled>
+                                        </lightning-input>
+                                    </td>
+                                </tr>
+                            </template>
+                            <template for:each={loanParametersAHLChild} for:item="row">
+                                <tr key={row.id}>
+                                    <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid var(--dt-border);">
+                                        {row.productName}
+                                    </td>
+                                    <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid var(--dt-border);">
+                                        {row.Parameter}</td>
+
+                                    <td
+                                        style="text-align: left; padding: 2px;padding-bottom:3px; width: 10%;border: 1px solid var(--dt-border);">
+                                        <lightning-input variant="label-hidden" type="number" step={row.step} 
+                                            value={row.sanctionedValue} data-id={row.id} data-field="sanctionedValue"
+                                            disabled>
+                                        </lightning-input>
+                                    </td>
+                                    <td
+                                        style="text-align: left; padding: 2px;padding-bottom:3px; width: 10%;border: 1px solid var(--dt-border);">
+                                        <lightning-input variant="label-hidden" type="number" step={row.step} 
+                                            value={row.negotiatedValueAHLChild} onchange={handleloanDetailChangeAHLChild}
+                                            data-id={row.id} data-field="negotiatedValueAHLChild" disabled={row.isdisabled}>
+                                        </lightning-input>
+                                    </td>
+                                    <td
+                                        style="text-align: left; padding: 2px; padding-bottom:3px; width: 10%; border: 1px solid var(--dt-border);">
+                                        <lightning-input variant="label-hidden" type="number" step={row.step}
+                                            value={row.finalValue} data-id={row.id} data-field="finalValue"
+                                            disabled>
+                                        </lightning-input>
+                                    </td>
+                                </tr>
+                            </template>
+                            <template for:each={loanParametersANHL} for:item="row">
+                                <tr key={row.id}>
+                                    <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid var(--dt-border);">
+                                        {row.productName}
+                                    </td>
+                                    <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid var(--dt-border);">
+                                        {row.Parameter}</td>
+
+                                    <td
+                                        style="text-align: left; padding: 2px;padding-bottom:3px; width: 10%;border: 1px solid var(--dt-border);">
+                                        <lightning-input variant="label-hidden" type="number" step={row.step} 
+                                            value={row.sanctionedValue} data-id={row.id} data-field="sanctionedValue"
+                                            disabled>
+                                        </lightning-input>
+                                    </td>
+                                    <td
+                                        style="text-align: left; padding: 2px;padding-bottom:3px; width: 10%;border: 1px solid var(--dt-border);">
+                                        <lightning-input variant="label-hidden" type="number" step={row.step} 
+                                            value={row.negotiatedValueANHL} onchange={handleloanDetailChangeANHL}
+                                            data-id={row.id} data-field="negotiatedValueANHL" disabled={row.isdisabled}>
+                                        </lightning-input>
+                                    </td>
+                                    <td
+                                        style="text-align: left; padding: 2px; padding-bottom:3px; width: 10%; border: 1px solid var(--dt-border);">
+                                        <lightning-input variant="label-hidden" type="number" step={row.step}
+                                            value={row.finalValue} data-id={row.id} data-field="finalValue"
+                                            disabled>
+                                        </lightning-input>
+                                    </td>
+                                </tr>
+                            </template>
+                            <template for:each={loanParametersFL} for:item="row">
+                                <tr key={row.id}>
+                                    <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid var(--dt-border);">
+                                        {row.productName}
+                                    </td>
+                                    <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid var(--dt-border);">
+                                        {row.Parameter}</td>
+
+                                    <td
+                                        style="text-align: left; padding: 2px;padding-bottom:3px; width: 10%;border: 1px solid var(--dt-border);">
+                                        <lightning-input variant="label-hidden" type="number" step={row.step} 
+                                            value={row.sanctionedValue} data-id={row.id} data-field="sanctionedValue"
+                                            disabled>
+                                        </lightning-input>
+                                    </td>
+                                    <td
+                                        style="text-align: left; padding: 2px;padding-bottom:3px; width: 10%;border: 1px solid var(--dt-border);">
+                                        <lightning-input variant="label-hidden" type="number" step={row.step} 
+                                            value={row.negotiatedValueFL} onchange={handleloanDetailChangeFL}
+                                            data-id={row.id} data-field="negotiatedValueFL" disabled={row.isdisabled}>
+                                        </lightning-input>
+                                    </td>
+                                    <td
+                                        style="text-align: left; padding: 2px; padding-bottom:3px; width: 10%; border: 1px solid var(--dt-border);">
+                                        <lightning-input variant="label-hidden" type="number" step={row.step}
+                                            value={row.finalValue} data-id={row.id} data-field="finalValue"
+                                            disabled>
+                                        </lightning-input>
+                                    </td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                    
+                    <template if:true={isEditableUser}>
+                        <div class="andcontainer align-end" style="margin-top: 1%;">
+                            <template if:false={isEdit}>
+                            <button type="button" disabled ={isEdit} class="slds-button previous-button" onclick={handleEdit}>Edit</button>
+                            </template>
+                            <template if:false={isSave}>
+                            <button type="button" disabled ={isSave} class="slds-button save-button" onclick={handleSave}>Save</button>
+                            </template>
+                            <template if:true={showResanctionNotes}>
+                                <div style="color: #16283f; font-weight: bold; margin-top: 10px;" class="slds-m-around_small">
+                                    * {resanctionNotes}
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </div>
+    </lightning-accordion-section>
+
+    <lightning-accordion-section name="SanctionLetter" label="Conditional Sanction Letter">
+        <div class="slds-m-around_medium sanction-container">
+            <lightning-tabset>
+                <template for:each={productList} for:item="prod">
+                    <lightning-tab label={prod.labelName} key={prod.Id} value={prod.Id}>
+                        <div class="slds-m-around_medium sanction-content">
+
+                            <!-- Status Display -->
+                            <div class="status-container">
+                                <strong>Status:</strong>
+                                <span class="status-value">{prod.communicationStatus}</span>
+                            </div>
+
+                            <template if:true={shoGenSanctionLetter}>
+                            <!-- Generate Button -->
+                            <div class="button-container">
+                                <button 
+                                    class="slds-button save-button"
+                                    data-id={prod.Id}
+                                    onclick={handleRegenerateSanctionLetter}>
+                                    Regenerate Sanction Letter
+                                </button>
+                            </div>
+                            </template>
+
+                        </div>
+                    </lightning-tab>
+                </template>
+            </lightning-tabset>
+        </div>
+    </lightning-accordion-section>
+
+    <!-- Grace Details Accordion -->
+    <template if:true={showGraceDetails}>
+        <lightning-accordion-section name="GraceDetails" label="Grace Details">
+            <lightning-tabset>
+                <template for:each={graceProducts} for:item="prod">
+                    <lightning-tab label={prod.labelName} key={prod.Id}>
+                        <div class="slds-m-around_medium">
+                            <div class="slds-grid slds-gutters slds-wrap slds-align_absolute-center">
+
+                                <!-- Allow Grace -->
+                                <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                                    <lightning-input
+                                        type="checkbox"
+                                        label="Allow Grace"
+                                        checked={prod.allowGrace}
+                                        disabled
+                                        data-id={prod.Id}>
+                                    </lightning-input>
+                                </div>
+
+                                <!-- Allow Payment in Grace Period (only for PEMI) -->
+                                <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                                    <lightning-input
+                                        type="checkbox"
+                                        label="Allow Payment in Grace Period"
+                                        checked={prod.allowGracePeriod}
+                                        disabled
+                                        data-id={prod.Id}>
+                                    </lightning-input>
+                                </div>
+
+                                <!-- Grace Period Frequency -->
+                                <div class="slds-col slds-size_1-of-4 slds-p-around_x-small">
+                                    <lightning-input
+                                        type="text"
+                                        label="Grace Period Frequency"
+                                        value={prod.hybridTenureName}
+                                        disabled
+                                        data-id={prod.Id}>
+                                    </lightning-input>
+                                </div>
+
+                                <div class="slds-col slds-size_1-of-4 slds-p-around_x-small"></div>
+
+                            </div>
+                        </div>
+                    </lightning-tab>
+                </template>
+            </lightning-tabset>
+        </lightning-accordion-section>
+    </template>
+    <!-- Step Details Accordion -->
+    <template if:true={showStepDetails}>
+        <lightning-accordion-section name="StepDetails" label="Step Details">
+            <lightning-tabset>
+                <template for:each={stepProducts} for:item="prod">
+                    <lightning-tab label={prod.labelName} key={prod.Id}>
+                        <div class="slds-m-around_medium">
+                            <!-- Call child component StepLoanDetails -->
+                            <c-step-loan-details
+                                record-id={recordId} transaction-record-id={prod.transactionId}
+                                product-id={prod.subProdId}>
+                            </c-step-loan-details>
+                        </div>
+                    </lightning-tab>
+                </template>
+            </lightning-tabset>
+        </lightning-accordion-section>
+    </template>
+
+</lightning-accordion>
+<!-- </lightning-card> -->
+</template>

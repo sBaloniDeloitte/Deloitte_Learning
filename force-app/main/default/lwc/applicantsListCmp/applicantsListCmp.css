@@ -1,0 +1,153 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+/* .navy-card {
+    background: #0f1c3f;
+    border: 1px solid #0f1c3f;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.navy-card-title {
+    background: #0f1c3f;
+    color: #ffffff;
+    font-size: 0.95rem;
+    font-weight: 700;
+    padding: 0.75rem 1rem;
+    border-bottom: 1px solid #1f2d55;
+}
+
+.navy-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8125rem;
+}
+
+.navy-table thead th {
+    background-color: #0f1c3f;
+    color: #ffffff;
+    text-align: left;
+    font-weight: 600;
+    padding: 0.6rem 1rem;
+    white-space: nowrap;
+    border-bottom: 1px solid #1f2d55;
+}
+
+.navy-table tbody td {
+    padding: 0.6rem 1rem;
+    border-bottom: 1px solid #1f2d55;
+    color: #ffffff;
+    background-color: #0f1c3f;
+}
+
+.navy-table tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.navy-table tbody tr:hover td {
+    background-color: #17285a;
+}
+
+.navy-table a {
+    color: #4db8ff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.navy-table a:hover {
+    color: #7ecbff;
+    text-decoration: underline;
+}
+
+.navy-empty {
+    padding: 1rem;
+    color: #b7c2de;
+    font-size: 0.8125rem;
+    background-color: #0f1c3f;
+} */
+/*__________________________GenAI: Generated code ends here______________________________*/
+
+.navy-card {
+    background: #09172b;
+    border: 1px solid #d8dde6;
+    border-radius: 16px;
+    overflow: hidden;
+}
+
+/* TABLE */
+.navy-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    table-layout: auto;
+}
+
+/* HEADER */
+.navy-table tbody td {
+    background: #1b304d;
+    color: #ffffff;
+    text-align: center;
+    padding: 6px 8px;    /* was 10px */
+    border-right: 1px solid #ffffff;
+    border-bottom: 1px solid #ffffff;
+    font-size: 12px;     /* was 14px */
+}
+
+
+/* BODY */
+.navy-table thead th {
+    background: #1b304d;
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 13px;     /* was 15px */
+    text-align: center;
+    padding: 6px 8px;    /* was 10px */
+    border-right: 1px solid #ffffff;
+    border-bottom: 1px solid #ffffff;
+}
+
+/* Remove extra borders on edges */
+.navy-table th:last-child,
+.navy-table td:last-child {
+    border-right: none !important;
+}
+
+.navy-table tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+/* Hover */
+.navy-table tbody tr:hover td {
+    background: #223b61;
+}
+
+/* Rounded corners exactly like screenshot */
+.navy-table thead tr th:first-child {
+    border-top-left-radius: 16px;
+}
+
+.navy-table thead tr th:last-child {
+    border-top-right-radius: 16px;
+}
+
+.navy-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 16px;
+}
+
+.navy-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 16px;
+}
+.navy-card {
+    background: #09172b;
+    border: 1px solid #33455e;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 0;
+}
+
+.navy-card-title {
+    background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%) !important;
+    color: #ffffff;
+    font-size: 0.85rem;   /* was 1rem */
+    font-weight: 700;
+    padding: 0.45rem 0.8rem;   /* reduced */
+    border-bottom: 1px solid #33455e;
+}

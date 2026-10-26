@@ -1,0 +1,1 @@
+public class COMM_ManualBankingController_Test{}

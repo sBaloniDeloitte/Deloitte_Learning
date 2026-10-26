@@ -1,0 +1,399 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 03-27-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+  
+<template>
+    <div class="slds-scrollable_x hl-covenant-dark-theme" style="overflow: auto;">
+        <span class="styleContainer"></span>
+        <template lwc:if={showNoRecords}>
+            <div style="text-align: center; padding: 10px; border: solid 1px #ddd;">No records found!</div>
+        </template>
+        <template lwc:else>
+            <template lwc:if={isNotOpsAuthor}> <button class="save-button slds-button slds-button_brand" onclick={handleCovenantSection} disabled={isDisable} >Add Covenant</button></template><!--sanwar (3/12/2025)-->
+            <template lwc:if={showSummaryStyle}>
+                    <!-- <template for:each={docDetaiList} for:item="iter"> -->
+                        <div style="padding-top: 1%; padding-bottom: 3%;" class="table-wrapper"><!--Sanwar 18/12/2025-->
+                            <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right">
+                                <thead style=" top: 0; z-index: 2;">
+                                    <tr>
+                                        <th scope="col" style=" background-color: #5bb6e3;border: 1px solid black" class="slds-size_1-of-12 slds-m-top_x-small">
+                                            Covenant Category
+                                        </th>
+                                        <th scope="col" style=" background-color: #5bb6e3;border: 1px solid black" class="sticky-col third-col slds-col slds-size_1-of-12 slds-m-top_x-small">
+                                            Covenant Type</th>
+                                        <th scope="col" style="width:20%; background-color: #5bb6e3;border: 1px solid black;" class="slds-col slds-size_1-of-12 slds-m-top_x-small">
+                                        Covenant Name
+                                        </th>                                        
+                                        <th scope="col" style=" background-color: #5bb6e3;border: 1px solid black"  class="slds-col slds-size_2-of-12 slds-m-top_x-small">Description</th>
+                                        <th scope="col" style=" background-color: #5bb6e3;border: 1px solid black"  class="slds-col slds-size_1-of-12 slds-m-top_x-small">Type</th>
+                                        <th scope="col" style=" background-color: #5bb6e3;border: 1px solid black"  class="slds-col slds-size_1-of-12 slds-m-top_x-small">Status</th>
+                                        <th scope="col" style=" background-color: #5bb6e3;border: 1px solid black"  class="slds-col slds-size_1-of-12 slds-m-top_x-small">Remarks</th>
+                                        <th scope="col" style="background-color: #5bb6e3;border: 1px solid black;" class="slds-col slds-size_1-of-12 slds-m-top_x-small">Target Date</th>
+                                        <th scope="col" style=" background-color: #5bb6e3;border: 1px solid black"  class="slds-col slds-size_1-of-12 slds-m-top_x-small">Document Date of Receipt</th>
+                                        <th scope="col" style="background-color: #5bb6e3;border: 1px solid black" class="slds-col slds-size_1-of-12 slds-m-top_x-small">Nature of Document</th>
+                                        <th scope="col" style="background-color: #5bb6e3;border: 1px solid black" class="slds-col slds-size_1-of-12 slds-m-top_x-small">Document Upload/View</th>
+                                        <th scope="col" style=" background-color: #5bb6e3;border: 1px solid black"  class="slds-col slds-size_1-of-12 slds-m-top_x-small">Approval Level</th><!--Sanwar-->
+                                        <th scope="col" style="background-color: #5bb6e3;border: 1px solid black" class="slds-col slds-size_1-of-12 slds-m-top_x-small">Approver Name</th><!--Sanwar-->
+                                        <th scope="col" style="background-color: #5bb6e3;border: 1px solid black" class="slds-col slds-size_1-of-12 slds-m-top_x-small">Approval Status</th><!--Sanwar-->
+                                        <th scope="col" style="background-color: #5bb6e3;border: 1px solid black" class="slds-col slds-size_1-of-12 slds-m-top_x-small"></th>
+                                    </tr>
+                                </thead>
+                                <tbody >
+                                    <template for:each={detailRecord} for:item="data">
+                                        <template for:each={data.documentList} for:item="record">
+                                            <tr key={record.documentMasterId}>
+                                                <!-- Sticky first column: checkbox -->
+                                                <td class="slds-size_1-of-12" style="border: 1px solid black;">
+                                                     <!-- <div class="slds-truncate slds-cell-wrap" style="overflow:auto"></div> -->
+                                                     <!-- {record.Document_Master__r.Document_Category__c}  -->
+                                                     {record.covenantCategory} 
+                                                </td>
+
+                                                <!-- Sticky third column: Applicant Type -->
+                                                <td class="sticky-col third-col slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                    <div class="slds-truncate slds-cell-wrap" style="overflow:auto">
+                                                        <!-- {record.Document_Master__r.Document_Type__c} -->
+                                                        {record.covenantType}
+                                                        </div>
+                                                </td>
+
+                                                <!-- Sticky second column: Applicant Name -->
+                                                <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                    <div class="slds-truncate slds-cell-wrap" style="overflow:auto">
+                                                        <!-- {record.Document_Master__r.Document_Name__c} -->
+                                                        <template lwc:if={record.isCovenantId}>
+                                                            <lightning-select  variant="label-hidden" name="Covenant_Master__c"
+                                                            label="Select Name"
+                                                             data-id={record.documentMasterId} data-docid={record.documentDetailId}
+                                                            options={record.optionsList}
+                                                            value={record.covenantNameId}
+                                                            onchange={handleChange} onblur={handleOnBlur}
+                                                             disabled={disableDocField}>
+                                                            </lightning-select>
+                                                        </template>
+                                                        <template lwc:else>
+                                                            {record.covenantName}
+                                                        </template>
+
+                                                    </div>
+                                                </td>
+                                                
+                                                <!-- Remaining columns scroll normally -->
+                                                <td class="slds-col slds-size_2-of-12" style="border: 1px solid black;">
+                                                    <!-- <template if:true={iterDet.documentStatus}> -->
+                                                        <div class="slds-text-color_success slds-cell-wrap" style="overflow:auto">
+                                                             {record.description}
+                                                        </div>
+                                                </td>
+
+                                                <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                    <div class="slds-truncate slds-cell-wrap">
+                                                        <!-- <lightning-input  data-id={record.documentMasterId} data-docid={record.documentDetailId} type="text" name="Status__c"
+                                                            value={record.Status__c} onchange={handleChange} onblur={handleOnBlur}>
+                                                        </lightning-input> -->
+                                                        <lightning-select  variant="label-hidden" name="Type__c" data-id={record.documentMasterId} data-docid={record.documentDetailId}
+                                                        label="Select Type"
+                                                        value={record.docType}
+                                                        options={typeOptions}
+                                                            onchange={handleChange} onblur={handleOnBlur} disabled={disableDocField}>
+                                                        </lightning-select>
+                                                    </div>
+                                                </td>
+                                                <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                    <div class="slds-truncate slds-cell-wrap">
+                                                        <!-- <lightning-input  data-id={record.documentMasterId} data-docid={record.documentDetailId} type="text" name="Status__c"
+                                                            value={record.Status__c} onchange={handleChange} onblur={handleOnBlur}>
+                                                        </lightning-input> -->
+                                                        <lightning-select  variant="label-hidden" name="Status__c" data-id={record.documentMasterId} data-docid={record.documentDetailId}
+                                                        label="Select Status"
+                                                        value={record.status}
+                                                        options={statusOptions}
+                                                            onchange={handleChange} onblur={handleOnBlur} disabled={disableDocField}>
+                                                        </lightning-select>
+                                                    </div>
+                                                </td>
+                                                <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                    <div class="slds-truncate slds-cell-wrap" style="overflow:auto">
+                                                        <lightning-textarea  data-id={record.documentMasterId} data-docid={record.documentDetailId} type="text" name="Remarks__c"
+                                                            value={record.remarks} onchange={handleChange} onblur={handleOnBlur} disabled={disableDocField}>
+                                                        </lightning-textarea>
+                                                    </div>
+                                                </td>
+                                                <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                    <div class="slds-truncate slds-cell-wrap" style="padding-bottom: 18px">
+                                                        <lightning-input  data-id={record.documentMasterId} data-docid={record.documentDetailId} type="date" name="Target_Date__c"
+                                                            value={record.targetDate} onchange={handleChange} onblur={handleOnBlur} min={today} max={futureDate} disabled={disableDocField}><!--Sanwar-->
+                                                        </lightning-input>
+                                                    </div>
+                                                </td>
+
+                                                <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                    <div class="slds-truncate slds-cell-wrap" style="padding-bottom: 18px">
+                                                        <lightning-input data-id={record.documentMasterId} data-docid={record.documentDetailId} type="date" name="Document_Date_of_Receipt__c"
+                                                            value={record.documentDateOfReceipt} onchange={handleChange} onblur={handleOnBlur} min={today} max={futureDate} disabled={disableDocField}> <!--Sanwar-->
+                                                        </lightning-input>
+                                                    </div>
+                                                </td>
+
+                                                <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                    <div class="slds-truncate slds-cell-wrap">
+                                                        <!-- <lightning-combobox  variant="label-hidden" class="inputfield" name="Nature of Document" 
+                                                        label="Nature of Document"
+                                                        value={record.Nature_of_Document__c} placeholder="Nature Of Document" options={options1}
+                                                            onchange={handleChange}>
+                                                        </lightning-combobox> -->
+                                                        <div class="slds-truncate slds-cell-wrap">
+                                                            <!-- <lightning-input  data-id={record.documentMasterId} data-docid={record.documentDetailId} type="text" name="Status__c"
+                                                                value={record.Status__c} onchange={handleChange} onblur={handleOnBlur}>
+                                                            </lightning-input> -->
+                                                            <lightning-select  variant="label-hidden" name="Nature_of_Document__c" data-id={record.documentMasterId} data-docid={record.documentDetailId}
+                                                                label="Select"
+                                                                value={record.natureOfDocument}
+                                                                options={nodOptions}
+                                                                onchange={handleChange} onblur={handleOnBlur} disabled={disableDocField}>
+                                                            </lightning-select>
+                                                        </div>
+                                                    </div>
+                                                </td>
+                                                <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                    <template lwc:if={record.documentDetailId}>
+                                                     <lightning-layout key={record.documentDetailId} horizontal-align="space-between" vertical-align="center">
+                                                        <div style="display: flex; align-items: center; gap: 20px; justify-content: flex-start;padding-bottom: 2%;">
+                                                                <c-upload-view-delete-document
+                                                                    doc-detail-id={record.documentDetailId}
+                                                                    show-upload={record.isUpload}
+                                                                    show-view={record.isView}
+                                                                    current-user-opp-role="Sales"
+                                                                    onrecallmethod ={updateDocumentDetails}
+                                                                ></c-upload-view-delete-document>
+                                                                <!-- <lightning-icon data-id={record.documentDetailId} data-name="Main Table"  icon-name="utility:preview"
+                                                                    alternative-text="Preview Document" title="PREVIEW" size="small"
+                                                                    onclick={handleshowgenericConfirm} 
+                                                                    style="cursor: pointer;">
+                                                                </lightning-icon> -->
+                                                        </div>
+                                                    </lightning-layout>
+                                                    </template>
+                                                </td>
+                                                <!--Sanwar-->
+                                                <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                    <div class="slds-truncate slds-cell-wrap">
+                                                        <lightning-select  variant="label-hidden" name="Approval_Level__c" data-id={record.documentMasterId} data-docid={record.documentDetailId}
+                                                            label="Select Level"
+                                                            value={record.approvalLevel}
+                                                            options={approvalLevelOptions}
+                                                            onchange={handleChange} onblur={handleOnBlur} disabled={disableDocField}>
+                                                        </lightning-select>
+                                                    </div>
+                                                </td>
+                                                <td class="slds-col slds-size_2-of-12" style="border: 1px solid black;">
+                                                        <div class="slds-text-color_success slds-cell-wrap" style="overflow:auto">
+                                                             
+                                                        </div>
+                                                </td>
+                                                <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                    <div class="slds-truncate slds-cell-wrap">
+                                                        <lightning-select  variant="label-hidden" name="Approval_Status__c" data-id={record.documentMasterId} data-docid={record.documentDetailId}
+                                                            label="Select Status"
+                                                            value={record.approvalStatus}
+                                                            options={approvalStatusOptions}
+                                                            onchange={handleChange} onblur={handleOnBlur} disabled={disableDocField}>
+                                                        </lightning-select>
+                                                    </div>
+                                                </td><!--Sanwar-->
+                                                <template if:false ={record.hideDeleteIcon}>
+                                                    <td class="slds-col slds-size_1-of-12" style="border: 1px solid black; text-align: center;">
+                                                        <lightning-icon icon-name="utility:delete"
+                                                                        alternative-text="Delete"
+                                                                        title="Delete"
+                                                                        size="small"
+                                                                        class="slds-m-left_x-small delete-icon clickable"
+                                                                        data-id={record.documentMasterId} data-docid={record.documentDetailId}
+                                                                        onclick={handleDeleteRecord}>
+                                                        </lightning-icon>
+                                                    </td>
+                                                </template>
+                                                
+                                            </tr>
+                                        
+                                        </template>
+                                    </template>
+
+
+                                    <template lwc:if={showCovenantSection}>
+                                                <tr>
+                                                    <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                        <div class="slds-truncate slds-cell-wrap">
+                                                            <!-- <lightning-input  data-id={record.documentMasterId} data-docid={record.documentDetailId} type="text" name="Status__c"
+                                                                value={record.Status__c} onchange={handleChange} onblur={handleOnBlur}>
+                                                            </lightning-input> -->
+                                                            <lightning-select  variant="label-hidden" name="Document_Category__c" 
+                                                            label="Select Cateory"
+                                                            options={covCategory}
+                                                            onchange={handleChangeRecord}>
+                                                            </lightning-select>
+                                                        </div>
+                                                    </td>
+
+                                                     <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                        <div class="slds-truncate slds-cell-wrap">
+                                                            <!-- <lightning-input  data-id={record.documentMasterId} data-docid={record.documentDetailId} type="text" name="Status__c"
+                                                                value={record.Status__c} onchange={handleChange} onblur={handleOnBlur}>
+                                                            </lightning-input> -->
+                                                            <lightning-select  variant="label-hidden" name="Document_Type__c" 
+                                                            data-id="docTypeCb"
+                                                            label="Select Type"
+                                                            value={typeValue}
+                                                            options={covType}
+                                                            onchange={handleChangeRecord}>
+                                                            </lightning-select>
+                                                        </div>
+                                                    </td>
+                    
+                                                    <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                        <div class="slds-truncate slds-cell-wrap">
+                                                            <!-- <lightning-input  data-id={record.documentMasterId} data-docid={record.documentDetailId} type="text" name="Status__c"
+                                                                value={record.Status__c} onchange={handleChange} onblur={handleOnBlur}>
+                                                            </lightning-input> -->
+                                                            <lightning-select  variant="label-hidden" name="Document_Name__c"
+                                                            data-id="docNameCb" 
+                                                            label="Select Name"
+                                                            options={docNameOptions}
+                                                            onchange={handleChangeRecord}>
+                                                            </lightning-select>
+                                                        </div>
+                                                    </td>
+                    
+                                                    <td class="slds-col slds-size_2-of-12" style="border: 1px solid black;">
+                                                        <!-- <template if:true={iterDet.documentStatus}> -->
+                                                            <div class="slds-text-color_success slds-cell-wrap" style="overflow:auto; margin-bottom: 14px;">
+                                                                <lightning-input
+                                                                    name="Description__c"
+                                                                    value={descriptionValue}
+                                                                    type="text"
+                                                                    onchange={handleChangeRecord}>
+                                                                </lightning-input>
+                                                            </div>
+                                                    </td>
+                    
+                                                    <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                        <div class="slds-truncate slds-cell-wrap">
+                                                            <!-- <lightning-input  data-id={record.documentMasterId} data-docid={record.documentDetailId} type="text" name="Status__c"
+                                                                value={record.Status__c} onchange={handleChange} onblur={handleOnBlur}>
+                                                            </lightning-input> -->
+                                                            <lightning-select  variant="label-hidden" name="Type__c" 
+                                                            label="Select Type"
+                                                            options={typeOptions}
+                                                                onchange={handleChangeRecord}  disabled={disableDocField}>
+                                                            </lightning-select>
+                                                        </div>
+                                                    </td>
+                                                    <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                        <div class="slds-truncate slds-cell-wrap">
+                                                            <lightning-select  variant="label-hidden" name="Status__c" 
+                                                            label="Select Status"
+                                                            options={statusOptions}
+                                                            onchange={handleChangeRecord}  disabled={disableDocField}>
+                                                            </lightning-select>
+                                                        </div>
+                                                    </td>
+                                                    <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                        <div class="slds-truncate slds-cell-wrap" style="overflow:auto">
+                                                            <lightning-textarea
+                                                                name="Remarks__c" onchange={handleChangeRecord} disabled={disableDocField}>
+                                                            </lightning-textarea>
+                                                        </div>
+                                                    </td>
+                                                    <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                        <div class="slds-truncate slds-cell-wrap" style="padding-bottom: 18px">
+                                                            <lightning-input 
+                                                            name="Target_Date__c" type="date" onchange={handleChangeRecord} min={today} max={futureDate} disabled={disableDocField}><!--Sanwar-->
+                                                            </lightning-input>
+                                                        </div>
+                                                    </td>
+                    
+                                                    <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                        <div class="slds-truncate slds-cell-wrap" style="padding-bottom: 18px">
+                                                            <lightning-input type="date" name="Document_Date_of_Receipt__c"
+                                                                onchange={handleChangeRecord} min={today} max={futureDate} disabled={disableDocField}> <!--Sanwar-->
+                                                            </lightning-input>
+                                                        </div>
+                                                    </td>
+                    
+                                                    <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                        <div class="slds-truncate slds-cell-wrap">                                            
+                                                                <lightning-select  variant="label-hidden" name="Nature_of_Document__c" 
+                                                                    label="Select Options"
+                                                                    options={nodOptions}
+                                                                    onchange={handleChangeRecord} disabled={disableDocField}>
+                                                                </lightning-select>
+                                                        </div>
+                                                    </td>
+                                                    <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                            <lightning-layout>
+                                                            <div style="display: flex; align-items: center; gap: 20px; justify-content: flex-start;padding-bottom: 2%;">
+                                                                    
+                                                            </div>
+                                                        </lightning-layout>
+                                                    </td>
+                                                    <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                        <div class="slds-truncate slds-cell-wrap">                                            
+                                                                <lightning-select  variant="label-hidden" name="Approval_Level__c" 
+                                                                    label="Select Options"
+                                                                    options={approvalLevelOptions}
+                                                                    onchange={handleChangeRecord} disabled={disableDocField}>
+                                                                </lightning-select>
+                                                        </div>
+                                                    </td>
+
+                                                    <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                        <div class="slds-truncate slds-cell-wrap" style="padding-bottom: 18px">
+                                                            
+                                                        </div>
+                                                    </td>
+
+                                                    <td class="slds-col slds-size_1-of-12" style="border: 1px solid black;">
+                                                        <div class="slds-truncate slds-cell-wrap">                                            
+                                                                <lightning-select  variant="label-hidden" name="Approval_Status__c" 
+                                                                    label="Select Options"
+                                                                    options={approvalStatusOptions}
+                                                                    onchange={handleChangeRecord} disabled={disableDocField}>
+                                                                </lightning-select>
+                                                        </div>
+                                                    </td>
+
+                                                </tr>
+                                              
+                                    </template>
+                                </tbody> 
+                            </table>
+                        </div>        
+                        <template lwc:if={showCovenantSection}> 
+                            <div class="slds-grid slds-grid_align-end">
+                                <button class="slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color: #fafcfc;color: rgb(5, 0, 0);border-color: #01050a;font-weight: 500;" onclick={handleClose}>Cancel</button>
+                                <button class="save-button slds-button slds-button_brand" onclick={handleSave} >
+                                    Save
+                                </button>
+                            </div>
+                        </template>
+            </template>
+
+        </template>
+    </div>
+
+    <template lwc:if={isLoading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+        </lightning-spinner>
+    </template>
+
+    <template if:true={showConfirmation}>
+
+            <c-confirmation-screen confirm-message={confirmMessage} negative-label="No" positive-label="Yes"
+            onnegativeclick={handleNo} onpositiveclick={handleDocDelete}>
+        </c-confirmation-screen>
+    </template>
+</template>

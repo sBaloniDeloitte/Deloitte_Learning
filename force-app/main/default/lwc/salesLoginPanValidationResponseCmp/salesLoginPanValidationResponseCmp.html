@@ -1,0 +1,116 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 03-17-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:true={isloading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </template>
+    <template  if:true={disableValidateButton}>
+            <p style="font-size: 14px; color: red; font-weight: bold;">The given Mobile Number is blacklisted by MNRL. Please Change the Mobile Number to Proceed Further.</p>
+            </template>
+    <!-- <template if:false={showTable}> -->
+    <template if:true={showValidateButton}>
+    <lightning-layout multiple-rows class="slds-p-around_small">
+
+        <lightning-layout-item 
+            size="12" 
+            small-device-size="6" 
+            medium-device-size="4" 
+            large-device-size="3" 
+            class="button-green slds-p-top_small slds-p-left_small">
+            <lightning-button
+                label="Validate PAN"
+                title="Validate PAN"
+                variant="brand"
+                onclick={validatePAN}
+                class="slds-m-top_x-small"
+                disabled={disableValidateButton}>
+            </lightning-button>
+
+        </lightning-layout-item>
+    </lightning-layout>
+    </template>
+<!-- </template> -->
+    <template if:true={showTable}>
+        <div style={getScrollInMobile} class="pan-table-wrap">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped" style="max-width: 100%; overflow: auto;">
+            <thead style="position: sticky; top: 0; background: #0e1c30; z-index: 4;">
+                <tr style="background-color: #0e1c30;"> 
+
+                    <th class="tdBorderHeader slds-cell-wrap" scope="col" style="text-align: left; font-size:12.5px; font-weight:bold; max-width: 25%;background-color: #0e1c30; border-color:#33455e;">Name</th>
+                    <th class="tdBorderHeader" scope="col" style="text-align: left; font-size:12.5px; font-weight:bold; max-width: 25%;background-color: #0e1c30; border-color:#33455e;">DOB</th>
+                    <th class="tdBorderHeader slds-cell-wrap" scope="col" style="text-align: left; font-size:12.5px; font-weight:bold; max-width: 25%;background-color: #0e1c30; border-color:#33455e;">Duplicate</th>
+                    <th class="tdBorderHeader" scope="col" style="text-align: left; font-size:12.5px; font-weight:bold; max-width: 24%;background-color: #0e1c30; border-color:#33455e;">PAN Status</th>
+                    <th class="tdBorderHeader slds-cell-wrap" scope="col" style="text-align: left; font-size:12.5px; font-weight:bold; max-width: 25%;background-color: #0e1c30; border-color:#33455e;">Seeding Status Description</th><!--Alika-->
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <template if:true={panResponse.nameMatchColour}>
+                        <td class={positive} style="text-align: center; max-width: 25%; font-size:12px;height:20px;border: 1px solid black;padding-left: 1%; color: #9bbf56;">{panResponse.nameMatch}</td>
+                    </template>
+                    <template if:false={panResponse.nameMatchColour}>
+                        <td class={negative} style="text-align: center; max-width: 25%; font-size:12px;height:20px;border: 1px solid black;padding-left: 1%; color: red;">{panResponse.nameMatch}</td>
+                    </template>
+                    <template if:true={panResponse.dobMatchColour}>
+                        <td class={positive} style="text-align: center; max-width: 25%; font-size:12px;height:20px;border: 1px solid black;padding-left: 1%; color: #9bbf56;">{panResponse.dobMatch}</td>
+                    </template>
+                    <template if:false={panResponse.dobMatchColour}>
+                        <td class={negative} style="text-align: center; max-width: 25%; font-size:12px;height:20px;border: 1px solid black;padding-left: 1%; color: red;">{panResponse.dobMatch}</td>
+                    </template>
+                    <template if:true={panResponse.duplicateMatchColour}>
+                        <td class={positive} style="text-align: center; max-width: 25%; font-size:12px;;height:20px;border: 1px solid black;padding-left: 1%; color: #9bbf56;">{panResponse.duplicate}</td>
+                    </template>
+                    <template if:false={panResponse.duplicateMatchColour}>
+                        <td class={negative} style="text-align: center; max-width: 25%; font-size:12px;;height:20px;border: 1px solid black;padding-left: 1%; color: red;">{panResponse.duplicate}</td>
+                    </template>
+                    <template if:true={panResponse.panStatusColour}>
+                        <td class={positive} style="text-align: center; max-width: 25%; font-size:12px;height:20px;border: 1px solid black;padding-left: 1%; color: #9bbf56;">{panResponse.status}</td>
+                    </template>
+                    <template if:false={panResponse.panStatusColour}>
+                        <td class={negative} style="text-align: center; max-width: 25%; font-size:12px;height:20px;border: 1px solid black;padding-left: 1%; color: red;">{panResponse.status}</td>
+                    </template>
+                    <!--Alika S-->
+                    <template if:true={panResponse.seedingStatusDescriptionColor}>
+                    <td class={positive} style="text-align: center; max-width: 25%; font-size:12px;height:20px;border: 1px solid black;padding-left: 1%; color: #9bbf56;">{panResponse.seedingStatusDescription}</td><!--Alika-->
+                    </template>
+                    <template if:false={panResponse.seedingStatusDescriptionColor}>
+                    <td class={positive} style="text-align: center; max-width: 25%; font-size:12px;height:20px;border: 1px solid black;padding-left: 1%; color: red;">{panResponse.seedingStatusDescription}</td><!--Alika-->
+                    </template>
+                    <!--Alika E-->
+                </tr>
+            </tbody>
+        </table>
+        </div>
+    </template>
+    <template if:true={showError}>
+    <div class="success-banner">
+        <lightning-icon
+            icon-name="utility:success"
+            size="small"
+            alternative-text="Success"
+            class="success-icon">
+        </lightning-icon>
+
+        <span class="success-message">
+            {errorList}
+        </span>
+    </div>
+</template>
+    <template if:true={isIndividual}>
+        <template if:false={showError}>
+            <template if:false={loginChecklist}>
+                <div class="andcontainer slds-text-align_right" style="margin-top: 1%;">
+                    <button class="SaveButton slds-button slds-button_brand"
+                        style={getNextByMobile}
+                        onclick={handleNext}>Next</button>
+                </div>
+            </template>
+        </template>
+    </template>
+    
+</template>

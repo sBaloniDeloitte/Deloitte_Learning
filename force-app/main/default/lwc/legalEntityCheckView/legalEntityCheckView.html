@@ -1,0 +1,152 @@
+<template>
+    <template if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </template>
+    <table class="slds-table slds-table_bordered">
+        <thead>
+            <tr>
+                <th style="text-align: center; background-color: #5bb6e3; border-color: black; min-width: 200px; font-size: 12px; font-weight: 500;">
+                    Applicant
+                </th>
+                <th style="text-align: center; background-color: #5bb6e3; border-color: black; min-width: 200px; font-size: 12px; font-weight: 500;">
+                    Legal Entity Number 
+                </th>
+                <th style="text-align: center; background-color: #5bb6e3; border-color: black; min-width: 200px; font-size: 12px; font-weight: 500;">
+                    Action
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <template for:each={applicants} for:item="field">
+                <tr key={field.applicantId}>
+                    <td style="text-align: center; font-size: 12px;">{field.Name}</td>
+                    <td style="text-align: center; font-size: 12px;">{field.legalEntityNumber}</td>
+                    <template if:false={field.showGenerate}>
+                        <td style="text-align: center; font-size: 12px;">
+                            <button type="button" style="color: white;" class="slds-button save-button slds-align_absolute-center" data-id={field.applicantId} onclick={handleViewLei}>View</button>
+                        </td>
+                    </template>
+                    <template if:false={hideButton}>
+                    <template if:true={field.showGenerate}>
+                        <td style="text-align: center; font-size: 12px;">
+                            <button type="button" class="slds-button save-button slds-align_absolute-center" style="color: white;" data-id={field.applicantId} onclick={handleGenerate}>Generate</button>
+                        </td>
+                    </template>
+                    </template>
+                </tr>
+            </template>
+        </tbody>
+    </table>
+
+    <template if:true={showModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header header-section">
+                    <div class="slds-text-align_center">
+                        <h2 class="slds-text-heading_medium slds-hyphenate header-title">Legal Entity Details</h2>
+                    </div>
+                </header>
+                
+                <div class="slds-modal__content scrollable-content" style="max-height: 500px; overflow-y: auto;">
+                    <div class="slds-p-around_small">
+                        <h2 class="slds-text-heading_medium slds-hyphenate header-title">Legal Entity Details : </h2>
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                            <tbody>
+                                <tr>
+                                    <td style="width: 275px; background: skyblue; border: 1px solid black;"><strong>Applicant</strong></td>
+                                    <td style="border: 1px solid black;">{selectedLeiData.applicantName}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 275px; background: skyblue; border: 1px solid black;"><strong>Legal Entity Name</strong></td>
+                                    <td style="border: 1px solid black;">{selectedLeiData.result.leiRelationshipRecordDetails.directParentRelationshipRecordDetails.legalEntityName}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 275px; background: skyblue; border: 1px solid black;"><strong>LEI Next Renewal Date</strong></td>
+                                    <td style="border: 1px solid black;">{selectedLeiData.result.entityRecordDetail.entityIdentifiers.leiNextRenewalDate}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 275px; background: skyblue; border: 1px solid black;"><strong>LEI No</strong></td>
+                                    <td style="border: 1px solid black;">{selectedLeiData.result.entityRecordDetail.registeredEntityDetails.lei}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 275px; background: skyblue; border: 1px solid black;"><strong>Legal From</strong></td>
+                                    <td style="border: 1px solid black;">{selectedLeiData.result.entityRecordDetail.entityIdentifiers.legalForm}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 275px; background: skyblue;border: 1px solid black;"><strong>LEI Registration Date</strong></td>
+                                    <td style="border: 1px solid black;">{selectedLeiData.result.entityRecordDetail.entityIdentifiers.leiRegistrationDate}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 275px; background: skyblue; border: 1px solid black;"><strong>LEI Next Renewal Date</strong></td>
+                                    <td style="border: 1px solid black;">{selectedLeiData.result.entityRecordDetail.entityIdentifiers.leiNextRenewalDate}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 275px; background: skyblue; border: 1px solid black;"><strong>LEI Registration Status</strong></td>
+                                    <td style="border: 1px solid black;">{selectedLeiData.result.entityRecordDetail.entityIdentifiers.leiRegistrationStatus}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 275px; background: skyblue; border: 1px solid black;"><strong>LEI Registration Last Update Date</strong></td>
+                                    <td style="border: 1px solid black;">{selectedLeiData.result.entityRecordDetail.entityIdentifiers.leiRegLastUpdateDate}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 275px; background: skyblue; border: 1px solid black;"><strong>LEI Validation Source</strong></td>
+                                    <td style="border: 1px solid black;">{selectedLeiData.result.entityRecordDetail.entityIdentifiers.leiValidationSource}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 275px; background: skyblue; border: 1px solid black;"><strong>LEI Expiration Date</strong></td>
+                                    <td style="border: 1px solid black;">{selectedLeiData.result.entityRecordDetail.entityIdentifiers.entityExpirationDate}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 275px; background: skyblue; border: 1px solid black;"><strong>Status</strong></td>
+                                    <td style="border: 1px solid black;">{selectedLeiData.result.entityRecordDetail.entityIdentifiers.entityStatus}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <div class="slds-p-around_small">
+                        <h2 class="slds-text-heading_medium slds-hyphenate header-title">Legal Entity Address Details : </h2>
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+                            <tbody>
+                                <tr>
+                                    <td style="width: 275px; background: skyblue; border: 1px solid black;"><strong>Address Line1</strong></td>
+                                    <td style="border: 1px solid black;">{selectedLeiData.result.entityRecordDetail.headquartersEntityAddress.firstAddressLine}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 275px; background: skyblue; border: 1px solid black;"><strong>Address Line2</strong></td>
+                                    <td style="border: 1px solid black;">{selectedLeiData.result.entityRecordDetail.headquartersEntityAddress.additionalAddressLine}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 275px; background: skyblue; border: 1px solid black;"><strong>City</strong></td>
+                                    <td style="border: 1px solid black;">{selectedLeiData.result.entityRecordDetail.headquartersEntityAddress.city}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 275px; background: skyblue; border: 1px solid black;"><strong>Country</strong></td>
+                                    <td style="border: 1px solid black;">{selectedLeiData.result.entityRecordDetail.headquartersEntityAddress.country}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 275px; background: skyblue; border: 1px solid black;"><strong>Pincode</strong></td>
+                                    <td style="border: 1px solid black;">{selectedLeiData.result.entityRecordDetail.headquartersEntityAddress.postalPincode}</td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 275px; background: skyblue; border: 1px solid black;"><strong>Region</strong></td>
+                                    <td style="border: 1px solid black;">{selectedLeiData.result.entityRecordDetail.headquartersEntityAddress.region}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <footer class="footer-section ">
+                    <div class="slds-align_absolute-center button-container">
+                        <button class="slds-button slds-button_brand cancel-button" onclick={closeModal}>Close</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+
+
+    </template>
+</template>

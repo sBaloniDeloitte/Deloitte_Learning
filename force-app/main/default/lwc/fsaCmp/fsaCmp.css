@@ -1,0 +1,210 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import 'c/cssLibrary';
+
+/* Dark theme overrides (colors only, no structural/functional change) — matches customer360 / salesLoginApplicantInformationCmp theme */
+:host {
+    color: #ffffff;
+    --bg-primary: #12172b;
+    --bg-card: #1c2238;
+    --accent: #1467eb;
+    --accent-hover: #0d54c9;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-muted: rgba(255, 255, 255, 0.5);
+    --border-color: #2a2f45;
+    --card-glow: 0 0 20px rgba(20, 103, 235, 0.15);
+
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+
+    /* Combobox styling hooks - matches addBankAccountCmp's modal theme.
+       Without --slds-c-combobox-listbox-* the input box itself picks up the
+       dark theme (via --slds-c-input-*) but the dropdown OPTIONS LIST still
+       renders with SLDS's default white background/black text, since that
+       listbox is a separate internal part with its own hook names. */
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+    --slds-c-combobox-input-value-text-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: #16283f;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+    --slds-c-combobox-label-color: #ffffff;
+
+    /* Tabset styling hooks - these are CSS custom properties, which cross
+       into lightning-tabset's internal shadow DOM (unlike the plain
+       .slds-tabs_default__link class selectors below, which cannot reach
+       across a base component's shadow boundary and were dead CSS). This is
+       why "CY"/"PY" were rendering with default dark text on the dark
+       background instead of white. */
+    --slds-c-tabs-item-text-color: var(--text-muted);
+    --slds-c-tabs-item-text-color-hover: #ffffff;
+    --slds-c-tabs-item-text-color-selected: #ffffff;
+    --slds-c-tabs-item-color-background-selected: transparent;
+    --slds-c-tabs-line-color-border-active: var(--accent);
+    --slds-c-tabs-color-background: transparent;
+
+    /* Global SLDS2 surface/neutral tokens - the combobox DROPDOWN LISTBOX
+       falls back to these global tokens rather than the
+       --slds-c-combobox-listbox-* hook above, which is why it was still
+       rendering white despite the input box already being dark. */
+    --slds-g-color-neutral-base-100: #16283f;
+    --slds-g-color-neutral-base-95: #16283f;
+    --slds-g-color-neutral-base-90: #1d2f45;
+    --slds-g-color-surface: #16283f;
+    --slds-g-color-surface-1: #16283f;
+    --slds-g-color-surface-2: #12172b;
+    --slds-g-color-surface-container: #16283f;
+    --slds-g-color-surface-container-1: #16283f;
+    --slds-g-color-border-base-1: #2a2f45;
+    --slds-g-color-neutral-base-30: #ffffff;
+    --slds-g-color-neutral-base-40: #ffffff;
+    --slds-g-color-neutral-base-50: #ffffff;
+    --slds-g-color-neutral-base-10: #ffffff;
+    --slds-g-color-neutral-base-20: #ffffff;
+    --slds-g-color-on-surface: #ffffff;
+    --slds-g-color-on-surface-1: #ffffff;
+}
+
+/* Direct fallback for the listbox option text - crosses shadow boundary via
+   the SLDS "part" exposed on lightning-combobox's listbox rows. */
+lightning-combobox::part(listbox),
+lightning-combobox::part(option) {
+    color: #ffffff !important;
+}
+
+.slds-form-element__label {
+    color: #ffffff !important;
+}
+
+.slds-has-error .slds-input__icon {
+    display: none;
+}
+
+.rec-edit-button .slds-button_neutral {
+    background: transparent;
+    border: none;
+    color: var(--text-primary);
+}
+
+.fsa {
+    background: var(--bg-primary);
+}
+
+.fsa .slds-input {
+    padding-left: 10px;
+    transition: padding 0.2s ease;
+}
+
+.fsa .slds-col.slds-size_6-of-12 {
+    border-color: var(--border-color) !important;
+    background: var(--bg-card);
+    border-radius: 8px;
+    box-shadow: var(--card-glow);
+}
+
+.fsa .slds-col.slds-size_6-of-12 > div[style*="border"] {
+    border-color: var(--border-color) !important;
+    background: transparent;
+}
+
+.fsa .slds-tabs_default__nav {
+    display: flex;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border-color);
+}
+
+.fsa .slds-tabs_default__link {
+    color: var(--text-muted) !important;
+}
+
+.fsa .slds-tabs_default__item.slds-is-active .slds-tabs_default__link {
+    color: var(--text-primary) !important;
+    border-bottom-color: var(--accent) !important;
+}
+
+.fsa .slds-tabs_default__content {
+    background: var(--bg-primary);
+}
+
+.sactionHeader {
+    padding: 10px;
+    font-size: 15px;
+    color: var(--text-primary);
+    font-weight: 700;
+    border-bottom: 1px solid var(--border-color);
+    transition: padding 0.2s ease, font-size 0.2s ease;
+}
+
+.sactionDiv {
+    margin: 10px;
+    border: 1px solid var(--border-color);
+    background: var(--bg-card);
+    box-shadow: var(--card-glow);
+    border-radius: 8px;
+    padding: 10px;
+    box-sizing: border-box;
+    transition: padding 0.2s ease, margin 0.2s ease;
+}
+
+.save-button {
+    background-color: var(--accent) !important;
+    color: #ffffff !important;
+    border-color: var(--accent) !important;
+    font-weight: 600;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.save-button:hover {
+    background-color: var(--accent-hover) !important;
+    border-color: var(--accent-hover) !important;
+}
+
+.cancel-button {
+    background-color: transparent !important;
+    color: var(--text-primary) !important;
+    border: 1px solid rgba(255, 255, 255, 0.3) !important;
+    font-weight: 600;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.cancel-button:hover {
+    background-color: rgba(255, 255, 255, 0.08) !important;
+    border-color: rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Responsive for medium devices and below (tablets and mobiles) */
+@media only screen and (max-width: 768px) {
+    .sactionHeader {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .sactionDiv {
+        margin: 8px 5px;
+        padding: 8px;
+        border-width: 1px;
+    }
+
+    .fsa .slds-input {
+        padding-left: 8px;
+    }
+}
+
+/* Responsive for small devices (phones) */
+@media only screen and (max-width: 480px) {
+    .sactionHeader {
+        font-size: 13px;
+        padding: 6px;
+    }
+
+    .sactionDiv {
+        margin: 6px 3px;
+        padding: 8px 6px; /* slightly more horizontal padding for touch */
+        border-width: 1px;
+    }
+
+    .fsa .slds-input {
+        padding-left: 6px;
+    }
+}

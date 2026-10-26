@@ -1,0 +1,11 @@
+@import "c/cssLibrary";
+lightning-input {
+    cursor: pointer;
+}
+lightning-input input[type="checkbox"] {
+    cursor: pointer;
+}
+td lightning-input:hover {
+    background-color: #f3f3f3;
+    border-radius: 4px;
+}

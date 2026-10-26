@@ -1,0 +1,105 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-16-2024
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    
+    <p style="text-align: center;">Please select the disposition from the list below:</p>
+ <div class="field-wrapper">
+    <label class="custom-field-label">
+        <span class="required-star">*</span> Disposition
+    </label>
+
+    <div class="custom-combobox">
+        <button
+            type="button"
+            class="custom-combobox-button"
+            onclick={toggleDispositionDropdown}>
+            <span class={dispositionTextClass}>
+                {dispositionDisplayValue}
+            </span>
+            <span class="dropdown-arrow">▾</span>
+        </button>
+
+        <template if:true={showDispositionDropdown}>
+            <div class="custom-dropdown">
+                <template for:each={dispositionOptions} for:item="option">
+                    <div
+                        key={option.value}
+                        class="custom-dropdown-option"
+                        data-value={option.value}
+                        onclick={handleDispositionSelect}>
+                        {option.label}
+                    </div>
+                </template>
+            </div>
+        </template>
+    </div>
+</div>
+    
+    <div if:true={showtime} class="slds-grid slds-wrap parentdiv">
+        <div class="slds-col slds-size_6-of-12 alignText">
+            <span>                            
+                <lightning-input style="padding-right: 4%;margin-top: 2%" type="date" date-style="short" label="Follow-up Date and Time" value={dateOfFollowUp} onchange={handleFollowDateChange} required></lightning-input>
+            </span>
+        </div>
+        <div class="slds-col slds-size_6-of-12 ">
+            <lightning-input style="padding-top: 2%" type="time" label=" " value={timeOfFollowUp} onchange={handleFollowTimeChange} required></lightning-input>
+        </div>
+    </div>
+    
+ <template if:false={showtime}>
+    <div class="field-wrapper">
+        <label class="custom-field-label">
+            <span class="required-star">*</span> Sub-Disposition
+        </label>
+
+        <div class="custom-combobox">
+            <button
+                type="button"
+                class="custom-combobox-button"
+                onclick={toggleSubDispositionDropdown}>
+                <span class={subDispositionTextClass}>
+                    {subDispositionDisplayValue}
+                </span>
+                <span class="dropdown-arrow">▾</span>
+            </button>
+
+            <template if:true={showSubDispositionDropdown}>
+                <div class="custom-dropdown">
+                    <template for:each={subdispositionOptions} for:item="option">
+                        <div
+                            key={option.value}
+                            class="custom-dropdown-option"
+                            data-value={option.value}
+                            onclick={handleSubDispositionSelect}>
+                            {option.label}
+                        </div>
+                    </template>
+                </div>
+            </template>
+        </div>
+    </div>
+</template>
+
+   <div class="field-wrapper">
+    <label class="custom-field-label">
+        <span class="required-star">*</span>
+        Remarks
+    </label>
+
+    <lightning-textarea 
+        class="remarks-textarea"
+        variant="label-hidden"
+        label="Remarks"
+        value={remarks}
+        placeholder="Enter Remarks"
+        onchange={handleRemarksChange}
+        required>
+    </lightning-textarea>
+</div>
+
+</template>

@@ -1,0 +1,18 @@
+@import 'c/cssLibrary';
+
+.slds-modal__header{
+    background-color: skyblue;
+    color: black;
+    font-weight: 500;
+    padding: 5px;
+}
+
+.save-button,
+.cancel-button {
+    color: white;
+    font-weight: 400;
+    border: none;
+}
+.slds-modal__footer{
+    background-color: skyblue;
+}

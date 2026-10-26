@@ -1,0 +1,54 @@
+<!-- This Code was generated using GenAI tool: Codify, Please check for accuracy -->
+<template>
+    <div class="branch-card">
+
+        <!-- Header — navy gradient matching app header -->
+        <div class="branch-card-header">
+            <span class="branch-card-header-icon">🏢</span>
+            <div>
+                <h3 class="branch-card-title">Branch</h3>
+                <p class="branch-card-subtitle">Select the assigned branch</p>
+            </div>
+        </div>
+
+        <div class="branch-card-body">
+
+            <!-- Search -->
+            <div class="search-wrapper">
+                <span class="search-icon">🔍</span>
+                <input
+                    type="search"
+                    class="search-input"
+                    placeholder="Search branch…"
+                    value={searchKey}
+                    oninput={handleSearch} />
+            </div>
+
+            <!-- Branch list -->
+            <div class="branch-list">
+                <template for:each={branches} for:item="branch">
+                    <div
+                        key={branch.Id}
+                        class={branch.itemClass}
+                        data-id={branch.Id}
+                        onclick={handleSelect}>
+                        <span class="branch-icon">🏦</span>
+                        <span class="branch-name">{branch.Name}</span>
+                        <template if:true={branch.isSelected}>
+                            <span class="branch-selected-badge">✓ Selected</span>
+                        </template>
+                    </div>
+                </template>
+
+                <template if:true={noRecords}>
+                    <div class="no-records">
+                        <span class="no-records-icon">🔍</span>
+                        <span>No branches found</span>
+                    </div>
+                </template>
+            </div>
+
+        </div>
+    </div>
+</template>
+<!-- GenAI: Generated code ends here -->

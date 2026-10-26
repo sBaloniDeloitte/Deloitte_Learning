@@ -1,0 +1,29 @@
+@import "c/cssLibrary";
+.icon-size-css {
+    padding: 0.2rem;
+}
+.approve-icon {
+    background-color: #00bc00;
+}
+.add-doc-button {
+    background: #5bb6e3;
+    color: rgb(255, 255, 255);
+}
+/* .sticky-col{
+    z-index: 2; background: white
+} */
+.first-col{
+    position: sticky;
+    left: 0;
+    background-color: #f3f3f3;
+    z-index: 2;
+}
+.second-col{
+    position: sticky;
+    background-color: #f3f3f3;
+    z-index: 2;
+}
+.slds-table {
+    /* min-width: 800px; Ensure table does not shrink */
+    border-collapse: collapse; /* Makes borders clean */
+}

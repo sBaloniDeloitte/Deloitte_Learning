@@ -1,0 +1,147 @@
+:host {
+    display: block;
+    background-color: #12172b;
+    color: #ffffff;
+
+    /* ==========================================================
+       THEME VARIABLES
+       Matched to the Documents-tab table (documentProcessingScreen.css
+       ".doc-table" family) so the Recommend Profile data table shares
+       the exact same dark-navy header/body/border treatment.
+    ========================================================== */
+    --color-bg: #0a1524;
+    --color-surface: #0e1c30;
+    --color-border: #33455e;
+    --radius-lg: 18px;
+}
+
+p[slot="title"],
+h5[slot="title"] {
+    color: #ffffff !important;
+}
+
+/* ==========================================================
+   TABLE CONTAINER
+   Same outer frame used by the Documents tab's ".scroll-container"
+   wrapper - dark navy backdrop, rounded corners, bordered panel.
+========================================================== */
+.scroll-container {
+    background-color: var(--color-bg) !important;
+    padding: 1rem 1.5rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border) !important;
+    box-shadow: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+/* ==========================================================
+   PROFILE TABLE
+   Full theme matched to the Documents-tab ".doc-table" - solid
+   dark-navy header, dark-navy body, rounded outer corners, same
+   border color/width, white text throughout.
+========================================================== */
+.profile-table {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--color-border) !important;
+    background-color: var(--color-surface) !important;
+    margin: 0;
+    color: #ffffff;
+}
+
+.profile-table th,
+.profile-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    white-space: normal;
+}
+
+.table-header {
+    background-color: var(--color-surface) !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    font-size: 12.5px;
+    letter-spacing: 0.2px;
+    padding: 12px 10px;
+    height: 58px;
+    box-sizing: border-box;
+    text-align: center;
+    border-right: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+    box-shadow: none !important;
+    vertical-align: middle;
+}
+
+.profile-table thead,
+.profile-table thead tr,
+.profile-table thead th {
+    color: #ffffff !important;
+    font-weight: bold;
+    text-align: center;
+    box-shadow: none !important;
+    background-image: none !important;
+    border-color: var(--color-border);
+}
+
+.profile-table thead tr:first-child th:first-child {
+    border-top-left-radius: var(--radius-lg);
+}
+
+.profile-table thead tr:first-child th:last-child {
+    border-top-right-radius: var(--radius-lg);
+}
+
+.profile-table td {
+    padding: 12px 10px;
+    color: #ffffff !important;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: center !important;
+    border: 1px solid var(--color-border) !important;
+    background-color: var(--color-surface) !important;
+    vertical-align: middle;
+}
+
+.profile-table tbody tr {
+    background-color: var(--color-surface) !important;
+    transition: background-color 0.2s ease;
+}
+
+.profile-table tbody td {
+    background-color: var(--color-surface) !important;
+    color: #ffffff !important;
+    font-weight: normal;
+    text-align: center !important;
+}
+
+.profile-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: var(--radius-lg);
+}
+
+.profile-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: var(--radius-lg);
+}
+
+.profile-table tbody tr:hover td {
+    background-color: #16283f !important;
+}
+
+/* ==========================================================
+   FIELDS INSIDE THE TABLE
+========================================================== */
+.profile-table lightning-input {
+    --slds-c-checkbox-color-background: #16283f;
+    --slds-c-checkbox-color-border: var(--color-border);
+}
+
+.profile-table lightning-textarea {
+    --slds-c-textarea-color-background: #16283f;
+    --slds-c-textarea-text-color: #ffffff;
+    --slds-c-textarea-color-border: var(--color-border);
+}

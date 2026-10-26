@@ -1,0 +1,15 @@
+<template>
+    <template if:true={hasError}>    <lightning-quick-action-panel header="Required Actions">
+        <div class="slds-p-around_medium">
+            
+                <template for:each={errors} for:item="item">
+                    <p style="color:red" key={item}>{item}</p>
+                </template>
+            
+        </div>
+        <div slot="footer">
+            <lightning-button label="Cancel" onclick={handleCancel} class="slds-m-right_x-small"></lightning-button>
+        </div>
+    </lightning-quick-action-panel>
+    </template>
+</template>

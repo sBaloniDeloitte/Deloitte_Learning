@@ -1,0 +1,331 @@
+<template>
+    <span class="styleContainer"></span>
+    <template if:false={fromSales}>
+        <template if:true={isModalOpen}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="newBankAcc"
+                class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <template if:true={spinnerRun}>
+                        <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+                    </template>
+                    <header class="slds-modal__header">
+                        <div class="slds-text-align_center">
+                            <h1 id="newBankAcc" class="slds-modal__title slds-hyphenate">{modalTitle}</h1>
+                        </div>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless"
+                        id="modal-content-id-1">
+                        <div class="slds-section">
+                            <h3 class="slds-section__title">
+                                <span class="slds-truncate" title="Section Title">{secTitle}</span>
+                            </h3>
+                            <br>
+                            <lightning-record-edit-form object-api-name="Bank_Details__c" record-id={recId}
+                                onload={getBranchDetails} onsuccess={handleSuccess} onerror={handleError}>
+                                <div class="slds-grid">
+                                    <div class="slds-col slds-size_1-of-1 form-div">
+                                        <template if:true={customerSelected}>
+                                            <lightning-combobox 
+                                                label="Selected Customer"
+                                                class="combo1"
+                                                options={fetchedCustomer}
+                                                value={selectedCustOpt}
+                                                onchange={handleOnChangeOpt}
+                                                variant="label-stacked">
+                                            </lightning-combobox>
+                                        </template>
+                                        <template if:false={customerSelected}>
+                                            <abbr if:true={isLoanApp} title="required" class="slds-required">*</abbr>
+                                            <label if:true={isLoanApp}>Select Applicant/Co-Applicant</label>
+                                            <lightning-combobox if:true={isLoanApp} class="combo1" options={custOptions}
+                                                variant="label-hidden" aria-required={isLoanApp}
+                                                onchange={handleOnChangeOpt}
+                                                value={selectedCustOpt}></lightning-combobox>
+                                        </template>
+
+                                        <lightning-input-field disabled="true" style="display:none;" class="accHolder"
+                                            field-name="Account_Holder_Name__c" required="true"
+                                            value={accHolderName}></lightning-input-field>
+                                        <!-- <lightning-input-field field-name="Bank_Master__c" required="true"
+                                            onchange={handleChange} disabled={isDisable}></lightning-input-field> -->
+                                            <template if:true={isBsa}>
+                                                <c-search-lookup label="Select Bank" show-label="true" required="true"
+                                                    placeholder="Search Bank" object-name="Bank_Branch_Master__c"
+                                                    selected-id={selectedId} return-fields="['Id','Name']" search-fields="['Name']" filter-criteria="[RecordType.Name = Bank;]"
+                                                    onlookupselected={handleSelectDocument} onlookupdeselected={handleldeselectDocument}
+                                                    onclose={handleaddNew} disabled={isDisable} max-results={maxResults}></c-search-lookup>
+                                            </template>
+                                             <template if:false={isBsa}>
+                                            <c-search-lookup label="Search Bank" show-label="true" required="true"
+                                            placeholder="Please enter IFSC here.." object-name="Bank_Branch_Master__c" max-results={maxResults}
+                                            selected-id={selectedId} return-fields="['Id','Name', 'MICR__c']" search-fields="['IFSC__c']" filter-criteria="[RecordType.Name = Branch;]"
+                                            onlookupselected={handleSelectDocument} onlookupdeselected={handleldeselectDocument}
+                                            disabled={isDisable}></c-search-lookup> <!--onclose={handleclose}-->
+                                            </template>
+
+
+                                        <div style="margin: 0% 3px;">
+                                            <lightning-input label="Bank Name" value={bankname}
+                                                disabled="true"></lightning-input>
+                                            <!-- <lightning-input label="Branch" value={branch}
+                                                disabled="true"></lightning-input> -->
+                                               <!--<lightning-combobox
+                                                class="removeborder" 
+                                                style="width:100%;" 
+                                                name="customerName" 
+                                                label="Branch Name" 
+                                                data-field="branchName"
+                                                value={selectedBankBranch}
+                                                options={branchOptions} 
+                                                onchange={handleInputChange}
+                                                required>
+                                            </lightning-combobox>-->
+                                            <lightning-input label="Branch Name" value={branch}
+                                                disabled="true"></lightning-input>
+                                            <lightning-input label="IFSC" value={ifscV}
+                                            disabled="true"></lightning-input>
+                                        </div>
+
+                                        <lightning-input-field field-name="Account_Type__c"
+                                            required="true"></lightning-input-field>
+                                        <lightning-input-field field-name="Account_Number__c" data-field="Account_Number__c"
+                                            onchange={handleStopPropogation} onfocus={handleStopPropogation}
+                                            onblur={handleStopPropogation} required="true"></lightning-input-field>
+                                        <template if:false={fromSales}>
+                                            <template if:false={bsa}>
+                                                <lightning-input-field
+                                                    field-name="Debit_Card_Status__c"></lightning-input-field>
+                                                <lightning-input-field
+                                                    field-name="Is_Your_Net_Banking_Status_Active__c"></lightning-input-field>
+                                                <template if:true={isLoanApp}>  <!--Sanwar -->
+                                                    <template if:false={isSecurityMandate}>      <!--Sanwar -->
+                                                        <lightning-input-field
+                                                            field-name="Is_Repayment_Account__c"></lightning-input-field>
+                                                    </template>
+                                                </template>
+                                            </template>
+
+                                        </template>
+                                        <template if:true={fromSales}>
+                                            <lightning-input type="date" label="Statement From Date" name="fromDate"
+                                                value={fromDate} required onchange={handleDateChange}>
+                                            </lightning-input>
+
+                                            <!-- Custom 'To Date' Field -->
+                                            <lightning-input type="date" label="Statement To Date" name="toDate"
+                                                value={toDate} required onchange={handleDateChange}>
+                                            </lightning-input>
+
+                                            
+
+                                            <!-- <lightning-input-field  field-name="Year_Month_From__c"  onchange={handleStopPropogation}  onfocus={handleStopPropogation} onblur={handleStopPropogation} ></lightning-input-field>
+                                            <lightning-input-field  field-name="Year_Month_To__c"  onchange={handleStopPropogation}  onfocus={handleStopPropogation} onblur={handleStopPropogation} ></lightning-input-field> -->
+                                        </template>
+                                        <template if:false={fromSales}>
+                                            <template if:true={bsa}>
+                                                <!-- <label>Month From</label>
+                                            <lightning-combobox name="progress" label="Month" placeholder="Month"
+                                                options={monthOptions} variant="label-hidden" onchange={handleMonthChange}
+                                                value={selectedMonth}></lightning-combobox>
+                                            <lightning-input label="Year" value={selectedYear} onchange={handleYearChange} ></lightning-input> -->
+                                                <!-- <lightning-input-field  field-name="Month__c" ></lightning-input-field> -->
+                                                <!-- <lightning-input-field  field-name="Year__c" ></lightning-input-field> -->
+                                                <!-- <label class="slds-form-element__label">Upload File</label> -->
+                                                <!-- <lightning-button-icon icon-name="utility:upload"
+                                            alternative-text="Upload" onclick={openCameraNonDocument} 
+                                            class="uploaded-view" style="color: green;">
+                                            </lightning-button-icon> -->
+                                                <div style="margin: 0% 3px;">
+                                                    <lightning-file-upload label="Attach Bank Statement"
+                                                        name="fileUploader" accept={acceptedFormats}
+                                                        class="bank-file-upload"
+                                                        record-id={recordId} onuploadfinished={handleUploadFinished}>
+                                                    </lightning-file-upload>
+                                                </div>
+
+                                            </template>
+                                        </template>
+                                        <!-- <lightning-file-upload if:false={hideFields}
+                                                label="Upload Cheque"
+                                                name="fileUploader"
+                                                record-id={recId}
+                                                onuploadfinished={handleUploadFinished}>
+                                    </lightning-file-upload> -->
+                                        <br />
+
+                                        <lightning-input-field field-name="Applicant_Type__c" style="display:none;"
+                                            value={selectedCustomer}></lightning-input-field>
+                                        <lightning-input-field field-name="Application_Applicant__c"
+                                            style="display:none;" value={selectedCustOpt}></lightning-input-field>
+                                        <lightning-input-field field-name="Name" style="display:none;"
+                                            value={bankname}></lightning-input-field>
+                                        <template if:true={bsa}>
+                                            <lightning-input-field field-name="Source__c" style="display:none;"
+                                                value={sourceType}></lightning-input-field>
+                                        </template>
+                                        <template if:true={bsa}>
+                                            <lightning-input-field field-name="Source__c" style="display:none;"
+                                                value={sourceType}></lightning-input-field>
+                                        </template>
+                                    </div>
+                                </div>
+                            </lightning-record-edit-form>
+                        </div>
+                    </div>
+                    <div class="slds-modal__footer">
+                        <div class="slds-align_absolute-center">
+                            <button class="slds-button slds-button_brand save-button" onclick={handleSubmit}
+                                disabled={disableButton}>Save</button>
+                            <button class="slds-button slds-button_brand cancel-button"
+                                aria-label="Cancel and close" onclick={closeModal}>Cancel</button>
+                        </div>
+
+                    </div>
+
+                </div>
+            </section>
+            <div if:true={isLoanApp} class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+            <div if:true={fromSales} class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+        </template>
+    </template>
+    <template if:true={fromSales}>
+        <template if:true={isModalOpen}>
+            <!-- <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="newBankAcc" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">-->
+            <template if:true={spinnerRun}>
+                <lightning-spinner alternative-text="Loading" size="medium"></lightning-spinner>
+            </template>
+            <!-- <header class="slds-modal__header" style="background-color: skyblue; color:white;font-weight:500;">
+                        <div class="slds-text-align_center">
+                            <h1 id="newBankAcc-1" class="slds-modal__title slds-hyphenate">{modalTitle}</h1>
+                        </div>
+                    </header> -->
+            <div class="slds-modal__content slds-modal__content_headless" id="modal-content-id-1-1">
+                <div class="slds-section">
+                    <!-- <h3 class="slds-section__title">
+                                <span class="slds-truncate" title="Section Title">{secTitle}</span>
+                            </h3>
+                            <br> -->
+                    <lightning-record-edit-form object-api-name="Bank_Details__c" record-id={recId}
+                        onload={getBranchDetails} onsuccess={handleSuccess} onerror={handleError}>
+                        <div class="slds-grid">
+                            <div class="slds-col slds-size_1-of-1 form-div">
+
+
+
+                                <!-- <template if:false={}>
+                                        
+                                        <lightning-input label="Bank Name" value={bankname} disabled="true" ></lightning-input> 
+                                        <lightning-input label="Branch" value={branch} disabled="true"></lightning-input> 
+                                    </template> -->
+                                    <template if:true={isBsa}>
+                                        <c-search-lookup label="Select Bank" show-label="true" required="true"
+                                            placeholder="Search Bank" object-name="Bank_Branch_Master__c"
+                                            selected-id={selectedId} return-fields="['Id','Name']" search-fields="['Name']" filter-criteria="[RecordType.Name = Bank;]"
+                                            onlookupselected={handleSelectDocument} onlookupdeselected={handleldeselectDocument}
+                                            onclose={handleaddNew} disabled={isDisable} max-results={maxResults}></c-search-lookup>
+                                    </template>
+                                     <template if:false={isBsa}>
+                                 <c-search-lookup label="Search Bank" show-label="true" required="true"
+                                            placeholder="Please enter IFSC here.." object-name="Bank_Branch_Master__c" max-results={maxResults}
+                                            selected-id={selectedId} return-fields="['Id','Name', 'MICR__c']" search-fields="['IFSC__c']" filter-criteria="[RecordType.Name = Branch;]"
+                                            onlookupselected={handleSelectDocument} onlookupdeselected={handleldeselectDocument}
+                                            disabled={isDisable}></c-search-lookup> <!--onclose={handleclose}-->
+                                    </template>
+
+
+                                
+                                <!-- <lightning-input-field field-name="Account_Number__c" data-field="Account_Number__c" data-id="accountNumber" onchange={handleStopPropogation}
+                                    onfocus={handleStopPropogation} onblur={handleStopPropogation}
+                                    required="true" disabled={isDisable}></lightning-input-field> -->
+
+                                <lightning-input type="date" label="Transaction Start Date" name="fromDate"
+                                    value={fromDate} max={today} required onchange={handleDateChange} disabled={isDisable}>
+                                </lightning-input>
+
+                                <!-- Custom 'To Date' Field -->
+                                <lightning-input type="date" label="Transaction End Date" name="toDate" value={toDate}
+                                    min={fromDate} max={today} required onchange={handleDateChange} disabled={isDisable}>
+                                </lightning-input>
+
+                                <template if:true={monthDifference}>
+                                    <div>Enter drawing power</div>
+                                    <template for:each={monthInputs} for:item="item" for:index="index">
+                                        <lightning-input
+                                            key={item.id}
+                                            type="number"
+                                            label={item.label}
+                                            data-index={index}
+                                            class="dynamic-number"
+                                            required
+                                            onchange={handleDrawingInputChange}
+                                            disabled={isDisable}>
+                                            <!-- onblur={validateNumber}
+                                            message-when-bad-input="Enter a valid number (no decimal, no ending 0)" -->
+                                        </lightning-input>
+                                    </template>
+                            
+                                </template>
+                                
+                                <lightning-input type="text" label="Enter Password" name="userPassword" value={passWord}
+                                    placeholder="Enter your password" onchange={handlePasswordChange} disabled={isDisable}>
+                                </lightning-input>
+
+                                <lightning-file-upload label="Attach Bank Statement"
+                                    name="fileUploader" accept={acceptedFormats} multiple
+                                    record-id={recordId} onuploadfinished={handleUploadFinished} disabled={isDisable}>
+                                </lightning-file-upload>
+                                <br />
+                                <template if:true={showDocumentName}>
+                                      <template for:each={uploadedFileName} for:item="filename" >
+                                        <p key={filename}  style="background-color:transparent;color:#ffffff;font-weight: 500;">{filename}</p>
+                                    </template>
+                                </template>
+                              
+
+                                <!-- <lightning-input-field field-name="Applicant_Type__c" style="display:none;"
+                                    value={selectedCustomer} disabled={isDisable}></lightning-input-field>
+                                <lightning-input-field field-name="Application_Applicant__c" style="display:none;"
+                                    value={selectedCustOpt} disabled={isDisable}></lightning-input-field>
+                                <lightning-input-field field-name="Name" style="display:none;"
+                                    value={bankname} disabled={isDisable}></lightning-input-field>
+                                <lightning-input-field field-name="Account_Holder_Name__c" style="display:none;"
+                                    value={accHolderName} disabled={isDisable}></lightning-input-field>
+                                <lightning-input-field field-name="Bank_Master__c" style="display:none;"
+                                    value={ifscvalue} disabled={isDisable}></lightning-input-field>
+                                <lightning-input-field field-name="Account_Type__c" style="display:none;"
+                                    value={accountType} required="true" disabled={isDisable}></lightning-input-field> -->
+
+                            </div>
+                        </div>
+                    </lightning-record-edit-form>
+                </div>
+            </div>
+            <!-- <div class="slds-modal__footer" style="background-color: skyblue;border-radius: 0px 0px 5px 5px;text-align: center;min-height: 30px;"> -->
+            <div class="slds-align_absolute-center">
+                <button class="slds-button slds-button_brand save-button" onclick={handleSubmit}>Confirm</button>
+                <!-- <button class="slds-button slds-button_brand cancel-button" aria-label="Cancel and close" onclick={closeModal}>Cancel</button> -->
+            </div>
+
+            <!-- </div> -->
+            <!--     
+                </div> -->
+            <!-- </section> -->
+        </template>
+    </template>
+
+    <!-- <input 
+    type="file" 
+    accept="image/*" 
+    capture="environment" 
+    onchange={handleUpload} 
+    class="hidden-input"
+    />
+    <input 
+    type="file" 
+    accept="image/*,application/pdf" 
+    capture="environment" 
+    onchange={handleUploadFinished1} 
+    class="hidden-input-finish"
+    /> -->
+</template>

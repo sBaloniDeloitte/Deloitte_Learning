@@ -1,0 +1,75 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import 'c/cssLibrary';
+
+/* ----------------- Dark Theme Palette -----------------
+   Matches the modal colour scheme used on homeQuickAction so this quick
+   action's pop-up content looks consistent with the rest of the flow. */
+:host {
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-text: #ffffff;
+    --dt-text-muted: #cfd8e6;
+    --dt-placeholder: #8a99b3;
+    --dt-accordion: #1589ee;
+    --dt-positive: #1467eb;
+    --dt-negative: #db2929;
+    --dt-purple: #8d29db;
+    --dt-gradient: linear-gradient(135deg, rgb(0, 26, 94) 0%, rgb(0, 48, 135) 55%, rgb(0, 77, 179) 100%);
+
+    /* lightning-modal (base component) style hooks - covers the native
+       lightning-modal-header/-body/-footer templates in case this component
+       is ever hosted inside a lightning-modal container */
+    --slds-c-modal-color-background: var(--dt-bg);
+    --slds-c-modal-text-color: var(--dt-text);
+    --slds-c-modal-header-color-background: var(--dt-gradient);
+    --slds-c-modal-header-text-color: var(--dt-text);
+    --slds-c-modal-footer-color-background: var(--dt-gradient);
+    --slds-c-modal-content-color-background: var(--dt-bg);
+
+    display: block;
+    background-color: var(--dt-bg);
+    color: var(--dt-text);
+}
+
+/* ----------------- Error table ----------------- */
+.slds-table {
+    background-color: var(--dt-panel-bg);
+    color: var(--dt-text);
+}
+
+.slds-table thead th {
+    background-image: var(--dt-gradient) !important;
+    color: var(--dt-text) !important;
+}
+
+.slds-table tbody tr {
+    background-color: var(--dt-panel-bg) !important;
+    border-color: var(--dt-border) !important;
+}
+
+.slds-table tbody td,
+.slds-table tbody th {
+    color: var(--dt-text) !important;
+    border-color: var(--dt-border) !important;
+}
+
+/* ----------------- Buttons ----------------- */
+/* Positive flowing CTA */
+.continue-button {
+    background-color: var(--dt-positive) !important;
+    border-color: var(--dt-positive) !important;
+    color: #ffffff !important;
+    border-radius: 1.25rem !important;
+}
+
+/* Negative flowing CTA */
+.close-button {
+    background-color: var(--dt-negative) !important;
+    border-color: var(--dt-negative) !important;
+    color: #ffffff !important;
+    border-radius: 1.25rem !important;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

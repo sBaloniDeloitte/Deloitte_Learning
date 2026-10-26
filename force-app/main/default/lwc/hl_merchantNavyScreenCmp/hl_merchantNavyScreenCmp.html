@@ -1,0 +1,458 @@
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={spinnerRun}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open" style="z-index:900003;">
+            <lightning-spinner></lightning-spinner>
+        </section>
+    </template>
+    <lightning-card title="">
+        <div class="slds-grid slds-wrap slds-scrollable_x" style="margin-bottom: 1%;">
+           <table class="slds-table" style="width: 500px;">
+                <thead style="background-color: var(--dt-header-bg); text-align: left;">
+                    <tr>
+                        <th class="color-theme" style="text-align: left; border: 1px solid var(--dt-border);">Select</th>
+                        <th class="color-theme" style="text-align: left; border: 1px solid var(--dt-border); border-left: none;">Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={applicantList} for:item="iter">
+                        <tr key={iter.name}>
+                            <td style="text-align: left; border: 1px solid var(--dt-border); border-top: none;">
+                                <lightning-input type="checkbox" data-id={iter.appId} checked ={iter.isDataCreated} onchange={handleCheckboxChange}></lightning-input>
+                            </td>
+                            <td style="text-align: left; border: 1px solid var(--dt-border); border-top: none; border-left: none; ">{iter.name}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        <lightning-tabset class="slds-m-top_medium"> <!-- variant="scoped" -->
+            <template for:each={groupedApplicants} for:item="app">
+                <lightning-tab key={app.applicantId} name={app.applicantId} label={app.applicantName}>
+                    <!--Main Parent Table-->
+                    <template if:true={app.sailings}>
+                        <table class="sortable slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered 
+                            slds-border_left slds-border_right" style="border-color: var(--dt-border);">
+                            <thead>
+                                <tr>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: var(--dt-border);">Name of the country NRI is working on</th>
+                                    <th class="col-width-10 table-header" rowspan="2" style="border-color: var(--dt-border)">Foreign currency in which salary earned</th>
+                                    <th class="col-width-10 table-header" rowspan="2" style="border-color: var(--dt-border)">Minimum Income Norms Met</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={app.sailings} for:item="sal">
+                                    <tr key={sal.incomeAssessmentId}>
+                                        <template if:true={sal.isParent}>
+                                            <td style="border-color: var(--dt-border);">
+                                                <lightning-input type="string" name="nriCountry" value={sal.nriCountry} data-id={sal.incomeAssessmentId} onfocusout={handleSailingParentChange}></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:true={sal.isParent}>
+                                            <td style="border-color: var(--dt-border);">
+                                                <lightning-input type="string" name="nriCurrency" value={sal.nriCurrency} data-id={sal.incomeAssessmentId} onfocusout={handleSailingParentChange}></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:true={sal.isParent}>
+                                            <td style="border-color: var(--dt-border);">
+                                                <lightning-combobox name="minIncomeNormsMet" value={sal.normsMet} data-id={sal.incomeAssessmentId} options={minNormsOptions} onchange={handleNormChange}>
+                                                </lightning-combobox>
+                                            </td>
+                                        </template>
+                                    </tr>
+                                </template> 
+                            </tbody>
+                        </table>
+                    </template>
+                    <!--Calculation Parent Table-->
+                    <template if:true={app.sailings}>
+                        <table class="sortable slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered 
+                            slds-border_left slds-border_right" style="border-color: var(--dt-border);">
+                            <thead>
+                                <tr>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: var(--dt-border);">Calculation of Merchant Navy Income Salary Income</th>
+                                    <th class="col-width-10 table-header" rowspan="2" style="border-color: var(--dt-border)">Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={app.sailings} for:item="inc">
+                                    <tr key={inc.incomeAssessmentId}>
+                                        <template if:true={inc.isParent}>
+                                            <td style="text-align: left; border-color: var(--dt-border); width: 534px;">Monthly Gross Remuneration as per contract</td>
+                                        </template>
+                                        <template if:true={inc.isParent}>
+                                            <td style="border-color: var(--dt-border);">
+                                                <lightning-input type="number" name="monthlyGrossRenumeration" value={inc.monthlyGrossRenumeration} data-id={inc.incomeAssessmentId} onfocusout={handleSailingParentChange}></lightning-input>
+                                            </td>
+                                        </template>
+                                    </tr>
+                                    <tr key={inc.incomeAssessmentId}>
+                                        <template if:true={inc.isParent}>
+                                            <td style="text-align: left; border-color: var(--dt-border); width: 534px;">Less- Monthly Deductions as per Remuneration Statement</td>
+                                        </template>
+                                        <template if:true={inc.isParent}>
+                                            <td style="border-color: var(--dt-border);">
+                                                <lightning-input type="number" name="monthlyRenumerationDeductions" value={inc.monthlyRenumerationDeductions} data-id={inc.incomeAssessmentId} onfocusout={handleSailingParentChange}></lightning-input>
+                                            </td>
+                                        </template>
+                                    </tr>
+                                    <tr key={inc.incomeAssessmentId}>
+                                        <template if:true={inc.isParent}>
+                                            <td style="text-align: left; border-color: var(--dt-border); width: 534px;">Monthly Net Remuneration</td>
+                                        </template>
+                                        <template if:true={inc.isParent}>
+                                            <td style="border-color: var(--dt-border);">
+                                                <lightning-input type="string" value={inc.monthlyNetRenumeration} data-id={inc.incomeAssessmentId} disabled={inc.isParent} onfocusout={handleForeignAmtChange}></lightning-input>
+                                            </td>
+                                        </template>
+                                    </tr>
+                                </template> 
+                            </tbody>
+                        </table>
+                    </template>
+                    <!--Monthly Child Table-->
+                    <template if:true={app.sailings}>
+						<h3 class="slds-m-top_medium slds-text-title_bold" style="margin-bottom: 5PX; font-size: 18px;">Calculation of monthly salary basis sailing period in last 2 years</h3>
+                        <table class="sortable slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered 
+                            slds-border_left slds-border_right" style="border-color: var(--dt-border);">
+                            <thead>
+                                <tr>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: var(--dt-border);">Date From</th>
+                                    <th class="col-width-10 table-header" rowspan="2" style="border-color: var(--dt-border)">Date To</th>
+                                    <th class="col-width-10 table-header" rowspan="2" style="border-color: var(--dt-border)">Number of Days</th>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: var(--dt-border)">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={app.sailings} for:item="inc">
+                                    <tr key={inc.incomeAssessmentId}>
+                                        <template if:false={inc.isParent}>
+                                            <td style="border-color: var(--dt-border);">
+                                                <lightning-input type="date" min={minDate} max={maxDate} name="fromDate" value={inc.fromDate} data-id={inc.incomeAssessmentId} onchange={handleSailingDateChange}></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:false={inc.isParent}>
+                                            <td style="border-color: var(--dt-border);">
+                                                <lightning-input type="date" min={minDate} max={maxDate} name="toDate" value={inc.toDate} data-id={inc.incomeAssessmentId} onchange={handleSailingDateChange}></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:false={inc.isParent}>
+                                            <td style="border-color: var(--dt-border);">
+                                                <lightning-input type="decimal" name = "diffInDays" value={inc.diffInDays} data-id={inc.incomeAssessmentId}  disabled=true></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:false={inc.isParent}>
+                                            <td style="border-color: var(--dt-border)">
+                                                <lightning-button-icon size="medium" icon-name="utility:delete" variant="border-filled" title="Delete" 
+                                                    data-id={inc.incomeAssessmentId} onclick={handleDelete} class="red-utility-icon"><!--  disabled={inc.isDefaultRecord} -->
+                                                </lightning-button-icon>
+                                            </td>
+                                        </template>
+                                    </tr>
+                                </template> 
+                            </tbody>
+                        </table>
+                        <div style="margin-top: 15px;">
+                            <button class="slds-button slds-button_brand btn-add-action" data-id={app.applicantId} onclick={addNewSailingRec}>Add Sailing Period</button>
+                        </div>
+                    </template>
+                    <br>
+                    <!--Monthly Parent Table-->
+                    <template if:true={app.sailings}>
+                        <table class="sortable slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered 
+                            slds-border_left slds-border_right" style="border-color: var(--dt-border);">
+                            <template for:each={app.sailings} for:item="inc">
+                                <tr key={inc.incomeAssessmentId}>
+                                    <template if:true={inc.isParent}>
+                                        <td style="text-align: left;  font-weight: bold;">Total Sailing Days In Two Years</td>
+                                    </template>
+                                    <template if:true={inc.isParent}>
+                                        <td style="border-color: var(--dt-border);">
+                                            <lightning-input type="string" value={inc.totalSailInTwoYears} data-id={inc.incomeAssessmentId} onfocusout={handleForeignAmtChange} disabled=true></lightning-input>
+                                        </td>
+                                    </template>
+                                </tr>
+                                <tr key={inc.incomeAssessmentId}>
+                                    <template if:true={inc.isParent}>
+                                        <td style="text-align: left;  font-weight: bold;">Average Sailing Days Monthly</td>
+                                    </template>
+                                    <template if:true={inc.isParent}>
+                                        <td style="border-color: var(--dt-border);">
+                                            <lightning-input type="string" value={inc.averageMonthlySail} data-id={inc.incomeAssessmentId} onfocusout={handleForeignAmtChange} disabled=true></lightning-input>
+                                        </td>
+                                    </template>
+                                </tr>
+                                <tr key={inc.incomeAssessmentId}>
+                                    <template if:true={inc.isParent}>
+                                        <td style="text-align: left;  font-weight: bold;">Average Salary per month to be considered</td>
+                                    </template>
+                                    <template if:true={inc.isParent}>
+                                        <td style="border-color: var(--dt-border);">
+                                            <lightning-input type="string" value={inc.averageMonthlySalary} data-id={inc.incomeAssessmentId} disabled=true></lightning-input>
+                                        </td>
+                                    </template>
+                                </tr>
+                            </template>
+                        </table>
+                    </template>
+                    
+                    <!-- Income Table -->
+                    <template if:true={app.incomes}>
+                        <h3 class="slds-m-top_medium slds-text-title_bold" style="margin-bottom: 5PX; font-size: 18px;">Income :</h3>
+                        <table class="sortable slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered 
+                            slds-border_left slds-border_right" style="border-color: var(--dt-border);">
+                            <thead>
+                                <tr>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: var(--dt-border); width: 534px;">Particulars</th>
+                                    <th class="col-width-10 table-header" rowspan="2" style="border-color: var(--dt-border)">Amount</th>
+                                    <th class="col-width-10 table-header" rowspan="2" style="border-color: var(--dt-border)">Currency</th>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: var(--dt-border)">Exchange Rate</th>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: var(--dt-border)">Amount INR</th>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: var(--dt-border)">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={app.incomes} for:item="inc">
+                                    <tr key={inc.incomeAssessmentId}>
+                                        <template if:true={inc.isParent}>
+                                            <td style="text-align: left; border-color: var(--dt-border); width: 534px; background-color: var(--dt-header-bg); font-weight: bold;">{inc.particular}</td>
+                                        </template>
+                                        <template if:false={inc.isParent}>
+                                            <td style="text-align: left; border-color: var(--dt-border); width: 534px;">{inc.particular}</td>
+                                        </template>
+                                        <template if:true={inc.isParent}>
+                                            <td style="border-color: var(--dt-border); background-color: var(--dt-header-bg); font-weight: bold;">
+                                                <!-- <lightning-input type="number" value={inc.foreignAmt} data-id={inc.incomeAssessmentId} onfocusout={handleForeignAmtChange} disabled={inc.isParent}></lightning-input> -->
+                                                {inc.foreignAmt}
+                                            </td>
+                                        </template>
+                                        <template if:false={inc.isParent}>
+                                            <td style="border-color: var(--dt-border);">
+                                                <lightning-input type="number" value={inc.foreignAmt} data-id={inc.incomeAssessmentId} onfocusout={handleForeignAmtChange} disabled={inc.isParent}></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:false={inc.isParent}>
+                                            <td style="border-color: var(--dt-border);">
+                                                <lightning-combobox value={inc.currencyType} options={currencyOptions} data-id={inc.incomeAssessmentId} onchange={handleCurrencyChange} disabled={inc.isParent}></lightning-combobox>
+                                            </td>
+                                        </template>
+                                        <template if:true={inc.isParent}>
+                                            <td style="border-color: var(--dt-border); background-color: var(--dt-header-bg); font-weight: bold;">
+                                            </td>
+                                        </template>
+                                        <template if:true={inc.isParent}>
+                                            <td style="border-color: var(--dt-border); background-color: var(--dt-header-bg); font-weight: bold;">
+                                                <!-- <lightning-input type="number" value={inc.exchangeRate} data-id={inc.incomeAssessmentId} onfocusout={handleExchangeRateChange} disabled={inc.isParent}></lightning-input> -->
+                                                {inc.exchangeRate}
+                                            </td>
+                                        </template>
+                                        <template if:false={inc.isParent}>
+                                            <td style="border-color: var(--dt-border)">
+                                                <lightning-input type="number" value={inc.exchangeRate} data-id={inc.incomeAssessmentId} onfocusout={handleExchangeRateChange} disabled={inc.isDisabled}></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:true={inc.isParent}>
+                                            <td style="border-color: var(--dt-border); background-color: var(--dt-header-bg); font-weight: bold;">
+                                                <!-- <lightning-input type="number" value={inc.inrAmt} data-id={inc.incomeAssessmentId} onfocusout={handleInrAmtChange} disabled></lightning-input> -->
+                                                {inc.inrAmt}
+                                            </td>
+                                        </template>
+                                        <template if:false={inc.isParent}>
+                                            <td style="border-color: var(--dt-border);">
+                                                <lightning-input type="number" value={inc.inrAmt} data-id={inc.incomeAssessmentId} onfocusout={handleInrAmtChange} disabled></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:true={inc.isParent}>
+                                            <td style="border-color: var(--dt-border); background-color: var(--dt-header-bg); font-weight: bold;">
+                                                
+                                            </td>
+                                        </template>
+                                        <template if:false={inc.isParent}>
+                                            <td style="border-color: var(--dt-border)">
+                                                <lightning-button-icon size="medium" icon-name="utility:delete" variant="border-filled" title="Delete" 
+                                                    data-id={inc.incomeAssessmentId} onclick={handleIncOblDelete} class="red-utility-icon"><!--  disabled={inc.isDefaultRecord} -->
+                                                </lightning-button-icon>
+                                            </td>
+                                        </template>
+                                        
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                        <div style="margin-top: 15px;">
+                            <button class="slds-button slds-button_brand btn-add-action" style="width: 130px;" data-id={app.applicantId} onclick={addNewIncomeRecord}>Add Income</button>
+                        </div>
+                    </template>
+
+                    <!-- Obligations Table -->
+                    <template if:true={app.obligations}>
+                        <h3 class="slds-m-top_medium slds-text-title_bold" style="margin-bottom: 5PX;font-size: 18px;">Obligations : </h3>
+                        <table class="sortable slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered 
+                            slds-border_left slds-border_right" style="border-color: var(--dt-border);">
+                            <thead>
+                                <tr>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: var(--dt-border); width: 534px;">Particulars</th>
+                                    <th class="col-width-10 table-header" rowspan="2" style="border-color: var(--dt-border)">Amount</th>
+                                    <th class="col-width-10 table-header" rowspan="2" style="border-color: var(--dt-border)">Currency</th>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: var(--dt-border)">Exchange Rate</th>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: var(--dt-border)">Amount INR</th>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: var(--dt-border)">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={app.obligations} for:item="obl">
+                                    <tr key={obl.incomeAssessmentId}>
+                                        <template if:true={obl.isParent}>
+                                            <td style="text-align: left; border-color: var(--dt-border); width: 534px; background-color: var(--dt-header-bg); font-weight: bold;">{obl.particular}</td>
+                                        </template>
+                                        <template if:false={obl.isParent}>
+                                            <td style="text-align: left; border-color: var(--dt-border); width: 534px;">{obl.particular}</td>
+                                        </template>
+                                        <template if:true={obl.isParent}>
+                                            <td style="border-color: var(--dt-border); background-color: var(--dt-header-bg); font-weight: bold;">
+                                                {obl.foreignAmt}
+                                            </td>
+                                        </template>
+                                        
+                                        <template if:false={obl.isParent}>
+                                            <td style="border-color: var(--dt-border);">
+                                                <lightning-input type="number" value={obl.foreignAmt} data-id={obl.incomeAssessmentId} onfocusout={handleForeignAmtChange} disabled={obl.isParent}></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:false={obl.isParent}>
+                                            <td style="border-color: var(--dt-border);">
+                                                <lightning-combobox value={obl.currencyType} options={currencyOptions} data-id={obl.incomeAssessmentId} onchange={handleCurrencyChange} disabled={obl.isParent}></lightning-combobox>
+                                            </td>
+                                        </template>
+                                        <template if:true={obl.isParent}>
+                                            <td style="border-color: var(--dt-border); background-color: var(--dt-header-bg); font-weight: bold;">
+                                            </td>
+                                        </template>
+                                        <template if:true={obl.isParent}>
+                                            <td style="border-color: var(--dt-border); background-color: var(--dt-header-bg); font-weight: bold;">
+                                                {obl.exchangeRate}
+                                            </td>
+                                        </template>
+                                        <template if:false={obl.isParent}>
+                                            <td style="border-color: var(--dt-border)">
+                                                <lightning-input type="number" value={obl.exchangeRate} data-id={obl.incomeAssessmentId} onfocusout={handleExchangeRateChange} disabled={obl.isDisabled}></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:true={obl.isParent}>
+                                            <td style="border-color: var(--dt-border); background-color: var(--dt-header-bg); font-weight: bold;">
+                                                {obl.inrAmt}
+                                            </td>
+                                        </template>
+                                        <template if:false={obl.isParent}>
+                                            <td style="border-color: var(--dt-border);">
+                                                <lightning-input type="number" value={obl.inrAmt} data-id={obl.incomeAssessmentId} onchange={handleInrAmtChange} disabled></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:true={obl.isParent}>
+                                            <td style="border-color: var(--dt-border); background-color: var(--dt-header-bg); font-weight: bold;">
+                                                
+                                            </td>
+                                        </template>
+                                        <template if:false={obl.isParent}>
+                                            <td style="border-color: var(--dt-border)">
+                                                <lightning-button-icon size="medium" icon-name="utility:delete" variant="border-filled" title="Delete" 
+                                                    data-id={obl.incomeAssessmentId} onclick={handleIncOblDelete} class="red-utility-icon"> <!-- disabled={obl.isDefaultRecord} -->
+                                                </lightning-button-icon>
+                                            </td>
+                                        </template>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                        <div style="margin-top: 15px;">
+                            <button class="slds-button slds-button_brand btn-add-action" style="width: 130px;" data-id={app.applicantId} onclick={addNewObligationRecord}>Add Obligation</button>
+                        </div>
+                    </template>
+                </lightning-tab>
+            </template>
+        </lightning-tabset>
+    </lightning-card>
+    <!--Add Sailing Record Screen-->
+    <template if:true={addNewSailingRecord}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header" style="background-color: var(--dt-header-bg);">
+                    <h2 class="slds-text-heading_medium">Add New {recordType} Record</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="slds-m-around_medium">
+                        <lightning-input type="date" label = "Date From" name="fromDate" value={fromDate} onchange={handleSailingInputChange}></lightning-input>
+                        <lightning-input type="date" label = "Date To" name="toDate" value={toDate} onchange={handleSailingInputChange}></lightning-input>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer slds-text-align_center" style="background-color: var(--dt-header-bg);">
+                    <button class="slds-button slds-button_brand btn-negative-action" style="margin-right: 7px; width: 100px; " onclick={closeAddSailingModal}>Close</button>
+                    <button class="slds-button slds-button_brand btn-positive-action" style="width: 100px;" onclick={onClickSailingModalSave}>Save</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <!--Add Record Screen-->
+    <template if:true={addNewRecord}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header" style="background-color: var(--dt-header-bg);">
+                    <h2 class="slds-text-heading_medium">Add New {recordType} Record</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="slds-m-around_medium">
+                        <lightning-input type="text" label="Particulars" name="recordType" value={particulars} onchange={handleInputChange} required></lightning-input>
+                        <lightning-combobox  label="Currency" name="currentCurrency" value={currentCurrency} options={currencyOptions}  onchange={handleInputChange} required></lightning-combobox>
+                        <lightning-input type="number" label="Foreign Amount" name="foreignAmout" value={foreignAmt} onchange={handleInputChange}></lightning-input>
+                        <lightning-input type="number" label="Exchange Rate" name="exchangeRate" value={exchangeRate} onchange={handleInputChange} disabled={exchangeRateDisable}></lightning-input>
+                        <lightning-input type="number" label="Amount In INR" name="inrAmount" value={inrAmount} onchange={handleInputChange} disabled></lightning-input>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer slds-text-align_center" style="background-color: var(--dt-header-bg);">
+                    <button class="slds-button slds-button_brand btn-negative-action" style="margin-right: 7px; width: 100px; " onclick={closeAddModal}>Close</button>
+                    <button class="slds-button slds-button_brand btn-positive-action" style="width: 100px;" onclick={onClickModalSave}>Save</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!--Confirmation Screen-->
+    <template if:true={confirmationScreen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header" style="background-color: var(--dt-header-bg);">
+                    <h2 class="slds-text-heading_medium">Confirmation Screen</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    Are you sure you want to remove this Sailing period?
+                </div>
+                <footer class="slds-modal__footer slds-text-align_center" style="background-color: var(--dt-header-bg);">
+                    <button class="slds-button slds-button_brand btn-negative-action" style="margin-right: 7px; width: 100px; " onclick={onClickModalNo}>No</button>
+                    <button class="slds-button slds-button_brand btn-positive-action" style="width: 100px;" onclick={onClickModalYes}>Yes</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <!--Income Obligation Confirmation Screen-->
+    <template if:true={incOblConfirmationScreen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header" style="background-color: var(--dt-header-bg);">
+                    <h2 class="slds-text-heading_medium">Confirmation Screen</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    Are you sure you want to remove this applicantâ€™s record?
+                </div>
+                <footer class="slds-modal__footer slds-text-align_center" style="background-color: var(--dt-header-bg);">
+                    <button class="slds-button slds-button_brand btn-negative-action" style="margin-right: 7px; width: 100px; " onclick={onClickIncOblModalNo}>No</button>
+                    <button class="slds-button slds-button_brand btn-positive-action" style="width: 100px;" onclick={onClickIncOblModalYes}>Yes</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

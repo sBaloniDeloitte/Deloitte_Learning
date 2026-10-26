@@ -1,0 +1,225 @@
+<template>
+    <template if:true={spinnerRun}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open" style="z-index:900003;">
+            <lightning-spinner></lightning-spinner>
+        </section>
+    </template>
+    <lightning-card title="">
+        <div class="slds-grid slds-wrap slds-scrollable_x" style="margin-bottom: 1%;">
+           <table class="slds-table" style="width: 500px;">
+                <thead style="background-color: #5bb6e3; text-align: left;">
+                    <tr>
+                        <th class="color-theme" style="text-align: left; border: 1px solid black;">Select</th>
+                        <th class="color-theme" style="text-align: left; border: 1px solid black; border-left: none;">Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={applicantList} for:item="iter">
+                        <tr key={iter.name}>
+                            <td style="text-align: left; border: 1px solid black; border-top: none;">
+                                <lightning-input type="checkbox" data-id={iter.appId} checked ={iter.isDataCreated} onchange={handleCheckboxChange}></lightning-input>
+                            </td>
+                            <td style="text-align: left; border: 1px solid black; border-top: none; border-left: none; ">{iter.name}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        <lightning-tabset class="slds-m-top_medium"> <!-- variant="scoped" -->
+            <template for:each={groupedApplicants} for:item="app">
+                <lightning-tab key={app.applicantId} name={app.applicantId} label={app.applicantName}>
+                    <!-- Income Table -->
+                    <template if:true={app.incomes}>
+                        <h3 class="slds-m-top_medium slds-text-title_bold" style="margin-bottom: 5PX; font-size: 18px;">Income :</h3>
+                        <table class="sortable slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered 
+                            slds-border_left slds-border_right" style="border-color: black;">
+                            <thead>
+                                <tr>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: black; width: 534px;">Particulars</th>
+                                    <th class="col-width-10 table-header" rowspan="2" style="border-color: black">Amount in foreign</th>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: black">Exchange Rate</th>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: black">Amount INR</th>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: black">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={app.incomes} for:item="inc">
+                                    <tr key={inc.incomeAssessmentId}>
+                                        <template if:true={inc.isParent}>
+                                            <td style="text-align: left; border-color: black; width: 534px; background-color: #5bb6e3; font-weight: bold;">{inc.particular}</td>
+                                        </template>
+                                        <template if:false={inc.isParent}>
+                                            <td style="text-align: left; border-color: black; width: 534px;">{inc.particular}</td>
+                                        </template>
+                                        <template if:true={inc.isParent}>
+                                            <td style="border-color: black; background-color: #5bb6e3; font-weight: bold;">
+                                                <!-- <lightning-input type="number" value={inc.foreignAmt} data-id={inc.incomeAssessmentId} onfocusout={handleForeignAmtChange} disabled={inc.isParent}></lightning-input> -->
+                                                {inc.foreignAmt}
+                                            </td>
+                                        </template>
+                                        <template if:false={inc.isParent}>
+                                            <td style="border-color: black;">
+                                                <lightning-input type="number" value={inc.foreignAmt} data-id={inc.incomeAssessmentId} onfocusout={handleForeignAmtChange} disabled={inc.isParent}></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:true={inc.isParent}>
+                                            <td style="border-color: black; background-color: #5bb6e3; font-weight: bold;">
+                                                <!-- <lightning-input type="number" value={inc.exchangeRate} data-id={inc.incomeAssessmentId} onfocusout={handleExchangeRateChange} disabled={inc.isParent}></lightning-input> -->
+                                                {inc.exchangeRate}
+                                            </td>
+                                        </template>
+                                        <template if:false={inc.isParent}>
+                                            <td style="border-color: black">
+                                                <lightning-input type="number" step="0.01" value={inc.exchangeRate} data-id={inc.incomeAssessmentId} onfocusout={handleExchangeRateChange} disabled={inc.isParent}></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:true={inc.isParent}>
+                                            <td style="border-color: black; background-color: #5bb6e3; font-weight: bold;">
+                                                <!-- <lightning-input type="number" value={inc.inrAmt} data-id={inc.incomeAssessmentId} onfocusout={handleInrAmtChange} disabled></lightning-input> -->
+                                                {inc.inrAmt}
+                                            </td>
+                                        </template>
+                                        <template if:false={inc.isParent}>
+                                            <td style="border-color: black;">
+                                                <lightning-input type="number" value={inc.inrAmt} data-id={inc.incomeAssessmentId} onfocusout={handleInrAmtChange} disabled></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:true={inc.isParent}>
+                                            <td style="border-color: black; background-color: #5bb6e3; font-weight: bold;">
+                                                
+                                            </td>
+                                        </template>
+                                        <template if:false={inc.isParent}>
+                                            <td style="border-color: black">
+                                                <lightning-button-icon size="medium" icon-name="utility:delete" variant="border-filled" title="Delete" 
+                                                    data-id={inc.incomeAssessmentId} onclick={handleDelete} class="red-utility-icon"><!--  disabled={inc.isDefaultRecord} -->
+                                                </lightning-button-icon>
+                                            </td>
+                                        </template>
+                                        
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                        <div style="margin-top: 15px;">
+                            <button class="btn-add-action slds-button slds-button_brand" style="width: 130px;" data-id={app.applicantId} onclick={addNewIncomeRecord}>Add Income</button>
+                        </div>
+                    </template>
+
+                    <!-- Obligations Table -->
+                    <template if:true={app.obligations}>
+                        <h3 class="slds-m-top_medium slds-text-title_bold" style="margin-bottom: 5PX;font-size: 18px;">Obligations : </h3>
+                        <table class="sortable slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered 
+                            slds-border_left slds-border_right" style="border-color: black;">
+                            <thead>
+                                <tr>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: black; width: 534px;">Particulars</th>
+                                    <th class="col-width-10 table-header" rowspan="2" style="border-color: black">Amount in foreign</th>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: black">Exchange Rate</th>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: black">Amount INR</th>
+                                    <th class="col-width-100 table-header" rowspan="2" style="border-color: black">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={app.obligations} for:item="obl">
+                                    <tr key={obl.incomeAssessmentId}>
+                                        <template if:true={obl.isParent}>
+                                            <td style="text-align: left; border-color: black; width: 534px; background-color: #5bb6e3; font-weight: bold;">{obl.particular}</td>
+                                        </template>
+                                        <template if:false={obl.isParent}>
+                                            <td style="text-align: left; border-color: black; width: 534px;">{obl.particular}</td>
+                                        </template>
+                                        <template if:true={obl.isParent}>
+                                            <td style="border-color: black; background-color: #5bb6e3; font-weight: bold;">
+                                                {obl.foreignAmt}
+                                            </td>
+                                        </template>
+                                        <template if:false={obl.isParent}>
+                                            <td style="border-color: black;">
+                                                <lightning-input type="number" value={obl.foreignAmt} data-id={obl.incomeAssessmentId} onfocusout={handleForeignAmtChange} disabled={obl.isParent}></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:true={obl.isParent}>
+                                            <td style="border-color: black; background-color: #5bb6e3; font-weight: bold;">
+                                                {obl.exchangeRate}
+                                            </td>
+                                        </template>
+                                        <template if:false={obl.isParent}>
+                                            <td style="border-color: black">
+                                                <lightning-input type="number" step="0.01" value={obl.exchangeRate} data-id={obl.incomeAssessmentId} onfocusout={handleExchangeRateChange} disabled={obl.isParent}></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:true={obl.isParent}>
+                                            <td style="border-color: black; background-color: #5bb6e3; font-weight: bold;">
+                                                {obl.inrAmt}
+                                            </td>
+                                        </template>
+                                        <template if:false={obl.isParent}>
+                                            <td style="border-color: black;">
+                                                <lightning-input type="number" value={obl.inrAmt} data-id={obl.incomeAssessmentId} onchange={handleInrAmtChange} disabled></lightning-input>
+                                            </td>
+                                        </template>
+                                        <template if:true={obl.isParent}>
+                                            <td style="border-color: black; background-color: #5bb6e3; font-weight: bold;">
+                                                
+                                            </td>
+                                        </template>
+                                        <template if:false={obl.isParent}>
+                                            <td style="border-color: black">
+                                                <lightning-button-icon size="medium" icon-name="utility:delete" variant="border-filled" title="Delete" 
+                                                    data-id={obl.incomeAssessmentId} onclick={handleDelete} class="red-utility-icon"> <!-- disabled={obl.isDefaultRecord} -->
+                                                </lightning-button-icon>
+                                            </td>
+                                        </template>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                        <div style="margin-top: 15px;">
+                            <button class="btn-add-action slds-button slds-button_brand" style="width: 130px;" data-id={app.applicantId} onclick={addNewObligationRecord}>Add Obligation</button>
+                        </div>
+                    </template>
+                </lightning-tab>
+            </template>
+        </lightning-tabset>
+    </lightning-card>
+    <template if:true={addNewRecord}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header" style="background-color: #5bb6e3;">
+                    <h2 class="slds-text-heading_medium">Add New {recordType} Record</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <div class="slds-m-around_medium">
+                        <lightning-input type="text" label="Particulars" name="recordType" value={particulars} onchange={handleInputChange} required></lightning-input>
+                        <lightning-input type="number" label="Foreign Amount" name="foreignAmout" value={foreignAmt} onchange={handleInputChange}></lightning-input>
+                        <lightning-input type="number" step="0.01" label="Exchange Rate" name="exchangeRate" value={exchangeRate} onchange={handleInputChange}></lightning-input>
+                        <lightning-input type="number" label="Amoint In INR" name="inrAmount" value={inrAmount} onchange={handleInputChange} disabled></lightning-input>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer slds-text-align_center" style="background-color: #5bb6e3;">
+                    <button class="btn-negative-action slds-button slds-button_brand" style="margin-right: 7px; width: 100px; " onclick={closeAddModal}>Close</button>
+                    <button class="btn-positive-action slds-button slds-button_brand" style="width: 100px;" onclick={onClickModalSave}>Save</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <template if:true={confirmationScreen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header" style="background-color: #5bb6e3;">
+                    <h2 class="slds-text-heading_medium">Confirmation Screen</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    Are you sure you want to remove this applicant’s Salaried income expense record?
+                </div>
+                <footer class="slds-modal__footer slds-text-align_center" style="background-color: #5bb6e3;">
+                    <button class="btn-negative-action slds-button slds-button_brand" style="margin-right: 7px; width: 100px; " onclick={onClickModalNo}>No</button>
+                    <button class="btn-positive-action slds-button slds-button_brand" style="width: 100px;" onclick={onClickModalYes}>Yes</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

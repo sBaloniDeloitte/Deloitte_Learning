@@ -1,0 +1,225 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import "c/cssLibrary";
+
+/* ----------------- Dark Theme Palette -----------------
+   Matches the modal colour scheme used on salesLoginCollateralDetailsCmp
+   so this reassignment pop-up looks consistent with the rest of the flow. */
+:host {
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-text: #ffffff;
+    --dt-text-muted: #cfd8e6;
+    --dt-placeholder: #8a99b3;
+    --dt-accordion: #1589ee;
+    --dt-positive: #1467eb;
+    --dt-negative: #db2929;
+    --dt-purple: #8d29db;
+}
+
+/* ----------------- Modal layout fix -----------------
+   Same root cause as the rejectLoanApplicationCmp quick-action modal:
+   cssLibrary.css (imported above) forces ".slds-modal__container
+   { padding: 3% 0 !important; }" on every modal in the org, which is
+   the empty dark strip pushing the header away from the top and the
+   footer away from the bottom. Resetting that padding + pinning the
+   header/footer as fixed-size flex items (content area scrollable in
+   between) makes them sit flush at the top/bottom. Also removing the
+   default SLDS drop-shadow around the container, which was showing up
+   as an extra dark rectangle/halo behind the dialog box. Layout/visual
+   only - no markup or button behavior changed. */
+.slds-modal {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    /* This section is position:fixed and covers the ENTIRE viewport,
+       including the empty flex space around the centered dialog box.
+       That invisible full-screen layer was silently intercepting clicks
+       meant for the platform's own native quick-action close ("X")
+       button, which sits outside our dialog box in that same area -
+       this is why pressing it did nothing. Disabling pointer-events on
+       this outer layer (and re-enabling them only on our own dialog box
+       below) lets clicks pass through to the native close button while
+       our own Cancel/Reassign buttons keep working exactly as before. */
+    pointer-events: none !important;
+    /* Dim + blur the page behind the dialog while it's open. This layer
+       already spans the full viewport (see comment above), so adding
+       the overlay/blur here needs no extra markup and keeps the native
+       close-button passthrough (pointer-events:none) intact. */
+    background-color: rgba(4, 9, 20, 0.55) !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.slds-modal__container {
+    background-color: var(--dt-bg);
+    display: flex;
+    flex-direction: column;
+    /* height: auto !important overrides a taller default coming from
+       the platform's own SLDS modal framework (separate from
+       cssLibrary.css) that otherwise stretches this box to fill the
+       whole viewport, which is what left dark empty space above the
+       header and below the footer even after the max-height cap. */
+    height: auto !important;
+    max-height: 90vh !important;
+    margin: 40px auto 0 auto;
+    padding: 0 !important;
+    box-shadow: none !important;
+    pointer-events: auto !important;
+}
+
+/* Narrow the dialog down from the cssLibrary.css "width-90" default
+   (90% of the viewport, which looked oversized/"weird" stretched across
+   the whole screen) to a compact, form-sized box. Same selector
+   specificity + !important as the source rule, declared later in this
+   stylesheet so it wins the cascade - no JS/markup change needed. */
+.slds-modal__container.width-90 {
+    width: 480px !important;
+    max-width: 92vw !important;
+    min-width: auto !important;
+}
+
+/* "X" close button pinned to the top-right corner of the header. Purely
+   additive UI - it calls the existing closeModel() handler already used
+   by the Cancel button, so behavior is unchanged. */
+.reassign-close-btn {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    z-index: 11;
+    --sds-c-icon-color-foreground: #ffffff;
+    --sds-c-icon-color-foreground-default: #ffffff;
+}
+
+.reassign-close-btn:hover,
+.reassign-close-btn:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+}
+
+.slds-modal__header,
+.slds-modal__footer {
+    flex: 0 0 auto;
+}
+
+.slds-modal__content {
+    background-color: var(--dt-bg);
+    color: var(--dt-text);
+    /* flex-grow:0 so the content area sizes to its actual fields
+       instead of stretching to fill all leftover space up to the 90vh
+       cap (that stretch was the large empty black area making the
+       whole modal look too tall). It can still shrink/scroll if a
+       long list of fields ever needs more room than the cap allows. */
+    flex: 0 1 auto;
+    max-height: calc(90vh - 120px);
+    overflow-y: auto;
+}
+
+.header-section {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-image: linear-gradient(135deg, rgb(0, 26, 94) 0%, rgb(0, 48, 135) 55%, rgb(0, 77, 179) 100%) !important;
+    border-bottom: 1px solid var(--dt-border);
+}
+
+.header-title {
+    color: var(--dt-text) !important;
+}
+
+.footer-section {
+    position: sticky;
+    bottom: 0;
+    background-image: linear-gradient(135deg, rgb(0, 26, 94) 0%, rgb(0, 48, 135) 55%, rgb(0, 77, 179) 100%) !important;
+    border-top: 1px solid var(--dt-border);
+}
+
+/* Reassign / Yes - solid purple ("Start Application" look). Only
+   colors/border changed, labels and click handlers (reassignRecord,
+   handleYesPerm) are untouched. */
+.save-button.start-app-style-btn,
+.continue-button {
+    background-color: #8b5cf6 !important;
+    border-color: #8b5cf6 !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+}
+
+.save-button.start-app-style-btn:hover {
+    background-color: #7c3aed !important;
+    border-color: #7c3aed !important;
+}
+
+/* Cancel / No - dark navy background with purple outline ("Previous"
+   look). Only colors/border changed, labels and click handlers
+   (closeModel, handleNoPerm) are untouched. */
+.close-button.previous-style-btn,
+.previous-button {
+    background-color: #16283f !important;
+    border: 1px solid #8b5cf6 !important;
+    color: #ffffff !important;
+    border-radius: 6px !important;
+}
+
+.close-button.previous-style-btn:hover {
+    background-color: #1f3550 !important;
+    border-color: #a855f7 !important;
+}
+
+/* ----------------- Inline error panel -----------------
+   Replaces the ShowToastEvent for error messages (e.g. "You are not
+   authorized to reassign") with a centered, themed panel inside the
+   modal instead of a browser toast. Only the error display surface
+   changed - the underlying validation/authorization checks and
+   success-toast behavior are untouched. */
+.inline-error-panel {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    min-height: 220px;
+    padding: 24px;
+    gap: 8px;
+}
+
+.inline-error-icon {
+    --sds-c-icon-color-foreground-default: #db2929;
+    margin-bottom: 8px;
+}
+
+.inline-error-title {
+    color: #ffffff !important;
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin: 0;
+}
+
+.inline-error-message {
+    color: #ffffff !important;
+    font-size: 0.95rem;
+    margin: 0 0 12px 0;
+}
+
+.inline-error-ok {
+    border-radius: 1.25rem !important;
+}
+
+lightning-input::part(input),
+lightning-combobox::part(input) {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    color: var(--dt-text) !important;
+}
+
+.slds-form-element__label {
+    color: var(--dt-text-muted) !important;
+}
+
+/*__________________________GenAI: Generated code ends here______________________________*/

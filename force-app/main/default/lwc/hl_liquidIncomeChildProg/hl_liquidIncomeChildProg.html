@@ -1,0 +1,71 @@
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={spinnerRun}>
+        <section
+            role="dialog"
+            tabindex="-1"
+            class="slds-modal slds-fade-in-open"
+            style="z-index: 900003;"
+        >
+            <lightning-spinner></lightning-spinner>
+        </section>
+    </template>
+
+    <div class="slds-grid slds-wrap slds-scrollable_x liquid-child-table-wrap">
+        <table class="slds-table liquid-child-table">
+            <thead>
+                <tr>
+                    <th class="col-width-100 liquid-child-th">Particulars</th>
+                    <th class="col-width-100 liquid-child-th">Value</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={data} for:item="row">
+                    <tr key={row.label}>
+                        <td class="col-width-100 liquid-child-td liquid-child-td-left">{row.label}</td>
+                        <td class="col-width-100 liquid-child-td">
+                            <template if:true={row.isBoolean}>
+                                <lightning-combobox
+                                    value={isPrevious}
+                                    data-id={row.recordId}
+                                    data-label={row.label}
+                                    options={booleanOptions}
+                                    onchange={handleInputChange}
+                                    class="compact-combobox"
+                                ></lightning-combobox>
+                            </template>
+
+                            <template if:false={row.isBoolean}>
+                                <lightning-input
+                                    type="number"
+                                    step="1"
+                                    variant="label-hidden"
+                                    data-id={row.recordId}
+                                    data-label={row.label}
+                                    value={row.value}
+                                    onblur={handleInputChange}
+                                    disabled={row.disabled}
+                                    class="slds-input"
+                                ></lightning-input>
+                            </template>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
+    <table class="slds-table liquid-foir-table">
+            <tbody>
+                <tr>
+                    <td class="liquid-foir-label">Additional FOIR</td>
+                    <td class="liquid-foir-value">
+                        <lightning-input type="number" 
+                        step="1" 
+                        variant="label-hidden" 
+                        onblur={handleSustainableValueChange}
+                        name="additionalFOIR"></lightning-input>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</template>

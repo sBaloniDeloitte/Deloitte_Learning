@@ -1,0 +1,388 @@
+<template>
+    <template if:true={isloading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </template>
+    <span class="styleContainer"></span>
+    <!-- Container for Add Button & Applicants -->
+    <div class="container accordian journey-layout" style="border-radius: 5px; border: 1px solid;">
+        <div class="journey-side-column">
+            <c-process-journey-cmp record-id={recordId} onvaluechange={handleProcessJourneyNavigate}></c-process-journey-cmp>
+        </div>
+        <div class="journey-main-column">
+        <template if:false={otherInfo}>
+            <template if:false={loginChecklist}>
+                <!-- Add Applicant Button -->
+                <button class="slds-button slds-button_brand initiate-button" style="margin-left: 2%;"
+                    onclick={handleAddNewApplicant} disabled={isFieldDisable}>
+                    Add Applicant
+                </button>
+            </template>
+ 
+        </template>
+        <!-- Accordion for Applicants -->
+        <template if:false={loginChecklist}>
+            <lightning-accordion active-section-name={activeParentSectionName}>
+                <template for:each={applicantList} for:item="applicant">
+                    <lightning-accordion-section allow-multiple-sections-open data-id={applicant.sequence}
+                        key={applicant.sequence} tyle="background-color: white; font-weight: 700" name={applicant.name}
+                        label={applicant.name} onclick={handleParentAccordionClick}>
+                        <!--chagnes by Kunal Bisht for SFHL-1420 start-->
+                        <!-- <template if:true={showDeleteCoAppBtn}>
+                            <div class="slds-grid slds-grid_align-spread slds-m-bottom_small">
+                                 <lightning-icon icon-name="utility:delete" size="small"
+                                    alternative-text="Remove Co-Applicant" class="slds-icon-text-error"
+                                    data-id={applicant.name} onclick={handleDeleteCoApplicantAndRelatedRecords}
+                                    style="margin-top: 1%;">
+                                 </lightning-icon> 
+                        </template> -->
+                        <!--chagnes by Kunal Bisht for SFHL-1420 end-->
+ 
+ 
+ 
+                        <!-- Progress Bar -->
+                        <div class="slds-box slds-theme_default progress-container slds-scrollable_x" style="margin-top:1%">
+                            <div class="progress-bar">
+                                <template for:each={processedStages} for:item="stage" for:index="index">
+                                    <div key={stage.name} class="progress-step">
+ 
+                                        <!-- Connector Line -->
+                                        <template if:true={stage.showLine}>
+                                            <div class="connector"></div>
+                                        </template>
+ 
+                                        <!-- Stage Icon -->
+                                        <div class="icon-wrapper">
+                                            <template if:true={stage.isCompleted}>
+                                                <lightning-icon icon-name="utility:success" size="small"
+                                                    class="step-icon-completed" alternative-text="Completed"></lightning-icon>
+                                            </template>
+                                            <template if:false={stage.isCompleted}>
+                                                <lightning-icon icon-name="utility:error" size="small"
+                                                    class="step-icon-incomplete" alternative-text="Incomplete"></lightning-icon>
+                                            </template>
+                                        </div>
+ 
+                                        <!-- Stage Name -->
+                                        <div class="slds-text-align_center">
+                                            <p class="stage-name">{stage.name}</p>
+                                        </div>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+ 
+                        <template if:false={otherInfo}>
+                            <!-- Accordion for Stages -->
+                            <lightning-accordion allow-multiple-sections-open data-applicantid={applicant.sequence}
+                                active-section-name={activeSectionName}>
+                                <template for:each={applicant.stages} for:item="stage">
+                                    <template if:true={stage.showAccordionSection} key={stage.name}>
+                                    <lightning-accordion-section key={stage.name} label={stage.name}
+                                        onclick={handleAccordionClick} data-stage={stage.name}
+                                        data-applicantid={applicant.sequence} name={stage.name} data-id={stage.name}
+                                        disabled={stage.disableAccordian}>
+ 
+                                        <!-- Render only for selected applicant & stage -->
+ 
+                                        <template if:true={stage.isApplicantCmp}>
+                                            <c-sales-login-personal-detail-cmp record-id={recordId}
+                                                applicant-id={applicant.applicantId} app-seq={applicant.sequence}
+                                                oncallbasicinformation={handleCallApplicantMethod}
+                                                onrecallapplicantmethod={handleCallDeDupePopUp}
+                                                oncallaadhardetails={handleCallAadharDetailsMethod} is-co-applicant={isNewApplicant}
+                                                show-upload-pan-screen=true current-app-seq={applicant.sequence}
+                                                onsaveappid={handleSaveApplicantId} onrefreshapplicantlist={handleSaveApplicantId} disable-pan={isFieldDisable} is-h-l-related={isHLRelated}>
+                                            </c-sales-login-personal-detail-cmp>
+                                        </template>
+                                        <template if:true={stage.isAadharDetails}>
+                                        <c-sales-login-aadhar-details-cmp  record-id={recordId} applicant-id={applicant.applicantId} onrecallapplicantmethod={handleCallDeDupePopUp} current-app-seq={applicant.sequence}
+                                            is-aadhar-details ={isAadharDetails} oncallbasicinformation={handleCallApplicantMethod} oncallaadhardetails={handleCallAadharDetailsMethod} onrefreshapplicantlist={handleSaveApplicantId}
+                                            applicant-id-for-child={appIdChild}
+                                            onaddaddress={handleAddAddress}>
+                                        </c-sales-login-aadhar-details-cmp>
+                                        </template>
+                                        <template if:true={stage.isAddressDetails}>
+                                           <c-sales-login-address-details-cmp record-id={recordId} applicant-id={applicant.applicantId} oncallnextaccordian={handleCallNextAccordianMethod}
+                                           current-app-seq={applicant.sequence}
+                                           applicant-id-for-child={applicantId}>
+                                          </c-sales-login-address-details-cmp>
+                                        </template>
+                                         <template if:true={stage.isCKYCDetails}>
+                                            <c-sales-c-k-y-c-details-cmp record-id={recordId} applicant-id={applicant.applicantId} is-mnrl-blacklisted={applicant.isMNRLBlacklisted} is-non-individual={isNonIndividual} onckycinitiated={handleCkycInitiated}>
+                                            </c-sales-c-k-y-c-details-cmp>
+                                        </template>
+                                        <template if:true={stage.isConsent}>
+                                            <c-sales-otp-consent loan-application-id={recordId}
+                                                applicant-det-id={applicant.applicantId} parent-screen={applicant.type}
+                                                is-show-modal=true onnext={saveAndNext} login-checklist={loginChecklist}
+                                                current-app-seq={stage.sequence}
+                                                onopennextscreen={handleOpenNextSeqScreen}
+                                                onprevious={previousActionFromCustom} oncallnextaccordian={handleCallNextAccordianMethod} oncoappnext={coAppSaveAndNext} isdisable={isFieldDisable}>
+                                            </c-sales-otp-consent>
+                                        </template>
+                                        <template if:true={stage.isDeDupeScreen}>
+                                            <c-de-duplication-screen-cmp cust-id={custId} record-id={recordId}
+                                                applicant-id={applicant.applicantId}
+                                                oncallprimaryinformation={handleOpenPrimaryScreen}
+                                                current-app-seq={applicant.sequence}
+                                                oncallbasicdetails={handleCallApplicantMethod}
+                                                from-sales=true
+                                                oncallnextaccordian={handleCallNextAccordianMethod}>
+                                            </c-de-duplication-screen-cmp>
+                                        </template>
+                                        <template if:true={stage.isBasicDetails}>
+ 
+                                            <c-sales-login-basic-details-cmp record-id={recordId}
+                                                app-seq={applicant.sequence} applicant-id={applicant.applicantId}
+                                                active-section={activeSectionToBePassed}
+                                                current-app-seq={stage.sequence}
+                                                onopennextscreen={handleOpenNextSeqScreen}>
+                                            </c-sales-login-basic-details-cmp>
+                                        </template>
+                                        <template if:true={stage.isEmploymentDetails}>
+                                            <c-sales-login-employment-details-cmp record-id={recordId}
+                                                app-seq={applicant.sequence} applicant-id={applicant.applicantId}
+                                                active-section={activeSectionToBePassed}
+                                                current-app-seq={stage.sequence}
+                                                onopennextscreen={handleOpenNextSeqScreen}>
+                                            </c-sales-login-employment-details-cmp>
+                                        </template>
+                                        <template if:true={stage.isSwapApplicant}>
+                                            <c-sales-login-swap-applicant record-id={recordId} onnavigatetonexttab={navigateNext}
+                                                applicant-id={applicant.applicantId}
+                                                current-app-seq={applicant.sequence}>
+                                            </c-sales-login-swap-applicant>
+                                        </template>
+                                        <template if:true={stage.isPanValidation}>
+                                            <c-sales-login-pan-validation-response-cmp record-id={recordId} login-checklist={loginChecklist}
+                                                applicant-id={applicant.applicantId} current-app-seq={applicant.sequence} oncallcibileligibilitcmp ={handleOpenCibilCmp} >
+                                            </c-sales-login-pan-validation-response-cmp>
+                                        </template>
+                                        <template if:true={stage.isDocument}>
+                                            <c-sales-document-cmp record-id={recordId} app-id={applicant.applicantId}>
+                                            </c-sales-document-cmp>
+                                        </template>
+                                        <template if:true={stage.isBureau}>
+                                            <c-sales-login-bureau-screen-cmp record-id={recordId} login-checklist={loginChecklist} is-crif =true
+                                                app-id={applicant.applicantId} is-mnrl-blacklisted={applicant.isMNRLBlacklisted} current-app-seq={applicant.sequence} oncallnextaccordian={handleCallNextAccordianMethod}></c-sales-login-bureau-screen-cmp>
+                                        </template>
+                                         <template if:true={stage.isCibil}>
+                                            <c-sales-login-bureau-screen-cmp record-id={recordId} login-checklist={loginChecklist} is-cibil=true
+                                                app-id={applicant.applicantId} is-mnrl-blacklisted={applicant.isMNRLBlacklisted} current-app-seq={applicant.sequence} oncallnextaccordian={handleCallNextAccordianMethod}></c-sales-login-bureau-screen-cmp>
+                                        </template>
+                                         <template if:true={stage.isCrif}>
+                                            <c-sales-login-bureau-screen-cmp record-id={recordId} login-checklist={loginChecklist} is-crif =true
+                                                app-id={applicant.applicantId} is-mnrl-blacklisted={applicant.isMNRLBlacklisted} current-app-seq={applicant.sequence} oncallnextaccordian={handleCallNextAccordianMethod}></c-sales-login-bureau-screen-cmp>
+                                        </template>
+                                    </lightning-accordion-section>
+                                    </template>
+                                </template>
+                            </lightning-accordion>
+                        </template>
+                        <template if:true={otherInfo}>
+                            <lightning-accordion allow-multiple-sections-open data-applicantid={applicant.sequence}
+                                active-section-name={activeSectionName}>
+                                <template for:each={applicant.stages} for:item="stage">
+                                    <lightning-accordion-section key={stage.name} label={stage.name}
+                                        onclick={handleAccordionClick} data-stage={stage.name}
+                                        data-applicantid={applicant.sequence} name={stage.name} data-id={stage.name}
+                                        disabled={stage.disableAccordian}>
+ 
+                                        <template if:true={stage.isApplicantAdditionalInformation}>
+                                            <c-sales-loan-login-generic-screen-cmp passed-screen-name={formName}
+                                                form-identifier={formName} record-id={recordId} active-section={stage}
+                                                selected-record-id={applicant.applicantId}
+                                                onrefreshmenucmp={checkOtherInformationNavigate}
+                                                onhighlightactivescreen={handleHighLightScreen}
+                                                onrefreshcomponent={handleRefreshComponent}
+                                                hide-next={appOtherDetails}>
+                                            </c-sales-loan-login-generic-screen-cmp>
+                                        </template>
+                                        <template if:true={stage.isPersonalInformation}>
+                                            <c-sales-loan-login-generic-screen-cmp passed-screen-name={formName}
+                                                form-identifier={formName} record-id={recordId} active-section={stage}
+                                                selected-record-id={applicant.applicantId}
+                                                onrefreshmenucmp={checkOtherInformationNavigate}
+                                                onhighlightactivescreen={handleHighLightScreen}
+                                                hide-next={appOtherDetails}>
+                                            </c-sales-loan-login-generic-screen-cmp>
+                                        </template>
+                                        <template if:true={stage.isAddressInformation}>
+                                            <template for:each={processedStages} for:item="stage">
+                                                <lightning-accordion-section key={stage.name} label={stage.name}
+                                                    onclick={handleAccordionClick} data-stage={stage.name}
+                                                    data-applicantid={applicant.sequence} name={stage.name}
+                                                    data-id={stage.name} disabled={stage.disableAccordian}>
+ 
+                                                    <template if:true={stage.isPersonalInformation}>
+                                                        <c-sales-loan-login-generic-screen-cmp
+                                                            passed-screen-name={formName} form-identifier={formName}
+                                                            record-id={recordId} active-section={stage}
+                                                            selected-record-id={applicant.applicantId}
+                                                            onrefreshmenucmp={checkOtherInformationNavigate}
+                                                            onhighlightactivescreen={handleHighLightScreen}
+                                                            hide-next={appOtherDetails}>
+                                                        </c-sales-loan-login-generic-screen-cmp>
+                                                    </template>
+ 
+                                                    <template if:true={stage.isPersonalInformation}>
+                                                        <c-sales-loan-login-generic-screen-cmp
+                                                            passed-screen-name={formName} form-identifier={formName}
+                                                            record-id={recordId} active-section={stage}
+                                                            selected-record-id={applicant.applicantId}
+                                                            onrefreshmenucmp={checkOtherInformationNavigate}
+                                                            onhighlightactivescreen={handleHighLightScreen}
+                                                            hide-next={appOtherDetails}>
+                                                        </c-sales-loan-login-generic-screen-cmp>
+                                                    </template>
+ 
+                                                </lightning-accordion-section>
+                                            </template>
+                                        </template>
+                                        <template if:true={stage.isEmploymentInformation}>
+                                            <template for:each={processedStages} for:item="stage">
+                                                <lightning-accordion-section key={stage.name} label={stage.name}
+                                                    onclick={handleAccordionClick} data-stage={stage.name}
+                                                    data-applicantid={applicant.sequence} name={stage.name}
+                                                    data-id={stage.name} disabled={stage.disableAccordian}>
+ 
+                                                    <template if:true={stage.isPersonalInformation}>
+                                                        <c-sales-loan-login-generic-screen-cmp
+                                                            passed-screen-name={formName} form-identifier={formName}
+                                                            record-id={recordId} active-section={stage}
+                                                            selected-record-id={applicant.applicantId}
+                                                            onrefreshmenucmp={checkOtherInformationNavigate}
+                                                            onhighlightactivescreen={handleHighLightScreen}
+                                                            hide-next={appOtherDetails}>
+                                                        </c-sales-loan-login-generic-screen-cmp>
+                                                    </template>
+ 
+                                                    <template if:true={stage.isPersonalInformation}>
+                                                        <c-sales-loan-login-generic-screen-cmp
+                                                            passed-screen-name={formName} form-identifier={formName}
+                                                            record-id={recordId} active-section={stage}
+                                                            selected-record-id={applicant.applicantId}
+                                                            onrefreshmenucmp={checkOtherInformationNavigate}
+                                                            onhighlightactivescreen={handleHighLightScreen}
+                                                            hide-next={appOtherDetails}>
+                                                        </c-sales-loan-login-generic-screen-cmp>
+                                                    </template>
+ 
+                                                </lightning-accordion-section>
+                                            </template>
+                                        </template>
+                                        <template if:true={stage.isApplicantAddressInformation}>
+                                            <c-applicant-addresses onrefreshmenucmp={checkOtherInformationNavigate} record-id={recordId} app-id={applicant.applicantId}>
+                                            </c-applicant-addresses>
+                                        </template>
+ 
+                                        <!-- Render only for selected applicant & stage -->
+                                    </lightning-accordion-section>
+                                </template>
+                            </lightning-accordion>
+                        </template>
+                    </lightning-accordion-section>
+                </template>
+            </lightning-accordion>
+        </template>
+ 
+        <template if:true={loginChecklist}>
+            <lightning-accordion allow-multiple-sections-open active-section-name={openApplicantSections}>
+                <template for:each={applicantList} for:item="applicant">
+                    <lightning-accordion-section data-id={applicant.sequence} key={applicant.sequence}
+                        tyle="background-color: white; font-weight: 700" name={applicant.name} label={applicant.name}
+                        onclick={handleParentAccordionClick}>
+                        <lightning-accordion allow-multiple-sections-open data-applicantid={applicant.sequence}
+                            active-section-name={openSections}>
+                            <template for:each={applicant.stages} for:item="stage">
+                                <lightning-accordion-section key={stage.name} label={stage.name}
+                                    onclick={handleAccordionClick} data-stage={stage.name}
+                                    data-applicantid={applicant.sequence} name={stage.name} data-id={stage.name}>
+ 
+                                    <!-- <template if:true={stage.isApplicantAdditionalInformation}>
+                                        <c-sales-loan-login-generic-screen-cmp passed-screen-name={formName}
+                                            form-identifier={formName} record-id={recordId} active-section={stage}
+                                            selected-record-id={applicant.applicantId}
+                                            onrefreshmenucmp={checkOtherInformationNavigate}
+                                            onhighlightactivescreen={handleHighLightScreen} hide-next={appOtherDetails}>
+                                        </c-sales-loan-login-generic-screen-cmp>
+                                    </template> -->
+                                    <template if:true={stage.isPersonalInformation}>
+                                        <c-sales-loan-login-generic-screen-cmp passed-screen-name={formName}
+                                            form-identifier={formName} record-id={recordId} active-section={stage}
+                                            selected-record-id={applicant.applicantId}
+                                            onrefreshmenucmp={checkOtherInformationNavigate} login-checklist={loginChecklist}
+                                            onhighlightactivescreen={handleHighLightScreen} hide-next={appOtherDetails}>
+                                        </c-sales-loan-login-generic-screen-cmp>
+                                    </template>
+                                    <template if:true={stage.isApplicantAddressInformation}>
+                                        <c-applicant-addresses login-checklist={loginChecklist} record-id={recordId}
+                                            app-id={applicant.applicantId}>
+                                        </c-applicant-addresses>
+                                    </template>
+                                    <template if:true={stage.isPanValidation}>
+                                        <c-sales-login-pan-validation-response-cmp record-id={recordId}
+                                            login-checklist={loginChecklist} applicant-id={applicant.applicantId} current-app-seq={applicant.sequence}>
+                                        </c-sales-login-pan-validation-response-cmp>
+                                    </template>
+                                    {stage.isConsent}
+                                    <template if:true={stage.isConsent}>
+                                        <c-sales-otp-consent loan-application-id={recordId}
+                                            applicant-det-id={applicant.applicantId} parent-screen={applicant.type}
+                                            is-show-modal=true onnext={saveAndNext} login-checklist={loginChecklist}
+                                            onprevious={previousActionFromCustom} oncallnextaccordian={handleCallNextAccordianMethod} oncoappnext={coAppSaveAndNext}>
+                                        </c-sales-otp-consent>
+                                    </template>
+                               
+                                    <template if:true={stage.isBureau}>
+                                        <c-sales-login-bureau-screen-cmp record-id={recordId}
+                                            form-name="Bureau Login Checklist" login-checklist={loginChecklist}
+                                            app-id={applicant.applicantId}></c-sales-login-bureau-screen-cmp>
+                                    </template>
+ 
+ 
+                                    <!-- Render only for selected applicant & stage -->
+                                </lightning-accordion-section>
+                            </template>
+                        </lightning-accordion>
+                        <!-- <template if:true={otherInfo}>
+                            <c-sales-loan-login-generic-screen-cmp passed-screen-name="Other Information" record-id={recordId} active-section={activeSectionNew} onrefreshmenucmp={checkOtherInformationNavigate} onhighlightactivescreen={handleHighLightScreen} hide-next={appOtherDetails}></c-sales-loan-login-generic-screen-cmp>
+                        </template> -->
+ 
+                    </lightning-accordion-section>
+                </template>
+            </lightning-accordion>
+        </template>
+       
+        <template if:false={otherInfo}>
+            <template if:false={loginChecklist}>
+                <lightning-accordion allow-multiple-sections-open>
+                    <lightning-accordion-section label="Select Key Applicant" name="swapApplicant">
+                        <c-sales-login-swap-applicant record-id={recordId} onnavigatetonexttab={navigateNext}
+                            login-checklist={loginChecklist} refresh-cmp={refreshData}></c-sales-login-swap-applicant>
+                    </lightning-accordion-section>
+                </lightning-accordion>
+            </template>
+            <template if:true={loginChecklist}>
+                <lightning-accordion allow-multiple-sections-open active-section-name="swapApplicant">
+                    <lightning-accordion-section label="Selected Key Applicant" name="swapApplicant">
+                        <c-sales-login-swap-applicant record-id={recordId}
+                            login-checklist={loginChecklist} refresh-cmp={refreshData}></c-sales-login-swap-applicant>
+                    </lightning-accordion-section>
+                </lightning-accordion>
+            </template>
+            <!-- <div>
+                <c-sales_triangulation-screen-main record-id={recordId}></c-sales_triangulation-screen-main>
+            </div> -->
+        </template>
+        </div>
+        
+        <!-- <div class="andcontainer slds-text-align_right" style="margin-top: 1%;">
+         
+                <button type="button" class="slds-button previous-button" onclick={handleNext}>Next</button>
+           
+        </div> -->
+    
+        
+    </div>
+</template>

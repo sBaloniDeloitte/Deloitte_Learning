@@ -1,0 +1,1 @@
+@isTest public class COMM_CKYCAS83EncryptorTest { @isTest static void testLightningStudio() { Test.startTest(); COMM_CKYCAS83Encryptor.LightningStudio(); Test.stopTest(); System.assert(true, 'Method executed without exceptions'); } }

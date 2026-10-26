@@ -1,0 +1,11 @@
+.fileCSV .slds-form-element__label {
+    display: none;
+}
+.custom-modal-header {
+    background-color: skyblue;
+    color: black;
+}
+
+.custom-modal-header h2 {
+    color: black;
+}

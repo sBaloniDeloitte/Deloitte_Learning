@@ -1,0 +1,17 @@
+@import "c/cssLibrary";
+
+.save-button.slds-button_brand {
+    background-color: #8b5cf6;
+    border-color: #8b5cf6;
+}
+
+.save-button.slds-button_brand:hover,
+.save-button.slds-button_brand:focus {
+    background-color: #7c3aed;
+    border-color: #7c3aed;
+}
+
+.save-button.slds-button_brand:active {
+    background-color: #6d28d9;
+    border-color: #6d28d9;
+}

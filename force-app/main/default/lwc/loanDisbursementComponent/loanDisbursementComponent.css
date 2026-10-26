@@ -1,0 +1,80 @@
+@import "c/cssLibrary";
+
+.header-section {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.footer-section {
+    position: sticky; 
+    bottom: 0;
+}
+
+/* ____GenAI: Generated code starts here____ */
+/* NOTE: Accordion header color (#003087) is NOT set here. LWC auto-scopes  */
+/* selectors written in this .css file, so a rule like                     */
+/* "lightning-accordion-section .slds-accordion__summary" never matches -- */
+/* that markup lives inside lightning-accordion-section's OWN shadow root, */
+/* a separate scope this file's CSS cannot reach. The actual header color  */
+/* is applied via the raw <style> tag injected in renderedCallback()       */
+/* (loanDisbursementComponent.js), which bypasses LWC CSS scoping and can  */
+/* target .section-control / .slds-accordion__summary-heading directly.   */
+/* See loanDisbursementComponent.js for the working implementation.        */
+/* ____GenAI: Generated code ends here____ */
+
+/* ------------------------------------------------------------------ */
+/* Disbursement payment table — dark navy theme matching             */
+/* incomeAssessmentMainCmp reference design. Scoped to               */
+/* .disbursement-payment-table only so the Bank Details modal table  */
+/* (which shares the legacy "custom-table" class) is unaffected.     */
+/* ------------------------------------------------------------------ */
+.disbursement-table-wrapper {
+    border-radius: 0.5rem;
+    overflow: hidden;
+}
+
+table.disbursement-payment-table {
+    background-color: #10152a;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff;
+}
+
+table.disbursement-payment-table thead th {
+    background-color: #141a2e !important;
+    border: 1px solid rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+    font-size: 0.8rem;
+    text-align: center;
+}
+
+table.disbursement-payment-table tbody td {
+    background-color: #10152a;
+    border-color: rgba(255, 255, 255, 0.15) !important;
+    color: #ffffff !important;
+}
+
+table.disbursement-payment-table tbody tr:hover td {
+    background-color: #171e38;
+}
+
+/* Totals row (last row, colspan cells) */
+table.disbursement-payment-table tbody tr:last-child td {
+    background-color: #141a2e;
+    color: #ffffff !important;
+}
+
+/* Keep inline date input, formatted-number, and action icons legible on dark bg */
+table.disbursement-payment-table .custom-date-input {
+    background-color: #10152a;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+table.disbursement-payment-table lightning-button-icon {
+    --sds-c-icon-color-foreground: #ffffff;
+    --slds-c-icon-color-foreground: #ffffff;
+}

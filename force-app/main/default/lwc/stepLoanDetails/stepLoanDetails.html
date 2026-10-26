@@ -1,0 +1,160 @@
+<template>
+    <!-- <div class="andcontainer align-end" style="margin-top: 1%;"> -->
+    <div class="slds-p-right_xx-small slds-p-bottom_small">
+        <template if:true={showAddButton}>
+            <button type="button" class="slds-button slds-button_brand save-button buttonAlignment"
+                onclick={handleAddStep}>Add Step</button>
+        </template>
+        <!-- <template if:true={showSaveButton}>
+            <button type="button" class="slds-button slds-button_brand save-button saveBtnStyle" onclick={handleSaveStep}>Save Step</button>
+        </template> -->
+
+    </div>
+
+    <!-- <div class="table-container" > -->
+
+    <div class="slds-p-around_small">
+        <table cellpadding="0" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 1px solid var(--dt-border);"
+            class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right custom-table">
+            <thead>
+                <tr class="slds-line-height_reset">
+                    <th
+                        style="width: 6%; text-align: center; background-color: var(--dt-header-bg);color: #ffffff;border: 1px solid var(--dt-border);">
+                        <div class="slds-truncate" title="Charge Name">Step Number</div>
+                    </th>
+                    <th
+                        style="width: 6%; text-align: center; background-color: var(--dt-header-bg);color: #ffffff;border: 1px solid var(--dt-border);">
+                        <div class="slds-truncate" title="Sactioned Value">Step Identifier</div>
+                    </th>
+                    <th
+                        style="width: 6%; text-align: center; background-color: var(--dt-header-bg);color: #ffffff;border: 1px solid var(--dt-border);">
+                        <div class="slds-truncate" title="Sactioned Value">Step Amount</div>
+                    </th>
+                    <th
+                        style="width: 6%; text-align: center; background-color: var(--dt-header-bg);color: #ffffff;border: 1px solid var(--dt-border);">
+                        <div class="slds-truncate" title="Negotiated value">Step Tenure</div>
+                    </th>
+                    <th
+                        style="width: 6%; text-align: center; background-color: var(--dt-header-bg);color: #ffffff;border: 1px solid var(--dt-border);">
+                        <div class="slds-truncate" title="Negotiated value">Tenure %</div>
+                    </th>
+                    <th
+                        style="width: 5%; text-align: center; background-color: var(--dt-header-bg);color: #ffffff;border: 1px solid var(--dt-border);">
+                        <div class="slds-truncate" title="Negotiated value">Auto Calculate</div>
+                    </th>
+                    <th
+                        style="width: 6%; text-align: center; background-color: var(--dt-header-bg);color: #ffffff;border: 1px solid var(--dt-border);">
+                        <div class="slds-truncate" title="Action">Actions</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={stepLoanTableDetails} for:item="row" for:index="index">
+                    <tr key={row.stepNumber} style="height: 5px;">
+                        <td style="text-align: left; padding: 2px; width: 10%;border: 1px solid var(--dt-border);"
+                            class="hideInput">
+                            {row.stepNumber}
+                        </td>
+                        <td
+                            style="text-align: left; padding: 2px;padding-bottom:3px; width: 10%;border: 1px solid var(--dt-border);">
+                            <lightning-combobox variant="label-hidden" name="stepIdentifier" step="0.01"
+                                value={row.stepIdentifier} data-index={index} onchange={handleStepLoanChange}
+                                options={picklistValues} disabled={row.disableInput}>
+                            </lightning-combobox>
+
+
+
+                            <!-- <lightning-input variant="label-hidden" type="number" step="0.01"
+                                value={row.stepIdentifier} data-index={index} name="stepIdentifier"  
+                                onchange = {handleStepLoanChange}>
+                            </lightning-input> -->
+                        </td>
+                        <td
+                            style="text-align: left; padding: 2px;padding-bottom:3px; width: 10%;border: 1px solid var(--dt-border);">
+                            <lightning-input variant="label-hidden" type="number" step="0.01" value={row.stepLoanAmount}
+                                onchange={handleStepLoanChange} data-index={index} name="stepLoanAmount" 
+                                disabled={row.disableInput}>
+                            </lightning-input>
+                        </td>
+                        <td
+                            style="text-align: left; padding: 2px;padding-bottom:3px; width: 10%;border: 1px solid var(--dt-border);">
+                            <lightning-input variant="label-hidden" type="number" step="0.01" value={row.stepLoanTenure}
+                                onchange={handleStepLoanChange} data-index={index} name="stepLoanTenure"
+                                disabled={row.disableInput}>
+                            </lightning-input>
+                        </td>
+                        <td
+                            style="text-align: left; padding: 2px; padding-bottom:3px; width: 10%; border: 1px solid var(--dt-border);">
+                            <lightning-input variant="label-hidden" type="number" step="0.01"
+                                value={row.tenurePercentage} data-index={index} name="tenurePercentage" disabled>
+                            </lightning-input>
+                        </td>
+
+                        
+<td style="text-align: center; padding: 2px; padding-bottom:3px; width: 5%; border: 1px solid var(--dt-border);">
+    <lightning-input
+        variant="label-hidden"
+        type="checkbox"
+        checked={row.autoCal}
+        data-index={index}
+        name="autocal"
+        onchange={handleStepLoanChange}
+        disabled = {row.disableInput}>
+    </lightning-input>
+</td>
+
+                        <td class="slds-cell-wrap commonStyle action" data-label="Actions">
+                            <div class="slds-truncate" title="Actions">
+                                <template if:false={row.disabledRow}>
+                                    <button type="button" class="slds-button slds-button_brand save-button saveBtnStyle"
+                                        data-index={index} onclick={handleSaveStep}>Save Step</button>
+                                </template>
+                                <template if:true={row.disabledRow}>
+                                    <template if:true={row.showEdit}>
+                                        <lightning-icon class="editIcon" size="small" icon-name="utility:edit"
+                                            data-index={index} alternative-text="edit" title="edit"
+                                            onclick={handleEdit}></lightning-icon>
+                                    </template>
+                                    <template if:true={row.showDelete}>
+                                    <lightning-icon class="deleteIcon" size="small" icon-name="utility:delete"
+                                        data-index={index} alternative-text="delete" title="delete"
+                                        data-steploanid={row.stepLoanId} onclick={handleDelete}></lightning-icon>
+                                    </template>
+                                </template>
+                            </div>
+                        </td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+
+    </div>
+
+    <template if:true={showDeleteConfirmationPopUp}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-label="This is a confirmation modal for step loan record deletion"
+        class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header header-section">
+                    <div class="slds-text-align_center">
+                        <h2 slot="title" class="header-title slds-text-heading_medium slds-hyphenate">Confirmation Screen</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless textAlignment">
+                    <!-- <div style="padding: 10px; text-align: center;"> -->
+                        Are you sure you want to delete this step?
+                    <!-- </div> -->
+                </div>
+                <footer class="slds-modal__footer footer-section">
+                    <div class="slds-align_absolute-center">
+                        <button class="cancel-button slds-button slds-button_brand" onclick={handleNoDelete}>No</button>
+                        <button class="save-button slds-button slds-button_brand" onclick={handleYesDelete}>Yes</button>
+                        <!-- <button class="slds-button slds-button_brand previous-button"
+                            onclick={handleNoDelete}>No</button>
+                        <button class="slds-button slds-button_brand continue-button"
+                            onclick={handleYesDelete}>Yes</button> -->
+                    </div>
+                </footer>
+            </div>
+        </section>
+    </template>
+</template>

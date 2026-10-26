@@ -1,0 +1,428 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 08-14-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <span class="styleContainer"></span>
+    <!-- to display file preview in widget style -->
+    <template lwc:if={showWidgetStyle}>
+        <table>
+            <tbody>
+                <tr>
+                    <td style="text-align: -webkit-center; padding: 8px 0px 0px 0px !important;">
+                        <div class="file-widget-inner">
+                           
+                            <template lwc:if={showImage}>
+                                <img src={imageUrl} title="" style="max-width: 100%; height: auto;" />
+                            </template>
+                            <template lwc:elseif={showPdf}>
+                                <iframe src={pdfUrl} style="width: 100%; height: 100%; height: -webkit-fill-available; border: none;"></iframe>
+                            </template>
+                            <template lwc:elseif={showExcel}>
+                        <div>
+                        <a href={fileUrl} target="_blank" download>Download Excel File</a>
+                        </div>
+                            
+                    </template>
+                    <template lwc:elseif={showMSG}>
+                        <div style="text-align: center; padding: 114px;">
+                            <a href={fileUrl} target="_blank" download>Download Email File</a>
+                        </div>
+                    </template>
+                            <template lwc:elseif={showUpload}>
+                                <div style="text-align: center; margin-top: 100px; height: inherit;">No document uploaded.</div>
+                            </template>
+                            <template lwc:else>
+                                <div style="text-align: center; margin-top: 100px; height: inherit;">No preview available for this document.</div>
+                            </template>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="text-align: -webkit-center; padding: 10px 0px 0px 0px !important;">
+                        <!-- to show upload icon button -->
+                        <template lwc:if={showUpload}>
+                            <template if:false={disableUpload}>
+                                <div if:true={checkDisbursed} class={actionIconClass} style="position: relative;">
+                                    <!-- <lightning-button-icon size="small"
+                                        icon-name="action:upload" variant="brand" title="Upload Document"
+                                        onclick={openCamera}
+                                        class="blue-utility-icon">
+                                    </lightning-button-icon> -->
+                                    <lightning-file-upload label=""
+                                        name="fileUploader" disabled={disabledEdit} accept=".png,.jpeg,.jpg,.pdf,.xlsx,.msg"
+                                        record-id={recordId} onuploadfinished={handleUpload}
+                                        class="upload-input-overlay">
+                                    </lightning-file-upload>
+                                    <lightning-icon size="x-small"
+                                        icon-name="utility:upload" variant="inverse" title="Upload Document"
+                                        class="upload-visual-icon">
+                                    </lightning-icon>
+                                </div>
+                            </template>
+                        </template>
+
+                        <!-- to show view icon button -->
+                        <template lwc:if={showView}>
+                            <div class={actionIconClass}>
+                                <lightning-icon size="small"
+                                    icon-name="utility:preview" variant="brand" title="View Document"
+                                    data-id={docDetailId} value={contentDocId} data-name={docName}
+                                    onclick={handleView}
+                                    class="green-utility-icon">
+                                </lightning-icon>
+                            </div>
+                        </template>
+
+                        <!-- to show delete icon button -->
+                        <template lwc:if={showDelete}>
+                            <template if:false={disableUpload}>
+                            <div class={actionIconClass}>
+                                <lightning-icon size="small"
+                                    icon-name="utility:delete" variant="brand" title="Delete Document"
+                                    data-id={docDetailId} data-name={docName}
+                                    onclick={handleDelete}
+                                    class="red-utility-icon"
+                                    disabled ={disabledEdit}>
+                                </lightning-icon>
+                            </div>
+                            </template>
+                        </template>
+
+                        <!-- to show location icon button -->
+                        <template lwc:if={showLocation}>
+                            <div class={actionIconClass}>
+                                <lightning-icon size="small"
+                                    icon-name="utility:checkin" variant="brand" title="Show Location on Map"
+                                    data-id={docDetailId} data-lattitude={lattitude} data-longitude={longitude}
+                                    onclick={handleLocation}
+                                    class="blue-utility-icon">
+                                </lightning-icon>
+                            </div>
+                        </template>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
+
+    <!-- to show file upload action buttons in table style -->
+    <template lwc:else>
+
+        <table>
+            <tbody>
+                <tr>
+                    <td style="text-align: -webkit-center; padding: 0px !important;">
+
+                        <template lwc:if={showAddBtn}>
+                            
+                            <!-- to show add new bigger text button instead of icon button -->
+                            <template lwc:if={showAddBigBtn}>
+                                <div style="margin: 10px;">
+                                    <template if:false={isLeadObject}>
+                                       
+                                        <template if:false={disableUpload}>
+                                            <button class="slds-button slds-button_brand save-button" onclick={handleAddDoc} disabled ={disabledEdit}>Add more images</button>
+                                        </template>
+                                    </template>
+                                    <template if:true={isLeadObject}>
+                                        <button class="slds-button slds-button_brand save-button" onclick={handleAddDoc} disabled ={disabledEdit}>Add  documents</button>
+                                    </template>
+                                </div>
+                            </template>
+
+                            <!-- to show add new icon button -->
+                            <template lwc:else>
+                                <div class={actionIconClass}>
+                                    <template if:false={isLeadObject}>
+                                        <lightning-icon size="small"
+                                            icon-name="utility:add" variant="brand" title="Add New Images"
+                                            onclick={handleAddDoc}
+                                            class="green-utility-icon"
+                                            disabled ={disabledEdit}>
+                                        </lightning-icon>
+                                    </template>
+                                    <template if:false={isLeadObject}>
+                                        <lightning-icon size="small"
+                                            icon-name="utility:add" variant="brand" title="Add New Document"
+                                            onclick={handleAddDoc}
+                                            class="green-utility-icon"
+                                            disabled ={disabledEdit}>
+                                        </lightning-icon>
+                                    </template>
+                                </div>
+                            </template>
+                        </template>
+
+                        <template lwc:else>
+
+                            <!-- to show upload icon button -->
+                            <template if:true={checkDisbursed} >
+                                <template lwc:if={showUpload}>
+                                    <template if:false={disableUpload}>
+                                        <template if:true={documentProcessingTheme}>
+                                            <lightning-file-upload label=""
+                                                name="fileUploader" disabled={disabledEdit} accept=".png,.jpeg,.jpg,.pdf,.xlsx,.msg"
+                                                record-id={recordId} onuploadfinished={handleUpload}
+                                                class="document-processing-file-upload">
+                                            </lightning-file-upload>
+                                        </template>
+                                        <template if:false={documentProcessingTheme}>
+                                            <lightning-file-upload label=""
+                                                name="fileUploader" disabled={disabledEdit} accept=".png,.jpeg,.jpg,.pdf,.xlsx,.msg"
+                                                record-id={recordId} onuploadfinished={handleUpload}>
+                                            </lightning-file-upload>
+                                        </template>
+                                            <!-- <lightning-button-icon size="small"
+                                                icon-name="action:upload" variant="brand" title="Upload Document"
+                                                onclick={openCamera}
+                                                class="blue-utility-icon">
+                                            </lightning-button-icon> -->
+                                    </template>
+                                    
+                                </template>
+                            </template>
+
+                            <!-- to show view icon button -->
+                            <template lwc:if={showView}>
+                                <div class={actionIconClass}>
+                                    <lightning-icon size="small"
+                                        icon-name="utility:preview" variant="brand" title="View Document"
+                                        data-id={docDetailId} value={contentDocId} data-name={docName}
+                                        onclick={handleView}
+                                        class="green-utility-icon">
+                                    </lightning-icon>
+                                </div>
+                            </template>
+
+                            <!-- to show delete icon button -->
+                            <template lwc:if={showDelete}>
+                                <div class={actionIconClass}>
+                                    <lightning-icon size="small"
+                                        icon-name="utility:delete" variant="brand" title="Delete Document"
+                                        data-id={docDetailId} data-name={docName}
+                                        onclick={handleDelete}
+                                        class="red-utility-icon"
+                                        disabled ={disabledEdit}>
+                                    </lightning-icon>
+                                </div>
+                            </template>
+
+                            <!-- to show location icon button -->
+                            <template lwc:if={showLocation}>
+                                <div class={actionIconClass}>
+                                    <lightning-icon size="small"
+                                        icon-name="utility:checkin" variant="brand" title="Show Location on Map"
+                                        data-id={docDetailId} data-lattitude={lattitude} data-longitude={longitude}
+                                        onclick={handleLocation}
+                                        class="blue-utility-icon">
+                                    </lightning-icon>
+                                </div>
+                            </template>
+
+                        </template>
+                        
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </template>
+
+    <template lwc:if={showPreview}>
+
+       
+        <template lwc:if={showInsidePreview}>
+            <div style="text-align: center; min-height: 65vh; padding: 15px 10px;">
+                <div style="border: solid 1px #ddd; min-height: inherit;">
+                    <template lwc:if={showImage}>
+                        <img src={imageUrl} title="" style="max-width: 100%; height: auto;" />
+                    </template>
+                    <template lwc:elseif={showPdf}>
+                        <iframe src={pdfUrl} style="width: 100%; height: 100%; height: -webkit-fill-available; border: none;"></iframe>
+                    </template>
+                    <template lwc:elseif={showExcel}>
+                        <div>
+                         
+                        <a href={fileUrl} target="_blank" download>Download Excel File</a>
+                        </div>
+
+                    </template>
+                    <template lwc:elseif={showMSG}>
+                        <div style="text-align: center; padding: 114px;">
+                            <a href={fileUrl} target="_blank" download>Download Email File</a>
+                        </div>
+                    </template>
+
+                    <template lwc:else>
+                        <div style="text-align: center; font-size: 20px; margin-top: 30vh; height: inherit;">No preview available for this document!</div>
+                    </template>
+                </div>
+            </div>
+        </template>
+
+       
+        <template lwc:else>
+            <!-- <c-popup-screen 
+                show-preview-cmp="true"
+                image-url={imageUrl}
+                pdf-url={pdfUrl}
+                width-percentage="80"
+                header-title={docName}
+                show-close-btn=true
+                show-save-btn={showRetake}
+                save-btn-text="Retake"
+                process-name="Reupload File"
+                onhandleclose={handleClose}
+                onhandleretake={reUploadFile}
+                is-uri={isURI}
+            ></c-popup-screen> -->
+            <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <template if:true={isLoading}>
+                        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+                    </template>
+
+                    <header class="slds-modal__header header-section">
+                        <div class="slds-text-align_center">
+                            <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">{docName}</h2>
+                        </div>
+                    </header>
+
+                    <div class="slds-modal__content" id="popup-body">
+                        <div style="text-align: center; height: 65vh;">
+                            <template lwc:if={showImage}>
+                                <img src={imageUrl} title="" style="max-width: 80%; height: auto;" />
+                            </template>
+                            <template lwc:elseif={showPdf}>
+                                <iframe src={pdfUrl} style="width: 80%; height: inherit; border: none;"></iframe>
+                            </template>
+                            <template lwc:elseif={showExcel}>
+                    <div>
+
+                    <a href={fileUrl} target="_blank" download>Download Excel File</a>
+                    </div>
+
+                            </template>
+                            <template lwc:elseif={showMSG}>
+                                <div style="text-align: center; padding: 114px;">
+                                    <a href={fileUrl} target="_blank" download>Download Email File</a>
+                                </div>
+                            </template>
+                            <template lwc:else>
+                                <div style="text-align: center; font-size: 20px; margin-top: 30vh; height: inherit;">No preview available for this document!</div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <footer class="slds-modal__footer footer-section">
+                        <div class="slds-align_absolute-center button-container">
+                            <div>
+                                <button class="slds-button slds-button_brand cancel-button slds-p-around_xx-small" onclick={handleClose}>Close</button>
+                            </div>
+                            <template if:false={fromCredit}>
+                                <div if:true={checkDisbursed} >
+                                <div if:true={showRetake} class = "upload-btn-wrapper">
+                                    <lightning-file-upload label=""
+                                        name="fileUploader" disabled={disabled} accept=".png,.jpeg,.jpg,.pdf,.xlsx,.msg"
+                                        record-id={recordId} onuploadfinished={handleReUpload}>
+                                    </lightning-file-upload>
+                                </div>
+                                </div>
+                            </template>
+
+                            <!-- <button class="slds-button slds-button_brand save-button slds-p-around_xx-small" onclick={reUploadFile}></button> -->
+
+                        </div>
+                    </footer>
+                </div>
+            </section>
+
+            <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+        </template>
+
+    </template>
+
+    
+    <template lwc:if={showConfirmation}>
+        <c-confirmation-screen 
+            confirm-message={confirmMessage}
+            positive-label="Yes" 
+            negative-label="No" 
+            onnegativeclick={handleNo} 
+            onpositiveclick={handleYes}
+        ></c-confirmation-screen>
+    </template>
+
+   
+    <template lwc:elseif={isAddDocCase}>
+        <template if:false={addDocCase}>
+        <c-popup-screen 
+            show-add-file-cmp="true"
+            header-title="Add New Document"
+            show-close-btn=true
+            show-save-btn="true"
+            save-btn-text="Continue"
+            process-name="Add New Document"
+            process-object={processObject}
+            record-id={docLinkRecodId}
+            onhandleclose={handleClose}
+            onhandleadddocument={saveAddDoc}
+        ></c-popup-screen>
+    </template>
+    </template>
+
+    <!-- to show google map -->
+    <template lwc:elseif={showGeoLocation}>
+        <c-popup-screen 
+            show-geo-location-cmp="true"
+            map-markers={mapMarkers}
+            header-title="Location on Google Map"
+            show-close-btn=true
+            onhandleclose={handleClose}
+        ></c-popup-screen>
+    </template>
+
+    <template lwc:if={isLoading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large">
+        </lightning-spinner>
+    </template>
+    <template if:false={isFIObject}>
+        <input type="file" accept=".pdf,.PDF,.jpg,.png,.jpeg,.xlsx" capture="environment" onchange={handleUpload} class="hidden-input" disabled ={disabledEdit}/>
+    </template>
+    <template if:true={isFIObject}>
+        <input type="file" accept=".pdf,.PDF,.jpg,.png,.jpeg,.xlsx" capture="environment" onchange={handleUpload} class="hidden-input" disabled ={disabledEdit}/>
+    </template>
+    <template if:true={addDocCase}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open small-popup">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header header-section">
+                    <h2 class="slds-text-heading_medium slds-hyphenate header-title">Upload File</h2>
+                    <!-- <button class="slds-button slds-modal__close" onclick={closeModal} title="Close">
+                        <lightning-icon icon-name="utility:close" alternative-text="close" size="small"></lightning-icon>
+                    </button> -->
+                </header>
+                <div if:true={checkDisbursed} class="slds-modal__content slds-p-around_medium">
+                    <div class="upload-icon-css">
+                        <lightning-file-upload label=""
+                        name="fileUploader" disabled={disabledEdit} accept=".png,.jpeg,.jpg,.pdf,.xlsx,.msg"
+                        record-id={recordId} onuploadfinished={handleUpload}>
+                    </lightning-file-upload>
+                    </div>
+                </div>
+                <footer class="footer-section ">
+                    <div class="slds-align_absolute-center button-container">
+                        <button class="slds-button slds-button_brand cancel-button slds-p-around_xx-small" onclick={closeModal}>Close</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <input type="file" accept="all" capture="environment" onchange={handleUpload} disabled ={disabledEdit} class="hidden-input"/>
+    <input type="file" accept="all" capture="environment" onchange={handleReUpload} disabled ={disabledEdit} class="hidden-input-all"/>
+    
+</template>

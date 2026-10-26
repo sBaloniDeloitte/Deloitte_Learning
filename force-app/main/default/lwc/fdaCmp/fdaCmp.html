@@ -1,0 +1,58 @@
+<template>
+    <span class="styleContainer"></span>
+
+    <div class="main-tab">
+    <lightning-layout multiple-rows>
+        <lightning-layout-item size="4" class="slds-p-around_x-small">
+            <lightning-input type="text" class="fda-field" required value={licenceNumber} onchange={handleShopCodeChange}
+                label="Licence Number"></lightning-input>
+        </lightning-layout-item>
+        <lightning-layout-item size="4" class="slds-p-around_x-small">
+                <lightning-combobox name="State" class="fda-field" required label="State" value={areaCode} placeholder="Select State"
+                    options={areaCodes} onchange={handleAreaCodeChange}></lightning-combobox>
+        </lightning-layout-item>
+        <lightning-layout-item size="12" class="slds-p-around_x-small">
+            <template if:false={hideButton}>
+            <button class="save-button start-app-style-btn slds-button slds-button_brand"
+                onclick={fetchShopDataAPI}>
+                Fetch Information
+            </button>
+            </template>
+        </lightning-layout-item>
+    </lightning-layout>
+    </div>
+
+    <template if:true={hasData}>
+<div class="fda-table-wrapper">
+                <table class="slds-table slds-table_bordered slds-table_cell-buffer fda-table">
+                <thead>
+                    <tr>
+                        <th class="slds-text-title_caps tableCss" scope="col"> <!-- color: white; -->
+                            Store Name</th>
+                        <th class="slds-text-title_caps tableCss" scope="col">
+                            Contact Number</th>
+                        <th class="slds-text-title_caps tableCss" scope="col">
+                            License Detail</th>
+                        <th class="slds-text-title_caps tableCss" scope="col">
+                            Name</th>
+                        <th class="slds-text-title_caps tableCss" scope="col">
+                            Address</th>
+                        
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={shopAndEstData} for:item="row">
+                        <tr key={row.LicNO}>
+                            <td style="border:1px solid black">{row.store_name}</td>
+                            <td style="border:1px solid black">{row.contact_number}</td>
+                            <td style="border:1px solid black">{row.license_detail}</td>
+                            <td style="border:1px solid black">{row.name}</td>
+                            <td style="border:1px solid black">{row.address}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+    </template>
+    
+</template>

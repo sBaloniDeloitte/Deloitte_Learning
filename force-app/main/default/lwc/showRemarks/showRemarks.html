@@ -1,0 +1,63 @@
+<template>
+    
+    <div class={cssMain}>
+        <template lwc:if={showHeaderFooter}>
+            <header class="slds-modal__header header-section">
+                <div class="slds-text-align_center">
+                    <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">{headerText}</h2>
+                </div>
+            </header>
+        </template>
+
+        <div class={cssContainer} style="background-color: white;">
+
+            <template lwc:if={allowCreation}>
+                <lightning-textarea type="text" label="Enter Remarks" max-length="50000" onchange={notesEntered} value={newNote}></lightning-textarea>
+
+                <div class="slds-align_absolute-center button-container" style="margin-bottom: 1rem;">
+                    <button class="slds-button slds-button_brand save-button" onclick={submitNotes}>Save</button>
+                </div>
+            </template>
+
+            <template lwc:if={showExistingHeader}>
+                <h2 style="font-size: 12px; color: #333; margin-bottom: 3px;">Existing Details</h2>
+            </template>
+
+            <div class={cssContainerChild}>
+                <table class="slds-table">
+                    <tbody>
+                        <template lwc:if={hasRemarks}>
+                            <template for:each={notes} for:item="field">
+                                <tr key={field.id}>
+                                    <td scope="col" style="text-align: left;">
+                                        
+                                        <template lwc:if={showInline}>
+                                            <b style="color: darkslategray;">{field.key}</b>
+                                            {field.value}
+                                        </template>
+                                        <template lwc:else>
+                                            <div><b style="color: darkslategray;">{field.key}</b></div>
+                                            <div>{field.value}</div>
+                                        </template>
+                                        
+                                    </td>
+                                </tr>
+                            </template>
+                        </template>
+                        <template lwc:else>
+                            <tr>
+                                <td style="text-align: center; padding: 10px;">No records found!</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        
+        <template lwc:if={showHeaderFooter}>
+            <footer class="footer-section">
+            </footer>
+        </template>
+    </div>
+
+</template>

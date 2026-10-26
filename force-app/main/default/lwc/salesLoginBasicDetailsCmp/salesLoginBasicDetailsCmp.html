@@ -1,0 +1,18 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 03-17-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:true={isloading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </template>
+    <template if:true={showBasicDetails}>
+        <!-- <h2 style="margin-bottom: 1%; font-weight: 700;margin-left:1%">Show Basic Details</h2> -->
+        <c-sales-loan-login-generic-screen-cmp passed-screen-name={passedScreenName} record-id={recordId}
+            active-section={activeSection} selected-record-id ={applicantId} current-app-seq ={currentAppSeq} onopennextscreen={handleOpenNextScreen}></c-sales-loan-login-generic-screen-cmp>
+    </template>
+    
+</template>

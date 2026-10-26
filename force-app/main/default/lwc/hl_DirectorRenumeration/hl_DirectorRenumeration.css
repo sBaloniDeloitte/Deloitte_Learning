@@ -1,0 +1,220 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+
+
+/* ===========================================================
+   Director Remuneration table - dark-navy theme
+   #0e1626 body / #111d30 header / #1d2f45 border / #16283f hover
+   Rewritten with :host-scoped, high-specificity selectors so no
+   inherited SLDS/.slds-table default or imported cssLibrary rule
+   (e.g. .header-section/.footer-section skyblue) can win the
+   cascade regardless of source order.
+=========================================================== */
+
+:host {
+    display: block;
+}
+
+:host .dr-table-wrap {
+    width: 100%;
+    overflow-x: auto;
+    margin: 12px 0;
+    padding: 10px;
+    background: #0e1626 !important;
+    border: 1px solid #1d2f45 !important;
+    border-radius: 8px;
+}
+
+:host table.slds-table.dr-table {
+    width: 100%;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    background: #0e1626 !important;
+    border: 1px solid #1d2f45 !important;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* ===========================
+   HEADER
+=========================== */
+:host table.dr-table thead tr.dr-header-row {
+    background: #111d30 !important;
+}
+
+:host table.dr-table thead tr.dr-header-row th.dr-th {
+    background: #111d30 !important;
+    color: #ffffff !important;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 14px;
+    border-right: 1px solid #1d2f45 !important;
+    border-bottom: 1px solid #1d2f45 !important;
+}
+
+/* Director name columns get a tab-style underline accent, matching the
+   underlined-name look from the reference screenshot. "Month" header
+   (th.dr-th-month) is left plain. Selector chain below out-specifies
+   the generic "th.dr-th" border-bottom rule above. */
+:host table.dr-table thead tr.dr-header-row th.dr-th.dr-th-director {
+    border-bottom: 2px solid #ffffff !important;
+}
+
+/* ===========================
+   BODY CELLS
+=========================== */
+:host table.dr-table tbody tr.dr-row td {
+    background: #0e1626 !important;
+    color: #ffffff !important;
+    text-align: center;
+    padding: 14px;
+    border-right: 1px solid #1d2f45 !important;
+    border-bottom: 1px solid #1d2f45 !important;
+    font-weight: 600;
+}
+
+:host table.dr-table th:last-child,
+:host table.dr-table td:last-child {
+    border-right: none !important;
+}
+
+:host table.dr-table tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+/* ===========================
+   CORNERS
+=========================== */
+:host table.dr-table thead tr th:first-child {
+    border-top-left-radius: 8px;
+}
+
+:host table.dr-table thead tr th:last-child {
+    border-top-right-radius: 8px;
+}
+
+:host table.dr-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 8px;
+}
+
+:host table.dr-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 8px;
+}
+
+/* ===========================
+   MONTH COLUMN
+=========================== */
+:host table.dr-table td.dr-td-month {
+    color: #ffffff !important;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* ===========================
+   TOTAL / AVERAGE / ELIGIBILITY / FOIR ROWS
+=========================== */
+:host table.dr-table td.dr-label-cell,
+:host table.dr-table td.dr-value-cell,
+:host table.dr-table td.dr-input-cell {
+    background: #0e1626 !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+/* ===========================
+   INPUTS
+=========================== */
+:host .custom-input {
+    width: 100%;
+}
+
+:host .custom-input {
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-radius-border: 6px;
+}
+
+:host .custom-input .slds-input {
+    text-align: center !important;
+    color: #ffffff !important;
+    background: #16283f !important;
+    border: 1px solid #33455e !important;
+    border-radius: 6px !important;
+    font-weight: 600;
+}
+
+/* Additional FOIR input (plain lightning-input, no .custom-input class) -
+   same filled-box look as the other value fields above, so all input
+   cells in the table read consistently. Style hooks first (reach the
+   shadow DOM), .slds-input fallback second (light DOM cases). */
+:host td.dr-input-cell lightning-input {
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-radius-border: 6px;
+    width: 100%;
+}
+
+:host td.dr-input-cell lightning-input .slds-input {
+    text-align: center !important;
+    color: #ffffff !important;
+    background: #16283f !important;
+    border: 1px solid #33455e !important;
+    border-radius: 6px !important;
+    font-weight: 600;
+}
+
+/* ===========================
+   HOVER EFFECT
+=========================== */
+:host table.dr-table tbody tr.dr-row:hover td {
+    background: #16283f !important;
+}
+
+/* ===========================
+   ACTION BAR
+=========================== */
+:host .dr-action-bar {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    margin-top: 18px;
+}
+
+/* ===========================
+   ACTION BUTTONS
+=========================== */
+:host .btn-add-action,
+:host .btn-negative-action {
+    background: #7c3aed !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #000000 !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    height: 36px !important;
+    padding-left: 22px !important;
+    padding-right: 22px !important;
+    transition: all 0.25s ease;
+}
+
+:host .btn-add-action {
+    min-width: 90px;
+}
+
+:host .btn-negative-action {
+    min-width: 210px;
+}
+
+:host .btn-add-action:hover,
+:host .btn-negative-action:hover {
+    background: #6d28d9 !important;
+}
+
+:host .btn-add-action:focus,
+:host .btn-negative-action:focus {
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(139,92,246,0.25);
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

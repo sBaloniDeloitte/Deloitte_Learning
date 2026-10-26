@@ -1,0 +1,131 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import 'c/cssLibrary';
+
+/* ----------------- Dark Theme (matches bsaOneViewCmp / customerNegotiationScreen) ----------------- */
+:host {
+    display: block;
+    color: #ffffff;
+
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #0e1c30;
+    --dt-border: #33455e;
+     --dt-positive: #8b5cf6;
+    --dt-negative: #16283f;
+    --dt-default: #1467EB;
+
+    --slds-c-input-color-background: var(--dt-input-bg);
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: var(--dt-border);
+    --slds-c-input-label-color: #ffffff;
+
+    --slds-c-card-color-background: var(--dt-panel-bg);
+    --slds-c-card-color-border: var(--dt-border);
+
+    --dt-modal-gradient: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+}
+
+.filter-drop {
+    padding: 10px;
+}
+
+/* ----------------- Table ----------------- */
+table, th, td {
+    border-color: var(--dt-border) !important;
+}
+
+.slds-table {
+    background-color: var(--dt-panel-bg) !important;
+    color: #ffffff !important;
+}
+
+.slds-table td {
+    background-color: var(--dt-panel-bg) !important;
+    color: #ffffff !important;
+    border-color: var(--dt-border) !important;
+}
+
+/* ----------------- Inputs / Combobox ----------------- */
+lightning-input::part(input),
+lightning-combobox::part(input) {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+lightning-input[disabled]::part(input),
+lightning-combobox[disabled]::part(input) {
+    background-color: var(--dt-panel-bg) !important;
+    color: #8a99b3 !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #8a99b3 !important;
+}
+
+/* ----------------- CTA Buttons (theme parity with the rest of the app) ----------------- */
+.save-button,
+.save-button.slds-button_brand {
+    border: none;
+    padding: 1px 0px;
+    background-color: var(--dt-default) !important;
+    color: #ffffff !important;
+    font-weight: 500;
+    border-color: var(--dt-default);
+}
+
+.cancel-button,
+.cancel-button.slds-button_brand,
+.previous-button,
+.previous-button.slds-button_brand {
+    border: none;
+    padding: 1px 0px;
+    background-color: var(--dt-negative) !important;
+    color: #ffffff !important;
+    border-radius: 1.25rem !important;
+    font-weight: 500;
+}
+
+.comboBoxSelect .slds-checkbox_faux {
+    margin: 0;
+}
+
+.slds-modal_prompt .slds-modal__container .slds-modal__footer .slds-button_neutral {
+    width: 90px;
+    background-color: var(--dt-negative) !important;
+    font-weight: 500;
+    border: none;
+    padding: 1px 0px;
+    color: #ffffff !important;
+}
+
+.slds-modal_prompt .slds-modal__container .slds-modal__footer .slds-button_brand {
+    width: 140px;
+    background-color: var(--dt-positive) !important;
+    font-weight: 500;
+    border: none;
+    padding: 1px 0px;
+    color: #ffffff !important;
+}
+
+/* ----------------- Modal ----------------- */
+.custom-confirm-header .slds-modal__header {
+    background: var(--dt-header-bg) !important;
+}
+
+.slds-modal__header,
+.slds-modal__footer {
+        background: var(--dt-modal-gradient) !important;
+    border-bottom: 1px solid var(--dt-border);
+    color: #ffffff !important;
+}
+
+.slds-modal__content {
+    background-color: var(--dt-panel-bg) !important;
+    color: #ffffff !important;
+}
+
+.custom-td {
+    overflow: visible !important;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

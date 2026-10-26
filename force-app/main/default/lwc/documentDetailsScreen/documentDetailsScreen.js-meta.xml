@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>62.0</apiVersion>
+    <isExposed>true</isExposed>
+
+    <targets>
+		<target>lightning__RecordPage</target>
+		<target>lightning__HomePage</target>
+		<target>lightningCommunity__Page</target>
+		<target>lightningCommunity__Default</target>
+	</targets>
+	
+	<targetConfigs>
+    	<targetConfig targets="lightning__RecordPage,lightning__HomePage">
+			<property name="processName" type="String" label="Process Name" />
+			<property name="processObject" type="String" label="Process Object" />
+			<property name="showWidgetStyle" type="Boolean" label="Show in Widget Style?" />
+			<property name="showHeaderFooter" type="Boolean" label="Show Header and Footer?" />
+			<property name="headerText" type="String" label="Header Title" />
+			<property name="addDocuments" type="Boolean" label="Show Add new document button?" />
+			<property name="showAddBigBtn" type="Boolean" label="Show Add new document big button?" />
+
+			<supportedFormFactors>
+				<supportedFormFactor type="Large" />
+				<supportedFormFactor type="Small" />
+			</supportedFormFactors>
+        </targetConfig>
+
+		<targetConfig targets="lightningCommunity__Default">
+			<property name="processName" type="String" label="Process Name" />
+			<property name="processObject" type="String" label="Process Object" />
+			<property name="showWidgetStyle" type="Boolean" label="Show in Widget Style?" />
+			<property name="showHeaderFooter" type="Boolean" label="Show Header and Footer?" />
+			<property name="headerText" type="String" label="Header Title" />
+			<property name="addDocuments" type="Boolean" label="Show Add new document button?" />
+			<property name="showAddBigBtn" type="Boolean" label="Show Add new document big button?" />
+		</targetConfig>
+    </targetConfigs>
+</LightningComponentBundle>

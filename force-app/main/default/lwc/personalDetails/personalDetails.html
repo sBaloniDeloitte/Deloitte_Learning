@@ -1,0 +1,60 @@
+<template>
+    <div if:true={applicants} class="container">
+        <table>
+             <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Applicant Type</th>
+                        <th>Customer Type</th>
+                        <th>Customer Profile</th>
+                        <th>Is Financial applicant?</th>
+                        <template if:true={hideIdStatusColumns}>
+                        <th>Type of Entity</th>
+                        </template>
+                        <th>Date of Birth</th>
+                        <th>Mobile No.</th>
+                        <th>Father's Name</th>
+                        <th>Mother's Name</th>
+                        <template if:false={hideIdStatusColumns}>
+                        <th>PAN Status</th>
+                        <!--<th>Aadhar Status</th>-->
+                        <th>Driving License Status</th>
+                        <th>Voter ID Status</th>
+                        <th>Passport Status</th>
+                         </template>
+                    </tr>
+                </thead>
+             <tbody>
+                    <template for:each={applicants} for:item="applicant">
+                        <tr key={applicant.Id}>
+                            <td>{applicant.Name}</td>
+                            <td>{applicant.Applicant_Type__c}</td>
+                            <td>{applicant.Customer_Type__c}</td>
+                            <td>{applicant.Customer_Profile__c}</td>
+                            <td>{applicant.Is_Financial_applicant__c}</td>
+                            <template if:true={hideIdStatusColumns}>
+                            <td>{applicant.businessTypeDisplay}</td>
+                            </template>
+                             <td>{applicant.DOB__c}</td>
+                            <td>{applicant.Mobile_Number__c}</td>
+                            <td>{applicant.Father_s_First_Name__c}</td>
+                            <td>{applicant.Mother_s_First_Name__c}</td>
+                           
+                            <template if:false={hideIdStatusColumns}>
+                            <td>{applicant.Pan_Status__c}</td>
+                            <!--<td>{applicant.Aadhar_Status__c}</td>-->
+                            <td>{applicant.Driving_License_Status__c}</td>
+                            <td>{applicant.Voter_ID_Status__c}</td>
+                            <td>{applicant.Passport_Status__c}</td>
+                            </template>
+                        </tr>
+                    </template>
+                </tbody>
+        </table>
+        <!--<lightning-button label="Save" onclick={handleSave} variant="brand"></lightning-button>-->
+                
+    </div>
+    <div if:true={error} class="message">
+           No Applicants found.
+    </div>
+</template>

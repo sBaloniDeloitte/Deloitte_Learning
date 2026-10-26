@@ -1,0 +1,135 @@
+@import "c/cssLibrary";
+/* Custom Combobox Styling */
+.custom-combobox {
+    position: relative;
+    width: 100%;
+}
+.form-container {
+    background-color: white;
+    padding: 16px;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+.scrollable-content {
+    max-height: 70vh;  /* Adjust based on need */
+    overflow-y: auto;
+    padding-bottom: 10px;
+}
+.content-viewer {
+align-content: center;
+padding-right: 2rem;
+}
+
+/* Combobox Input Field */
+.combobox-input {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px;
+    border: 1px solid #d3d3d3;
+    border-radius: 5px;
+    background: white;
+    cursor: pointer;
+}
+
+/* Selected Values Display */
+.selected-values {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Dropdown Arrow Icon */
+.dropdown-icon {
+    margin-left: 5px;
+}
+
+/* Dropdown List */
+.dropdown {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background: white;
+    border: 1px solid #d3d3d3;
+    border-radius: 5px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+    z-index: 10;
+    padding: 5px;
+}
+
+/* Option Items */
+.option-item {
+    display: flex;
+    align-items: center;
+    padding: 8px;
+    border-bottom: 1px solid #e0e0e0;
+    cursor: pointer;
+}
+
+/* Checkbox Spacing */
+.option-item lightning-input {
+    margin-right: 10px;
+}
+
+/* No Results Message */
+.no-results {
+    text-align: center;
+    color: gray;
+    padding: 5px;
+}
+.red-icon {
+    --slds-c-button-icon-color: red;
+    --slds-c-button-icon-color-hover: darkred;
+}
+
+.green-icon {
+    --slds-c-button-icon-color: green;
+    --slds-c-button-icon-color-hover: darkgreen;
+}
+
+.denom-count {
+    font-size: 1rem;
+    font-weight: bold;
+    min-width: 30px;
+    text-align: center;
+}
+.custom-generate-button {
+    background-color: #0070d2;
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+
+.custom-generate-button:hover {
+    background-color: #005fb2;
+}
+.generate-eseal-button {
+    background-color: #0070d2;
+    color: white;
+    font-size: 1rem;
+    font-weight: 600;
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 0.4rem;
+    cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+    transition: background-color 0.3s ease;
+}
+
+.generate-eseal-button:hover {
+    background-color: #005fb2;
+}
+
+.slds-dropdown {
+    background-color: #0f1d33 !important;
+    color: white !important;
+}

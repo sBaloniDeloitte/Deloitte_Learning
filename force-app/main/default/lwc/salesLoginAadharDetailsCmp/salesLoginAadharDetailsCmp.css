@@ -1,0 +1,757 @@
+@import "c/cssLibrary";
+
+/* This Code was generated using GenAI tool : Codify, Please check for accuracy */
+/* ____GenAI: Generated code starts here - dark theme visual restyle only (look
+   and feel) to match the standard sales-login UI theme (dark navy
+   background, white text, flat separator-line tables, gradient pill
+   buttons) already applied to salesLoanLoginMainCmp / deDuplicationScreenCmp.
+   CSS-only change - no HTML markup, JS handlers, data flow, or component
+   structure were modified.____ */
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+
+    /* input / textarea */
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-radius-border: 6px;
+    --slds-c-input-placeholder-text-color: #8a99b3;
+    --slds-c-input-label-color: #ffffff;
+
+    /* combobox / dropdown */
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+    --slds-c-combobox-input-value-text-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: #16283f;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+    --slds-c-combobox-option-text-color-hover: #ffffff;
+    --slds-c-combobox-label-color: #ffffff;
+    /* lightning-combobox is a base component that renders its dropdown
+       listbox inside its OWN shadow tree - selector-based CSS from this
+       component's stylesheet (e.g. ".slds-listbox__option:hover") cannot
+       cross that shadow boundary, only inherited CSS custom properties
+       can. The row-hover/keyboard-highlight background in the base combo
+       box actually reads from the global neutral-base-95 ramp token (not
+       just the combobox-specific hook above), which is why the option
+       still flashed the default light-gray/white on hover - overriding
+       that global token, plus the legacy "--lwc-*" and "--sds-*" prefixed
+       fallbacks some base-component versions still read, closes the gap. */
+    --slds-g-color-neutral-base-95: #1f3550;
+    --slds-g-color-neutral-base-90: #1f3550;
+    --lwc-colorBackgroundRowHover: #1f3550;
+    --sds-c-combobox-option-color-background-hover: #1f3550;
+    --sds-c-combobox-option-text-color-hover: #ffffff;
+
+    /* checkbox / radio */
+    --slds-c-checkbox-color-background: #16283f;
+    --slds-c-checkbox-color-border: #33455e;
+    --slds-c-checkbox-label-color: #ffffff;
+    --slds-c-radio-color-background: #16283f;
+    --slds-c-radio-color-border: #33455e;
+    --slds-c-radio-label-color: #ffffff;
+
+    /* card */
+    --slds-c-card-color-background: #0e1c30;
+    --slds-c-card-color-border: #1d2f45;
+    --slds-c-card-heading-text-color: #ffffff;
+    --slds-c-card-text-color: #ffffff;
+
+    /* button-icon (edit / delete actions) */
+    --slds-c-button-icon-color-background: #16283f;
+    --slds-c-button-icon-color-border: #33455e;
+    --slds-c-icon-color-foreground: #ffffff;
+    --slds-c-icon-color-foreground-default: #ffffff;
+
+    /* legacy design tokens - fallback for base component versions still
+       reading the "--lwc-*" naming instead of the newer style hooks */
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+
+    /* global SLDS2 neutral-base ramp */
+    --slds-g-color-neutral-base-30: #ffffff;
+    --slds-g-color-neutral-base-40: #ffffff;
+    --slds-g-color-neutral-base-50: #ffffff;
+
+    /* ──────────── File upload (Aadhaar Front/Back) dark theme ────────────
+       lightning-file-upload renders an "Upload Files" button + dropzone
+       that default to a white button and white/gray dropzone text - the
+       proven working hooks for this base component (already used
+       successfully in uploadViewDeleteDocument.css) are the
+       --slds-c-file-selector-button-* set below. The "Aadhaar Back"
+       control is disabled until Front is uploaded, and its disabled
+       state was falling back to a near-white-on-white global token,
+       which is why its label was unreadable - covered via the global
+       neutral fallback + explicit disabled override underneath. */
+    --slds-c-file-selector-button-color-background: #16283f;
+    --slds-c-file-selector-button-color-border: #33455e;
+    --slds-c-file-selector-button-text-color: #ffffff;
+    --slds-c-file-selector-button-radius-border: 6px;
+    --slds-c-button-color-background: #16283f;
+    --slds-c-button-color-border: #33455e;
+    --slds-c-button-text-color: #ffffff;
+    --slds-g-color-neutral-base-100: #16283f;
+    --slds-g-color-border-base-1: #33455e;
+
+    /* Disabled-specific hooks - "Aadhaar Back" is disabled until
+       "Aadhaar Front" is uploaded, and disabled state reads from these
+       separate "-disabled" tokens (same pattern as --slds-c-input-color-
+       background-disabled used elsewhere in this codebase), not the
+       base tokens above. Set to the exact same navy/white as the active
+       state so Back looks identical to Front, per explicit request. */
+    --slds-c-file-selector-button-color-background-disabled: #16283f;
+    --slds-c-file-selector-button-color-border-disabled: #33455e;
+    --slds-c-file-selector-button-text-color-disabled: #ffffff;
+    --slds-c-button-color-background-disabled: #16283f;
+    --slds-c-button-color-border-disabled: #33455e;
+    --slds-c-button-text-color-disabled: #ffffff;
+    --slds-c-icon-color-foreground-disabled: #ffffff;
+}
+
+/* Catch-all so any plain text this component renders directly (labels,
+   headings, paragraph copy) stays white on the dark background. */
+:host p,
+:host span,
+:host div,
+:host label,
+:host h1,
+:host h2,
+:host h3 {
+    color: #ffffff;
+}
+
+/* File upload dropzone/button - fallback descendant-selector overrides.
+   The CSS custom-property hooks in :host above already cover
+   native-shadow rendering; these are a harmless no-op there and only
+   take effect in contexts where lightning-file-upload happens to render
+   with synthetic shadow (same dual-approach already used elsewhere in
+   this codebase for file uploads, e.g. fcusendtoSamplerCmp.css). */
+lightning-file-upload .slds-file-selector__dropzone,
+.slds-file-selector__dropzone {
+    background-color: #0e1c30 !important;
+    border: 1px dashed #33455e !important;
+    border-radius: 6px !important;
+}
+
+lightning-file-upload .slds-file-selector__text,
+.slds-file-selector__text,
+.slds-file-selector__body {
+    color: #ffffff !important;
+}
+
+lightning-file-upload .slds-file-selector__button,
+.slds-file-selector__button {
+    background-color: #16283f !important;
+    border-color: #33455e !important;
+    color: #ffffff !important;
+}
+
+/* Disabled state (e.g. "Aadhaar Back" before "Aadhaar Front" is
+   uploaded) - per explicit request, styled identically to the active
+   "Aadhaar Front" control (same navy button/dropzone, white text) with
+   no dimming, so Back visually matches Front. The disabled/blocked
+   behavior itself (button not clickable until Front is uploaded) is
+   unchanged - this is a CSS-only look-and-feel fix. */
+lightning-file-upload[disabled] .slds-file-selector__dropzone,
+.slds-file-selector__dropzone[disabled] {
+    background-color: #16283f !important;
+    border: 1px dashed #33455e !important;
+}
+
+lightning-file-upload[disabled] .slds-file-selector__button,
+.slds-file-selector__button[disabled],
+.slds-file-selector__button.slds-button[disabled] {
+    background-color: #16283f !important;
+    border-color: #33455e !important;
+    color: #ffffff !important;
+    opacity: 1 !important;
+}
+
+lightning-file-upload[disabled] .slds-file-selector__text,
+lightning-file-upload[disabled] .slds-file-selector__body,
+.slds-file-selector__button[disabled] .slds-button__icon {
+    color: #ffffff !important;
+    fill: #ffffff !important;
+    opacity: 1 !important;
+}
+
+/* lightning-combobox listbox options (Address Type / Address Ownership,
+   etc.) - the --slds-c-combobox-option-color-background-hover style hook
+   above isn't picked up by every base-component version, so the option
+   row falls back to the browser/SLDS default white hover/focus
+   background. Forcing the same navy hover tone directly on the listbox
+   option markup keeps it consistent with the dark theme on hover,
+   keyboard focus, and mouse-down/selected states. */
+:host .slds-listbox__option:hover,
+:host .slds-listbox__option:focus,
+:host .slds-listbox__option.slds-has-focus,
+:host .slds-listbox__option[aria-selected="true"] {
+    background-color: #1f3550 !important;
+    color: #ffffff !important;
+}
+
+.pan-heading {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.image-preview,
+.image-preview-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 10px 0;
+}
+
+.preview-box {
+    width: 400px;
+    height: 300px;
+    border: 1px solid #1d2f45;
+    border-radius: 6px;
+    background-color: #0e1c30;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+    margin-bottom: 10px;
+}
+
+.uploaded-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+/* ----- Table - flat, minimal separator-line style (no gradients, no cell
+   borders) matching the reference "Aadhaar Details" table layout. ----- */
+:host .slds-table {
+    width: 100%;
+    margin: 0 auto;
+    background-color: #0e1626;
+    border: 1px solid #1d2f45;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+:host .slds-table thead {
+    background-color: #111d30;
+}
+
+:host .slds-table thead th {
+    color: #93a2ba !important;
+    font-weight: 600;
+    font-size: 12.5px;
+    letter-spacing: 0.2px;
+    text-align: left;
+    padding: 12px 10px;
+    background-color: #111d30;
+    border-color: #1d2f45;
+    
+}
+
+:host .slds-table tbody td {
+    color: #ffffff !important;
+    border-color: #1d2f45;
+    padding: 12px 10px;
+    background-color: transparent;
+}
+
+:host .slds-table tbody tr:hover td {
+    background-color: #16283f;
+}
+
+/* ----- Buttons -----
+   Colour scheme aligned to the purple "Previous"/"Next" theme used across
+   the sales-login screens (outlined navy for Close/secondary, solid
+   purple for Confirm/primary) instead of the old blue/red/deeppink set.
+   Class names kept as-is so no markup changes were needed. */
+.button-green {
+    background-image: linear-gradient(135deg, #8b5cf6, #7c3aed);
+    background-color: #8b5cf6;
+    color: #ffffff;
+    border: none;
+    font-size: 0.875rem;
+    font-weight: 600;
+    display: inline-block;
+    line-height: 1.6rem;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 0 0.75rem;
+    border-radius: 20px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+    text-decoration: none;
+    width: auto;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* Only the "Add Aadhar Details Manually" trigger button also carries
+   slds-button_stretch (it sits in a narrow lightning-layout-item next to
+   the "Aadhar" readonly field) - this compound selector wraps its long
+   label within its own column instead of overflowing into the neighboring
+   column. The modal footer's Close/Confirm buttons do NOT have
+   slds-button_stretch, so they are untouched and keep their original pill
+   sizing. */
+.button-green.slds-button_stretch {
+    white-space: normal;
+    word-break: break-word;
+    line-height: 1.3;
+    padding: 10px 14px;
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* The button and the "Aadhar" read-only field sit in adjacent
+   lightning-layout-item columns. Constrain each column so the long button
+   label wraps within its own column instead of overflowing into the
+   neighboring "Aadhar" textbox column. */
+lightning-layout-item {
+    min-width: 0;
+}
+
+.button-green:hover {
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+    transform: translateY(-1px);
+}
+
+.button-red {
+    background-image: none;
+    background-color: #16283f;
+    color: #ffffff;
+    border: 1.5px solid #8b5cf6;
+    font-size: 0.875rem;
+    font-weight: 600;
+    display: inline-block;
+    line-height: 1.6rem;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 0 0.75rem;
+    border-radius: 20px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+    text-decoration: none;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.button-red:hover {
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+    transform: translateY(-1px);
+}
+
+.button-deeppink {
+    background-image: none;
+    background-color: #16283f;
+    color: #ffffff;
+    border: 1.5px solid #8b5cf6;
+    font-size: 0.875rem;
+    font-weight: 600;
+    display: inline-block;
+    line-height: 1.6rem;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 0 0.75rem;
+    border-radius: 20px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+    text-decoration: none;
+}
+
+.responsive-button {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-weight: 600;
+    color: #ffffff;
+    background-image: linear-gradient(135deg, #9bbf56, #7ea63f);
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+}
+
+.responsive-button:hover {
+    background-image: linear-gradient(135deg, #aad368, #8fbf4a);
+}
+
+.zoom-button {
+    padding: 5px 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 50%;
+    background-image: linear-gradient(135deg, #9bbf56, #7ea63f);
+    color: #ffffff;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.zoom-button:hover {
+    background-image: linear-gradient(135deg, #aad368, #8fbf4a);
+}
+
+.align-item {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.radio-inline-wrapper {
+    display: flex;
+    gap: 1rem;
+    margin-left: 1%;
+    margin-bottom: 1%;
+    font-weight: 400;
+    color: #ffffff;
+}
+
+.radio-wrapper-mobile {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    margin-left: 1%;
+    margin-bottom: 1%;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.radio-wrapper-mobile lightning-input {
+    width: 95%;
+}
+
+/* ----- Modals ----- */
+:host .slds-modal__container {
+    background-color: #0e1c30 !important;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+:host .slds-modal__header,
+.modal-header {
+    background-image: linear-gradient(90deg, #2563eb, #1e3a8a) !important;
+    background-color: #2563eb !important;
+    color: #ffffff !important;
+    font-weight: 500;
+}
+
+:host .slds-modal__header h2,
+:host .slds-modal__header .pan-heading {
+    color: #ffffff !important;
+}
+
+:host .slds-modal__content {
+    background-color: #0e1c30 !important;
+    color: #ffffff;
+}
+
+:host .slds-modal__footer,
+.footer-section,
+.footer-section-aadhar {
+    background-image: linear-gradient(90deg, #2563eb, #1e3a8a) !important;
+    background-color: #2563eb !important;
+}
+
+.footer-section-aadhar {
+    border-radius: 0px 0px 10px 10px;
+    text-align: center;
+    min-height: 40px;
+}
+
+/* ──────────── "Add Aadhar Details Manually" modal - compact + pill
+   buttons (same fix pattern already proven working on the CKYC modal:
+   the shared cssLibrary.css ".slds-modal__container { padding: 3% 0
+   !important; }" rule, plus the outer .slds-modal overlay's default
+   flex align-items:stretch, were adding large empty navy space above
+   the header and below the footer). Scoped to this modal only. */
+.manual-aadhar-modal {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+/* The container is capped at max-height:90vh, but without a flex-column
+   layout + overflow:hidden the header/content/footer (whose combined
+   height can exceed that cap) spilled out past the container's visual
+   boundary instead of the content area scrolling internally - that's
+   what made the modal look broken/oversized with the footer buttons
+   unreachable. Making the container a flex column with hidden overflow,
+   the header/footer flex-shrink:0 (fixed size), and only the content
+   area (flex:1, overflow-y:auto) scrolling fixes this. */
+.manual-aadhar-modal .manual-aadhar-modal-container {
+    padding: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    height: auto !important;
+    max-height: 90vh !important;
+    overflow: hidden !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    width: 90%;
+    max-width: 820px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.manual-aadhar-modal-header {
+    flex: 0 0 auto !important;
+}
+
+/* Address (as per Aadhar) field group inside the manual-entry table -
+   each lightning-layout-item was using padding="around-small" (top +
+   bottom padding on every stacked row), which doubles up between
+   adjacent rows (bottom padding of one + top padding of the next) and,
+   combined with each lightning-input/-combobox's own reserved
+   error-message slot below the field, produced the large, uneven gaps
+   between "Address Type" / "Address Ownership" / "Address Line 1-3"
+   etc. seen in the modal. The markup padding attribute was changed to
+   horizontal-small (removes the doubled vertical padding); this rule
+   additionally tightens the remaining built-in vertical rhythm of each
+   stacked field so the rows sit close together like the rest of the
+   table. */
+.manual-aadhar-address-layout.slds-wrap {
+    row-gap: 4px;
+}
+
+.manual-aadhar-address-layout .slds-form-element {
+    margin-bottom: 2px;
+}
+
+.manual-aadhar-modal-content {
+    flex: 1 1 auto !important;
+    overflow-y: auto !important;
+    min-height: 0 !important;
+}
+
+.manual-aadhar-footer {
+    display: flex !important;
+    flex: 0 0 auto !important;
+    justify-content: center !important;
+    align-items: center;
+    gap: 16px;
+    padding: 0.75rem 1rem !important;
+}
+
+/* Cancel/Close - outlined navy + purple border, rounded-rectangle shape,
+   matching the purple "Previous"/"Next" theme used elsewhere in the
+   sales-login screens (was solid red). */
+.manual-aadhar-cancel-button {
+    background-color: #16283f !important;
+    border: 1.5px solid #8b5cf6 !important;
+    color: #ffffff !important;
+    border-radius: 8px !important;
+    font-weight: 600;
+    min-width: 110px;
+    height: 2.5rem;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    line-height: normal;
+}
+
+.manual-aadhar-cancel-button:hover,
+.manual-aadhar-cancel-button:focus {
+    background-color: #1f3550 !important;
+    color: #ffffff !important;
+}
+
+/* Confirm - solid purple, rounded-rectangle shape (was solid green) */
+.manual-aadhar-confirm-button {
+    background-image: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+    background-color: #8b5cf6 !important;
+    border: none !important;
+    color: #ffffff !important;
+    border-radius: 8px !important;
+    font-weight: 600;
+    min-width: 110px;
+    height: 2.5rem;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    line-height: normal;
+}
+
+.manual-aadhar-confirm-button:hover,
+.manual-aadhar-confirm-button:focus {
+    background-image: linear-gradient(135deg, #7c3aed, #6d28d9) !important;
+    color: #ffffff !important;
+}
+
+/* Standard SLDS classes used in the "Aadhar Details" modal footer -
+   overridden to the same outline-navy (destructive = Close) and
+   solid-purple (brand = Confirm) scheme applied above. */
+:host .slds-button_destructive {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    border: 1.5px solid #8b5cf6 !important;
+}
+
+:host .slds-button_brand {
+    background-color: #8b5cf6 !important;
+    background-image: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+    color: #ffffff !important;
+    border-color: #8b5cf6 !important;
+}
+.table-class thead tr:first-child th:first-child {
+    border-top-left-radius: 0.75rem;
+}
+
+.table-class thead tr:first-child th:last-child {
+    border-top-right-radius: 0.75rem;
+}
+
+.table-class tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 0.75rem;
+}
+
+.table-class tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 0.75rem;
+}
+@media only screen and (max-width: 768px) {
+    .button-green {
+        min-width: unset;
+        width: 95%;
+        display: block;
+        text-align: center;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .slds-modal__mobile-centered {
+        top: 10vh !important;
+        margin: 0 auto;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .custom-mobile-modal {
+        top: 10vh !important;
+        margin: 0 auto;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        position: fixed;
+        width: 95%;
+    }
+
+    .slds-modal__container {
+        max-height: 90vh;
+        overflow-y: auto;
+        margin: auto;
+    }
+}
+/* ____GenAI: Generated code ends here____ */
+.manual-aadhar-modal-content .slds-table {
+    background-color: #0e1626;
+    border: 1px solid #1d2f45;
+    border-collapse: separate;
+    border-spacing: 0;
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.manual-aadhar-modal-content .slds-table thead {
+    background-color: #111d30;
+}
+
+.manual-aadhar-modal-content .slds-table thead th {
+    color: #93a2ba !important;
+    font-weight: 600;
+    font-size: 12.5px;
+    letter-spacing: 0.2px;
+    text-align: left;
+    padding: 12px 10px;
+    background-color: #111d30 !important;
+    border-color: #1d2f45;
+}
+
+.manual-aadhar-modal-content .slds-table tbody td {
+    color: #ffffff !important;
+    border-color: #1d2f45;
+    padding: 12px 10px;
+    background-color: transparent;
+    vertical-align: top;
+}
+
+.manual-aadhar-modal-content .slds-table tbody tr:hover td {
+    background-color: #16283f;
+}
+
+/* Field column */
+.manual-aadhar-modal-content .slds-table tbody td:first-child {
+    width: 35%;
+    font-weight: 600;
+    color: #ffffff !important;
+}
+
+/* Value column */
+.manual-aadhar-modal-content .slds-table tbody td:last-child {
+    width: 65%;
+}
+
+/* Input styling */
+.manual-aadhar-modal-content lightning-input,
+.manual-aadhar-modal-content lightning-combobox,
+.manual-aadhar-modal-content lightning-textarea {
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+
+    --slds-c-textarea-color-background: #16283f;
+    --slds-c-textarea-text-color: #ffffff;
+}
+.manual-aadhar-modal-content .slds-table {
+    width: 80%;
+    margin: 0 auto; /* center the table */
+}
+.manual-aadhar-address-layout {
+    --lwc-formLabelFontSize: 14px;
+}
+
+.manual-aadhar-address-layout .slds-form-element__label {
+    white-space: nowrap !important;
+    width: 100px !important;
+    min-width: 100px !important;
+}
+.manual-aadhar-address-layout {
+    justify-content: flex-start !important;
+    align-items: flex-start !important;
+}
+
+.manual-aadhar-address-layout lightning-layout-item {
+    text-align: left !important;
+}
+
+.manual-aadhar-address-layout .slds-form-element {
+    text-align: left !important;
+}
+
+.manual-aadhar-address-layout .slds-form-element__label {
+    text-align: left !important;
+}
+.manual-aadhar-address-layout lightning-layout-item[size="12"] {
+    padding-left: 0 !important;
+}
+.radio-question,
+.radio-question {
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+    line-height: 1.3 !important;
+}
+.radio-inline-wrapper .slds-form-element__label,
+.radio-wrapper-mobile .slds-form-element__label {
+    font-size: 13.5px !important;
+    font-weight: 400 !important;
+}

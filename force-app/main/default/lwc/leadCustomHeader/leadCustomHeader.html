@@ -1,0 +1,48 @@
+<template>
+    <div class="lead-header">
+
+        <div class="lead-header-left">
+
+            <div class="lead-icon">
+                <lightning-icon
+                    icon-name="standard:lead"
+                    size="small"
+                    variant="inverse"
+                    alternative-text="Lead"
+                    class="lead-header-icon">
+                </lightning-icon>
+            </div>
+
+            <div class="lead-info">
+                <div class="object-label">
+                    Lead
+                </div>
+
+                <div class="lead-name">
+                    {leadName}
+                </div>
+            </div>
+
+        </div>
+
+        <div class="lead-header-right">
+            <button class="header-action-btn" type="button" onclick={handleNotesClick}>
+                <lightning-icon icon-name="utility:pinned" size="x-small" class="header-action-icon"></lightning-icon>
+                <span>Notes</span>
+            </button>
+            <button class="header-action-btn" type="button" onclick={handleActivityTimelineClick}>
+                <lightning-icon icon-name="utility:date_time" size="x-small" class="header-action-icon"></lightning-icon>
+                <span>Activity Timeline</span>
+            </button>
+        </div>
+
+    </div>
+
+    <template if:true={showNotesModal}>
+        <c-lead-notes-cmp onclose={handleCloseNotes}></c-lead-notes-cmp>
+    </template>
+
+    <template if:true={showActivityTimelineModal}>
+        <c-lead-activity-timeline-cmp onclose={handleCloseActivityTimeline}></c-lead-activity-timeline-cmp>
+    </template>
+</template>

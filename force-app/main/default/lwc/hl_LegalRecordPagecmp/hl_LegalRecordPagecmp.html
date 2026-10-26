@@ -1,0 +1,16 @@
+<template>
+    <lightning-layout multiple-rows>
+        <lightning-layout-item size="6" padding="around-small">
+            <c-credit-legal-record-page-cmp record-id={recordId}
+        process-object={processObject}></c-credit-legal-record-page-cmp>
+        </lightning-layout-item>
+
+        <lightning-layout-item size="6" padding="around-small">
+            <div class="right-column">
+                <c-legal-show-applicants record-id = {recordId}></c-legal-show-applicants>
+                <c-legal-uploaded-document record-id = {recordId}></c-legal-uploaded-document>
+                <c-legal-upload-document-under-detail record-id = {recordId}></c-legal-upload-document-under-detail>
+            </div>
+        </lightning-layout-item>
+    </lightning-layout>
+</template>

@@ -1,0 +1,166 @@
+@import "c/cssLibrary";
+
+/* ── Default (light) container — preserves original white-card look ─────── */
+.table-scroll-container {
+    background-color: white;
+}
+
+.no-records-message {
+    text-align: center;
+    padding: 10px;
+    border: solid 1px #ddd;
+}
+
+/* ── Dark theme — used only when host sets theme="dark" (e.g. recordAssignmentV2). Purely cosmetic, no functional change ── */
+.theme-dark {
+    background-color: #1b1b2b;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    padding: 6px;
+}
+
+.theme-dark .no-records-message {
+    border-color: #33455e;
+    color: #9ca3af;
+    background-color: transparent;
+}
+
+.theme-dark .slds-table {
+    background-color: transparent;
+    color: #d1d5db;
+}
+
+.theme-dark thead tr.sticky th {
+    background-color: #14141f;
+    color: #ffffff;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.theme-dark tbody tr {
+    background-color: transparent;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.theme-dark tbody tr:hover {
+    background-color: rgba(124, 58, 237, 0.12);
+}
+
+.theme-dark td,
+.theme-dark th {
+    color: #d1d5db;
+    border-color: #33455e;
+}
+
+.theme-dark a {
+    color: #a855f7;
+}
+
+.theme-dark .slds-radio_faux {
+    border-color: #33455e;
+    background-color: #1b1b2b;
+}
+
+/* ── Sky-blue theme — matched EXACTLY to the "Field Investigation
+   Initiation" table theme in creditFIInitiationCmp.css
+   (.accordion-container .slds-table / .fi-table-wrapper): dark-navy
+   #0a1524 outer backdrop (wrapper), #0e1c30 table surface for both
+   header and body, #33455e borders on every cell, 18px rounded corners
+   on the outer cells only, left-aligned bold white header text with
+   12px/10px padding, 13px body text, and the same #16283f row-hover
+   highlight. Used by the "Field Investigation History" accordion table
+   in creditFIInitiationCmp (theme="skyblue") so both tables in that
+   parent component share one identical visual language. */
+/* !important required: cssLibrary.css sets .slds-table thead tr th background-color with !important */
+.theme-skyblue.table-scroll-container {
+    background-color: #0a1524 !important;
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: 18px;
+    overflow: hidden;
+}
+
+.theme-skyblue.table-scroll-container .slds-table {
+    width: 100%;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border-radius: 18px;
+    border: 1px solid #33455e !important;
+    background-color: #0e1c30 !important;
+    color: #ffffff;
+}
+
+.theme-skyblue.table-scroll-container .slds-table th,
+.theme-skyblue.table-scroll-container .slds-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.theme-skyblue.table-scroll-container .slds-table thead tr.sticky th {
+    background-color: #0e1c30 !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    font-size: 12.5px;
+    letter-spacing: 0.2px;
+    padding: 12px 10px;
+    text-align: left;
+    box-shadow: none !important;
+    vertical-align: middle;
+}
+
+/* higher specificity than cssLibrary's .slds-table thead tr th / tbody tr td border rule */
+.theme-skyblue.table-scroll-container .slds-table thead tr th,
+.theme-skyblue.table-scroll-container .slds-table tbody tr td {
+    border-right: 1px solid #33455e !important;
+    border-bottom: 1px solid #33455e !important;
+    border-color: #33455e !important;
+}
+
+.theme-skyblue.table-scroll-container .slds-table thead tr:first-child th:first-child {
+    border-top-left-radius: 18px;
+}
+
+.theme-skyblue.table-scroll-container .slds-table thead tr:first-child th:last-child {
+    border-top-right-radius: 18px;
+}
+
+.theme-skyblue.table-scroll-container .slds-table tbody tr td {
+    background-color: #0e1c30 !important;
+    color: #ffffff !important;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: left !important;
+    padding: 12px 10px;
+    vertical-align: middle;
+}
+
+.theme-skyblue.table-scroll-container .slds-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 18px;
+}
+
+.theme-skyblue.table-scroll-container .slds-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 18px;
+}
+
+.theme-skyblue.table-scroll-container .slds-table tbody tr:hover td {
+    background-color: #16283f !important;
+}
+
+.theme-skyblue.table-scroll-container .slds-table a {
+    color: #7db2ff !important;
+}
+
+/* In-cell form controls (the header/row checkboxes) must use the SAME
+   #33455e border as the table cells - matches the fix already applied to
+   the Initiation table's lightning-input/textarea/combobox tokens in
+   creditFIInitiationCmp.css, avoiding the same close-but-different-hex
+   mismatch (#2a2f45 vs #33455e) seen there. */
+.theme-skyblue.table-scroll-container lightning-input {
+    --slds-c-checkbox-color-background: #0e1c30;
+    --slds-c-checkbox-color-border: #33455e;
+}
+
+.theme-skyblue.table-scroll-container .slds-radio_faux {
+    border-color: #33455e;
+    background-color: #0e1c30;
+}

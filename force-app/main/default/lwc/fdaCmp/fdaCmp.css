@@ -1,0 +1,458 @@
+@import 'c/cssLibrary'; 
+.main-tab {
+    background-color: #0A1524 !important;
+}
+
+/* Fetch Information - solid purple ("Start Application" look). Only
+   colors/border changed, label and click handler are untouched. */
+.start-app-style-btn.slds-button_brand {
+    background-color: #1467eb !important;
+    border-color: #1467eb !important;
+    color: #ffffff !important;
+}
+
+.start-app-style-btn.slds-button_brand:hover {
+    background-color: #1467eb !important;
+    border-color: #1467eb !important;
+}
+/* =========================================================
+   FDA CMP - OVERALL DARK BACKGROUND
+   ========================================================= */
+
+:host {
+    display: block;
+    background-color: #0A1524 !important;
+    color: #ffffff !important;
+    min-height: 100%;
+}
+
+/* Main component area */
+.main-tab {
+    background-color: #0A1524 !important;
+    color: #ffffff !important;
+    width: 100%;
+}
+
+/* Any wrapper/container around the FDA content */
+.main-tab,
+.responsive-obligation-container,
+.table-scroll-container {
+    background-color: #0A1524 !important;
+}
+
+
+/* =========================================================
+   FDA FIELDS - Licence Number / State
+   Underline-only field pattern matching the reference screenshot
+   (bold light label + red required-asterisk, muted placeholder,
+   thin bottom line, no box), adapted to FDAcmp's dark palette.
+   Scoped strictly to .fda-field so the :host/.main-tab background
+   rules above are never touched.
+
+   Belt-and-suspenders: CSS custom properties (design tokens) are
+   set first because they always cross the shadow boundary
+   regardless of whether ::part() is honored by this org's LWC
+   runtime; the ::part()/class-selector rules below reinforce the
+   same result and control the border-bottom shape, which has no
+   dedicated token. */
+
+.fda-field {
+    --slds-c-input-color-background: transparent;
+    --slds-c-input-color-background-focus: transparent;
+    --slds-c-input-color-background-active: transparent;
+    --slds-c-input-color-border: transparent;
+    --slds-c-input-color-border-focus: transparent;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-placeholder-text-color: #aab2c0;
+    --slds-c-input-label-color: #ffffff;
+
+    --slds-c-combobox-color-background: transparent;
+    --slds-c-combobox-input-color-background: transparent;
+    --slds-c-combobox-input-color-background-focus: transparent;
+    --slds-c-combobox-text-color: #ffffff;
+    --slds-c-combobox-label-color: #ffffff;
+}
+
+.fda-field .slds-form-element__label {
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    font-size: 0.8125rem !important;
+}
+
+.fda-field .slds-required {
+    color: #ff4d6d !important;
+}
+
+/* lightning-input - reset the boxed shadow, keep only a bottom line */
+lightning-input.fda-field::part(input) {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid #33455e !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    color: #ffffff !important;
+    font-size: 1rem !important;
+    padding: 4px 20px 8px 2px !important;
+}
+
+lightning-input.fda-field::part(input):focus {
+    border-bottom: 2px solid #60a5fa !important;
+}
+
+lightning-input.fda-field::part(input)::placeholder {
+    color: #aab2c0 !important;
+}
+
+/* lightning-combobox - same underline treatment, keep native arrow icon */
+lightning-combobox.fda-field .slds-combobox__input {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid #33455e !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    color: #ffffff !important;
+    font-size: 1rem !important;
+    padding: 4px 20px 8px 2px !important;
+}
+
+lightning-combobox.fda-field .slds-combobox__input:focus {
+    border-bottom: 2px solid #60a5fa !important;
+}
+
+lightning-combobox.fda-field .slds-combobox__input::placeholder {
+    color: #aab2c0 !important;
+}
+
+.fda-field .slds-form-element__control {
+    border: none !important;
+    padding-bottom: 0 !important;
+}
+
+/* Extra fallback in case ::part(input) isn't honored - direct class
+   match, same technique already proven for the combobox above. */
+.fda-field .slds-input {
+    background: transparent !important;
+    box-shadow: none !important;
+}
+
+/* =========================================================
+   FDA TABLE
+   ========================================================= */
+
+.fda-table {
+    width: 100%;
+    border-collapse: collapse !important;
+    background-color: #16283F !important;
+    border: 1px solid #33455e !important;
+}
+
+
+/* TABLE HEADER */
+
+.fda-table thead {
+    background-color: #16283F !important;
+}
+
+.fda-table thead tr {
+    background-color: #16283F !important;
+}
+
+.fda-table thead th {
+    background-color: #16283F !important;
+    background: #16283F !important;
+
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+
+    text-align: center !important;
+    vertical-align: middle !important;
+
+    border: 1px solid #33455e !important;
+
+    padding: 8px 10px !important;
+}
+
+.fda-table thead th,
+.fda-table thead th *,
+.fda-table thead th .slds-truncate {
+    background-color: #16283F !important;
+    color: #FFFFFF !important;
+    font-weight: 800 !important;
+}
+
+
+/* TABLE BODY */
+
+.fda-table tbody {
+    background-color: #16283F !important;
+}
+
+.fda-table tbody tr {
+    background-color: #16283F !important;
+}
+
+.fda-table tbody td {
+    background-color: #16283F !important;
+    color: #FFFFFF !important;
+
+    border: 1px solid #33455e !important;
+
+    text-align: center !important;
+    vertical-align: middle !important;
+
+    padding: 8px 10px !important;
+}
+
+.fda-table tbody td,
+.fda-table tbody td * {
+    color: #FFFFFF !important;
+}
+
+
+/* HOVER */
+
+.fda-table tbody tr:hover td {
+    background-color: #1B3049 !important;
+    color: #FFFFFF !important;
+}
+
+
+/* =========================================================
+   REMOVE WHITE GAP / BACKGROUND AROUND TABLE
+   ========================================================= */
+
+:host > div,
+:host .slds-card,
+:host .slds-card__body,
+:host .slds-box,
+:host .slds-container,
+:host .slds-grid {
+    background-color: #0A1524 !important;
+}
+
+
+/* Space between filter section and table */
+:host > div[style*="margin"] {
+    background-color: #0A1524 !important;
+}
+
+
+/* Table wrapper */
+:host .fda-table-wrapper {
+    background-color: #0A1524 !important;
+    margin: 0 !important;
+}
+
+
+/* =========================================================
+   FDA TABLE SCROLLBAR
+   ========================================================= */
+
+.table-scroll-container::-webkit-scrollbar {
+    height: 10px;
+}
+
+.table-scroll-container::-webkit-scrollbar-track {
+    background: #0A1524 !important;
+}
+
+.table-scroll-container::-webkit-scrollbar-thumb {
+    background: #7A8795 !important;
+    border-radius: 5px;
+}
+
+.table-scroll-container::-webkit-scrollbar-thumb:hover {
+    background: #9AA7B5 !important;
+}
+
+/* =========================================================
+   FORCE OVERRIDE - LICENCE NUMBER & STATE
+   Matches screenshot style
+   ========================================================= */
+
+.main-tab lightning-input.fda-field,
+.main-tab lightning-combobox.fda-field {
+    --slds-c-input-color-background: transparent !important;
+    --slds-c-input-color-background-focus: transparent !important;
+    --slds-c-input-color-border: transparent !important;
+    --slds-c-input-color-border-focus: transparent !important;
+    --slds-c-input-text-color: #ffffff !important;
+    --slds-c-input-label-color: #ffffff !important;
+
+    --slds-c-combobox-color-background: transparent !important;
+    --slds-c-combobox-input-color-background: transparent !important;
+    --slds-c-combobox-text-color: #ffffff !important;
+    --slds-c-combobox-label-color: #ffffff !important;
+
+    width: 100% !important;
+}
+
+/* Labels */
+.main-tab .fda-field {
+    --lwc-colorTextLabel: #ffffff !important;
+}
+
+/* Required Star */
+.main-tab .fda-field .slds-required {
+    color: #ff2d55 !important;
+}
+
+/* Input field */
+.main-tab lightning-input.fda-field::part(input) {
+    background: transparent !important;
+    background-color: transparent !important;
+
+    border: none !important;
+    border-radius: 0 !important;
+
+    border-bottom: 1px solid #8d99a8 !important;
+
+    box-shadow: none !important;
+    outline: none !important;
+
+    color: #ffffff !important;
+
+    font-size: 18px !important;
+    font-weight: 400 !important;
+
+    height: 52px !important;
+    min-height: 52px !important;
+
+    padding: 0 0 10px 0 !important;
+}
+
+/* Input focus */
+.main-tab lightning-input.fda-field::part(input):focus {
+    border-bottom: 2px solid #0a70f4 !important;
+    box-shadow: none !important;
+}
+
+/* Combobox */
+.main-tab lightning-combobox.fda-field::part(input) {
+    background: transparent !important;
+    background-color: transparent !important;
+
+    border: none !important;
+    border-radius: 0 !important;
+
+    border-bottom: 1px solid #8d99a8 !important;
+
+    box-shadow: none !important;
+    outline: none !important;
+
+    color: #ffffff !important;
+
+    font-size: 18px !important;
+    font-weight: 400 !important;
+
+    height: 52px !important;
+    min-height: 52px !important;
+
+    padding: 0 0 10px 0 !important;
+}
+
+/* Combobox focus */
+.main-tab lightning-combobox.fda-field::part(input):focus {
+    border-bottom: 2px solid #0a70f4 !important;
+}
+
+/* Placeholder */
+.main-tab lightning-input.fda-field::part(input)::placeholder,
+.main-tab lightning-combobox.fda-field::part(input)::placeholder {
+    color: #c5ccd6 !important;
+    opacity: 1 !important;
+}
+
+/* Fallback override */
+.main-tab .fda-field input,
+.main-tab .fda-field .slds-input,
+.main-tab .fda-field .slds-combobox__input {
+    background: transparent !important;
+    background-color: transparent !important;
+
+    border-left: none !important;
+    border-right: none !important;
+    border-top: none !important;
+    border-bottom: 1px solid #8d99a8 !important;
+
+    border-radius: 0 !important;
+
+    color: #ffffff !important;
+
+    box-shadow: none !important;
+}
+
+/* Spacing like screenshot */
+.main-tab .slds-p-around_x-small {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+    padding-top: 12px !important;
+    padding-bottom: 12px !important;
+}
+/* =========================================================
+   LICENCE NUMBER & STATE - UNDERLINE ONLY
+   ========================================================= */
+
+.main-tab lightning-input.fda-field,
+.main-tab lightning-combobox.fda-field {
+    --slds-c-input-color-background: transparent !important;
+    --slds-c-input-color-border: transparent !important;
+    --slds-c-combobox-color-border: transparent !important;
+}
+
+/* Remove all box borders */
+.main-tab .fda-field input,
+.main-tab .fda-field .slds-input,
+.main-tab .fda-field .slds-combobox__input,
+.main-tab lightning-input.fda-field::part(input),
+.main-tab lightning-combobox.fda-field::part(input) {
+
+    background: transparent !important;
+    box-shadow: none !important;
+
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+
+    /* Only bottom line */
+    border-bottom: 1px solid #8B95A5 !important;
+
+    border-radius: 0 !important;
+
+    color: #FFFFFF !important;
+
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    padding-bottom: 10px !important;
+
+    font-size: 18px !important;
+}
+
+/* Focus effect */
+.main-tab .fda-field input:focus,
+.main-tab .fda-field .slds-input:focus,
+.main-tab .fda-field .slds-combobox__input:focus,
+.main-tab lightning-input.fda-field::part(input):focus,
+.main-tab lightning-combobox.fda-field::part(input):focus {
+
+    border-top: none !important;
+    border-left: none !important;
+    border-right: none !important;
+
+    border-bottom: 2px solid #0A70F4 !important;
+
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+/* Label */
+.main-tab .fda-field {
+    --lwc-colorTextLabel: #FFFFFF !important;
+}
+
+/* Required star */
+.main-tab .fda-field .slds-required {
+    color: #FF2D55 !important;
+}

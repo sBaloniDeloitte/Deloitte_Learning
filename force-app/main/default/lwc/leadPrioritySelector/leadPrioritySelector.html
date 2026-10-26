@@ -1,0 +1,54 @@
+<!-- This Code was generated using GenAI tool: Codify, Please check for accuracy -->
+<template>
+    <div class="priority-card">
+        <div class="priority-header">
+            <span class="priority-header-icon">🎯</span>
+            <h3 class="priority-title">Lead Priority</h3>
+        </div>
+        <div class="priority-body">
+            <div class="priority-buttons">
+                <button
+                    class={hotClass}
+                    data-value="Hot"
+                    onclick={handlePriorityClick}
+                    title="High priority lead — likely to convert">
+                    🔥 Hot
+                </button>
+                <button
+                    class={warmClass}
+                    data-value="Warm"
+                    onclick={handlePriorityClick}
+                    title="Medium priority lead — needs nurturing">
+                    ☀️ Warm
+                </button>
+                <button
+                    class={coldClass}
+                    data-value="Cold"
+                    onclick={handlePriorityClick}
+                    title="Low priority lead — early stage">
+                    ❄️ Cold
+                </button>
+            </div>
+
+            <template if:true={isSaving}>
+                <div class="priority-saving">
+                    <span class="spinner-small"></span>
+                    <span class="saving-text">Saving…</span>
+                </div>
+            </template>
+
+            <template if:true={saveSuccess}>
+                <div class="priority-success">
+                    ✅ Priority set to <strong>{currentPriority}</strong>
+                </div>
+            </template>
+
+            <template if:true={saveError}>
+                <div class="priority-error">
+                    ⚠ {saveError}
+                </div>
+            </template>
+        </div>
+    </div>
+</template>
+<!-- GenAI: Generated code ends here -->

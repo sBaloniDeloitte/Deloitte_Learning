@@ -1,0 +1,182 @@
+@import "c/cssLibrary";
+
+/* ____GenAI: Generated code starts here - dark theme repaint to match the
+   rest of the loan login screens. This component previously had no :host
+   background, so the browser default white showed through around the
+   progress bar and accordion card. Only colors/surfaces changed - no
+   layout, spacing, or markup structure, and no JS/functionality touched.____ */
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+
+    --slds-c-accordion-color-background: #0e1c30;
+    --slds-c-accordion-section-heading-text-color: #ffffff;
+    --slds-c-accordion-section-color-border: #1d2f45;
+    --slds-c-accordion-section-color-background-active: #16283f;
+    --slds-c-accordion-summary-color-background: #16283f;
+    --slds-c-accordion-summary-text-color: #ffffff;
+    --slds-c-accordion-icon-color-foreground: #93c5fd;
+}
+
+/* Progress bar strip - was plain white via the slds-box/slds-theme_default
+   utility classes with no override. Scoped to this component only. */
+.progress-container.slds-box,
+.progress-container.slds-theme_default {
+    background: #101b30 !important;
+    border-color: #1d2f45 !important;
+}
+
+/* Accordion card wrapper */
+.container.accordian {
+    background-color: #0e1c30 !important;
+    border-color: #1d2f45 !important;
+}
+
+/* lightning-accordion-section carries an inline `background-color: white`
+   directly on the element itself, so it must be overridden with !important
+   here (external rule with !important always wins over a plain inline
+   style, regardless of specificity). */
+lightning-accordion-section {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+}
+
+/* ____GenAI: Generated code starts here - Progress Bar redesign to match
+   the reference screenshot: purple filled circles with white checkmarks
+   for completed stages, a dark circle with a blue "blocked" icon and blue
+   ring for the incomplete/current stage, subtle connector lines, and bold
+   white labels. All legacy/duplicate rule blocks from earlier iterations
+   removed to avoid conflicting overrides.____ */
+
+.progress-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px 0;
+}
+
+.progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    position: relative;
+}
+
+/* Step wrapper */
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+.progress-step:first-child .connector {
+    display: none;
+}
+.progress-step:last-child .connector {
+    display: none;
+}
+
+/* Ensure the icon appears above the connector line */
+.icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    z-index: 1;
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* Completed stage - purple filled circle with white checkmark */
+.icon-wrapper_completed {
+    background-color: #7c3aed;
+    border: 2px solid #1a2540;
+}
+.icon-wrapper_completed lightning-icon {
+    --slds-c-icon-color-foreground-default: #ffffff;
+    --slds-c-icon-color-foreground: #ffffff;
+}
+
+/* Incomplete/current stage - the OUTER circle now matches the completed
+   step's dark fill/border exactly (same size, same border color), so all
+   step circles look uniform like the reference screenshot. The blue
+   "no-entry" ring + diagonal slash is drawn as a smaller NESTED icon
+   (.blocked-icon) centered inside, instead of using the wrapper's own
+   edge as the ring - matching the reference proportions where the blue
+   glyph sits inside a dark circle rather than being the circle itself. */
+.icon-wrapper_incomplete {
+    background-color: #0c1830;
+    border: 2px solid #1a2540;
+}
+
+.blocked-icon {
+    position: relative;
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    border: 2px solid #2f8fef;
+    box-sizing: border-box;
+}
+.blocked-icon::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 14px;
+    height: 2px;
+    background-color: #2f8fef;
+    border-radius: 1px;
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.connector {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    width: 200%;
+    height: 2px;
+    background-color: #4b5978;
+    transform: translateX(-50%);
+    z-index: 0;
+}
+
+/* Stage Name Below Icon */
+.stage-name {
+    margin-top: 8px;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: center;
+    font-size: 11px;
+}
+/* ____GenAI: Generated code ends here____ */
+.button-red {
+    background-color: #dc387e;
+    color: black;
+    border-color: #dc387e;
+    font-size: 11px;
+    min-width: 110px;
+    font-weight: 700;
+    display: inline-block;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.600rem;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 0 0.75rem;
+    border-radius: 0.25rem;
+    border-color: skyblue;
+   
+   
+    text-decoration: none;
+    
+}

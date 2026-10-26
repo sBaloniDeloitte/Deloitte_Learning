@@ -1,0 +1,42 @@
+@import 'c/cssLibrary';
+
+:host {
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+
+    --slds-c-combobox-color-background: #16283f;
+    --slds-c-combobox-text-color: #ffffff;
+
+    --slds-c-combobox-option-color-background: #16283f;
+    --slds-c-combobox-option-text-color: #ffffff;
+
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+
+    --dt-default: #1467EB;
+}
+
+lightning-file-upload {
+    --slds-c-button-color-background: #16283f;
+    --slds-c-button-color-border: #33455e;
+    --slds-c-button-text-color: #ffffff;
+}
+
+.save-button{
+    color:white ;
+    background-color: var(--dt-default) !important;
+    border: 1px solid var(--dt-default);
+    font-weight:390 ;
+}
+.single-upload-div lightning-file-upload{
+    float: left;
+    margin-left: 8px;
+}
+.custom-table .slds-icon-action-preview{
+    border-radius: 0!important;
+    padding: 1px 8px;
+    background-color: #9bbf56;
+}
+.custom-icon{
+    --sds-c-icon-color-foreground: white; 
+}

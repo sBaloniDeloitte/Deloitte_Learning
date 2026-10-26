@@ -1,0 +1,112 @@
+.lead-header {
+    width: 100%;
+    min-height: 80px;
+
+    background: linear-gradient(
+        90deg,
+        #241044 0%,
+        #35206b 50%,
+        #17152f 100%
+    );
+
+    color: #ffffff;
+
+    padding: 16px 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+
+    box-sizing: border-box;
+
+    border-radius: 0;
+}
+
+.lead-header-left {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.lead-icon {
+    width: 44px;
+    height: 44px;
+
+    border-radius: 10px;
+
+    /* background: #7b4cff; */
+    background: #a855f7;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.lead-header-icon {
+    --slds-c-icon-color-foreground: #ffffff !important;
+    --slds-c-icon-color-foreground-default: #ffffff !important;
+    --slds-c-icon-color-background: transparent !important;
+
+    --sds-c-icon-color-foreground: #ffffff !important;
+    --sds-c-icon-color-foreground-default: #ffffff !important;
+    --sds-c-icon-color-background: transparent !important;
+}
+
+.lead-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.object-label {
+    font-size: 13px;
+    color: #d5caff;
+    margin-bottom: 2px;
+}
+
+.lead-name {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+/* ---- Right side action buttons (Notes / Activity Timeline) ---- */
+
+.lead-header-right {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-shrink: 0;
+}
+
+.header-action-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+
+    background: linear-gradient(135deg, #3a1f66 0%, #2a1650 100%);
+    border: 1px solid #8b5cf6;
+    border-radius: 999px;
+
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 600;
+    font-family: inherit;
+
+    padding: 8px 16px;
+    cursor: pointer;
+    white-space: nowrap;
+
+    transition: all 0.15s ease;
+}
+
+.header-action-btn:hover {
+    background: linear-gradient(135deg, #4c2b82 0%, #351d68 100%);
+    border-color: #a855f7;
+    box-shadow: 0 0 0 1px rgba(168, 85, 247, 0.35);
+}
+
+.header-action-icon {
+    flex-shrink: 0;
+    --slds-c-icon-color-foreground: #fffffe;
+    --slds-c-icon-color-foreground-default: #fffffe;
+}

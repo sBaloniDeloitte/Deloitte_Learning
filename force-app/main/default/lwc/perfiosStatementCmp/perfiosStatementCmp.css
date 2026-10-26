@@ -1,0 +1,43 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+/* ----------------- Dark Theme (matches bsaOneViewCmp / customerNegotiationScreen) ----------------- */
+:host {
+    display: block;
+    color: #ffffff;
+
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+ --dt-positive: #8b5cf6;
+    --dt-negative: #16283f;
+
+    /* lightning-card styling hooks - cross into the base component's shadow DOM */
+    --slds-c-card-color-background: var(--dt-panel-bg);
+    --slds-c-card-color-background-header: var(--dt-panel-bg);
+    --slds-c-card-color-border: var(--dt-border);
+    --slds-c-card-heading-text-color: #ffffff;
+
+    /* lightning-button styling hooks */
+    --slds-c-button-color-background: var(--dt-input-bg);
+    --slds-c-button-color-border: var(--dt-border);
+    --slds-c-button-text-color: #ffffff;
+
+    --slds-c-icon-color-background: #8b5cf6; 
+}
+
+table, th, td {
+    border-color: var(--dt-border) !important;
+}
+
+.slds-table {
+    background-color: var(--dt-panel-bg) !important;
+    color: #ffffff !important;
+}
+
+.slds-table td {
+    background-color: var(--dt-panel-bg) !important;
+    color: #ffffff !important;
+    border-color: var(--dt-border) !important;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

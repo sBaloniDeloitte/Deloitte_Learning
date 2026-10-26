@@ -1,0 +1,47 @@
+<template>
+
+    <lightning-card title="Linked Loan Details">
+
+        <div class="table-container">
+
+            <table>
+
+                <thead>
+
+                    <tr>
+
+                        <th>Group Code</th>
+
+                        <th>Group Description</th>
+
+                        <th>Linked Loans</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody>
+
+                    <template for:each={linkedLoansCombined} for:item="loan">
+
+                       <tr key={loan.lan}>
+
+                            <td>{loan.groupcode}</td>
+
+                            <td>{loan.groupdesc}</td>
+
+                            <td>{loan.lan}</td> 
+
+                        </tr>
+
+                    </template>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+    </lightning-card>
+
+</template>

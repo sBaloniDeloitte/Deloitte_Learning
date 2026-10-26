@@ -1,0 +1,63 @@
+<template>
+    <div class="slds-combobox_container">
+        <div class="slds-combobox__form-element slds-input-has-icon slds-input-has-icon_left-right">
+            <template if:true={selectedOption}>
+                <div class="slds-combobox__input slds-input_faux slds-combobox__input-value">
+                    <span class="slds-truncate">{selectedOption.label}</span>
+                    <button class="slds-button slds-button_icon slds-input__icon slds-input__icon_right" onclick={handleRemove} title="Remove selected option">
+                        <lightning-icon icon-name="utility:close" alternative-text="close" size="xx-small"></lightning-icon>
+                    </button>
+                </div>
+            </template>
+
+            <template if:false={selectedOption}>
+                <input type="text"
+                    class="slds-input slds-combobox__input"
+                    disabled={disabled}
+                    onfocus={handleFocus}
+                    oninput={handleSearch}
+                    id="combobox-id-1"
+                    aria-autocomplete="list"
+                    aria-controls="listbox-id-1"
+                    aria-expanded={isDropdownOpen} 
+                    aria-haspopup="listbox"
+                    role="combobox"
+                    placeholder="Search..."
+                    value={searchTerm}
+                />
+            </template>
+        </div>
+
+        <!-- Conditionally render the dropdown using template -->
+        <template if:true={isDropdownOpen}>
+            <div id="listbox-id-1"
+                class="slds-dropdown slds-dropdown_length-with-icon-7 slds-dropdown_fluid"
+                role="listbox"
+                aria-label="Search results"
+                tabindex="0"
+                aria-busy={isLoading}
+                style="top:100%;">
+
+                <ul class="slds-listbox slds-listbox_vertical" role="presentation">
+                    <template for:each={filteredOptions} for:item="option">
+                        <li key={option.value} role="presentation" class="slds-listbox__item">
+                            <div class="slds-media slds-listbox__option slds-listbox__option_entity"
+                                role="option"
+                                data-label={option.label}
+                                data-value={option.value}
+                                onclick={handleSelection}>
+                                
+                                <span class="slds-media__figure slds-listbox__option-icon">
+                                    <lightning-icon icon-name="standard:user" alternative-text="User" size="small"></lightning-icon>
+                                </span>
+                                <span class="slds-media__body">
+                                    <span class="slds-listbox__option-text">{option.label}</span>
+                                </span>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+            </div>
+        </template>
+    </div>
+</template>

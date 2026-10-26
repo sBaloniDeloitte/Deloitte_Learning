@@ -1,0 +1,530 @@
+@import "c/cssLibrary";
+
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+
+    /* ____GenAI: lightning-combobox renders its closed field and open
+       dropdown/listbox inside its own native shadow root, so regular class
+       selectors (.slds-dropdown/.slds-listbox) in this file can't reach it.
+       SLDS styling hooks are CSS custom properties, which do cross the
+       shadow boundary, so they're used here to recolor the combobox input
+       and its dropdown options to match the navy theme with white text.
+       CSS-only change - no HTML/JS modified.____ */
+    --slds-c-combobox-input-color-background: #131a30;
+    --slds-c-combobox-input-color-background-focus: #131a30;
+    --slds-c-combobox-input-color-border: #2a2f45;
+    --slds-c-combobox-input-color-border-focus: #1467eb;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: #131a30;
+    --slds-c-listbox-color-background: #131a30;
+
+    /* ____GenAI: option rows kept rendering with SLDS' default muted/gray
+       text, and the focused/hovered row (e.g. "Match not found") was still
+       falling back to a white background with dark text - meaning the
+       background/hover/text hooks were being read from more state-specific
+       hook names than the base ones already set above. Every option state
+       (default, hover, focus, selected, current) is pinned to the same navy
+       background and white text so the row never visibly flashes white on
+       hover, per explicit request. CSS-only change - no HTML/JS modified.____ */
+    --slds-c-listbox-option-color-background: #131a30;
+    --slds-c-listbox-option-color-background-hover: #131a30;
+    --slds-c-listbox-option-color-background-focus: #131a30;
+    --slds-c-listbox-option-color-background-selected: #131a30;
+    --slds-c-listbox-option-color-background-current: #131a30;
+    --slds-c-listbox-option-text-color: #ffffff;
+    --slds-c-listbox-option-text-color-hover: #ffffff;
+    --slds-c-listbox-option-text-color-focus: #ffffff;
+    --slds-c-listbox-option-text-color-selected: #ffffff;
+    --slds-c-listbox-option-text-color-current: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+    --lwc-colorTextWeak: #ffffff;
+    --lwc-colorTextInverse: #ffffff;
+    --lwc-colorTextInverseWeak: #ffffff;
+    --lwc-colorTextIconDefault: #ffffff;
+    --lwc-colorTextIconHover: #ffffff;
+    --lwc-colorBackgroundRowHover: #131a30;
+    --lwc-colorBackgroundAlt: #131a30;
+    --lwc-colorBackground: #131a30;
+
+    /* ____GenAI: component-specific listbox/combobox text hooks above were
+       still resolving to SLDS' default dark text because the compiled
+       lightning-base-combobox-item styles fall back to the GLOBAL SLDS 2
+       styling hook (--slds-g-color-neutral-base-10, the base "near-black"
+       palette token) when no component-level text hook is wired for the
+       default/unfocused option row - not to a component-scoped hook. This
+       is a stable, publicly documented GA global hook, unlike the several
+       component-level names already tried, so it is the more reliable
+       lever for text that ordinary component hooks don't reach. CSS-only
+       change - no HTML/JS modified.____ */
+    --slds-g-color-neutral-base-10: #ffffff;
+    --slds-c-textarea-color-background: #16283f;
+    --slds-c-textarea-color-border: #33455e;
+    --slds-c-textarea-text-color: #ffffff;
+    --slds-c-textarea-color-background-focus: #16283f;
+    --slds-c-textarea-color-border-focus: #1467eb;
+}
+
+.comment-modal-content {
+    --slds-c-textarea-color-background: #16283f;
+    --slds-c-textarea-text-color: #ffffff;
+    --slds-c-textarea-color-border: #33455e;
+}
+
+.dark-textarea {
+    width: 100%;
+    min-height: 80px;
+
+    background: #16283f;
+    color: #ffffff;
+
+    border: 1px solid #33455e;
+    border-radius: 4px;
+
+    padding: 12px;
+}
+
+.dark-textarea:focus {
+    background: #16283f;
+    color: #ffffff;
+    border-color: #1467eb;
+
+    outline: none;
+}
+
+.dark-textarea::placeholder {
+    color: #8fa1c2;
+}
+
+/* ____GenAI: the root <div class="container"> in the template had no
+   background rule in this file, so it fell back to the browser/SLDS
+   default white background - creating the white gap seen between the
+   navy accordion header and the navy table below. Giving it the same
+   navy background as the rest of the sales-login dark theme closes that
+   gap. CSS-only change - no HTML markup or JS behavior modified.____ */
+.container {
+    background-color: #0a1524;
+    color: #ffffff;
+    border-radius: 8px;
+    padding-bottom: 12px;
+}
+
+.pan-heading{
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffffff;
+}
+.image-preview {
+    display: flex;
+    justify-content: center;  /* Horizontally center */
+    align-items: center;      /* Vertically center */
+    width: 100%;
+    margin: 10px 0;
+}
+
+.red-text {
+    color: red !important;
+    
+    
+}
+
+.uploaded-image {
+    max-width: 100%;
+    max-height: 300px; /* Adjust height as needed */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.button-green {
+    background-color: #1467eb !important;
+    color: #ffffff !important;
+    border-color: #1467eb !important;
+    font-size: 11px;
+    min-width: 140px;
+    font-weight: 700;
+    display: inline-block;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.600rem;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 0 0.75rem;
+    border-radius: 0.25rem;
+    text-decoration: none;
+}
+
+.button-red {
+    background-color: #2a2f45 !important;
+    color: #ffffff !important;
+    border-color: #2a2f45 !important;
+    font-size: 11px;
+    min-width: 110px;
+    font-weight: 700;
+    display: inline-block;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.600rem;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 0 0.75rem;
+    border-radius: 0.25rem;
+    text-decoration: none;
+}
+.slds-table thead {
+ 
+}
+
+.slds-table thead th {
+    background: #1b304d !important;
+    color: #ffffff !important;
+
+    font-weight: 600;
+    font-size: 15px;
+
+    padding: 6px 12px;
+
+    border-right: 1px solid #ffffff;
+    border-bottom: 1px solid #ffffff;
+}
+
+.slds-table tbody td {
+    background: #0f1c3f !important;
+    color: #ffffff !important;
+
+    border-right: 1px solid #ffffff;
+    border-bottom: 1px solid #ffffff;
+
+    padding: 10px 12px;
+}
+
+.slds-table th:last-child,
+.slds-table td:last-child {
+    border-right: none !important;
+}
+
+.slds-table tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+.view-comments-container {
+    display: flex;
+    align-items: flex-end; /* align with bottom of combobox */
+    padding-left: 12px;    /* gap between dropdown and button */
+}
+.view-comments-container {
+    padding-left: 12px;
+    padding-top: 20px;
+}
+
+.table-class {
+    width: 99%;
+    margin-left: 1%;
+    border-collapse: collapse;
+    border: none !important;
+    background: #0f1c3f;
+    border-radius: 4px;
+}
+
+.table-header-box {
+    text-align: left;
+    font-size: 15px;
+    font-weight: 700;
+    padding: 12px 16px;;
+    background: #0f1c3f;
+    background-color: skyblue;
+    border: 1px solid #d8dde6;
+    margin-left: 1%;
+    color: #ffffff;
+    /* border-radius: 5px; */
+}
+.center-text {
+    text-align: center;
+    color: #ffffff;
+}
+
+/* ===== Dark navy theme for the External List table (entry.records block) =====
+   Scoped to .external-list-header / .external-list-table only - color/style
+   change only, no markup or behavior change. */
+.external-list-header {
+    background: #0f1c3f !important;
+    background-color: #131a30 !important;
+    color: #ffffff !important;
+    text-align: left !important;
+    border: none !important;
+    border-radius: 8px 8px 0 0;
+    padding: 10px 16px;
+}
+
+
+
+/* ____GenAI: SLDS' default .slds-table row-hover style turns the row
+   background (and consequently the text) white, making every cell
+   unreadable on hover. Overriding both the row and its cells to a lighter
+   navy highlight keeps the row clearly indicated on hover while text stays
+   white and readable. CSS-only change - no HTML/JS modified.____ */
+.external-list-table {
+    border: 1px solid #ffffff !important;
+    background: #0f1c3f !important;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-left: 1.01%;
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+.external-list-table thead tr:first-child th:first-child {
+    border-top-left-radius: 0.75rem;
+}
+
+.external-list-table thead tr:first-child th:last-child {
+    border-top-right-radius: 0.75rem;
+}
+
+.external-list-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 0.75rem;
+}
+
+.external-list-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 0.75rem;
+}
+.external-list-table thead th {
+    background: #1b304d !important;
+    color: #ffffff !important;
+
+    border-right: 1px solid #ffffff;
+    border-bottom: 1px solid #ffffff;
+}
+
+.external-list-table tbody td {
+    background: #0f1c3f !important;
+    color: #ffffff !important;
+
+    border-right: 1px solid #ffffff;
+    border-bottom: 1px solid #ffffff;
+}
+
+.external-list-table th:last-child,
+.external-list-table td:last-child {
+    border-right: none !important;
+}
+
+.external-list-table tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+.external-list-table tbody tr:hover td {
+    background-color: #17345c !important;
+
+    border-top: 1px solid #ffffff !important;
+    border-bottom: 1px solid #ffffff !important;
+}
+
+.slds-table tbody tr:hover td {
+    background-color: #17345c !important;
+
+    border-top: 1px solid #ffffff !important;
+    border-bottom: 1px solid #ffffff !important;
+}
+
+/* Top border */
+thead th {
+    border-top: none !important;
+}
+
+/* Left border */
+th:first-child,
+td:first-child {
+    border-left: none !important;
+}
+
+.save-button {
+    border: none;
+    display: inline-block;
+    text-align: center;
+    color: #ffffff !important;
+    background-color: #7c3aed !important;
+    align-content: center;
+    cursor: pointer; 
+    transition: background-color 0.3s ease;   
+    width: 140px;
+    font-weight: 600;
+}
+
+.cancelButton{
+    border: 1px solid #7c3aed;
+    display: inline-block;
+    text-align: center;
+    color: #ffffff !important;
+    background-color: #16283f !important;
+    align-content: center;
+    cursor: pointer; 
+    transition: background-color 0.3s ease;   
+    width: 140px;
+    font-weight: 600;
+}
+
+.save-button1 {
+    padding: 0px 8px;
+    color: #ffffff;
+    background-color: #9bbf56;
+}
+
+.custom-modal-container {
+    max-width: 90%;
+    width: 100%;
+    min-width: 320px;
+}
+
+.custom-modal-header {
+    background-color: skyblue;
+    color: white;
+    font-weight: 500;
+}
+
+.custom-modal-footer {
+    background-color: skyblue;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+}
+
+.custom-cancel-button, .custom-next-button, .custom-offer-button, .custom-disabled-button {
+    font-size: 11px;
+    width: 140px;
+    font-weight: 500;
+}
+
+.custom-cancel-button {
+    background-color: #2a2f45 !important;
+    color: #ffffff !important;
+    border-color: #2a2f45 !important;
+}
+
+.custom-next-button {
+    background-color: #1467eb !important;
+    color: #ffffff !important;
+    border-color: #1467eb !important;
+}
+
+.custom-disabled-button {
+    background-color: grey;
+    color: white;
+    border-color: grey;
+}
+.slds-modal__close, .slds-modal__close:hover{
+    background: #0845ad !important;
+}
+
+/* Modal container */
+.slds-modal__container {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Header */
+.slds-modal__header {
+    background: linear-gradient(
+        135deg,
+        #001a5e 0%,
+        #003087 55%,
+        #004db3 100%
+    ) !important;
+
+    color: #ffffff !important;
+    border-bottom: 1px solid #33455e !important;
+}
+
+/* Modal title */
+.slds-modal__header h2 {
+    color: #ffffff !important;
+    font-weight: 700;
+}
+
+/* Body */
+.slds-modal__content {
+    background: #09172b !important;
+    color: #ffffff !important;
+}
+
+/* Footer */
+.slds-modal__footer {
+    background: #09172b !important;
+    border-top: 1px solid #33455e !important;
+}
+
+lightning-textarea {
+    --slds-c-textarea-color-background: #16283f;
+    --slds-c-textarea-text-color: #ffffff;
+    --slds-c-textarea-color-border: #33455e;
+}
+
+lightning-textarea:focus-within {
+--slds-c-textarea-color-border: #16283f;
+}
+
+/* Force textarea dark */
+.slds-modal__content textarea {
+    background: #16283f !important;
+    color: #ffffff !important;
+    border: 1px solid #33455e !important;
+}
+
+.slds-modal__content textarea:focus {
+    background: #16283f !important;
+    color: #ffffff !important;
+    border-color: #1467eb !important;
+    box-shadow: none !important;
+}
+
+textarea {
+    background: #16283f !important;
+    color: #ffffff !important;
+}
+
+.slds-modal__header,
+.slds-modal__content,
+.slds-modal__footer {
+    border-left: 1px solid #33455e;
+    border-right: 1px solid #33455e;
+}
+
+.slds-modal__header {
+    border-top: 1px solid #33455e;
+}
+
+.slds-modal__footer {
+    border-bottom: 1px solid #33455e;
+}
+
+/* ____GenAI: text-colour-only fix - .center-text ("Existing customer not
+   found" / "External list not found" / "Negative list not found" messages),
+   .pan-heading, .slds-table thead th, .table-header-box, .save-button1 and
+   .external-list-table thead th previously had no color set or used
+   black/dim colors, rendering unreadable dark text on the dark background.
+   All switched to white. No HTML markup, JS handlers, or component
+   structure were modified.____ */
+
+@media only screen and (max-width: 768px) {
+    .custom-modal-container {
+        width: 95%;
+    }
+    .slds-modal__content {
+        padding: 1rem;
+    }
+    table {
+        font-size: 12px;
+    }
+    .custom-cancel-button,
+    .custom-next-button {
+        width: 100%;
+    }
+}

@@ -1,0 +1,72 @@
+<!--_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________-->
+<template>
+    <div class="panel">
+        <div class="panel-header">
+            <h3 class="panel-title">Quick Actions</h3>
+            <p class="panel-subtitle">Access frequently used application actions</p>
+        </div>
+        <div class="btn-grid">
+
+            <!-- Button 1: Calculate Loan EMI -->
+            <div class="quick-action-item">
+                <button class="btn btn-secondary" onclick={handleCalculateEmi}>
+                    <span class="rupee-icon" aria-hidden="true">₹</span>
+                    <span class="btn-label">Calculate Loan EMI</span>
+                </button>
+            </div>
+
+            <!-- Button 2: Create Lead -->
+            <div class="quick-action-item">
+                <button class="btn btn-highlight" onclick={handleCreateLead}>
+                    <lightning-icon
+                        icon-name="utility:add"
+                        size="x-small"
+                        variant="inverse"
+                        class="btn-icon">
+                    </lightning-icon>
+                    <span class="btn-label">Create Lead</span>
+                </button>
+            </div>
+
+            <!-- Button 3: Start Application -->
+            <div class="quick-action-item">
+                <button class="btn btn-outline" onclick={handleStartApplication}>
+                    <span class="dashed-circle"></span>
+                    <span class="btn-label">Start Application</span>
+                </button>
+            </div>
+
+            <!-- Button 4: Create New Task -->
+            <div class="quick-action-item">
+                <button class="btn btn-secondary" onclick={handleCreateTask}>
+                    <lightning-icon
+                        icon-name="utility:check"
+                        size="x-small"
+                        variant="inverse"
+                        class="btn-icon">
+                    </lightning-icon>
+                    <span class="btn-label">Create New Task</span>
+                </button>
+            </div>
+
+            <!-- Button 5: Schedule Meeting -->
+            <div class="quick-action-item">
+                <button class="btn btn-secondary" onclick={handleScheduleMeeting}>
+                    <lightning-icon
+                        icon-name="utility:event"
+                        size="x-small"
+                        variant="inverse"
+                        class="btn-icon">
+                    </lightning-icon>
+                    <span class="btn-label">Schedule Meeting</span>
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Hidden calculator instance: rendered without its own trigger
+         button, opened programmatically from the first button above. -->
+    <c-student-loan-emi-calculator hide-trigger></c-student-loan-emi-calculator>
+</template>
+<!--__________________________GenAI: Generated code ends here______________________________-->

@@ -1,0 +1,102 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+/* ----------------- Dark Theme (matches incomeAssessmentMainCmp / hl_LoanApprovalProcess / customerNegotiationScreen) ----------------- */
+:host {
+    display: block;
+    color: #ffffff;
+
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #0e1c30;
+    --dt-border: #33455e;
+    --dt-positive: #8b5cf6;
+    --dt-negative: #16283f;
+
+    /* legacy local aliases kept for backward compatibility with any inline
+       usages elsewhere - now pointed at the shared --dt-* tokens so the
+       whole app stays on one palette */
+    --bg-primary: var(--dt-bg);
+    --bg-card: var(--dt-panel-bg);
+    --accent: var(--dt-header-bg);
+    --accent-hover: #0f56c4;
+    --text-primary: #ffffff;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-muted: rgba(255, 255, 255, 0.5);
+    --border-color: var(--dt-border);
+    --card-glow: 0 0 20px rgba(20, 103, 235, 0.15);
+
+    --slds-c-input-color-background: var(--dt-input-bg);
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: var(--dt-border);
+    --slds-c-input-label-color: #ffffff;
+
+    /* Tabset styling hooks - these DO cross into lightning-tabset's internal
+       shadow DOM (unlike plain class selectors), so they cover the tab
+       label colors/underline without needing the JS-injected style hack. */
+    --slds-c-tabs-item-text-color: var(--text-muted);
+    --slds-c-tabs-item-text-color-hover: #ffffff;
+    --slds-c-tabs-item-text-color-selected: #ffffff;
+    --slds-c-tabs-item-color-background-selected: transparent;
+    --slds-c-tabs-line-color-border-active: var(--dt-header-bg);
+    --slds-c-tabs-color-background: var(--dt-panel-bg);
+
+    /* Button styling hooks - covers any lightning-button/-button_brand
+       rendered by this component or its slotted children */
+    --slds-c-button-brand-color-background: var(--dt-positive);
+    --slds-c-button-brand-color-border: var(--dt-positive);
+    --slds-c-button-brand-color-background-hover: var(--accent-hover);
+    --slds-c-button-brand-color-border-hover: var(--accent-hover);
+    --slds-c-button-neutral-color-background: var(--dt-input-bg);
+    --slds-c-button-neutral-color-border: var(--dt-border);
+    --slds-c-button-text-color: #ffffff;
+}
+
+.main-tab {
+    background: var(--dt-bg);
+}
+
+.main-tab .slds-tabs_default__nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--dt-panel-bg);
+    border-bottom: 1px solid var(--dt-border);
+}
+
+.main-tab .slds-tabs_default__link {
+    color: var(--text-muted) !important;
+}
+
+.main-tab .slds-tabs_default__item.slds-is-active .slds-tabs_default__link {
+    color: #ffffff !important;
+    border-bottom-color: var(--dt-header-bg) !important;
+}
+
+.main-tab .slds-tabs_default__content {
+    background: var(--dt-bg);
+}
+
+/* ----------------- CTA Buttons (theme parity with the rest of the app) ----------------- */
+.save-button,
+.save-button.slds-button_brand,
+lightning-button.save-button {
+    background-color: var(--dt-positive) !important;
+    border: 1px solid var(--dt-positive) !important;
+    color: #ffffff !important;
+    /* border-radius: 1.25rem !important; */
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
+.cancel-button,
+.cancel-button.slds-button_brand,
+.previous-button,
+lightning-button.cancel-button {
+    background-color: var(--dt-negative) !important;
+    border: 1px solid var(--dt-negative) !important;
+    color: #ffffff !important;
+    border-radius: 1.25rem !important;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

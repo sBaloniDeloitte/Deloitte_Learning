@@ -1,0 +1,150 @@
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={showcmp}>
+        <div class="slds-path">
+            <div class="slds-grid slds-path__track">
+                <div class="slds-grid slds-path__scroller-container" style="width: 100%;overflow-x: auto;white-space: nowrap;padding: 10px;">
+                    <div class="slds-path__scroller">
+                        <div class="slds-path__scroller_inner">
+                            <ul style="padding-left: 1%;padding-right: 1%;width: 100%;overflow-x: auto;white-space: nowrap;padding: 10px;" class="slds-path__nav" role="listbox" aria-orientation="horizontal"
+                                aria-labelledby="slds-path__stage-name">
+                                <template for:each={actionList} for:item="rec" for:index="index">
+                                   
+                                    <template if:true={rec.completed}>
+                                        <template if:true={rec.isDisabled}>
+                                            <li key={rec.name} data-id={rec.name} style="background:  lightgrey;min-width: 295px;margin-left: 4px;border-top-left-radius: var(--lwc-heightSalesPath, 2rem);border-bottom-left-radius: var(--lwc-heightSalesPath, 2rem);padding-left: .625rem;clip-path: polygon(6% 0%, 94% 0%, 99% 50%, calc(100% - 18px) 100%, 6% 100%, 31px 50%);" class="disableFile slds-path__item" role="presentation" >
+                                                <a aria-selected="false" style="background:  lightgrey;" class="slds-path__link" href="#" id="path-11" role="option"
+                                                    tabindex="-1">
+                                                    <span class="slds-path__stage">
+                                                        <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                                        </svg>
+                                                        <span class="slds-assistive-text">Stage Complete</span>
+                                                    </span>
+                                                    <span class="slds-path__title" style="color: black;font-weight: 500;">{rec.name}</span>
+                                                </a>
+                                            </li>
+                                        </template>
+                                        <template if:false={rec.isDisabled}>
+                                            <template if:true={rec.isActive}>
+                                                <li key={rec.name} data-id={rec.name} style="background: #dc387e;min-width: 295px;margin-left: 4px;border-top-left-radius: var(--lwc-heightSalesPath, 2rem);border-bottom-left-radius: var(--lwc-heightSalesPath, 2rem);padding-left: .625rem;clip-path: polygon(6% 0%, 94% 0%, 99% 50%, calc(100% - 18px) 100%, 6% 100%, 31px 50%);" class="activeBtn slds-path__item" role="presentation" onclick={handleClick}>
+                                                    <a aria-selected="false" style="background: #dc387e;" class="slds-path__link" href="#" id="path-7" role="option"
+                                                        tabindex="-1">
+                                                        <span class="slds-path__stage">
+                                                            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                                                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                                            </svg>
+                                                            <span class="slds-assistive-text">Stage Complete</span>
+                                                        </span>
+                                                        <span class="slds-path__title" style="color: black;font-weight: 500;">{rec.name}</span>
+                                                    </a>
+                                                </li>
+                                            </template>
+                                            <template if:false={rec.isActive}>
+                                                <li key={rec.name} data-id={rec.name} style="background: #9bbf56;min-width: 295px;margin-left: 4px;border-top-left-radius: var(--lwc-heightSalesPath, 2rem);border-bottom-left-radius: var(--lwc-heightSalesPath, 2rem);padding-left: .625rem;clip-path: polygon(6% 0%, 94% 0%, 99% 50%, calc(100% - 18px) 100%, 6% 100%, 31px 50%);" class="uploadFile slds-path__item" role="presentation" onclick={handleClick}>
+                                                    <a aria-selected="false" style="background: #9bbf56;" class="uploadFile slds-path__link" href="#" id="path-8" role="option"
+                                                        tabindex="-1">
+                                                        <span class="slds-path__stage">
+                                                            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                                                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                                            </svg>
+                                                            <span class="slds-assistive-text">Stage Complete</span>
+                                                        </span>
+                                                        <span class="slds-path__title" style="color: black;font-weight: 500;">{rec.name}</span>
+                                                    </a>
+                                                </li>
+                                            </template>
+                                        </template>
+                                    </template>
+                                    <template if:false={rec.completed}>
+                                        <template if:true={rec.isDisabled}>
+                                            <li key={rec.name} data-id={rec.name} style="background:  lightgrey;min-width: 295px;min-width: 295px;margin-left: 4px;border-top-left-radius: var(--lwc-heightSalesPath, 2rem);border-bottom-left-radius: var(--lwc-heightSalesPath, 2rem);padding-left: .625rem;clip-path:polygon(6% 0%, 94% 0%, 99% 50%, calc(100% - 18px) 100%, 6% 100%, 31px 50%);" class="disableFile slds-path__item" role="presentation">
+                                                <a aria-selected="false" style="background:  lightgrey;" class="disableFile slds-path__link" href="#" id="path-9" role="option"
+                                                    tabindex="-1">
+                                                    <span class="slds-path__stage">
+                                                        <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                                            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                                        </svg>
+                                                    </span>
+                                                    <span class="slds-path__title" style="color: black;font-weight: 500;">{rec.name}</span>
+                                                </a>
+                                            </li>
+                                        </template>
+                                        <template if:false={rec.isDisabled}>
+                                            <template if:true={rec.isActive}>
+                                                <li key={rec.name} data-id={rec.name} style="background: #dc387e;min-width: 295px;margin-left: 4px;border-top-left-radius: var(--lwc-heightSalesPath, 2rem);border-bottom-left-radius: var(--lwc-heightSalesPath, 2rem);padding-left: .625rem;clip-path: polygon(6% 0%, 94% 0%, 99% 50%, calc(100% - 18px) 100%, 6% 100%, 31px 50%);" class="activeBtn slds-path__item" role="presentation" onclick={handleClick}>
+                                                    <a aria-selected="false" style="background: #dc387e;" class="activeBtn slds-path__link" href="#" id="path-10" role="option"
+                                                        tabindex="-1">
+                                                        <span class="slds-path__stage">
+                                                            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                                                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                                            </svg>
+                                                        </span>
+                                                        <span class="slds-path__title" style="color: black;font-weight: 500;">{rec.name}</span>
+                                                    </a>
+                                                </li>
+                                            </template>
+                                            <template if:false={rec.isActive}>
+                                                <li key={rec.name} data-id={rec.name} style="background: skyblue;min-width: 295px;margin-left: 4px;border-top-left-radius: var(--lwc-heightSalesPath, 2rem);border-bottom-left-radius: var(--lwc-heightSalesPath, 2rem);padding-left: .625rem;clip-path: polygon(6% 0%, 94% 0%, 99% 50%, calc(100% - 18px) 100%, 6% 100%, 31px 50%);" class="disableFile slds-path__item" role="presentation" onclick={handleClick}>
+                                                    <a aria-selected="false" style="background: skyblue;" class="slds-path__link" href="#" id="path-13" role="option"
+                                                        tabindex="-1">
+                                                        <span class="slds-path__stage">
+                                                            <svg class="slds-icon slds-icon_x-small" aria-hidden="true">
+                                                                <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
+                                                            </svg>
+                                                        </span>
+                                                        <span class="slds-path__title" style="color: black;font-weight: 500;">{rec.name}</span>
+                                                    </a>
+                                                </li>
+                                            </template>
+                                        </template>
+                                    </template>
+                                </template>  
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>  
+        <template if:true={isRelatedToApplicantInformation}>
+            <c-sales-login-applicant-information-cmp record-id={recordId} form-name={formName} onnavigatetonexttab={navigateNext}></c-sales-login-applicant-information-cmp>
+        </template>
+       
+         <template if:false={isRelatedToApplicantInformation}>
+            <div class="slds-box slds-theme_default progress-container">
+                <div class="progress-bar">
+                    <template for:each={processedStages} for:item="stage" for:index="index">
+                        <div key={stage.name} class="progress-step">
+                            
+                            <!-- Connector Line (Only between icons, not before first or after last) -->
+                            <template if:true={stage.showLine}>
+                                <div class="connector"></div>
+                            </template>
+        
+                            <!-- Stage Icon -->
+                            <div class="icon-wrapper">
+                                <template if:true={stage.isCompleted}>
+                                    <lightning-icon icon-name="utility:success" size="small" variant="success"
+                                        alternative-text="Completed"></lightning-icon>
+                                </template>
+                                <template if:false={stage.isCompleted}>
+                                    <lightning-icon icon-name="utility:error" size="small" variant="error"
+                                        alternative-text="Incomplete"></lightning-icon>
+                                </template>
+                            </div>
+        
+                            <!-- Stage Name -->
+                            <div class="slds-text-align_center">
+                                <p class="stage-name">{stage.name}</p>
+                            </div>
+
+                            <!-- <template if:true={stage.showLine}>
+                                <div class="connector"></div>
+                            </template> -->
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </template>
+    </template>
+</template>

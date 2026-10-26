@@ -1,0 +1,133 @@
+/* _______________This Code was generated using GenAI tool: Codify, Please check for accuracy_______________ */
+
+.lifecycle-card {
+    padding: 16px;
+    background: transparent;
+}
+
+/* ── Header ─────────────────────────────────────────── */
+.card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    margin: -16px -16px 16px -16px;
+    border-bottom: 1px solid #002266;
+    background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+}
+
+.card-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.01em;
+}
+
+/* ── Filter Pills ────────────────────────────────────── */
+.filter-pills {
+    display: flex;
+    gap: 6px;
+}
+
+.pill {
+    border: none;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 3px 10px;
+    cursor: pointer;
+    line-height: 1.6;
+}
+
+.pill-active {
+    background: var(--accent);
+    color: #ffffff;
+}
+
+.pill-inactive {
+    background: rgba(255, 255, 255, 0.15);
+    color: #ffffff;
+}
+
+/* ── Timeline List ───────────────────────────────────── */
+.timeline-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    position: relative;
+}
+
+.timeline-list::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: var(--divider);
+}
+
+/* ── Timeline Item ───────────────────────────────────── */
+.timeline-item {
+    display: flex;
+    align-items: flex-start;
+    position: relative;
+    padding-left: 24px;
+    padding-bottom: 14px;
+}
+
+.timeline-item:last-child {
+    padding-bottom: 0;
+}
+
+/* ── Dot ─────────────────────────────────────────────── */
+.dot {
+    position: absolute;
+    left: 0;
+    top: 4px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}
+
+.dot-green {
+    background: #22c55e;
+}
+
+.dot-blue {
+    background: var(--accent);
+}
+
+/* ── Event Body ──────────────────────────────────────── */
+.event-body {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+}
+
+.event-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.4;
+}
+
+.event-subtitle {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+    line-height: 1.4;
+}
+
+/* ── Date ────────────────────────────────────────────── */
+.event-date {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-left: auto;
+    white-space: nowrap;
+    padding-left: 8px;
+    line-height: 1.4;
+}
+
+/* __________________________GenAI: Generated code ends here______________________________ */

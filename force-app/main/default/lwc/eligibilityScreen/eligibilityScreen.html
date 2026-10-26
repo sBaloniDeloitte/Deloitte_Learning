@@ -1,0 +1,206 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 03-25-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </template>
+
+    <lightning-card>
+        <div>
+            <template if:true={showButton}>
+                
+            </template>
+        </div>
+
+        <div class="slds-m-around_medium slds-align_absolute-center">
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-table_cell-buffer custom-table">
+                <thead>
+                    <tr>
+                        <th class="" style="text-align: center; background-color: skyblue; color: black; border-color: black;width: 20%;">Income Method</th>
+                        <th class="" style="text-align: center; background-color: skyblue; color: black; border-color: black;width: 20%;">Eligible Loan Amount</th>
+                        <!--<th class="" style="text-align: center; background-color: skyblue; color: black; border-color: black;width: 20%;">Final loan EMI (FICO)</th>
+                        <th class="" style="text-align: center; background-color: skyblue; color: black; border-color: black;width: 10%;">Tenor</th>-->
+                        <th class="" style="text-align: center; background-color: skyblue; color: black; border-color: black;width: 20%;">Action</th>
+                        <template if:false={fromsales}>
+                            <th class="" style="text-align: center; background-color: skyblue; color: black; border-color: black;width: 10%;">Considered Eligibility</th>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody>
+                   <template for:each={records} for:item="record">
+    <tr key={record.eligibilityType}>
+        <td style="width: 30%;">{record.eligibilityType}</td>
+        <td style="width: 20%;">
+            <lightning-input 
+                type="number" 
+                value={record.eligibleLoanAmount} 
+                onchange={handleLoanAmountChange} 
+                data-id={record.eligibilityType} 
+                variant="label-hidden" 
+                disabled={hasPsvOrDisbursalStage}>
+            </lightning-input>
+        </td>
+
+        <!-- <td style="width: 20%;">{record.finalLoanEmi}</td>
+        <td style="width: 20%;">{record.tenor}</td>-->
+
+        <td style="width: 20%;">
+            <template if:false={hasPsvOrDisbursalStage}>
+                <button 
+                    class="save-button slds-button slds-button_brand slds-m-right_medium" 
+                    data-id={record.eligibilityTypeFicoName}
+                    style="border:none" 
+                    onclick={onClickAddButton} 
+                    disabled={isDisabled}>
+                    Save
+                </button>
+            </template>
+        </td>
+
+        <template if:false={fromsales}>
+            <td style="width: 10%;">
+                <template if:false={hasPsvOrDisbursalStage}>
+                    <lightning-input 
+                        type="radio" 
+                        name="recordSelection" 
+                        value={record.integrationId} 
+                        disabled={record.isLock}
+                        onchange={handleSelection} 
+                        checked={record.consideredEligibility}>
+                    </lightning-input>
+                </template>
+                <template if:true={hasPsvOrDisbursalStage}>
+                    <lightning-input 
+                        type="radio" 
+                        name="recordSelection" 
+                        value={record.integrationId} 
+                        disabled
+                        onchange={handleSelection} 
+                        checked={record.consideredEligibility}>
+                    </lightning-input>
+                </template>
+            </td>
+        </template>
+    </tr>
+</template>
+
+                </tbody>
+            </table>
+        </div>
+
+        <br> <!-- Line break added -->
+        <br> <!-- Extra spacing -->
+<!--Commented By Prachi not needed Start-->
+
+       <!-- <template if:true={isRadio}>
+            <div class="slds-m-around_medium slds-align_absolute-center">
+                <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-table_cell-buffer custom-table">
+                    <thead>
+                        <tr>
+                            <th class="" style="text-align: center; background-color: skyblue; color: black; border-color: black;width: 40%;">Eligibility Parameter</th>
+                            <th class="" style="text-align: center; background-color: skyblue; color: black; border-color: black;width: 60%;">Value</th>
+                            
+    
+                        </tr>
+                    </thead>
+                    <tbody>
+                        
+                            <tr >
+                                <td style="width: 60%;">Eligible Loan Amount</td>
+                                <td style="width: 40%;">{selectedData.eligibleLoanAmount}</td>
+                                
+                               
+
+    
+                            </tr>
+                            <tr >
+                                <td style="width: 60%;">Final loan EMI (FICO)</td>
+                                <td style="width: 40%;">{selectedData.finalLoanEmi}</td>
+                                </tr>
+                                <tr >
+                                    <td style="width: 60%;">Tenor</td>
+                                    <td style="width: 40%;">{selectedData.tenor}</td>
+                                </tr>
+                        
+                    </tbody>
+                </table>
+            </div>
+        </template>-->
+        <!--Commented By Prachi not needed END-->
+
+<!--
+        <div class="slds-m-around_medium slds-align_absolute-center">
+            <table class="slds-table slds-table_bordered slds-table_cell-buffer slds-table_cell-buffer custom-table">
+                <thead>
+                    <tr>
+                        <th class="" style="text-align: center; background-color: skyblue; color: black; border-color: black;width: 40%;">Eligibility Method</th>
+                        <th class="" style="text-align: center; background-color: skyblue; color: black; border-color: black;width: 60%;"></th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={statusRecords} for:item="record">
+                        <tr key={record.id}>
+                            <td style="width: 40%;">{record.name}</td>
+                            <td style="width: 60%;"></td>
+
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>-->
+ </lightning-card>
+ <!--Commented By Prachi not needed Start-->
+    <!--   <template if:true={isShowModal}>
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                    title="Close" onclick={hideModalBox}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                        size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <header class="slds-modal__header header-section">
+                    <div class="slds-text-align_center">
+                        <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">
+                           Fill Average Daily Balance for last 180 days</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+
+                    <lightning-layout multiple-rows>
+                        <lightning-layout-item size="12" class="slds-p-around_medium">
+                            <lightning-input type="number" name="name" value={adb} label="Average Daily Balance for last 180 days" onchange={handleInputChange} required step="0.01"></lightning-input>
+                        </lightning-layout-item>
+                        
+                    </lightning-layout>
+
+                </div>
+
+                <footer class="slds-modal__footer footer-section">
+                    <div class="slds-align_absolute-center button-container">
+                        <button class="slds-button slds-button_neutral save-button"
+                            onclick={handleInitiate}>Initiate</button>
+                        <button class="slds-button slds-button_neutral cancel-button"
+                            onclick={hideModalBox}>Cancel</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>-->
+<!--Commented By Prachi not needed End-->
+ <div style="display: flex; justify-content: flex-end; margin-top: 2%;">
+                        <button class="SaveButton slds-button slds-button_brand"
+                            style="font-size: 11px; width: 140px; background-color:#9bbf56; color: white; border-color: #9bbf56; font-weight: 500;"
+                            onclick={handleNavigateNext}>Next</button>
+                    </div>
+
+</template>

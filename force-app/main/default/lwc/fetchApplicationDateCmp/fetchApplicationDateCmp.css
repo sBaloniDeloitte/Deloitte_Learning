@@ -1,0 +1,5 @@
+@import "c/cssLibrary";
+
+.icon-hover:hover {
+    cursor: pointer;
+}

@@ -1,0 +1,41 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+
+:host {
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+}
+
+.slds-form-element__label {
+    color: #ffffff !important;
+}
+
+.slds-dropdown {
+    margin: 0;
+    padding: 0;
+}
+
+.slds-listbox > li {
+    border-bottom: solid 1px #ddd;
+}
+
+.slds-listbox > li > .slds-media {
+    padding: 2px 5px;
+}
+
+.css-green span {
+    color: #ffffff !important;
+}
+
+.css-green lightning-icon {
+    background-color: #1467eb !important;
+    --slds-c-icon-color-foreground-default: white !important;
+}
+
+.css-gray lightning-icon {
+    background-color: gray !important;
+}
+
+.slds-is-disabled span {
+    color: gray !important;
+    cursor: not-allowed !important;
+}

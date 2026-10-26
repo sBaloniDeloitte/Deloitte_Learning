@@ -1,0 +1,8 @@
+@import "c/cssLibrary";
+
+.approval-status-heading {
+    font-size: 106%;
+    color: white;
+    font-weight: bold;
+    text-align: left;
+}

@@ -1,0 +1,57 @@
+<template>
+    <div class="card-div">
+        <div class="slds-grid" style="padding-top: 1%;">
+            <template if:true={initiateFIAction}>
+                <c-credit-f-i-initiation-cmp  record-id={recordId} generic-initiate=true></c-credit-f-i-initiation-cmp>
+                    <!--<button class="save-button slds-button slds-button_brand slds-m-right_medium"
+                style="border:none" onclick={openModal}>Initiate FI</button>-->
+    
+                
+            </template>
+            <template if:true={initiateFCUAction}>
+               <template if:false={isHideButton}>
+                <button class="save-button fcu-recommend-btn slds-button slds-button_brand slds-m-right_medium"
+                onclick={openFCUModal}>Recommend for FCU</button>
+               </template>
+                    
+                    
+                
+            </template>
+            <template if:true={initiateHunterAction}>
+                
+                <template if:false={isHideButton}>   
+                        <button class="save-button hunter-initiate-btn slds-button slds-button_brand slds-m-right_medium"
+                onclick={openHunterModal}>Initiate Hunter</button>
+                </template>
+                 
+            </template>
+            <template if:true={initiatePDAction}>
+                <template if:false={isHideButton}>
+                        <button class="save-button pd-initiate-btn slds-button slds-button_brand slds-m-right_medium"
+                onclick={openPDModal}>Initiate PD</button>
+                </template>
+                    
+                
+            </template>
+            
+            
+        </div>
+    </div>
+
+
+    <template lwc:if={initiateFICmp}>
+        <c-popup-screen record-id={recordId} show-fi-comp="true" width-percentage="95"
+            header-title="Initiate Field Investigation" show-close-btn=true onhandleclose={handleClose}>
+        </c-popup-screen>
+    </template>
+    <template lwc:if={initiateFCUCmp}>
+        <c-initiate-vetting-main record-id={recordId} width-percentage="95" onhandleclose={handleFCUClose}> </c-initiate-vetting-main>
+    </template>
+    <template lwc:if={initiateHunterCmp}>
+        <c-fcu-hunter-initiate record-id={recordId} onhandleclose={handleHunterClose}> </c-fcu-hunter-initiate>
+    </template>
+    <template lwc:if={openGenerateSanctionLetter}>
+        <c-fcu-hunter-initiate record-id={recordId} onhandleclose={handleHunterClose}> </c-fcu-hunter-initiate>
+    </template>
+
+</template>

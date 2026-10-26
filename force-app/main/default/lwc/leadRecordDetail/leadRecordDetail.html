@@ -1,0 +1,42 @@
+<template>
+
+    <!-- Cross Sell section removed -->
+
+    <!-- Section: UTM Detail -->
+    <div class="form-container border-field" style="background-color: white;">
+        <header class="slds-modal__header header-section">
+            <div class="slds-text-align_center">
+                <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title"> UTM Detail </h2>
+            </div>
+        </header>
+        <div class="slds-m-around_small">
+            <lightning-record-view-form record-id={recordId} object-api-name="Lead">
+                <div class="slds-grid slds-wrap">
+                    <div class="slds-col slds-size_1-of-1">
+                        
+                        <lightning-output-field field-name="UTM_Campaign__c"></lightning-output-field>
+                        <lightning-output-field field-name="UTM_Content__c"></lightning-output-field>
+                        <lightning-output-field field-name="UTM_Medium__c"></lightning-output-field>
+                        <lightning-output-field field-name="UTM_Source__c"></lightning-output-field>
+                        <!-- <lightning-output-field field-name="UTM_Term__c"></lightning-output-field> -->
+                        <lightning-output-field field-name="LeadSource"></lightning-output-field>
+                        <lightning-output-field field-name="mx_Webpage_URL__c"></lightning-output-field>
+                        <lightning-output-field field-name="mx_Refferral_URL__c"></lightning-output-field>
+                        <lightning-output-field field-name="mx_Refferal_Type__c"></lightning-output-field>
+                        <lightning-output-field field-name="Page_Url__c"></lightning-output-field>
+                        <lightning-output-field field-name="CampaignType_leadType__c"></lightning-output-field>
+                        <lightning-output-field field-name="Reference_Field_1__c"></lightning-output-field>
+                        <lightning-output-field field-name="Reference_Field_2__c"></lightning-output-field>
+                        <lightning-output-field field-name="Reference_Field_4__c"></lightning-output-field>
+                        <lightning-output-field field-name="Reference_Field_5__c"></lightning-output-field>
+                        <lightning-output-field field-name="Reference_Field_6__c"></lightning-output-field>
+                        <lightning-output-field field-name="Reference_Field_7__c"></lightning-output-field>
+                        <lightning-output-field field-name="Reference_Field_8__c"></lightning-output-field>
+                        <lightning-output-field field-name="Reference_Field_9__c"></lightning-output-field>
+                        <lightning-output-field field-name="Reference_Field_10__c"></lightning-output-field>
+                    </div>
+                </div>
+            </lightning-record-view-form>
+        </div>
+    </div>
+</template>

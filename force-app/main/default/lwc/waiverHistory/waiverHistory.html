@@ -1,0 +1,18 @@
+<template>
+    <template if:true={waivers}>
+        <template for:each={waivers} for:item="waiver">
+            <div key={waiver.Id} class="waiver-history-card">
+                <p><strong>Waiver requested by:</strong> {waiver.Waiver_Requested_By__c}</p>
+                <p><strong>Waiver requested from:</strong> {waiver.Waiver_Requested_From__c}</p>
+                <p><strong>Waiver requested timestamp:</strong> {waiver.Waiver_Requested_Timestamp__c}</p>
+                <p><strong>Remarks:</strong> {waiver.Remarks__c}</p>
+                <p><strong>Status:</strong> {waiver.Status__c}</p>
+                <hr/>
+            </div>
+        </template>
+    </template>
+
+    <template if:false={waivers}>
+        <p>No waiver history found.</p>
+    </template>
+</template>

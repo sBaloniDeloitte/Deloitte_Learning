@@ -1,0 +1,170 @@
+/* ================================================================
+   Branch - search and pick the assigned branch - static card
+   Dark/purple theme aligned with leadManagementV2 / leadPriorityCmp /
+   leadScoreCmp / leadDispositionCmp design.
+   ================================================================ */
+
+.lb-container {
+    background-color: #0e1c30;
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    border-radius: 0.75rem;
+    box-shadow: 0 4px 20px rgba(124, 58, 237, 0.12);
+    overflow: hidden;
+    box-sizing: border-box;
+    color: #e8edf5;
+    font-family: inherit;
+}
+
+/* ================= HEADER ================= */
+
+.lb-header {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.85rem 1.1rem;
+    background: linear-gradient(135deg, #7c3aed 0%, #a855f7 100%);
+}
+
+.lb-header-icon {
+    flex-shrink: 0;
+}
+
+.lb-header-title {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.lb-header-subtitle {
+    font-size: 0.75rem;
+    color: rgba(255, 255, 255, 0.85);
+}
+
+/* ================= BODY ================= */
+
+.lb-body {
+    padding: 1rem 1.1rem 1.1rem 1.1rem;
+}
+
+/* ---- Search box ---- */
+
+.lb-search-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #16283f;
+    border: 1px solid #33455e;
+    border-radius: 8px;
+    padding: 0.55rem 0.75rem;
+    margin-bottom: 0.85rem;
+}
+
+.lb-search-icon {
+    flex-shrink: 0;
+    --slds-c-icon-color-foreground: #8fa1b8;
+    --slds-c-icon-color-foreground-default: #8fa1b8;
+}
+
+.lb-search-input {
+    flex: 1 1 auto;
+    background: transparent;
+    border: none;
+    outline: none;
+    color: #ffffff;
+    font-size: 0.85rem;
+    font-family: inherit;
+}
+
+.lb-search-input::placeholder {
+    color: #8a99b3;
+}
+
+/* ---- Branch list ---- */
+
+.lb-branch-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    max-height: 260px;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+}
+
+.lb-branch-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.lb-branch-list::-webkit-scrollbar-track {
+    background: rgba(139, 92, 246, 0.08);
+    border-radius: 999px;
+}
+
+.lb-branch-list::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, #7c3aed 0%, #a855f7 100%);
+    border-radius: 999px;
+}
+
+.lb-branch-item {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 8px;
+    background-color: #16283f;
+    border: 1px solid #23364f;
+    cursor: pointer;
+    transition: all 0.15s ease;
+}
+
+.lb-branch-item:hover {
+    background-color: #1f3550;
+    border-color: rgba(139, 92, 246, 0.5);
+}
+
+.lb-branch-item_active {
+    background-color: #1f3550;
+    border-color: #8b5cf6;
+    box-shadow: 0 0 0 1px rgba(139, 92, 246, 0.35);
+}
+
+.lb-branch-icon {
+    flex-shrink: 0;
+    --slds-c-icon-color-foreground: #a5b4fc;
+    --slds-c-icon-color-foreground-default: #a5b4fc;
+}
+
+.lb-branch-name {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #ffffff;
+    flex: 1 1 auto;
+}
+
+/* ---- Selected pill badge (shown on the active branch row) ---- */
+
+.lb-branch-selected-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.2rem;
+    flex-shrink: 0;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    background-color: rgba(74, 222, 128, 0.15);
+    border: 1px solid #4ade80;
+    color: #4ade80;
+    font-size: 0.7rem;
+    font-weight: 700;
+}
+
+.lb-branch-selected-icon {
+    flex-shrink: 0;
+    --slds-c-icon-color-foreground: #4ade80;
+    --slds-c-icon-color-foreground-default: #4ade80;
+}
+
+.lb-no-results {
+    margin: 0.5rem 0 0 0;
+    font-size: 0.8rem;
+    color: #8fa1b8;
+    text-align: center;
+}

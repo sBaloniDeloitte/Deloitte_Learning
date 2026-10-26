@@ -1,0 +1,64 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-11-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:true={spinnerRun}>
+        <section role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open" style="z-index: 900003;">
+            <lightning-spinner></lightning-spinner>
+        </section>
+    </template>
+    <template if:true={dataLoaded}>
+        <div class="slds-grid slds-wrap slds-scrollable_x" style="margin-bottom:2%">
+           <table class="slds-table" style="width: 500px;">
+                <thead style="background-color: skyblue; text-align: left;">
+                    <tr>
+                        <th class="color-theme" style="text-align: left;width: 100px;">Select</th>
+                        <th class=" color-theme" style="text-align: left;">Name</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={applicantList} for:item="iter">
+                        <tr key={iter.name}>
+                            <td>
+                                <lightning-input type="checkbox" data-id={iter.appId} checked={iter.isDataCreated} onchange={handleCheckboxChange}></lightning-input>
+                            </td>
+                            <td>{iter.name}</td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+
+        </div>
+        <template if:true={showTab}>
+            <lightning-tabset>
+                <template for:each={tabList} for:item="record" for:index="index">
+                    <lightning-tab key={record.name} label={record.name}>
+                        <c-hl_low-ltv-income-child-cmp loan-id={recordId} applicant-id={record.appId}></c-hl_low-ltv-income-child-cmp>
+                        <!-- <c-hl_bank-statement-income-assessment-child-cmp loan-id={recordId} applicant-id={record.appId}></c-hl_bank-statement-income-assessment-child-cmp> -->
+                    </lightning-tab>
+                </template>
+            </lightning-tabset>
+        </template>
+    </template>
+     <template if:true={confirmationScreen}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header" style="background-color: #5bb6e3;">
+                    <h2 class="slds-text-heading_medium">Confirmation Screen</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    Are you sure you want to remove this applicant’s cash profit record?
+                </div>
+                <footer class="slds-modal__footer slds-text-align_center" style="background-color: #5bb6e3;">
+                    <button class="slds-button slds-button_brand" style="background-color: #dc387e; margin-right: 7px; width: 100px; " onclick={onClickModalNo}>No</button>
+                    <button class="slds-button slds-button_brand" style="background-color: #9bbf56; width: 100px;" onclick={onClickModalYes}>Yes</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

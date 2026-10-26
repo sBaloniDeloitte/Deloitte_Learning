@@ -1,0 +1,98 @@
+<template>
+    <div class="ai-sales-container">
+
+        <div class="ai-header">
+            <lightning-icon
+                icon-name="utility:einstein"
+                size="large"
+                variant="brand">
+            </lightning-icon>
+
+            <div>
+                <h2>AI Sales Insight</h2>
+                <p class="ai-subtitle">
+                    AI-generated lead summary and recommendations
+                </p>
+            </div>
+        </div>
+
+        <div class="ai-summary-card">
+            
+            <div class="lead-summary">
+                
+                <p>
+                    <strong>High-intent lead:</strong> {typedDescription1}
+                </p>
+                <template if:true={showNextAction}>
+                    <p class="next-action">
+                        <strong>Next best action:</strong> {typedDescription2}
+                    </p>
+                </template>
+                
+                <template if:true={showLocation}>
+                    <a href="https://maps.app.goo.gl/edCrd3pxwfhfsENbA" target="_blank" rel="noopener noreferrer" class="location-link">Lead capture location</a>
+                    <lightning-card title="Location Map" icon-name="standard:location">
+                        <div class="slds-m-around_medium">
+                            <lightning-map
+                                map-markers={mapMarkers}
+                                zoom-level={zoomLevel}>
+                            </lightning-map>
+                        </div>
+                    </lightning-card>
+                </template>
+            </div>
+
+        </div>
+
+        <template if:true={showActionPoints}>
+            <div class="action-card">
+
+                <div class="action-title">
+                    🎯 Sales Agent Action Points
+                </div>
+
+                <ul class="action-list">
+
+                    <template if:true={showPoint1}>
+                        <li>
+                            <span class="action-icon">✅</span>
+                            <span>
+                                High-intent lead: Admission confirmed — Prioritize outreach.
+                            </span>
+                        </li>
+                    </template>
+
+                    <template if:true={showPoint2}>
+                        <li>
+                            <span class="action-icon">👨‍👩‍👦</span>
+                            <span>
+                                Co-applicant: No co-applicant currently planned — assess parent/guardian availability and repayment capacity.
+                            </span>
+                        </li>
+                    </template>
+
+                    <template if:true={showPoint3}>
+                        <li>
+                            <span class="action-icon">⚠️</span>
+                            <span>
+                                Risk check: Explore collateral availability and applicant/co-applicant financial profile.
+                            </span>
+                        </li>
+                    </template>
+
+                    <template if:true={showPoint4}>
+                        <li>
+                            <span class="action-icon">🚀</span>
+                            <span>
+                                Next Best Action: Qualify the funding gap and co-applicant position, then recommend the most suitable loan option.
+                            </span>
+                        </li>
+                    </template>
+
+                </ul>
+
+            </div>
+        </template>
+
+    </div>
+</template>

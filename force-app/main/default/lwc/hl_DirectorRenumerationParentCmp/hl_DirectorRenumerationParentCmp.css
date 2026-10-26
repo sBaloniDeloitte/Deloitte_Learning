@@ -1,0 +1,89 @@
+.slds-table_cell-buffer tr>th:first-child, .slds-table_cell-buffer tr>td:first-child, .slds-table--cell-buffer tr>th:first-child, .slds-table--cell-buffer tr>td:first-child{
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+
+/* Select/Name table - dark-navy theme matched to crimeCheckCmp's Crime
+   Check Individual reference table (#0e1626 body / #111d30 header /
+   #1d2f45 borders / white bold centered header text / 8px rounded
+   corners / #16283f row hover), replacing the old #16283f/#33455e
+   dr-table-wrap-derived palette and the invisible white wrapper background. */
+.select-name-table-wrap {
+    display: inline-block;
+    border: 1px solid #1d2f45;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #0e1626;
+}
+
+.select-name-table {
+    border-collapse: separate;
+    border-spacing: 0;
+    margin: 0;
+    width: 500px;
+}
+
+.select-name-th {
+    text-align: center;
+    font-weight: 700;
+    background-color: #111d30;
+    color: #ffffff;
+    border: 1px solid #1d2f45;
+    padding: 10px;
+}
+
+.select-name-th-select {
+    width: 130px;
+}
+
+.select-name-td {
+    background-color: #0e1626;
+    color: #ffffff;
+    text-align: center;
+    border: 1px solid #1d2f45;
+    padding: 10px;
+}
+
+.select-name-td-select {
+    text-align: center;
+}
+
+.select-name-table tbody tr:hover .select-name-td {
+    background-color: #16283f;
+}
+
+/*__________________________GenAI: Generated code ends here______________________________*/
+
+.no-hover:hover {
+  background-color: #282e31 !important; /* Or whatever the default background color is */
+  cursor: default; /* Change cursor back to default if it was changed on hover */
+  /* Reset any other hover-specific styles */
+}
+
+.no-hover-child:hover {
+  background-color: #ddd !important; /* Or whatever the default background color is */
+  cursor: default; /* Change cursor back to default if it was changed on hover */
+  /* Reset any other hover-specific styles */
+}
+
+.slds-table thead th {
+    white-space: normal;
+}
+.col-width-10 {
+    width: 40px;
+}
+.col-width-100 {
+    min-width: 100px;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+:host .slds-modal__content{
+    overflow: initial;
+}

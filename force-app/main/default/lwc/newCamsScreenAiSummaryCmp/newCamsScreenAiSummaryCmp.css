@@ -1,0 +1,146 @@
+@import 'c/cssLibrary';
+
+/* ===== CAMS AI SECTION SUMMARY -- theme matched to newCamsScreen (dark navy / purple) ===== */
+
+:host {
+    display: block;
+}
+
+.ai-summary-container {
+    background-color: #0A1524;
+    padding: 16px;
+    border-radius: 8px;
+    font-family: Arial, sans-serif;
+}
+
+/* ----- Header ----- */
+
+.ai-summary-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    background: linear-gradient(135deg, #02133f 0%, #00215e 55%, #002d67 100%);
+    border: 1px solid #33455e;
+}
+
+.ai-header-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    min-width: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+}
+
+.ai-title-text {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.ai-subtitle-text {
+    color: #a6b3c4;
+    font-size: 12px;
+    margin: 2px 0 0 0;
+}
+
+/* ----- Card grid ----- */
+
+.ai-summary-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+}
+
+.ai-summary-card {
+    background-color: #16283f;
+    border: 1px solid #33455e;
+    border-left: 3px solid #8b5cf6;
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.ai-summary-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 14px rgba(139, 92, 246, 0.25);
+    border-color: #4a5d75;
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.card-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    min-width: 26px;
+    border-radius: 50%;
+    background-color: #8b5cf6;
+}
+
+.card-title {
+    color: #ffffff;
+    font-size: 13px;
+    font-weight: 700;
+    margin: 0;
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.ai-badge {
+    font-size: 10px;
+    font-weight: 700;
+    color: #ffffff;
+    padding: 2px 8px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+}
+
+.card-summary {
+    color: #d7dee8;
+    font-size: 12.5px;
+    font-weight: 400;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* ----- Scrollbar (match newCamsScreen dark navy scrollbars) ----- */
+
+.ai-summary-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.ai-summary-container::-webkit-scrollbar-track {
+    background: #0A1524;
+    border-radius: 10px;
+}
+
+.ai-summary-container::-webkit-scrollbar-thumb {
+    background: #4a5d75;
+    border-radius: 10px;
+    border: 2px solid #0A1524;
+}
+
+.ai-summary-container::-webkit-scrollbar-thumb:hover {
+    background: #647895;
+}

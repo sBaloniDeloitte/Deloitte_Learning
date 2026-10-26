@@ -1,0 +1,635 @@
+<template>
+    <template if:true={spinnerRun}>
+        <section role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open" style="z-index: 900003;">
+            <div class="slds-modal__container">
+                <div class="slds-spinner--brand slds-spinner slds-spinner--medium" role="alert">
+                    <span class="slds-assistive-text">Loading...</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+        </section> 
+    
+    </template>
+    
+    <template if:false={isrelatedtovendor}>
+        <lightning-accordion allow-multiple-sections-open active-section-name="Loan Application Details">
+            <lightning-accordion-section label="Loan Application Details" name="Loan Application Details" class={classAccordion} style="background-color: white;">
+                <div class="slds-m-vertical_small">
+                    <div class="slds-grid slds-wrap">
+                        <template if:true={isMobile}>
+                            <div class="slds-col slds-size_1-of-1">
+                                <div class="slds-form__row slds-p-horizontal_small">
+                                    <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                        <span class="slds-form-element__label">Report Name</span>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-form-element__static">{parentDetails.reportName}</div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                        <span class="slds-form-element__label">Loan Application</span>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-form-element__static" style="color:#3176b8; cursor: pointer" onclick={navigateToRecord}>{parentDetails.loanApplicationName}</div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                        <span class="slds-form-element__label">Primary Applicant</span>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-form-element__static">{parentDetails.primaryApplicant}</div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                        <span class="slds-form-element__label">Sample Date</span>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-form-element__static">{parentDetails.sampledate}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                        <span class="slds-form-element__label">Product</span>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-form-element__static">{parentDetails.product}</div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                        <span class="slds-form-element__label">State</span>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-form-element__static">{parentDetails.state}</div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                        <span class="slds-form-element__label">Branch Name</span>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-form-element__static">{parentDetails.branchname}</div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                        <span class="slds-form-element__label">Sampler's Remark</span>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-form-element__static">{parentDetails.samplerremark}</div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                        <span class="slds-form-element__label">Loan Status</span>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-form-element__static">{parentDetails.status}</div>
+                                        </div>
+                                    </div>
+  
+                                </div>
+                            </div>
+                        </template>
+                        <template if:false={isMobile}>
+                            <div class="slds-col slds-size_1-of-2" style="padding-right: 2%;">
+                                <div class="slds-form__row slds-p-horizontal_small">
+                                    <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                        <span class="slds-form-element__label">Report Name</span>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-form-element__static">{parentDetails.reportName}</div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                        <span class="slds-form-element__label">Primary Applicant</span>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-form-element__static">{parentDetails.primaryApplicant}</div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                        <span class="slds-form-element__label">Sample Date</span>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-form-element__static">{parentDetails.sampledate}</div>
+                                        </div>
+                                    </div>
+        
+                                    <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                        <span class="slds-form-element__label">State</span>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-form-element__static">{parentDetails.state}</div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                        <span class="slds-form-element__label">Sampler's Remark</span>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-form-element__static">{parentDetails.samplerremark}</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="slds-col slds-size_1-of-2" style="padding-right: 2%;">
+                                <div class="slds-form__row slds-p-horizontal_small">
+                                    <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                        <span class="slds-form-element__label">Loan Application</span>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-form-element__static" style="color:#3176b8; cursor: pointer" onclick={navigateToRecord}>{parentDetails.loanApplicationName}</div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                        <span class="slds-form-element__label">Product</span>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-form-element__static">{parentDetails.product}</div>
+                                        </div>
+                                    </div>
+                                    <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                        <span class="slds-form-element__label">Branch Name</span>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-form-element__static">{parentDetails.branchname}</div>
+                                        </div>
+                                    </div>
+
+                                    <div class="slds-form-element slds-form-element_edit slds-form-element_readonly slds-form-element_horizontal slds-hint-parent">
+                                        <span class="slds-form-element__label">Loan Status</span>
+                                        <div class="slds-form-element__control">
+                                            <div class="slds-form-element__static">{parentDetails.status}</div>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </div>
+            </lightning-accordion-section>
+        </lightning-accordion>
+    </template>
+    <template if:true={isrelatedtovendor}>
+     <!--<c-vendor-f-c-u-main record-id={recordId} isvendorrecord={isrelatedtovendor}></c-vendor-f-c-u-main>-->
+    </template>
+    <template if:true={showAccordian}>
+        <lightning-accordion  allow-multiple-sections-open active-section-name={activeSections}>
+            <template for:each={childData} for:item="rec">
+                <div class="slds-m-vertical_x-small" key={rec.fcuId}>
+                    <lightning-accordion-section  data-id={rec.fcuId} name={rec.docShonName} label={rec.docShonName} class={classAccordion} style="background-color: white;">
+                        <template if:true={rec.isDraftRec}>
+                            <template if:true={rec.showAcceptButton}>
+                                <div style="padding: 1%;" class="slds-align_absolute-center">
+                                    <button data-id={rec.fcuId} class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 145px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;" onclick={handleAcceptRecord}>Accept</button>
+                                    <button data-id={rec.fcuId} class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 145px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;" onclick={handleNotAcceptRecord}>Not Accept</button>
+                                </div>
+                            </template>
+                            <template if:true={rec.showReassignButton}>
+                                <div style="padding: 1%;" class="slds-align_absolute-center">
+                                    <button data-id={rec.fcuId} class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 145px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;" onclick={handleReassignRecord}>Assign</button>
+                                </div>
+                            </template>
+                        </template>
+                        <template if:false={rec.isDraftRec}>
+                            <template if:true={isParentRec}>
+                                <c-record-action-button record-id={rec.fcuId} onrefreshchild={handleChildRefresh}></c-record-action-button>
+                            </template>
+                        </template>
+                        <template if:false={rec.fcushowDoc}>
+                        <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong>Address</strong></label>
+                        <div class="slds-form-element__control">
+                            <input data-id={rec.fcuId} disabled class="slds-input" value={rec.fullAddress}></input>
+                        </div>
+                        </template>
+                        <br>
+                        <template if:false={rec.fcushowDoc}>
+                            <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong>Applicant's Number</strong></label>
+                            <div class="slds-form-element__control">
+                                <input data-id={rec.fcuId} disabled class="slds-input" value={rec.applnumber}></input>
+                            </div>
+                            </template>
+                            <br>
+                        <template if:true={rec.fcushowDoc}>
+                            <template if:false={rec.isPdf}>
+                            <div class = "slds-m-vertical_x-small">
+                                <img id="documentImage" src={rec.fcuDocURL} style="width: 300px; height: 200px; border: 1px solid #9bbf56;" />
+                            </div>
+                        </template>
+                        <template if:true={rec.isPdf}>
+                            <div class = "slds-m-vertical_x-small">
+                                <iframe id="pdfDocument" src={rec.fcuDocURL} style="width: 600px; height: 500px; border: 1px solid #9bbf56;"></iframe>
+                            </div>
+                        </template>
+                        </template>
+                        <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong>Assigned To Admin</strong></label>
+                        <div class="slds-form-element__control">
+                            <input data-id={rec.fcuId} disabled class="slds-input" value={rec.agentName}></input>
+                        </div>
+                        <br>
+                        <template if:true={rec.isHistoryAvail}>
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped" style="max-width: 100%;">
+                                <thead style="position: sticky;top: 0;background: white;z-index: 4;">
+                                    <tr>
+                                        <th class="tdBorderHeader slds-cell-wrap" scope="col" style="text-align: center; font-size:8px; max-width: 40%">Current Owner</th>
+                                        <th class="tdBorderHeader slds-cell-wrap" scope="col" style="text-align: center; font-size:8px; max-width: 30%">Changed By</th>
+                                        <th class="tdBorderHeader " scope="col" style="text-align: center; font-size:8px; max-width: 30%">Time</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={rec.ownerHistory} for:item="iter">
+                                        <tr key={iter}>
+                                            <td class="tdBorderHeader slds-cell-wrap" style="text-align: center; max-width: 40%; font-size:8px;">{iter.name}</td>
+                                            <td class="tdBorderHeader slds-cell-wrap" style="text-align: center; max-width: 30%; font-size:8px;">{iter.changedBy}</td>
+                                            <td class="tdBorderHeader slds-cell-wrap" style="text-align: center; max-width: 30%; font-size:8px;">{iter.timeStamp}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </template>
+                        <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong>Sampler's Remarks</strong></label>
+                        <div class="slds-form-element__control">
+                            <textarea data-id={rec.fcuId} disabled class="slds-textarea">{parentDetails.samplerremark}</textarea>
+                        </div>
+                        <br>
+                        <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong>Cancellation Remarks</strong></label>
+                        <div class="slds-form-element__control">
+                            <textarea data-id={rec.fcuId} disabled class="slds-textarea">{rec.cancellationremarks}</textarea>
+                        </div>
+                        <br>
+                        <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong>Credit Manager's Remarks</strong></label>
+                        <div class="slds-form-element__control">
+                            <textarea data-id={rec.fcuId} disabled class="slds-textarea">{rec.creditMangerRemarks}</textarea>
+                        </div>
+                        <br>
+                        <template if:true={rec.profileFCU}>
+                            <br>
+                            <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong>Verification address</strong></label>
+                            <div class="slds-form-element__control">
+                                <textarea data-id={rec.fcuId} disabled class="slds-textarea">{rec.fullAddress}</textarea>
+                            </div>
+                        </template>
+                        <template if:true={rec.collateralFCU}>
+                            <br>
+                            <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong>Verification address</strong></label>
+                            <div class="slds-form-element__control">
+                                <textarea data-id={rec.fcuId} disabled class="slds-textarea">{rec.fullAddress}</textarea>
+                            </div>
+                        </template>
+                        <template if:true={rec.isEditClicked}>
+                            <br>
+                            <label class="slds-form-element__label" style="min-width: 100%" for="horizontal-form-element-id-14"><strong><abbr class="slds-required" title="required">* </abbr>Verification Remarks</strong></label>
+                            <lightning-textarea variant="label-hidden" data-id={rec.fcuId} value={rec.temp} onchange={handleOnchange}></lightning-textarea>
+
+                            <div class="slds-align_absolute-center slds-m-vertical_x-small">
+                                <button data-id={rec.fcuId} class="cancel-button slds-button slds-button_brand" onclick={cancelEdit}>Cancel</button>
+                                <template if:true={rec.isValueChanged}>
+                                    <button data-id={rec.fcuId} class="save-button slds-button slds-button_brand" style="border-color: skyblue;"  onclick={handleSave}>Save</button>
+                                </template>
+                                <template if:false={rec.isValueChanged}>
+                                    <button data-id={rec.fcuId} class="disabled-button slds-button slds-button_brand" style="border-color: skyblue;"   disabled>Save</button>
+                                </template>
+                            </div>
+                        </template>
+                        <template if:false={rec.isEditClicked}>
+                            <br>
+                            <template if:true={rec.editverificationremarks}>
+                                <span style="display:inline-flex;">
+                                    <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong><abbr class="slds-required" title="required">* </abbr>Verification Remarks</strong></label>
+                                    <div class="slds-float_right">
+                                        <button data-id={rec.fcuId} class="SaveButton slds-button slds-button_icon" title="Edit: Description" onclick={editClicked}>
+                                            <lightning-icon data-id={rec.fcuId} icon-name="utility:edit" alternative-text="chevron" size="x-small" title="Chevron"></lightning-icon>
+                                        </button>
+                                    </div>
+                                </span>
+                                <template if:true={rec.showRemark}>
+                                    <textarea disabled style="width: 100%;" class="slds-textarea">{rec.remark}</textarea>
+                                </template>
+                            </template>
+                            
+                            <template if:true={rec.approvalSentBack}>
+                                <br>
+                                <br>
+                                <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong>Send Back Remarks</strong></label>
+                                <div class="slds-form-element__control">
+                                    <textarea data-id={rec.fcuId} disabled class="slds-textarea">{rec.sendBackRemark}</textarea>
+                                </div>
+                            </template>
+                            <template if:true={rec.showRemarkHistory}>
+                                <br>
+                                <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong>Verification Remarks History</strong></label>
+                                <div class="slds-form-element__control">
+                                    <textarea data-id={rec.fcuId} disabled class="slds-textarea">{rec.remarkHistory}</textarea>
+                                </div>
+                            </template>
+                        </template>
+
+                        <template if:true={rec.profileFCU}>
+                            <br>
+                            <br>
+                            <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong><abbr class="slds-required" title="required">* </abbr>Verification Status </strong></label>
+                            <lightning-combobox variant="label-hidden" data-id={rec.fcuId} options={filteredAddressOptions} value={rec.addressType} onchange={handleAddressTypeChange} disabled={rec.disableAllEdit}></lightning-combobox>
+                        </template>
+                        <template if:false={rec.profileFCU}>
+                            <br>
+                            <br>
+                            <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong><abbr class="slds-required" title="required">* </abbr>Verification Status</strong></label>
+                            <lightning-combobox variant="label-hidden" data-id={rec.fcuId} options={filteredAddressOptions} value={rec.addressType} onchange={handleAddressTypeChange} disabled={rec.disableAllEdit}></lightning-combobox>
+                        </template>
+                        <template if:true={rec.profileFCU}>
+                            <br>
+                            <br>
+                            <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong>Verification Flag</strong></label>
+                            <lightning-combobox variant="label-hidden" data-id={rec.fcuId} options={flagOptions} value={rec.verificationflag} onchange={handleflagchange} disabled={disableverificationflag}></lightning-combobox>
+                        </template>
+                        <template if:false={rec.profileFCU}>
+                            <br>
+                            <br>
+                            <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong>Verification Flag</strong></label>
+                            <lightning-combobox variant="label-hidden" data-id={rec.fcuId} options={flagOptions} value={rec.verificationflag} onchange={handleflagchange} disabled={disableverificationflag}></lightning-combobox>
+                        </template>
+                        <template if:true={rec.profileFCU}>
+                            <br>
+                            <br>
+                            <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong>OGL</strong></label>
+                            <lightning-combobox variant="label-hidden" data-id={rec.fcuId} options={oglOptions} value={rec.OGL} onchange={handleOglChange} disabled={disableOgl}></lightning-combobox>
+                        </template>
+                        <template if:false={rec.profileFCU}>
+                            <br>
+                            <br>
+                            <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong>OGL</strong></label>
+                            <lightning-combobox variant="label-hidden" data-id={rec.fcuId} options={oglOptions} value={rec.OGL} onchange={handleOglChange} disabled={disableOgl}></lightning-combobox>
+                        </template>
+                        <template if:true={isExecutive}>
+                            <br>
+                            <br>
+                            <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong>Short Reason </strong></label>
+                            <lightning-combobox variant="label-hidden" data-id={rec.fcuId} options={shortReasonOptions} value={rec.shortreason} onchange={handleShortReasonChange} disabled={disablereason}></lightning-combobox>
+                        </template>
+                        <template if:false={isExecutive}>
+                            <br>
+                            <br>
+                            <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong>Short Reason</strong></label>
+                            <lightning-combobox variant="label-hidden" data-id={rec.fcuId} options={allShortReasonOptions} value={rec.shortreason} onchange={handleShortReasonChange} disabled={disablereason}></lightning-combobox>
+                        </template>
+                        <template if:true={isExecutive}>
+                            <br>
+                            <br>
+                            <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong>Broad Reason</strong></label>
+                            <lightning-combobox variant="label-hidden" data-id={rec.fcuId} options={broadReasonOptions} value={rec.broadreason} onchange={handleBroadReasonChange} disabled={disablereason}></lightning-combobox>
+                        </template>
+                        <template if:false={isExecutive}>
+                            <br>
+                            <br>
+                            <label class="slds-form-element__label" style="min-width: 15%" for="horizontal-form-element-id-14"><strong>Broad Reason</strong></label>
+                            <lightning-combobox variant="label-hidden" data-id={rec.fcuId} options={allBroadReasonOptions} value={rec.broadreason} onchange={handleBroadReasonChange} disabled={disablereason}></lightning-combobox>
+                        </template>
+                        <template if:true={rec.isLocationType}>
+                            <lightning-accordion-section name="Office Verification" label="Office Verification" style="background-color: white;padding-top:2%" class={classAccordion}>
+                                <div class="slds-m-vertical_small">
+                                   <!-- <c-vendor-f-c-u-office-screen record-id={rec.fcuId}></c-vendor-f-c-u-office-screen>-->
+                                </div>
+                            </lightning-accordion-section>
+                        </template>
+
+                        <template if:true={rec.showCheckList}>
+
+                            <br>
+                            <template if:true={rec.profileFCU}>
+                                <p style="font-size:12px; font-style: italic; color: red;padding-left:1%;">Please upload atleast one image in order to proceed.</p>
+                            </template>
+                            <template if:false={isMobile}>
+                                <label class="slds-form-element__label" for="horizontal-form-element-id-14"><strong><template if:true={isProfileRec}><abbr class="slds-required" title="required">* </abbr></template>Upload Images</strong></label>
+                                <template for:each={rec.docChecklist} for:item="iterCluster">
+                                    <lightning-layout key={iterCluster.id}>
+                                        <template for:each={iterCluster.data} for:item="iter">
+                                            <lightning-layout-item size="4" key={iter.docId} class="slds-p-around_x-small wrapped-content">
+                                                <span style="display:inline-flex;">               
+                                                    <div class="slds-align_absolute-center slds-box" style="display: flex; flex-direction: column; align-items: center; width:240px; margin-bottom: 10px;">
+                                                        <template if:false={iter.isUploaded}>
+                                                            <label class="slds-form-element__label" for="horizontal-form-element-id-14"><strong>{iter.name}</strong></label>
+                                                            <!-- <p data-id={iter.docId} data-name={iter.name} style="color: #9bbf56; font-weight: 500; margin-bottom: 5px;">{iter.name}</p> -->
+                                                            <template if:true={rec.disableAllEdit}>
+                                                                <img data-id={iter.docId} src={addIcon} alt="Image Preview" style="height:140px; width:200px; border: 1px solid #000000; margin: 0 auto;"/>
+                                                            </template>
+                                                            <template if:false={rec.disableAllEdit}>
+                                                                <img data-id={iter.docId} src={addIcon} alt="Image Preview" style="height:140px; width:200px; border: 1px solid #000000; margin: 0 auto;" onclick={openCamera}/>
+                                                            </template>
+                                                        </template>
+                                                        <template if:true={iter.isUploaded}>
+                                                            <!-- max-width:50%; max-height:50%; -->
+                                                            <label class="slds-form-element__label" for="horizontal-form-element-id-14"><strong>{iter.name}</strong></label>
+                                                            <!-- <p data-id={iter.docId} data-name={iter.name} style="color: #9bbf56; font-weight: 500; margin-bottom: 5px;">{iter.name}</p> -->
+                                                            <img data-id={iter.docId} data-name={iter.contentId} src={iter.imageUrl} alt="Image Preview" style="border: 1px solid #000000; height:140px; width:200px; margin-bottom: 5px;" onclick={showImage} class="rotate-image"/>
+                                                            <template if:false={rec.disableAllEdit}>
+                                                                <button data-id={iter.docId} class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 120px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;" onclick={handleRetake}>Retake</button>
+                                                            </template>
+                                                        </template>
+                                                    </div>
+                                                    <template if:true={iter.isNewAdded}> 
+                                                        <div style="display: flex; justify-content: flex-end;">
+                                                            <lightning-button-icon icon-name="utility:close" variant="error" size="small" data-id={iter.docId} onclick={handleDeleteDocuement}></lightning-button-icon>
+                                                        </div>
+                                                    </template>
+                                                </span>
+                                            </lightning-layout-item>
+                                        </template>
+                                    </lightning-layout>
+                                </template>   
+                            </template>
+                            <template if:true={isMobile}>
+                                <label class="slds-form-element__label" for="horizontal-form-element-id-14"><strong><template if:true={isProfileRec}><abbr class="slds-required" title="required">* </abbr></template>Upload Images</strong></label>
+                                
+                                <template for:each={rec.docChecklist} for:item="iterCluster">
+                                    <lightning-layout key={iterCluster.id}>
+                                        <template for:each={iterCluster.data} for:item="iter">
+                                            <lightning-layout-item size="6" key={iter.docId} class="slds-p-around_x-small wrapped-content">
+                                                <span style="display:inline-flex;">
+                                                    <div class="slds-align_absolute-center slds-box" style="display: flex; flex-direction: column; align-items: center; width:160px; margin-bottom: 10px;">                                                      
+                                                        <template if:false={iter.isUploaded}>
+                                                            <label class="slds-form-element__label" for="horizontal-form-element-id-14"><strong>{iter.name}</strong></label>
+                                                            <img data-id={iter.docId} src={addIcon} alt="Image Preview" style="height:100px; width:160px; border: 1px solid #000000; margin: 0 auto;" onclick={openCamera}/>
+                                                        </template>
+                                                        <template if:true={iter.isUploaded}>
+                                                            <label class="slds-form-element__label" for="horizontal-form-element-id-14"><strong>{iter.name}</strong></label>
+                                                            <img data-id={iter.docId} data-name={iter.contentId} src={iter.imageUrl} alt="Image Preview" style="border: 1px solid #000000; height:100px; width:160px; margin-bottom: 5px;" onclick={showImage} class="rotate-image"/>
+                                                            <template if:false={rec.disableAllEdit}>
+                                                                <button data-id={iter.docId} class="SaveButton slds-button slds-button_brand" style="font-size: 11px;height: 30px;width: 100px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;" onclick={handleRetake}>Retake</button>
+                                                            </template>
+                                                        </template>
+                                                    </div>
+                                                    <template if:false={rec.disableAllEdit}>
+                                                        <template if:true={iter.isNewAdded}> 
+                                                            <div style="display: flex; justify-content: flex-end;">
+                                                                <lightning-button-icon icon-name="utility:close" variant="error" size="x-small" data-id={iter.docId} onclick={handleDeleteDocuement}></lightning-button-icon>
+                                                            </div>
+                                                        </template>
+                                                    </template>
+                                                </span>
+                                            </lightning-layout-item>
+                                        </template>
+                                    </lightning-layout>
+                                </template>
+                            </template>
+                            <template if:false={rec.disableAllEdit}>
+                                <button data-id={rec.fcuId} class="save-button slds-button slds-button_brand" onclick={handleAddDocuement}>Add Image</button>
+                            </template>
+                        </template>
+                        
+                        <template if:true={rec.isAreaManager}>
+                            <template if:true={rec.approvalInitiated}>
+                                <div class="slds-align_absolute-center slds-m-vertical_x-small">
+                                    <button data-id={rec.fcuId} class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 145px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;" onclick={handleApprove}>Approve</button>
+                                    <button data-id={rec.fcuId} class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 145px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;" onclick={handleSentBack}>Send Back</button>
+                                    <button data-id={rec.fcuId} class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 145px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;" onclick={handleReject}>Reject</button>
+                                </div>
+                            </template>
+                            <template if:true={rec.approvalRejected}>
+                                <br>
+                                <div class="slds-align_absolute-center">
+                                    <button data-id={rec.fcuId} class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 145px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;" onclick={handleReAssign}>Re-Assign</button>
+                                </div>
+                            </template>
+                        </template>
+                    </lightning-accordion-section>
+                </div>
+            </template>
+        </lightning-accordion>
+    </template>
+    <template if:true={showSendBackScreen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Meaningful description of the modal content" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="max-width: 100%;">
+                <header class="slds-modal__header" style="background-color: #9bbf56; color:white;font-weight:500;">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handlecloseSentBackScreen}>
+                       <lightning-icon icon-name="utility:close"
+                          alternative-text="close"
+                          variant="error"
+                          size="small" ></lightning-icon>
+                       <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <div class="slds-text-align_center">
+                        <h2 slot="title" style="font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px" class="slds-text-heading_medium slds-hyphenate">Send Back</h2>
+                    </div> 
+                </header>
+                <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless slds-scrollable_y" id="confirm-body" style="max-height: 70% !important;overflow: auto;">
+                    <div class="button-shadow" style="width: 90%;background: white; margin: 20px;padding: 20px;border-radius: 10px;">
+                        <label class="slds-form-element__label" for="horizontal-form-element-id-14"><strong><abbr class="slds-required" title="required">* </abbr>Remarks</strong></label>
+                        <lightning-textarea variant="label-hidden" data-id={selectedsentBackId} value={sentbackText} onchange={handleOnchangeSentBackRemark}></lightning-textarea>
+                    </div>
+                    <footer class="slds-modal__footer slds-align_absolute-center slds-m-top_medium slds-m-top_xx-small" style="border: revert;">
+                        <button data-id={selectedsentBackId} class="cancel-button slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;" onclick={handlecloseSentBackScreen}>Cancel</button>
+                        <template if:true={sentBackVisibility}>
+                            <button data-id={selectedsentBackId} class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;" onclick={handleSentBackToSampler}>Send Back</button>
+                        </template>
+                        <template if:false={sentBackVisibility}>
+                            <button class="disabled-button slds-button slds-button_brand" disabled>Send Back</button>
+                        </template>
+                    </footer>
+                </div>
+           </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+    </template>
+
+    <template if:true={showreAssignScreen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Meaningful description of the modal content" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="max-width: 100%;">
+                <header class="slds-modal__header" style="background-color: #9bbf56; color:white;font-weight:500;">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={handlecloseSentBackScreen}>
+                       <lightning-icon icon-name="utility:close"
+                          alternative-text="close"
+                          variant="error"
+                          size="small" ></lightning-icon>
+                       <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <div class="slds-text-align_center">
+                        <h2 slot="title" style="font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px" class="slds-text-heading_medium slds-hyphenate">Re-Assign FCU</h2>
+                    </div> 
+                </header>
+                <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless slds-scrollable_y" id="confirm" style="max-height: 70% !important;overflow: auto;">
+                    <div class="button-shadow" style="width: 90%;background: white; margin: 20px;padding: 20px;border-radius: 10px;">
+                        <div class="slds-p-around_small" style="width: 100%;">
+                            <label class="slds-form-element__label" for="horizontal-form-element-id-14"><strong><abbr class="slds-required" title="required">* </abbr>Search Agent</strong></label>
+                            <lightning-layout-item size="12">
+                                <c-search-lookup
+                                    show-label="false"
+                                    selected-id={samplerId}
+                                    selected-name={samplerName}
+                                    placeholder="Search user"
+                                    object-name="Branch_User__c"
+                                    filter-criteria="[Role__c= FCU Executive;]"
+                                    search-fields="['User__r.Name', 'User__r.EmployeeNumber']"
+                                    return-fields="['User__c','User__r.Name','User__r.Employee_ID__c']"
+                                    onlookupselected={handlelookupselected}
+                                    onlookupdeselected={handlelookupdeselected}
+                                ></c-search-lookup>
+
+                                <!-- <c-lookup-search variant-type="label-hidden" saved-term={savedSampler} object-a-p-i-name = "User" query-fields = "['Name']" return-fields="['Employee_ID__c','Name', 'Profile.Name']"  filter=" and Profile.Name = 'FCU Agent'" search-box-name="Search Agent" icon-name="standard:user" onuserlookupselected={handlelookupselected} onuserlookupdeselected={handlelookupdeselected}></c-lookup-search> -->
+                            </lightning-layout-item>
+
+                            <label class="slds-form-element__label" for="horizontal-form-element-id-14"><strong><abbr class="slds-required" title="required">* </abbr>Remarks</strong></label>
+                            <lightning-textarea variant="label-hidden" value={remarksValue} onchange={handleremarksChange}></lightning-textarea>
+                        </div>
+                    </div>
+                    <footer class="slds-modal__footer slds-align_absolute-center slds-m-top_medium slds-m-top_xx-small" style="border: revert;">
+                        <button class="cancel-button slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;" onclick={handlecloseReAssign}>Cancel</button>
+                        <template if:true={reassignVisibility}>
+                            <button data-id={selectedsentBackId} class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;" onclick={handleReAssignYes}>Re-Assign</button>
+                        </template>
+                        <template if:false={reassignVisibility}>
+                            <button class="DisableButton slds-button slds-button_brand" disabled>Re-Assign</button>
+                        </template>
+                    </footer>
+                </div>
+           </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+    </template>
+    <template if:true={openReassignModal}>
+        <!--<c-loan-application-appraiser-reviewer record-id={selectedRecId} is-modal-open={openReassignModal} header-title="Assign Report" button-label="Assign" oncloseappraiser={closeReassingModal}></c-loan-application-appraiser-reviewer>-->
+    </template>
+    <template if:true={isRemarkScreen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Meaningful description of the modal content" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="max-width: 100%; margin-top:6%">
+                <header class="slds-modal__header" style="background-color: #9bbf56; color:white;font-weight:500;">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={cancelRemark}>
+                       <lightning-icon icon-name="utility:close"
+                          alternative-text="close"
+                          variant="error"
+                          size="small" ></lightning-icon>
+                       <span class="slds-assistive-text">Close</span>
+                    </button>
+                    <div class="slds-text-align_center">
+                        <h2 slot="title" style="font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px" class="slds-text-heading_medium slds-hyphenate">Remarks Screen</h2>
+                    </div> 
+                </header>
+                <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless slds-scrollable_y" style="max-height: 70% !important;overflow: auto;">
+                    <div class="button-shadow" style="width: 90%;background: white; margin: 20px;padding: 20px;border-radius: 10px;border: 1px solid #9bbf56;">
+                        <lightning-textarea name="Remarks" label="Remarks" value={remark} onchange={handleRemarkChanges} required="true"></lightning-textarea>
+                    </div>
+                    <footer class="slds-modal__footer slds-align_absolute-center slds-m-top_medium slds-m-top_xx-small" style="border: revert;">
+                        <button class="cancel-button slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;" onclick={cancelRemark}>Cancel</button>
+                        <button class="save-button slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;" onclick={handleRemark}>Save</button>
+                    </footer>
+                </div>
+           </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+    </template>
+    <input 
+        type="file" 
+        accept="image/*" 
+        capture="environment" 
+        onchange={handleUpload} 
+        class="hidden-input"
+    />
+    <template if:true={viewFileModal}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Meaningful description of the modal content" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="max-width: 100%; margin-top:6%">
+                <header class="slds-modal__header" style="background-color: #9bbf56; color:white;font-weight:500;">
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeViewModal}>
+                       <lightning-icon icon-name="utility:close"
+                          alternative-text="close"
+                          variant="error"
+                          size="small" ></lightning-icon>
+                       <span class="slds-assistive-text">Close</span>
+                    </button>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless slds-scrollable_y" style="max-height: 70% !important;overflow: auto;">
+                    <div class="button-shadow" style="width: 90%;background: white; margin: 20px;padding: 20px;border-radius: 10px;border: 1px solid #9bbf56;">
+                        <!--<iframe src={imageURL} class="content-viewer" frameborder="0" height="300"></iframe>-->
+                        
+                        <img src={imageURL} title="" style="max-width: 100%; height: auto;" />
+                    </div>
+                    <footer class="slds-modal__footer slds-align_absolute-center slds-m-top_medium slds-m-top_xx-small" style="border: revert;">
+                        <button class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;" onclick={closeViewModal}>Close</button>
+                    </footer>
+                </div>
+                
+           </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+    </template>
+</template>

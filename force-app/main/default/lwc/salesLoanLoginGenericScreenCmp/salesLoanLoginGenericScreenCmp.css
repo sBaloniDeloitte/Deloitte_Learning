@@ -1,0 +1,735 @@
+@import "c/cssLibrary";
+
+/* This Code was generated using GenAI tool : Codify, Please check for accuracy */
+/* ____GenAI: Generated code starts here - dark theme visual restyle to match
+   salesLoginProductDetailsCmp. Converts the previous light/white theme to a
+   dark navy theme with white text/headings/labels, and adds attractive
+   button polish. No markup/structure changes.____ */
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #09172b;
+    --dt-input-bg: #16283f;
+    --dt-border: #33455e;
+
+    /* input / textarea */
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-radius-border: 6px;
+    --slds-c-input-placeholder-text-color: #8a99b3;
+    --slds-c-input-label-color: #ffffff;
+
+    /* combobox / dropdown */
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+    --slds-c-combobox-input-value-text-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: #16283f;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-text-color-hover: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+    --slds-c-combobox-label-color: #ffffff;
+    /* The listbox popup (the actual dropdown of options, e.g. "Salaried
+       Indian" / "Salaried NRI" / "SENP" / "SEP" / "Others" for Customer
+       Profile) is a base component that doesn't read the combobox-
+       specific hooks above for its background/option-text/hover colors -
+       it falls back to these global neutral-base ramp tokens instead,
+       which is why the popup rendered white with black text regardless
+       of the hooks set above. Same root cause/fix already proven on the
+       Aadhar manual-entry modal's Address Type/Ownership dropdowns. */
+    --slds-g-color-neutral-base-100: #16283f;
+    --slds-g-color-neutral-base-95: #1f3550;
+    --slds-g-color-neutral-base-90: #1f3550;
+    --slds-g-color-neutral-base-10: #ffffff;
+    --lwc-colorBackgroundRowHover: #1f3550;
+    --sds-c-combobox-option-color-background-hover: #1f3550;
+    --sds-c-combobox-option-text-color-hover: #ffffff;
+
+    /* checkbox */
+    --slds-c-checkbox-color-background: #16283f;
+    --slds-c-checkbox-color-border: #33455e;
+    --slds-c-checkbox-label-color: #ffffff;
+
+    /* accordion (this screen renders inside lightning-accordion-section) */
+    --slds-c-accordion-summary-color-background: #16283f;
+    --slds-c-accordion-summary-text-color: #ffffff;
+    --slds-c-accordion-icon-color-foreground: #a78bfa;
+
+    /* legacy design tokens - fallback for base component versions still
+       reading the "--lwc-*" naming instead of the newer style hooks */
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+
+    /* global SLDS2 neutral-base ramp - keeps any label/secondary text that
+       resolves through these tokens readable on the dark background */
+    --slds-g-color-neutral-base-30: #ffffff;
+    --slds-g-color-neutral-base-40: #ffffff;
+    --slds-g-color-neutral-base-50: #ffffff;
+}
+
+/* ----- "API Details Check" modal - header/footer use the standard dark
+   blue gradient, and the content wrapper (the padding area around the
+   table, outside header/footer) is set to the same dark background as the
+   table itself so there is no mismatched/lighter band around it. ----- */
+.api-check-modal-header,
+.api-check-modal-footer {
+    background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+    color: #ffffff;
+}
+
+.api-check-modal-content {
+    background-color: #0a1524;
+}
+
+.instruction-box {
+    padding-top: 4%;
+    padding: 5px;
+    text-align: center;
+    font-weight: bold;
+    color: #ffffff;
+    font-size: large;
+    background-color: #16283f;
+    margin: 0px 10px 10px 10px;
+    border-radius: 8px;
+}
+
+.instruction-box-nav {
+    margin-bottom: -41px;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    margin-left: 1%;
+    width: 98%;
+    padding-bottom: 3%;
+    margin-bottom: 2%;
+}
+
+.instruction-box-kyc {
+    margin-bottom: 20px;
+    padding: 10px;
+    text-align: center;
+    background-image: radial-gradient(circle, #16283f, #14243a, #101f33, #0e1c30, #0c1a2c);
+    border-radius: 10px; /* Optional: Add border radius for rounded corners */
+    box-shadow: 0 11px 12px rgba(0, 0, 0, 0.5);
+}
+
+.instruction-box-action {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #33455e;
+    border-radius: 5px;
+    background-color: #0e1c30;
+    text-align: center;
+}
+
+.instruction-box-currentadd {
+    padding-top: 4%;
+    padding: 10px;
+    text-align: center;
+    font-weight: bold;
+    color: #ffffff;
+    font-size: large;
+}
+
+/* ----- Save / Previous buttons - purple pill accent to match the loan
+   screens reference (Save & Next solid purple, Previous muted outline) ----- */
+.save-button {
+    padding: 0px 8px;
+    border: none;
+    border-radius: 8px;
+    display: inline-block;
+    text-align: center;
+    color: white;
+    background-image:linear-gradient(135deg, #8b5cf6, #7c3aed);
+    background-color: #8b5cf6 !important;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    align-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-image 0.2s ease;
+    width: 110px !important;
+
+}
+
+.save-button:hover:not([disabled]) {
+    background-image: linear-gradient(135deg, #9b72f8, #8b5cf6);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+    transform: translateY(-1px);
+}
+
+.previous-button {
+    padding: 0px 8px;
+    border: 1px solid #8b5cf6;
+    border-radius: 8px !important;
+    display: inline-block;
+    text-align: center;
+    color: #ffffff;
+    background-color: #16283f !important;
+    background-image: none;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.25);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    align-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+    min-width: 110px !important;
+    width: 110px !important;
+    /* For Mobile View */
+    margin: 5px 0px;
+}
+
+.previous-button:hover:not([disabled]) {
+    background-color: #1f3550;
+    border-color: #a855f7;
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.4);
+    transform: translateY(-1px);
+}
+
+.cancel-button {
+    padding: 0px 8px;
+    border: none;
+    border-radius: 8px;
+    display: inline-block;
+    text-align: center;
+    color: white;
+    background-image:linear-gradient(135deg, #16283f  , #16283f  );
+    background-color: #16283f !important;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.35);
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    align-content: center;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background-image 0.2s ease;
+    width: 110px !important;
+}
+
+.cancel-button:hover {
+    background-image: linear-gradient(135deg, #16283f, #16283f);
+    box-shadow: 0 6px 14px rgba(0, 0, 0, 0.5);
+    transform: translateY(-1px);
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #0a1524; /* dark theme page background */
+}
+
+.lgc-highlight {
+    background-color: rgb(255 255 0);
+}
+
+.uploaded-view {
+    margin-bottom: 0.5rem; /* Add space below the preview icon */
+}
+
+.reuploadCurrentAddressProof {
+    margin-top: 0.5rem; /* Optional: Add space above the re-upload button */
+}
+
+.loan-amount-words {
+    margin-top: 5px;
+    font-size: 12px;
+    color: #cfd8e6; /* light gray-blue for readability on dark bg */
+    margin-right: 11rem;
+    width: 15rem;
+    font-weight: bold;
+}
+
+.content-container {
+    width: 100%;
+    margin: 0 auto;
+    background-color: #0a1524;
+}
+
+.search-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.progress-bar-container {
+    margin-bottom: 20px;
+}
+
+.verified-text {
+    color: #4ade80;
+}
+
+.input-container {
+    flex-direction: column;
+    align-items: center;
+    margin: 10px 10px 0px 10px;
+}
+
+.input-container.slds-input {
+    opacity: 1 !important;
+}
+
+.pan-input,
+.file-upload {
+    margin-bottom: 15px;
+}
+
+.or-divider {
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.somespace{
+    margin-top: 14px;
+}
+
+.andcontainers{
+    text-align: left;
+    font-weight: bold;
+    margin-top: 5%;
+    margin-bottom: 14px;
+}
+
+/* ──────────── Previous/Next footer bar - centered, blue-gradient
+   pill buttons (matches the "Add PAN/Aadhar Details Manually" modal
+   footer style already used elsewhere in the sales-login screens).
+   getClassByDeviceType() already returns "andcontainer" for this
+   wrapper - this rule turns it into a full-width centered bar instead
+   of the previous right-aligned plain-background row. Visual only. */
+.andcontainer {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+}
+
+.verification-container.error {
+    color: #fb7185; /* light red so it stays legible on dark bg */
+}
+
+.error-icon {
+    margin-left: 16rem;
+    cursor: pointer;
+}
+
+.reload-icon{
+    cursor: pointer; 
+    padding-top: 5px;
+}
+
+.resetIcon{
+    margin-top: 10px;
+    padding-top: 10px;
+}
+.slds-has-error .slds-input__icon {
+    display: none;
+}
+.inputSize{
+    width: 93%;
+    font-size: large;
+}
+
+/* Media query for smaller screens, e.g., mobile devices */
+@media (max-width: 600px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        margin: 10px;
+        background-color: #0a1524;
+    }
+
+    .content-container {
+        width: 100%;
+    }
+
+    .progress-bar-container {
+        margin-bottom: 20px;
+    }
+
+    .instruction-box {
+        padding-top: 4%;
+        padding: 10px;
+        text-align: center;
+        font-weight: bold;
+        color: #9bbf56;
+        font-size: large;
+    }
+
+    .instruction-box-kyc {
+        margin-bottom: 20px;
+        padding: 15px;
+        text-align: center;
+        background-image: radial-gradient(circle, #16283f, #14243a, #101f33, #0e1c30, #0c1a2c);
+        border-radius: 10px;
+        box-shadow: 0 11px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .input-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        border-radius: 10px;
+        box-shadow: 0 11px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    .pan-input,
+    .file-upload {
+        margin-bottom: 15px;
+    }
+
+    .or-divider {
+        margin: 10px 0;
+        font-weight: bold;
+    }
+
+    .somespace{
+        margin-top: 14px;
+    }
+
+    .reload-icon{
+        cursor: pointer; 
+        padding-top: 5px;
+    }
+
+    .resetIcon{
+        margin-top: 10px;
+        padding-top: 10px;
+    }
+
+    .inputSize{
+        width: 16rem;
+    }
+
+    .loan-amount-words {
+        margin-top: 5px;
+        font-size: 12px;
+        color: #cfd8e6;
+        margin-right: 1rem;
+        width: 15rem;
+        font-weight: bold;
+    }
+
+    .button-container {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+        padding: 10px 20px;
+        width: 100%;
+    }
+
+    .search-buttons {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+    }
+
+    .spinner {
+        border: 4px solid rgba(255, 255, 255, 0.15);
+        border-left-color: #7986cb;
+        border-radius: 50%;
+        width: 40px;
+        height: 40px;
+        animation: spin 1s linear infinite;
+    }
+    
+    @keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+}
+
+:host .slds-progress-bar__value {
+    background-color: #4CAF50;
+    background: green;
+}
+
+.THIS .slds-progress-bar__value{
+    background: green;
+}
+.width{
+    background-color: #4CAF50;
+}
+
+.monthly-Income-Words{
+    font-weight: bold;
+    color: #ffffff;
+}
+
+.save-and-next-button{
+    font-weight: normal;
+}
+
+/* ----- Headings / section separators - force white text so they stay
+   legible on the dark background ----- */
+:host h2 {
+    color: #ffffff !important;
+}
+
+:host .section-seperator {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    border-radius: 4px;
+}
+
+.heading{
+    font-weight: bold;
+    color: #cfd8e6;
+}
+
+.navClass.slds-progress-bar__value{
+    color: #9bbf56;
+}
+
+.custom-nav {
+    --lwc-progressBarColorBackgroundFill: #9bbf56;
+}
+
+.span.slds-progress-bar__value{
+    background: #9bbf56;
+}
+
+.spinner-medium::after {
+    position: absolute;
+    content: attr(data-text);
+    width: 100%;
+    text-align: center;
+    font-weight: bold;
+    top: calc(50% + 2em);
+}
+.editable-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+.editable-container-combo {
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+}
+.editable-label {
+    font-size: 12px;
+    color: #cfd8e6;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.editable-field {
+    display: inline-block;
+    min-width: 100px;
+    border-bottom: 1px solid #33455e;
+    padding: 4px;
+    cursor: text;
+    outline: none;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: #ffffff;
+}
+
+.editable-field[contenteditable="true"]:focus {
+    border-bottom: 2px solid #8b5cf6;
+}
+
+.custom-field-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 10px;
+    position: relative;
+}
+
+.custom-label {
+    font-weight: 600;
+    font-size: 14px;
+    margin-bottom: 4px;
+    color: #ffffff;
+    display: block;
+}
+
+.custom-combobox, .custom-lookup {
+    width: 100%;
+    min-width: 150px;
+    display: block;
+    border-radius: 4px;
+}
+
+.editable-field {
+    width: 100%;
+    border-bottom: 2px solid #33455e;
+    padding: 5px;
+    cursor: pointer;
+    min-height: 20px;
+    color: #ffffff;
+}
+
+.custom-combobox lightning-base-combobox {
+    width: auto !important;
+    min-width: 150px;
+}
+
+.custom-combobox lightning-base-combobox div.slds-combobox {
+    display: inline-flex;
+}
+
+.custom-combobox lightning-base-combobox div.slds-combobox_container {
+    width: auto !important;
+}
+
+.custom-combobox lightning-base-combobox div.slds-dropdown {
+    display: block !important;
+}
+.selected-value {
+    flex-grow: 1;
+    color: #ffffff;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.custom-input {
+    border: none;
+    border-bottom: 2px solid #33455e;
+    border-radius: 0;
+    outline: none;
+    padding: 4px 0;
+    width: 100%;
+    color: #ffffff;
+}
+
+.custom-input:focus {
+    border-bottom: 2px solid #8b5cf6;
+    box-shadow: none;
+}
+
+/* ----- Line format dark inputs/comboboxes/lookups - underline only,
+   no boxed background, matching the Applicant's Basic Information
+   reference. Colors/theme kept identical (#33455e border, #ffffff text,
+   #8b5cf6 focus accent) - only the box shape is removed. ----- */
+lightning-input::part(input),
+lightning-combobox .slds-combobox__input,
+lightning-lookup .slds-combobox__input {
+    border: none !important;
+    border-bottom: 1px solid #33455e !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+    padding: 6px 2px !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+    caret-color: #ffffff !important;
+}
+
+/* Explicitly pin every interaction state to the same idle underline color
+   so plain text fields (Designation, Employer Category, etc.) never fall
+   back to the SLDS/browser default border - this is what was showing as
+   "turning black" after render. Only :focus gets the purple accent, exactly
+   like the comboboxes. */
+lightning-input::part(input):hover,
+lightning-input::part(input):active,
+lightning-input::part(input):read-only,
+lightning-input::part(input):disabled,
+lightning-input::part(input):invalid,
+lightning-combobox .slds-combobox__input:hover,
+lightning-combobox .slds-combobox__input:active,
+lightning-combobox .slds-combobox__input:disabled,
+lightning-lookup .slds-combobox__input:hover,
+lightning-lookup .slds-combobox__input:active,
+lightning-lookup .slds-combobox__input:disabled {
+    border: none !important;
+    border-bottom: 1px solid #33455e !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+/* Change underline color on focus only (matches combobox focus accent) */
+lightning-input::part(input):focus,
+lightning-combobox .slds-combobox__input:focus,
+lightning-lookup .slds-combobox__input:focus {
+    border: none !important;
+    border-bottom: 1px solid #8b5cf6 !important;
+    background: transparent !important;
+    background-color: transparent !important;
+    box-shadow: none !important;
+    color: #ffffff !important;
+    -webkit-text-fill-color: #ffffff !important;
+}
+
+/*New */
+
+.slds-form-element__control {
+    border: none !important;
+    padding-bottom: 0;
+}
+
+/* Lookup clear ("x") / search icon tint to match the purple accent */
+lightning-lookup lightning-icon,
+lightning-input lightning-icon {
+    --slds-c-icon-color-foreground: #a78bfa;
+    --slds-c-icon-color-foreground-default: #a78bfa;
+}
+
+/* Section separator / collapsible sub-header (e.g. "Additional Information")
+   accent to purple instead of the plain flat navy block */
+:host .section-seperator {
+    background-color: #17152a !important;
+    color: #ffffff !important;
+    border: 1px solid #2f2a4a;
+    border-radius: 8px;
+}
+
+:host .section-seperator lightning-icon {
+    --slds-c-icon-color-foreground: #a78bfa;
+    --slds-c-icon-color-foreground-default: #a78bfa;
+}
+/* ____GenAI: Generated code ends here____ */
+
+.slds-accordion__content {
+    background-color: #09172b !important;
+    padding: 12px;
+}
+
+/* ──────────── Equal field-grid spacing + card polish ────────────
+   Visual only - no markup/structure changes. Every dynamic field this
+   screen renders sits in a lightning-layout-item[padding="around-small"]
+   (SLDS reflects that attribute to the "slds-p-around_small" class),
+   inside a lightning-layout (a flex row/wrap). The previous per-item
+   "margin: 12px" produced uneven gutters (margins between siblings vs.
+   at the row's own edges don't behave symmetrically in a flex-wrap
+   layout). Using "gap" on the flex row instead - with the per-item
+   margin removed - gives every column identical spacing on all sides. */
+lightning-layout.slds-grid,
+lightning-layout .slds-grid {
+    gap: -3px;
+    align-items: flex-start;
+}
+
+.slds-p-around_small {
+    /* Flat field layout (matches salesLoginProductDetailsCmp's "Product
+       Details" reference) - each field sits directly on the section's own
+       dark background instead of inside its own bordered/boxed card. */
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    margin: 0;
+    padding: 10px 12px !important;
+}
+
+.section-seperator {
+    background: linear-gradient(135deg, #02133f 0%, #00215e 55%, #002d67 100%);
+    color: #ffffff !important;
+
+    border: 1px solid #33455e;
+    border-radius: 8px;
+}

@@ -1,0 +1,94 @@
+<template>
+    <template if:true={isModalOpen}>
+        <template if:false={showConfirmScreen}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Meaningful description of the modal content" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header header-section">
+                        <div class="slds-text-align_center">
+                            <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">{headerTitle}</h2>
+                        </div>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-content-id">
+                        <template if:true={isLoan}>
+                            <!-- <div style="margin-top: 3%;"> -->
+                                <div class="slds-form-element__label" style="text-align: right;font-weight: 700;">Select Report</div>
+                                <lightning-combobox class="inputfield" style="margin-top: -2%;" name="none" label="" options={reportOptions}
+                                    placeholder={reportType} value={reportType} onchange={handleTypechange}>
+                                </lightning-combobox>
+                            <!-- </div> -->
+                        </template>
+
+                        <template if:true={otherSelected}>
+                            <!-- <div style="margin-top: 3%;"> -->
+                                <lightning-radio-group name="radioGroup1" label="Select Record" options={recordoptions}
+                                    value={selectedRecord} onchange={handleRecordChange} message-when-value-missing="Please select record" required type="radio">
+                                </lightning-radio-group>
+                            <!-- </div> -->
+                        </template>
+
+                        
+
+                        <!-- <div style="margin-top: 3%;"> -->
+                            <div class="slds-form-element__label" style="text-align: right;font-weight: 700;">Current Assignee</div>
+                            <lightning-input type="text" style="margin-top: -2%;" variant="standard" label="" value={currentAssignee} disabled></lightning-input>
+                        <!-- </div> -->
+
+                        <template if:true={isLoan}>
+                            <!-- <div style="margin-top: 3%;"> -->
+                                <lightning-radio-group name="radioGroup2" label="Select New Assignee" options={assigneeoptions}
+                                    value={newAssignee} onchange={handleAssigneeChange} message-when-value-missing="Please select assignee" required type="radio">
+                                </lightning-radio-group>
+                            <!-- </div> -->
+                        </template>
+
+                        <template if:false={isLoan}>
+                            <!-- <div style="margin-top: 3%;"> -->
+                                <template if:true={isLoanAssignmentScreen}>
+                                    <lightning-input
+                                        type="search"
+                                        label="Search Assignee"
+                                        placeholder="Type to search..."
+                                        onchange={handleSearch}>
+                                    </lightning-input>
+                                </template>
+                                <lightning-radio-group name="radioGroup3" label="Select New Assignee" options={assigneeoptions}
+                                    value={newAssignee} onchange={handleAssigneeChange} message-when-value-missing="Please select assignee" required type="radio">
+                                </lightning-radio-group>
+                            <!-- </div>     -->
+                        </template>                        
+                    </div>
+                    <footer class="footer-section">
+                        <div class="slds-align_absolute-center button-container">
+                            <button class="slds-button slds-button_brand close-button" onclick={closeModel}>Cancel</button>
+                            <button class="slds-button slds-button_brand save-button" onclick={reassignRecord}>{buttonLabel}</button>
+                        </div>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+        <template if:true={showConfirmScreen}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Meaningful description of the modal content" class="slds-modal slds-fade-in-open">
+                <div class="slds-modal__container">
+                    <header class="slds-modal__header header-section">
+                        <div class="slds-text-align_center">
+                            <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">Confirmation Screen</h2>
+                        </div>
+                    </header>
+                    <div class="slds-modal__content slds-p-around_medium" id="modal-heading-017">
+                        <div style="padding: 10px; min-height: 50px; text-align: center;">
+                            Are you sure you want to proceed with the assignment?
+                        </div>
+                    </div>
+                    <footer class="footer-section">
+                        <div class="slds-align_absolute-center button-container">
+                            <button class="slds-button slds-button_brand previous-button" onclick={handleNoPerm}>No</button>
+                            <button class="slds-button slds-button_brand continue-button" onclick={handleYesPerm}>Yes</button>
+                        </div>
+                    </footer>
+                </div>
+            </section>
+            <div class="slds-backdrop slds-backdrop_open"></div>
+        </template>
+    </template>
+</template>

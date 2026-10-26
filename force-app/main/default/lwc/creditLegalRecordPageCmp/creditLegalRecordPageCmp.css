@@ -1,0 +1,60 @@
+.table-container {
+    margin-bottom: 1rem;
+    overflow-y: auto;
+    height: 200px;
+}
+
+.slds-table {
+    width: 100%; 
+    border-collapse: collapse;
+}
+
+.slds-table thead tr th, .slds-table tbody tr td {
+    padding: 5px;
+    text-align: center;
+    border: 1px solid #ddd;
+    white-space: pre-line;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+}
+
+.hidden-input {
+    display: none;
+}
+
+.andcontainer{
+    text-align: center;
+    font-weight: bold;
+    margin-top: 14px;
+    height: 3rem;
+    margin-bottom: 14px;
+}
+
+.save-button {
+    width: 140px;
+    background-color: #9bbf56;
+    font-weight: 500;
+}
+
+.previous-button {
+    width: 140px;
+    background-color: #dc387e;
+    font-weight: 500;
+}
+
+.footer-section {
+    background-color: skyblue;
+    text-align: center; 
+    color: white; 
+    font-weight: bold;
+    position: sticky; 
+    bottom: 0; 
+    border-radius: 0px 0px 5px 5px;
+}
+
+.button-container {
+    display: flex;
+    justify-content: center; 
+    padding-top:0.4rem; 
+    padding-bottom:0.4rem
+}

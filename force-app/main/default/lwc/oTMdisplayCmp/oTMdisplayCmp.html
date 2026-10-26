@@ -1,0 +1,42 @@
+<template>
+    <div class="slds-box slds-m-around_small fi-table-wrapper" style="overflow-x: auto; max-width: 100%;">
+        <table
+            class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right">
+            <thead>
+                <tr class="slds-line-height_reset">
+                    <th scope="col" style="width: 10%;">
+                        <div class="slds-truncate" title="User Name">User Name</div>
+                    </th>
+                    <th scope="col" style="width: 15%;">
+                        <div class="slds-truncate" title="Team Member Role">Team Member Role</div>
+                    </th>
+                    <th scope="col" style="width: 15%;">
+                        <div class="slds-truncate" title="Associated with Loan Application">Associated with Loan Application</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={oppWrap} for:item="oppWrapId">
+                    <tr key={oppWrapId.oppTeamId}>
+                        <td scope="col" style="width: 15%;">
+                            <div class="slds-truncate">{oppWrapId.userName}</div>
+                        </td>
+                        <td scope="col" style="width: 15%;">
+                            <div class="slds-truncate">{oppWrapId.teamMemberRole}</div>
+                        </td>
+                        <td scope="col" style="width: 15%; text-align: center;">
+                            <div class="slds-truncate">
+                                 <lightning-input type="checkbox" label="" data-id={oppWrapId.oppTeamId}
+                                    checked={oppWrapId.associated_with_Loan_Application} disabled = {oppWrapId.isDisabled}>
+                                </lightning-input>
+ 
+                            </div>
+                        </td>
+
+                    </tr>
+                </template>  
+            </tbody>
+        </table>
+    </div>
+
+</template>

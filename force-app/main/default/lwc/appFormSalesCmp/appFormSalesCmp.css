@@ -1,0 +1,87 @@
+@import "c/cssLibrary";
+
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+
+/* Main background — consistent dark theme */
+:host {
+    display: block;
+    background-color: #0A1524 !important;
+}
+
+.app-form-container {
+    background-color: #0A1524 !important;
+    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 1rem;
+}
+
+/* Select/generate section wrapper — ensures no gaps reveal the underlying
+   page background around or below the Generate button */
+.select-section-wrapper {
+    background-color: #0A1524 !important;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.generate-button-row {
+    background-color: #0A1524 !important;
+    margin-left: 15px;
+}
+
+/* Generate action — remaining CTA (blue), standardized height/width, white text */
+.generate-button {
+    height: 30px;
+    min-width: 100px;
+    width: auto;
+    padding: 0 16px;
+    border: none;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: #ffffff;
+    background-color: #1467eb;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    line-height: 30px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.generate-button:hover,
+.generate-button:focus {
+    background-color: #0f52c0;
+}
+
+/* PDF preview sub-component — dark theme container, matches main background so no
+   white/light gaps show around the embedded PDF viewer */
+.pdf-frame-wrapper {
+    background-color: #0A1524;
+    border: 1px solid #2C244D;
+    border-radius: 8px;
+    padding: 8px;
+}
+
+.pdf-frame-wrapper iframe {
+    border: none;
+    border-radius: 6px;
+    background-color: #0A1524;
+}
+
+/* "View Application Form" — remaining CTA (blue), standardized height/width, white text */
+.view-app-form-button {
+    --slds-c-button-brand-color-background: #1467eb;
+    --slds-c-button-brand-color-border: #1467eb;
+    --slds-c-button-brand-text-color: #ffffff;
+    --slds-c-button-brand-color-background-hover: #0f52c0;
+    --slds-c-button-brand-color-border-hover: #0f52c0;
+    --slds-c-button-brand-text-color-hover: #ffffff;
+    --slds-c-button-sizing-height: 30px;
+    --sds-c-button-sizing-height: 30px;
+    --slds-c-button-sizing-min-width: 100px;
+    --sds-c-button-sizing-min-width: 100px;
+}
+
+/*__________________________GenAI: Generated code ends here______________________________*/

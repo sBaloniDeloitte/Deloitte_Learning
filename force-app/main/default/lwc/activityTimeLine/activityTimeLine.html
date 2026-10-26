@@ -1,0 +1,78 @@
+<template>
+
+    <div class="timeline-container">
+
+        <!-- Header -->
+
+        <div class="timeline-header">
+
+            <div class="header-content">
+
+                <lightning-icon
+                    icon-name="utility:timeline"
+                    size="small"
+                    class="header-icon">
+                </lightning-icon>
+
+                <div>
+
+                    <div class="header-title">
+                        Activity Timeline
+                    </div>
+
+                    <div class="header-subtitle">
+                        Recent customer interactions
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <!-- Activity List -->
+
+        <div class="activity-list">
+
+            <template
+                for:each={activities}
+                for:item="activity">
+
+                <div
+                    key={activity.id}
+                    class="activity-item">
+
+                    <div class={activity.iconClass}>
+
+                        <lightning-icon
+                            icon-name={activity.iconName}
+                            size="x-small">
+                        </lightning-icon>
+
+                    </div>
+
+                    <div class="activity-content">
+
+                        <div class="activity-subject">
+                            {activity.subject}
+                        </div>
+
+                        <div class="activity-desc">
+                            {activity.description}
+                        </div>
+
+                        <div class="activity-date">
+                            {activity.formattedDate}
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </template>
+
+        </div>
+
+    </div>
+
+</template>

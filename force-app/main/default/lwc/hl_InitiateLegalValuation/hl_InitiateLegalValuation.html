@@ -1,0 +1,241 @@
+<template>
+    <template if:true={showHLRelatedData}>
+        <template lwc:if={showLegalTable}>
+            <div class="legal-records-table-wrap" style="margin-top: 1rem;">
+                <legend class="slds-form-element__legend slds-form-element__label slds-m-vertical_xx-small">Legal
+                    Records</legend>
+
+                <table class="slds-table" aria-label="Example table of Opportunities with vertical borders">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th scope="col">
+                                <div class="slds-truncate" title="Close Date">Collateral</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Close Date">Sr. No</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Stage">Name</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Confidence">Status</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Amount">Assigned To</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Contact">Report Type</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Contact">Initiated By</div>
+                            </th>
+                            <th scope="col">
+                                <div class="slds-truncate" title="Contact">Initiated On</div>
+                            </th>
+                            <!--
+                        <th class="" scope="col" style="background-color: #5bb6e3; color: black; font-weight: 500; padding: 10px;">
+                            <div class="slds-truncate" title="Contact">Collateral</div>
+                        </th>-->
+                            <th scope="col">
+                                <div class="slds-truncate" title="Contact">Address</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={groupedLegals} for:item="group">
+                            <template for:each={group.records} for:item="legal" for:index="index">
+                                <tr key={legal.Id} class="slds-hint-parent">
+                                    <template if:true={legal.isFirst}>
+                                        <td rowspan={group.rowspan} style="font-weight: bold;">
+                                            {group.collateral}
+                                        </td>
+                                    </template>
+                                    <td data-label="Sr No.">
+                                        <div class="slds-truncate" title="srno">{legal.srno}</div>
+                                    </td>
+                                    <td data-label="Name">
+                                        <div class="slds-truncate" title="4/14/2015"><a data-id={legal.id}
+                                                onclick={navigateToRecord}>{legal.name}</a></div>
+                                    </td>
+                                    <td data-label="Status">
+                                        <div class="slds-truncate" title="4/14/2015">{legal.status}</div>
+                                    </td>
+                                    <td data-label="Owner">
+                                        <div class="slds-truncate" title="4/14/2015">{legal.assignedTo}</div>
+                                    </td>
+                                    <td data-label="Owner">
+                                        <div class="slds-truncate" title="4/14/2015">{legal.reportType}</div>
+                                    </td>
+                                    <td data-label="Initiated By">
+                                        <div class="slds-truncate" title="4/14/2015">{legal.initiatedBy}</div>
+                                    </td>
+                                    <td data-label="Initated On">
+                                        <div class="slds-truncate" title="4/14/2015">{legal.initiatedOn}</div>
+                                    </td>
+                                    <!--<td data-label="Collateral Type">
+                                    <div class="slds-truncate">{legal.collateralType}</div>
+                                </td>-->
+                                    <td data-label="Collateral Address">
+                                        <div class="slds-truncate"
+                                            style="word-wrap: break-word; white-space: nowrap; overflow:visible">
+                                            {legal.collateralAddress}</div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+    </template>
+     <template if:false={disabledCmp}>
+    <template lwc:if={showInitiateLegal}>
+        <lightning-card title="">
+            <button class="slds-button slds-button_brand initiate-button" onclick={handleMainButton}>Initiate
+                Legal</button><!--label="Initiate Legal" title="Initiate Legal"-->
+        </lightning-card>
+    </template>
+    </template>
+    <template lwc:if={isModalOpen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-labelledby="modal-heading-01"
+            class="slds-modal slds-fade-in-open slds-modal_full">
+            <div class="slds-modal__container">
+                <div class="slds-modal__header">
+                    <h1 id="modal-heading-01" class="slds-modal__title slds-hyphenate" tabindex="-1">Initiate Legal</h1>
+                </div>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1"
+                    style="min-height: 90% !important">
+                    <div class="slds-m-vertical_x-small">
+                        <c-hl_-initiate-legal-child record-id={recordId} generic-initiate=true
+                            onclose={closeModal} ongetlegalrecords={setLegalRecords} ></c-hl_-initiate-legal-child>
+                    </div>
+                    <!--<lightning-accordion  allow-multiple-sections-open active-section-name="Initiate Legal">
+                        <div class="slds-m-vertical_x-small">
+                            <lightning-accordion-section  name="Initiate Legal" label="Initiate Legal" style="background-color: white;">
+                                
+                                
+                            </lightning-accordion-section>
+                        </div>
+                    </lightning-accordion>-->
+
+                </div>
+                <div class="slds-modal__footer">
+                    <button class="slds-button slds-button_brand wave-button" aria-label="Cancel and close" onclick={closeModal}>Close</button>
+                </div>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+    </template>
+
+    <!-- <template if:false={showInitiateLegal}> -->
+     <template if:false={showHLRelatedData}>
+        <template lwc:if={showLegalTable}>
+            <div class="slds-p-around_medium" style="margin-top: 1rem; overflow-x: auto;">
+                <legend class="slds-form-element__legend slds-form-element__label slds-m-vertical_xx-small">Legal
+                    Records</legend>
+
+                <table
+                    class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right"
+                    aria-label="Example table of Opportunities with vertical borders">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="" scope="col"
+                                style="background-color: #5bb6e3; color: white; font-weight: 500; padding: 10px;">
+                                <div class="slds-truncate" title="Close Date">Collateral</div>
+                            </th>
+                            <th class="" scope="col"
+                                style="background-color: #5bb6e3; color: white; font-weight: 500; padding: 10px;">
+                                <div class="slds-truncate" title="Close Date">Sr. No</div>
+                            </th>
+                            <th class="" scope="col"
+                                style="background-color: #5bb6e3; color: white; font-weight: 500; padding: 10px;">
+                                <div class="slds-truncate" title="Stage">Name</div>
+                            </th>
+                            <th class="" scope="col"
+                                style="background-color: #5bb6e3; color: white; font-weight: 500; padding: 10px;">
+                                <div class="slds-truncate" title="Confidence">Status</div>
+                            </th>
+                            <th class="" scope="col"
+                                style="background-color: #5bb6e3; color: white; font-weight: 500; padding: 10px;">
+                                <div class="slds-truncate" title="Amount">Assigned To</div>
+                            </th>
+                            <th class="" scope="col"
+                                style="background-color: #5bb6e3; color: white; font-weight: 500; padding: 10px;">
+                                <div class="slds-truncate" title="Contact">Report Type</div>
+                            </th>
+                            <th class="" scope="col"
+                                style="background-color: #5bb6e3; color: white; font-weight: 500; padding: 10px;">
+                                <div class="slds-truncate" title="Contact">Initiated By</div>
+                            </th>
+                            <th class="" scope="col"
+                                style="background-color: #5bb6e3; color: white; font-weight: 500; padding: 10px;">
+                                <div class="slds-truncate" title="Contact">Initiated On</div>
+                            </th>
+                            <!--
+                        <th class="" scope="col" style="background-color: #5bb6e3; color: black; font-weight: 500; padding: 10px;">
+                            <div class="slds-truncate" title="Contact">Collateral</div>
+                        </th>-->
+                            <th class="" scope="col"
+                                style="background-color: #5bb6e3; color: white; font-weight: 500; padding: 10px;">
+                                <div class="slds-truncate" title="Contact">Address</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={groupedLegals} for:item="group">
+                            <template for:each={group.records} for:item="legal" for:index="index">
+                                <tr key={legal.Id} class="slds-hint-parent">
+                                    <template if:true={legal.isFirst}>
+                                        <td rowspan={group.rowspan} style="font-weight: bold;">
+                                            {group.collateral}
+                                        </td>
+                                    </template>
+                                    <td data-label="Sr No.">
+                                        <div class="slds-truncate" title="srno">{legal.srno}</div>
+                                    </td>
+                                    <td data-label="Name">
+                                        <div class="slds-truncate" title="4/14/2015"><a data-id={legal.id}
+                                                onclick={navigateToRecord}>{legal.name}</a></div>
+                                    </td>
+                                    <td data-label="Status">
+                                        <div class="slds-truncate" title="4/14/2015">{legal.status}</div>
+                                    </td>
+                                    <td data-label="Owner">
+                                        <div class="slds-truncate" title="4/14/2015">{legal.assignedTo}</div>
+                                    </td>
+                                    <td data-label="Owner">
+                                        <div class="slds-truncate" title="4/14/2015">{legal.reportType}</div>
+                                    </td>
+                                    <td data-label="Initiated By">
+                                        <div class="slds-truncate" title="4/14/2015">{legal.initiatedBy}</div>
+                                    </td>
+                                    <td data-label="Initated On">
+                                        <div class="slds-truncate" title="4/14/2015">{legal.initiatedOn}</div>
+                                    </td>
+                                    <!--<td data-label="Collateral Type">
+                                    <div class="slds-truncate">{legal.collateralType}</div>
+                                </td>-->
+                                    <td data-label="Collateral Address">
+                                        <div class="slds-truncate"
+                                            style="word-wrap: break-word; white-space: nowrap; overflow:visible">
+                                            {legal.collateralAddress}</div>
+                                    </td>
+                                </tr>
+                            </template>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+        </template>
+    <!-- </template> -->
+    <input type="file" style="display:none" accept="image/*,.pdf" capture="environment" onchange={handleUpload}
+        class="genericFileUpload" />
+
+    <!-- <lightning-accordion allow-multiple-sections-open="false" active-section-name={activeSection}>
+          <lightning-accordion-section name="investigation" label="Legal Audit Trail" onclick={handleSectionToggle}>
+                <c-verification-history  record-id={recordId}  object-api-name={objectName}></c-verification-history>
+            </lightning-accordion-section> 
+    </lightning-accordion> -->
+
+</template>

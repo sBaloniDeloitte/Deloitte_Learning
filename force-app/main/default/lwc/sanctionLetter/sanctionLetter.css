@@ -1,0 +1,27 @@
+@import "c/cssLibrary";
+
+/* ____GenAI: Generated code starts here - Generate/Re-Generate button recolored
+   to solid purple (#7c3aed), overriding the library's green .save-button fill
+   and SLDS's blue .slds-button_brand fill. Shape/size (width, padding,
+   border-radius) are left untouched - they are inherited unchanged from
+   c/cssLibrary and the base SLDS button classes.____ */
+.save-button.slds-button_brand {
+    background-color: #7c3aed !important;
+    border-color: #7c3aed !important;
+    color: #ffffff !important;
+     padding: 8px 20px;
+     transition: all .25s ease;
+     font-weight: 500;
+}
+
+.save-button.slds-button_brand:hover,
+.save-button.slds-button_brand:focus {
+    background-color: #6d28d9 !important;
+    border-color: #6d28d9 !important;
+}
+
+.save-button.slds-button_brand:active {
+    background-color: #5b21b6 !important;
+    border-color: #5b21b6 !important;
+}
+/* ____GenAI: Generated code ends here____ */

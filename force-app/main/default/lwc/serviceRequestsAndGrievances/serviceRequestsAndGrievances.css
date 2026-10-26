@@ -1,0 +1,118 @@
+:host {
+    display: block;
+    font-size: 13px;
+    font-family: Arial, Helvetica, sans-serif;
+    --bg-card: #1c2238;
+    --accent: #1467eb;
+    --accent-hover: #0d54c9;
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-muted: rgba(255, 255, 255, 0.5);
+    --divider: rgba(255, 255, 255, 0.1);
+    --border-color: #2a2f45;
+    --card-glow: 0 0 20px rgba(20, 103, 235, 0.15);
+}
+
+:host *,
+:host *::before,
+:host *::after {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.sr-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: var(--card-glow);
+    color: var(--text-primary);
+    font-size: 13px;
+    overflow: hidden;
+}
+
+.sr-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid #002266;
+    background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+}
+
+.sr-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.sr-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 999px;
+}
+
+.sr-badge-open {
+    background: rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+}
+
+.sr-body {
+    padding: 0 16px;
+}
+
+.sr-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--divider);
+}
+
+.sr-row-last {
+    border-bottom: none;
+}
+
+.sr-row-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.sr-row-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.4;
+}
+
+.sr-row-meta {
+    margin-top: 2px;
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.sr-pill {
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.sr-pill-ageing {
+    background: rgba(245, 158, 11, 0.15);
+    color: #fbbf24;
+}
+
+.sr-pill-closed {
+    background: rgba(255, 255, 255, 0.08);
+    color: var(--text-muted);
+}
+
+.sr-pill-resolved {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+}

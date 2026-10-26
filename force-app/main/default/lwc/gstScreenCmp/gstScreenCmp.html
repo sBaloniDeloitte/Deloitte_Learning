@@ -1,0 +1,313 @@
+<template>
+  <div class="slds-m-around_medium combobox-container">
+    <lightning-combobox label="Select Method" value={selectedMethod} options={methodOptions}
+      onchange={handleMethodChange} class={getClassByDeviceType}>
+    </lightning-combobox>
+  </div>
+
+  <template if:true={isManual}>
+    <lightning-layout multiple-rows class="layout-border">
+      <!-- Left Section: Form Container -->
+      <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+        <div class="form-container slds-box slds-theme_default custom-border">
+          <lightning-combobox value={applicantValue} options={options} onchange={handleApplicantChange}
+            class="validate full-width-combobox" label="Select Applicant" placeholder="Select Applicant">
+          </lightning-combobox>
+
+          <lightning-tabset>
+            <!-- CY Tab -->
+            <lightning-tab label="CY">
+              <lightning-layout multiple-rows>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-combobox value={yearCY} name="yearCY" options={yearOptions} onchange={handleYearChange} disabled
+                    class="validate full-width-combobox" label="Year"></lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-input type="number" name="gstMonth1CY" value={gstMonth1CY} label="GST Latest Month 1 (In Lacs)" onblur={onBlurInputField}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-input type="number" name="gstMonth2CY" value={gstMonth2CY} label="GST Latest Month 2 (In Lacs)" onblur={onBlurInputField}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-input type="number" name="gstMonth3CY" value={gstMonth3CY} label="GST Latest Month 3 (In Lacs)" onblur={onBlurInputField}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-input type="number" name="gstMonth4CY" value={gstMonth4CY} label="GST Latest Month 4 (In Lacs)" onblur={onBlurInputField}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-input type="number" name="gstMonth5CY" value={gstMonth5CY} label="GST Latest Month 5 (In Lacs)" onblur={onBlurInputField}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-input type="number" name="gstMonth6CY" value={gstMonth6CY} label="GST Latest Month 6 (In Lacs)" onblur={onBlurInputField}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-input type="number" name="annualGSTCY" value={annualGSTCY} label="Annualized GST Turnover (In Lacs)" disabled></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-file-upload label="Attach GST Document" name="fileUploader" accept={acceptedFormats} multiple
+                    record-id={recordId} onuploadfinished={handleUploadFinishedCY} ></lightning-file-upload>
+                  <template if:true={showDocumentNameCY}>
+                    <template for:each={uploadedFileNameCY} for:item="filename">
+                      <p key={filename} class="uploaded-file-name">{filename}</p>
+                    </template>
+                  </template>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-input type="text" label="Enter Password" name="userPassword" value={passWord}
+                    placeholder="Enter your password" onchange={handlePasswordChange}></lightning-input>
+                </lightning-layout-item>
+              </lightning-layout>
+              <div class="slds-p-around_x-small button-group">
+                <button class="save-button slds-button slds-button_brand" onclick={handleSaveClick}>Save</button>
+              </div>
+            </lightning-tab>
+
+            <!-- PY Tab -->
+            <lightning-tab label="PY">
+              <lightning-layout multiple-rows>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-combobox value={yearPY} name="yearPY" options={yearOptions} onchange={handleYearChange} disabled
+                    class="validate full-width-combobox" label="Year"></lightning-combobox>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-input type="number" name="gstMonth1PY" value={gstMonth1PY} label="GST Latest Month 1 (In Lacs)" onblur={onBlurInputFieldPY}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-input type="number" name="gstMonth2PY" value={gstMonth2PY} label="GST Latest Month 2 (In Lacs)" onblur={onBlurInputFieldPY}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-input type="number" name="gstMonth3PY" value={gstMonth3PY} label="GST Latest Month 3 (In Lacs)" onblur={onBlurInputFieldPY}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-input type="number" name="gstMonth4PY" value={gstMonth4PY} label="GST Latest Month 4 (In Lacs)" onblur={onBlurInputFieldPY}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-input type="number" name="gstMonth5PY" value={gstMonth5PY} label="GST Latest Month 5 (In Lacs)" onblur={onBlurInputFieldPY}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-input type="number" name="gstMonth6PY" value={gstMonth6PY} label="GST Latest Month 6 (In Lacs)" onblur={onBlurInputFieldPY}></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-input type="number" name="annualGSTPY" value={annualGSTPY} label="Annualized GST Turnover (In Lacs)" disabled></lightning-input>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-file-upload label="Attach GST Document" name="fileUploader" accept={acceptedFormats} multiple
+                    record-id={recordId} onuploadfinished={handleUploadFinishedPY} >
+                  </lightning-file-upload>
+                  <template if:true={showDocumentNamePY}>
+                    <template for:each={uploadedFileNamePY} for:item="filename">
+                      <p key={filename} class="uploaded-file-name">{filename}</p>
+                    </template>
+                  </template>
+                </lightning-layout-item>
+                <lightning-layout-item size="12" medium-device-size="6" class="slds-p-around_x-small">
+                  <lightning-input type="text" label="Enter Password" name="userPassword" value={passWordPY}
+                    placeholder="Enter your password" onchange={handlePasswordChangePY}></lightning-input>
+                </lightning-layout-item>
+              </lightning-layout>
+              <div class="slds-p-around_x-small button-group">
+                <button class="save-button slds-button slds-button_brand" onclick={handleSaveClickPY}>Save</button>
+              </div>
+            </lightning-tab>
+          </lightning-tabset>
+        </div>
+      </lightning-layout-item>
+
+      <!-- Right Section: Document Table -->
+      <lightning-layout-item size="12" medium-device-size="6" padding="around-small">
+        <template if:true={showRecords}>
+          <div class="table-container">
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+              <thead>
+                <tr class="sticky">
+                  <th>Applicant Name</th>
+                  <th>File Name</th>
+                  <th>Year</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <template for:each={documentList} for:item="doc">
+                  <tr key={doc.id}>
+                    <td>{doc.applicantName}</td>
+                    <td>{doc.name}</td>
+                    <td>{doc.year}</td>
+                    <td>
+                      <lightning-icon icon-name="utility:preview" size="small" variant="brand" title="View Document"
+                        data-id={doc.contentId} onclick={handleView} class="green-utility-icon"></lightning-icon>
+                      <template if:true={doc.showDelete}>
+                        <lightning-icon icon-name="utility:delete" size="small" variant="brand" title="Delete Document"
+                          data-id={doc.contentId} data-doc={doc.id} onclick={handleDelete} class="red-utility-icon">
+                        </lightning-icon>
+                      </template>
+                    </td>
+                  </tr>
+                </template>
+              </tbody>
+            </table>
+          </div>
+        </template>
+      </lightning-layout-item>
+    </lightning-layout>
+  </template>
+        
+    <template if:true={isUpload}>
+        <lightning-layout multiple-rows class="layout-border">
+            <!-- Left Section - Form Container -->
+            <lightning-layout-item size="6" padding="around-small">
+                <div class="form-container slds-box slds-theme_default custom-border">
+                     <lightning-combobox value={applicantValue} options={options} onchange={handleApplicantChange}
+                            class="validate" label="Select Applicant" placeholder="Select Applicant"></lightning-combobox>
+              
+                     <lightning-tabset>
+                 <lightning-tab label="CY">
+                                <lightning-combobox value={yearCY} name="yearCY" options={yearOptions} onchange={handleYearChange} disabled
+                                class="validate" label="Year"></lightning-combobox>
+                           <lightning-input type="text" label="Enter Password" name="userPassword" value={passWord}
+                                    placeholder="Enter your password" onchange={handlePasswordChange} >
+                                </lightning-input>
+
+                                <lightning-file-upload label="Attach GST Document"
+                                    name="fileUploader" accept={acceptedFormats} multiple
+                                    record-id={recordId} onuploadfinished={handleUploadFinishedCY} required>
+                                </lightning-file-upload>
+                                <br />
+                                <template if:true={showDocumentNameCY}>
+                                      <template for:each={uploadedFileNameCY} for:item="filename" >
+                                        <p key={filename}  style="background-color:lightgrey;font-weight: 500;">{filename}</p>
+                                    </template>
+                                </template>
+                        <div class="slds-p-around_medium" style="text-align: center;">
+                            <button class="save-button slds-button slds-button_brand" onclick={handleSaveUploadClickCY}>Save</button>
+                            
+                        </div>
+                    </lightning-tab>
+                    <lightning-tab label="PY">
+                                <lightning-combobox value={yearPY} options={yearOptions} onchange={handleYearChange} disabled
+                                class="validate" label="Year" name="yearPY"></lightning-combobox>
+                           <lightning-input type="text" label="Enter Password" name="userPassword" value={passWordPY}
+                                    placeholder="Enter your password" onchange={handlePasswordChangePY}>
+                                </lightning-input>
+
+                                <lightning-file-upload label="Attach GST Document"
+                                    name="fileUploader" accept={acceptedFormats} multiple record-id={recordId} onuploadfinished={handleUploadFinishedPY} required>
+                                </lightning-file-upload>
+                                <br />
+                                <template if:true={showDocumentNamePY}>
+                                      <template for:each={uploadedFileNamePY} for:item="filename" >
+                                        <p key={filename}  style="background-color:lightgrey;font-weight: 500;">{filename}</p>
+                                    </template>
+                                </template>
+                        <div class="slds-p-around_medium" style="text-align: center;">
+                            <button class="save-button slds-button slds-button_brand" onclick={handleSaveUploadClickPY}>Save</button>
+                            
+                        </div>
+                    </lightning-tab>
+                </lightning-tabset>
+            </div>
+            </lightning-layout-item>
+            <lightning-layout-item size="6" padding="around-small">
+<!-- Commenting Till we dont have GST API
+  <template if:true={showRecordsCY}>
+    <h3 class="slds-text-heading_small slds-m-bottom_small">Current Year</h3>
+                        <div class="table-container">
+                            <table class="slds-table">
+                                <thead>
+                                    <tr class="sticky">
+                                        <th scope="col" style="text-align: left;white-space: nowrap;">Applicant Name</th>
+                                        <th scope="col" style="text-align: left;white-space: nowrap;">File Name</th>
+                                        <th scope="col" style="width: 135px;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={documentListCY} for:item="doc">
+                                        <tr key={doc.id}>
+                                            <td scope="col" style="text-align: left;">
+                                                <div style="font-weight: 500;" title={doc.docName}>{doc.applicantName}
+                                                </div>
+                                            </td>
+                                            <td scope="col" style="text-align: left;">
+                                                     <div key={uploadFile} style="font-weight: 500;" title={doc.docName}>{doc.name}</div>
+                                               
+                                            </td>
+                                           
+                                            <td scope="col">
+                                                        <div class="upload-icon" key={doc.contentId}>
+                                                            <lightning-icon size="small"
+                                                                icon-name="utility:preview" variant="brand" title="View Document"
+                                                                data-id={doc.contentId}
+                                                                onclick={handleView}
+                                                                class="green-utility-icon">
+                                                            </lightning-icon>
+                                                            <template if:true={doc.showDelete}>
+                                                                <lightning-icon size="small"
+                                                                    icon-name="utility:delete" variant="brand" title="Delete Document"
+                                                                    data-id={doc.contentId} data-doc={doc.id}
+                                                                    onclick={handleDelete}
+                                                                    class="red-utility-icon">
+                                                                </lightning-icon>
+                                                             
+                                                            </template>
+                                                        </div>
+                                                                                                 </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </template>
+
+ <template if:true={showRecordsPY}>
+    <h3 class="slds-text-heading_small slds-m-bottom_small">Previous Year</h3>
+                        <div class="table-container">
+                            <table class="slds-table">
+                                <thead>
+                                    <tr class="sticky">
+                                        <th scope="col" style="text-align: left;white-space: nowrap;">Applicant Name</th>
+                                        <th scope="col" style="text-align: left;white-space: nowrap;">File Name</th>
+                                        <th scope="col" style="width: 135px;">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={documentListPY} for:item="doc">
+                                        <tr key={doc.id}>
+                                            <td scope="col" style="text-align: left;">
+                                                <div style="font-weight: 500;" title={doc.docName}>{doc.applicantName}
+                                                </div>
+                                            </td>
+                                            <td scope="col" style="text-align: left;">
+                                                     <div key={uploadFile} style="font-weight: 500;" title={doc.docName}>{doc.name}</div>
+                                               
+                                            </td>
+                                           
+                                            <td scope="col">
+                                                        <div class="upload-icon" key={doc.contentId}>
+                                                            <lightning-icon size="small"
+                                                                icon-name="utility:preview" variant="brand" title="View Document"
+                                                                data-id={doc.contentId}
+                                                                onclick={handleView}
+                                                                class="green-utility-icon">
+                                                            </lightning-icon>
+                                                            <template if:true={doc.showDelete}>
+                                                                <lightning-icon size="small"
+                                                                    icon-name="utility:delete" variant="brand" title="Delete Document"
+                                                                    data-id={doc.contentId} data-doc={doc.id}
+                                                                    onclick={handleDelete}
+                                                                    class="red-utility-icon">
+                                                                </lightning-icon>
+                                                             
+                                                            </template>
+                                                        </div>
+                                                                                                 </td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </template>-->
+ </lightning-layout-item>
+        </lightning-layout>
+        </template>
+           
+
+</template>

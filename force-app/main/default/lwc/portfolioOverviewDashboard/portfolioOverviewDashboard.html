@@ -1,0 +1,411 @@
+<!-- _______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________ -->
+<template>
+
+    <div class="po-container">
+            <div class="po-tabs">
+                <div class={portfolioTabClass} data-tab="portfolio" onclick={handleTabClick}>Portfolio Overview</div>
+                <div class={myDayTabClass} data-tab="myday" onclick={handleTabClick}>My Day</div>
+                <div class={bulkLeadsTabClass} data-tab="bulkleads" onclick={handleTabClick}>Bulk Leads</div>
+                
+            </div>
+
+            <div class={portfolioPanelClass}>
+            <div class="po-grid">
+                <!-- Card 1: Lead -> Login Conversion -->
+                <div class="po-card" tabindex="0" role="button" data-key="leadLoginConversion" onclick={handleCardClick} onkeydown={handleCardKeyDown}>
+                    <div class="po-card-head">
+                        <div class="po-card-icon-wrap">
+                            <svg class="po-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <circle cx="12" cy="6" r="2" fill="currentColor"></circle>
+                                <path d="M12 8c-1.5 0-2.5 1-2.8 2.4L8 15h2l.6-3 1 1v6h2v-7l-1.2-1.2.4-2c.6.8 1.6 1.4 2.8 1.4v-2c-1 0-1.8-.6-2.1-1.4L13 5.6c-.3-.6-.9-1-1.5-1z" fill="currentColor"></path>
+                                <path d="M7 16l-2 5h2l1.6-4z" fill="currentColor"></path>
+                            </svg>
+                        </div>
+                        <div class="po-card-heading">
+                            <span class="po-card-title">Lead &rarr; Login Conversion</span>
+                            <span class="po-card-subtitle">From leads to created logins</span>
+                        </div>
+                        <svg class="po-card-signal" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <rect x="3" y="14" width="3" height="7" rx="1" fill="currentColor"></rect>
+                            <rect x="9" y="10" width="3" height="11" rx="1" fill="currentColor"></rect>
+                            <rect x="15" y="6" width="3" height="15" rx="1" fill="currentColor"></rect>
+                            <rect x="21" y="2" width="3" height="19" rx="1" fill="currentColor"></rect>
+                        </svg>
+                    </div>
+                    <div class="po-card-divider"></div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">🏃</span>
+                            <span class="po-metric-label">Conversion Rate</span>
+                        </div>
+                        <span class="po-metric-value">{leadLoginConversionRate}</span>
+                    </div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">📄</span>
+                            <span class="po-metric-label">Logins Created</span>
+                        </div>
+                        <span class="po-metric-value">{leadLoginLoginsCreated}</span>
+                    </div>
+                </div>
+
+                <!-- Card 2: Login -> Sanction Conversion -->
+                <div class="po-card" tabindex="0" role="button" data-key="loginSanctionConversion" onclick={handleCardClick} onkeydown={handleCardKeyDown}>
+                    <div class="po-card-head">
+                        <div class="po-card-icon-wrap">
+                            <svg class="po-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <circle cx="12" cy="12" r="7" fill="currentColor"></circle>
+                            </svg>
+                        </div>
+                        <div class="po-card-heading">
+                            <span class="po-card-title">Login &rarr; Sanction Conversion</span>
+                            <span class="po-card-subtitle">From logins to sanctions</span>
+                        </div>
+                        <svg class="po-card-signal" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <rect x="3" y="14" width="3" height="7" rx="1" fill="currentColor"></rect>
+                            <rect x="9" y="10" width="3" height="11" rx="1" fill="currentColor"></rect>
+                            <rect x="15" y="6" width="3" height="15" rx="1" fill="currentColor"></rect>
+                            <rect x="21" y="2" width="3" height="19" rx="1" fill="currentColor"></rect>
+                        </svg>
+                    </div>
+                    <div class="po-card-divider"></div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">📈</span>
+                            <span class="po-metric-label">Sanction Rate</span>
+                        </div>
+                        <span class="po-metric-value">{loginSanctionRate}</span>
+                    </div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">📌</span>
+                            <span class="po-metric-label">Sanctions</span>
+                        </div>
+                        <span class="po-metric-value">{loginSanctionSanctions}</span>
+                    </div>
+                </div>
+
+                <!-- Card 3: Sanction -> Disbursement Rate -->
+                <div class="po-card" tabindex="0" role="button" data-key="sanctionDisbursementRate" onclick={handleCardClick} onkeydown={handleCardKeyDown}>
+                    <div class="po-card-head">
+                        <div class="po-card-icon-wrap">
+                            <svg class="po-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <path d="M9 4H4v5l2-2 4 4 1.5-1.5-4-4z" fill="currentColor"></path>
+                                <path d="M15 20h5v-5l-2 2-4-4-1.5 1.5 4 4z" fill="currentColor"></path>
+                                <path d="M15 4h5v5l-2-2-4 4-1.5-1.5 4-4z" fill="currentColor"></path>
+                                <path d="M9 20H4v-5l2 2 4-4 1.5 1.5-4 4z" fill="currentColor"></path>
+                            </svg>
+                        </div>
+                        <div class="po-card-heading">
+                            <span class="po-card-title">Sanction &rarr; Disbursement Rate</span>
+                            <span class="po-card-subtitle">From sanctions to disbursements</span>
+                        </div>
+                        <svg class="po-card-signal" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <rect x="3" y="14" width="3" height="7" rx="1" fill="currentColor"></rect>
+                            <rect x="9" y="10" width="3" height="11" rx="1" fill="currentColor"></rect>
+                            <rect x="15" y="6" width="3" height="15" rx="1" fill="currentColor"></rect>
+                            <rect x="21" y="2" width="3" height="19" rx="1" fill="currentColor"></rect>
+                        </svg>
+                    </div>
+                    <div class="po-card-divider"></div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">💰</span>
+                            <span class="po-metric-label">Conversion Rate</span>
+                        </div>
+                        <span class="po-metric-value">{sanctionDisbursementRate}</span>
+                    </div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">🚀</span>
+                            <span class="po-metric-label">Disbursements</span>
+                        </div>
+                        <span class="po-metric-value">{sanctionDisbursements}</span>
+                    </div>
+                </div>
+
+                <!-- Card 4: Disbursement (Current Month) -->
+                <div class="po-card" tabindex="0" role="button" data-key="disbursementCurrentMonth" onclick={handleCardClick} onkeydown={handleCardKeyDown}>
+                    <div class="po-card-head">
+                        <div class="po-card-icon-wrap">
+                            <svg class="po-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <path d="M12 3c-1.5 1.6-3 2.4-3 2.4S7 8 7 12.5C7 17 9.2 20 12 20s5-3 5-7.5C17 8 15 5.4 15 5.4S13.5 4.6 12 3z" fill="currentColor"></path>
+                                <text x="12" y="14" font-size="6" fill="#0a1120" text-anchor="middle">$</text>
+                            </svg>
+                        </div>
+                        <div class="po-card-heading">
+                            <span class="po-card-title">Disbursement (Current Month)</span>
+                            <span class="po-card-subtitle">Total amount disbursed this month</span>
+                        </div>
+                        <svg class="po-card-signal" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <rect x="3" y="14" width="3" height="7" rx="1" fill="currentColor"></rect>
+                            <rect x="9" y="10" width="3" height="11" rx="1" fill="currentColor"></rect>
+                            <rect x="15" y="6" width="3" height="15" rx="1" fill="currentColor"></rect>
+                            <rect x="21" y="2" width="3" height="19" rx="1" fill="currentColor"></rect>
+                        </svg>
+                    </div>
+                    <div class="po-card-divider"></div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">💼</span>
+                            <span class="po-metric-label">Amount Disbursed</span>
+                        </div>
+                        <span class="po-metric-value">{disbursementAmount}</span>
+                    </div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">📌</span>
+                            <span class="po-metric-label">Avg. Ticket Size</span>
+                        </div>
+                        <span class="po-metric-value">{disbursementAvgTicketSize}</span>
+                    </div>
+                </div>
+
+                <!-- Card 5: Pending Credit Approvals -->
+                <div class="po-card" tabindex="0" role="button" data-key="pendingCreditApprovals" onclick={handleCardClick} onkeydown={handleCardKeyDown}>
+                    <div class="po-card-head">
+                        <div class="po-card-icon-wrap">
+                            <svg class="po-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <circle cx="12" cy="7" r="3" fill="currentColor"></circle>
+                                <path d="M6 20c0-3.3 2.7-6 6-6s6 2.7 6 6z" fill="currentColor"></path>
+                            </svg>
+                        </div>
+                        <div class="po-card-heading">
+                            <span class="po-card-title">Pending Credit Approvals</span>
+                            <span class="po-card-subtitle">Applications awaiting credit decision</span>
+                        </div>
+                        <svg class="po-card-signal" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <rect x="3" y="14" width="3" height="7" rx="1" fill="currentColor"></rect>
+                            <rect x="9" y="10" width="3" height="11" rx="1" fill="currentColor"></rect>
+                            <rect x="15" y="6" width="3" height="15" rx="1" fill="currentColor"></rect>
+                            <rect x="21" y="2" width="3" height="19" rx="1" fill="currentColor"></rect>
+                        </svg>
+                    </div>
+                    <div class="po-card-divider"></div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">🔍</span>
+                            <span class="po-metric-label">Under Review</span>
+                        </div>
+                        <span class="po-metric-value">{creditApprovalsUnderReview}</span>
+                    </div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">⏱</span>
+                            <span class="po-metric-label">Avg. TAT</span>
+                        </div>
+                        <span class="po-metric-value">{creditApprovalsAvgTat}</span>
+                    </div>
+                </div>
+
+                <!-- Card 6: Cases Awaiting Documentation -->
+                <div class="po-card" tabindex="0" role="button" data-key="casesAwaitingDocumentation" onclick={handleCardClick} onkeydown={handleCardKeyDown}>
+                    <div class="po-card-head">
+                        <div class="po-card-icon-wrap">
+                            <svg class="po-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <path d="M12 3v11" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+                                <path d="M8 8l4-4 4 4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M4 15v4a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-4" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+                            </svg>
+                        </div>
+                        <div class="po-card-heading">
+                            <span class="po-card-title">Cases Awaiting Documentation</span>
+                            <span class="po-card-subtitle">Cases with missing documents</span>
+                        </div>
+                        <svg class="po-card-signal" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <rect x="3" y="14" width="3" height="7" rx="1" fill="currentColor"></rect>
+                            <rect x="9" y="10" width="3" height="11" rx="1" fill="currentColor"></rect>
+                            <rect x="15" y="6" width="3" height="15" rx="1" fill="currentColor"></rect>
+                            <rect x="21" y="2" width="3" height="19" rx="1" fill="currentColor"></rect>
+                        </svg>
+                    </div>
+                    <div class="po-card-divider"></div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">📁</span>
+                            <span class="po-metric-label">Missing Docs</span>
+                        </div>
+                        <span class="po-metric-value">{documentationMissingDocs}</span>
+                    </div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">⏳</span>
+                            <span class="po-metric-label">Avg. Delay</span>
+                        </div>
+                        <span class="po-metric-value">{documentationAvgDelay}</span>
+                    </div>
+                </div>
+
+                <!-- Card 7: Pending Property Valuations -->
+                <div class="po-card" tabindex="0" role="button" data-key="pendingPropertyValuations" onclick={handleCardClick} onkeydown={handleCardKeyDown}>
+                    <div class="po-card-head">
+                        <div class="po-card-icon-wrap">
+                            <svg class="po-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <path d="M3 11l9-7 9 7" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M5 10v9a1 1 0 0 0 1 1h5v-6h2v6h5a1 1 0 0 0 1-1v-9" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </div>
+                        <div class="po-card-heading">
+                            <span class="po-card-title">Pending Property Valuations</span>
+                            <span class="po-card-subtitle">Properties awaiting valuation</span>
+                        </div>
+                        <svg class="po-card-signal" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <rect x="3" y="14" width="3" height="7" rx="1" fill="currentColor"></rect>
+                            <rect x="9" y="10" width="3" height="11" rx="1" fill="currentColor"></rect>
+                            <rect x="15" y="6" width="3" height="15" rx="1" fill="currentColor"></rect>
+                            <rect x="21" y="2" width="3" height="19" rx="1" fill="currentColor"></rect>
+                        </svg>
+                    </div>
+                    <div class="po-card-divider"></div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">🏠</span>
+                            <span class="po-metric-label">Awaiting Valuation</span>
+                        </div>
+                        <span class="po-metric-value">29</span>
+                    </div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">📏</span>
+                            <span class="po-metric-label">Avg. TAT</span>
+                        </div>
+                        <span class="po-metric-value">1.9 Days</span>
+                    </div>
+                </div>
+
+                <!-- Card 8: Legal Checks Pending -->
+                <div class="po-card" tabindex="0" role="button" data-key="legalChecksPending" onclick={handleCardClick} onkeydown={handleCardKeyDown}>
+                    <div class="po-card-head">
+                        <div class="po-card-icon-wrap">
+                            <svg class="po-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <path d="M12 3v18M6 6h12" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round"></path>
+                                <path d="M4 6l3 5-3 0a3 3 0 0 0 6 0z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                                <path d="M17 6l3 5-3 0a3 3 0 0 0 6 0z" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round"></path>
+                            </svg>
+                        </div>
+                        <div class="po-card-heading">
+                            <span class="po-card-title">Legal Checks Pending</span>
+                            <span class="po-card-subtitle">Cases under legal review</span>
+                        </div>
+                        <svg class="po-card-signal" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <rect x="3" y="14" width="3" height="7" rx="1" fill="currentColor"></rect>
+                            <rect x="9" y="10" width="3" height="11" rx="1" fill="currentColor"></rect>
+                            <rect x="15" y="6" width="3" height="15" rx="1" fill="currentColor"></rect>
+                            <rect x="21" y="2" width="3" height="19" rx="1" fill="currentColor"></rect>
+                        </svg>
+                    </div>
+                    <div class="po-card-divider"></div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">⚖️</span>
+                            <span class="po-metric-label">Under Legal Review</span>
+                        </div>
+                        <span class="po-metric-value">38</span>
+                    </div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">⏳</span>
+                            <span class="po-metric-label">Avg. Delay</span>
+                        </div>
+                        <span class="po-metric-value">1.2 Days</span>
+                    </div>
+                </div>
+
+                <!-- Card 9: KYC / Consent Issues -->
+                <div class="po-card" tabindex="0" role="button" data-key="kycConsentIssues" onclick={handleCardClick} onkeydown={handleCardKeyDown}>
+                    <div class="po-card-head">
+                        <div class="po-card-icon-wrap">
+                            <svg class="po-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <rect x="3" y="6" width="18" height="12" rx="2" stroke="currentColor" stroke-width="2" fill="none"></rect>
+                                <circle cx="8" cy="12" r="2" fill="currentColor"></circle>
+                                <path d="M13 10h6M13 14h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                            </svg>
+                        </div>
+                        <div class="po-card-heading">
+                            <span class="po-card-title">KYC / Consent Issues</span>
+                            <span class="po-card-subtitle">Consent and KYC status issues</span>
+                        </div>
+                        <svg class="po-card-signal" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <rect x="3" y="14" width="3" height="7" rx="1" fill="currentColor"></rect>
+                            <rect x="9" y="10" width="3" height="11" rx="1" fill="currentColor"></rect>
+                            <rect x="15" y="6" width="3" height="15" rx="1" fill="currentColor"></rect>
+                            <rect x="21" y="2" width="3" height="19" rx="1" fill="currentColor"></rect>
+                        </svg>
+                    </div>
+                    <div class="po-card-divider"></div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">🪪</span>
+                            <span class="po-metric-label">Consent Pending</span>
+                        </div>
+                        <span class="po-metric-value">{kycConsentPending}</span>
+                    </div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">💳</span>
+                            <span class="po-metric-label">KYC Rejection</span>
+                        </div>
+                        <span class="po-metric-value">{kycRejection}</span>
+                    </div>
+                </div>
+
+                <!-- Card 10: Processing TAT Efficiency -->
+                <div class="po-card" tabindex="0" role="button" data-key="processingTatEfficiency" onclick={handleCardClick} onkeydown={handleCardKeyDown}>
+                    <div class="po-card-head">
+                        <div class="po-card-icon-wrap">
+                            <svg class="po-card-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <circle cx="12" cy="13" r="8" stroke="currentColor" stroke-width="2" fill="none"></circle>
+                                <path d="M12 13V8M9 3h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+                            </svg>
+                        </div>
+                        <div class="po-card-heading">
+                            <span class="po-card-title">Processing TAT Efficiency</span>
+                            <span class="po-card-subtitle">Turnaround time performance</span>
+                        </div>
+                        <svg class="po-card-signal" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                            <rect x="3" y="14" width="3" height="7" rx="1" fill="currentColor"></rect>
+                            <rect x="9" y="10" width="3" height="11" rx="1" fill="currentColor"></rect>
+                            <rect x="15" y="6" width="3" height="15" rx="1" fill="currentColor"></rect>
+                            <rect x="21" y="2" width="3" height="19" rx="1" fill="currentColor"></rect>
+                        </svg>
+                    </div>
+                    <div class="po-card-divider"></div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">⏱</span>
+                            <span class="po-metric-label">Avg. TAT</span>
+                        </div>
+                        <span class="po-metric-value">{tatEfficiencyAvgTat}</span>
+                    </div>
+                    <div class="po-metric-row">
+                        <div class="po-metric-left">
+                            <span class="po-metric-icon-box">📉</span>
+                            <span class="po-metric-label">SLA Breach %</span>
+                        </div>
+                        <span class="po-metric-value">{tatEfficiencySlaBreach}</span>
+                    </div>
+                    
+                </div>
+                
+            </div>
+            <c-dashboard-overview-charts></c-dashboard-overview-charts>
+        </div>
+
+            
+
+            
+                
+            
+
+            <div class={myDayPanelClass}>
+                <c-my-day></c-my-day>
+            </div>
+
+            <div class={bulkLeadsPanelClass}>
+                <c-bulk-upload-home></c-bulk-upload-home>
+            </div>
+
+            
+    </div>
+</template>
+<!-- __________________________GenAI: Generated code ends here______________________________ -->

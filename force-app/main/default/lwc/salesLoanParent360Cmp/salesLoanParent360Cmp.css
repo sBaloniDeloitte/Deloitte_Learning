@@ -1,0 +1,31 @@
+@import 'c/cssLibrary';
+
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+
+:host {
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+}
+
+.slds-form-element__label {
+    color: #ffffff !important;
+}
+
+.footer-section {
+    position: sticky; 
+    bottom: 0;
+    min-height: 45px !important;
+    z-index: -1;
+}
+
+.modal-class{
+    width:900px;
+    max-width: 90vw;
+}
+
+/* Secondary/neutral action buttons */
+.cancel-button {
+    background-color: #2a2f45 !important;
+    color: #ffffff !important;
+    border-color: #2a2f45 !important;
+}

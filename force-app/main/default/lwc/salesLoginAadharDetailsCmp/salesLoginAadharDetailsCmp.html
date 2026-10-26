@@ -1,0 +1,643 @@
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={isloading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </template>
+    <!-- <template if:false={isHLUser}>
+         <template if:true={showDeleteAadhaarButton}>
+                <button class = "button-deeppink slds-button slds-m-around_small"  onclick={handleDeleteAadhaarDetailsClick}>Delete Aadhaar Details</button>
+    </template>
+    </template> -->
+    <template if:true={isAadharDetailsUploads}>
+        <lightning-card title="Aadhar Details">
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered table-class">
+                        <thead>
+                            <tr>
+                                <th><div class="slds-truncate" title="Aadhaar Name">Name</div></th>
+                                <th><div class="slds-truncate" title="Aadhaar Number">Aadhaar Number</div></th>
+                                <th><div class="slds-truncate" title="Date of Birth">Date of Birth</div></th>
+                                <th><div class="slds-truncate" title="Aadhaar Address">Current Address</div></th>
+                                    
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><div class="slds-truncate" title="Aadhaar Name">Abhilash Saini</div></td>
+                                <td><div class="slds-truncate" title="Aadhaar Number">XXXXXXXX3592</div></td>
+                                <td><div class="slds-truncate" title="Date of Birth">1990-06-24</div></td>
+                                <td><div class="white-space: normal; word-wrap: break-word;" title="Aadhar Address">Flat 402, Sai Residence, MG Road, Sector 15, Vashi</div></td>
+                               
+                                      
+                            </tr>
+                        </tbody>
+                    </table>
+            </lightning-card>
+        </template>
+    <template if:true={showAadharDetailsSection}>
+    <template if:true={disableUploadOption}>
+        
+        <template if:true={isDesktop}>
+        <div data-id="middleSection" class="slds-p-around_medium">
+            <lightning-card title="Aadhar Details">
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered table-class">
+                        <thead>
+                            <tr>
+                                <th><div class="slds-truncate" title="Aadhaar Name"> Name</div></th>
+                                <th><div class="slds-truncate" title="Aadhaar Number">Aadhaar Number</div></th>
+                                <th><div class="slds-truncate" title="Date of Birth">Date of Birth</div></th>
+                                <th><div class="slds-truncate" title="Aadhaar Address">Current Address</div></th>
+                                    <th><div class="slds-truncate" title="Aadhaar Address">Actions</div></th>
+                                
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td><div class="slds-truncate" title={aadharName}>{aadharName}</div></td>
+                                <td><div class="slds-truncate" title={stampedAadharNumber}>{stampedAadharNumber}</div></td>
+                                <td><div class="slds-truncate" title={aadharDob}>{aadharDob}</div></td>
+                                <td><div class="white-space: normal; word-wrap: break-word;" title={aadharAddress}>{aadharFullAddress}</div></td>
+                               
+                                      <td>
+                                        <div class="slds-truncate" title="Actions">
+                                            <lightning-button-icon 
+                                                icon-name="utility:edit"
+                                                alternative-text="Edit"
+                                                title="Edit"
+                                                variant="border-filled"
+                                                onclick={handleEdit}>
+                                            </lightning-button-icon>
+
+                                            <lightning-button-icon 
+                                                class="slds-m-left_small"
+                                                icon-name="utility:delete"
+                                                alternative-text="Delete"
+                                                title="Delete"
+                                                variant="border-filled"
+                                                onclick={handleDelete}>
+                                            </lightning-button-icon>
+                                        </div>
+                                    </td>
+                               
+                            </tr>
+                        </tbody>
+                    </table>
+            </lightning-card>
+        </div>
+        </template>
+                <!-- ✅ Mobile + Tablet View -->
+        <template if:true={isMobileOrTablet}>
+            <div class="slds-p-around_medium">
+                <lightning-card title="Aadhar Details">
+                    <div class="custom-mobile-table">
+
+                        <div class="custom-row">
+                            <div class="custom-cell label">Aadhaar Name</div>
+                            <div class="custom-cell value">{aadharName}</div>
+                        </div>
+
+                        <div class="custom-row">
+                            <div class="custom-cell label">Aadhaar Number</div>
+                            <div class="custom-cell value">{stampedAadharNumber}</div>
+                        </div>
+
+                            <div class="custom-row">
+                                <div class="custom-cell label">Date Of Birth</div>
+                                <div class="custom-cell value">{aadharDob}</div>
+                            </div>
+                            <div class="custom-row">
+                                <div class="custom-cell label">Aadhaar Address</div>
+                                <div class="custom-cell value">{aadharFullAddress}</div>
+                            </div>
+                     
+                    </div>
+                </lightning-card>
+            </div>
+            <!--<div class="slds-p-around_medium">
+                <lightning-card title="Aadhar Details">
+                    <div class="custom-table-box">
+                        <p><strong>Aadhaar Name:</strong> {aadharName}</p>
+                        <p><strong>Aadhaar Number:</strong> {stampedAadharNumber}</p>
+                        <p><strong>Date of Birth:</strong> {aadharDob}</p>
+                        <p><strong>Aadhaar Address:</strong> {aadharFullAddress}</p>
+                    </div>
+                </lightning-card>
+            </div>-->
+        </template>
+        </template>
+        <template if:false={disableUploadOption}>
+            <lightning-card>
+                <div class="slds-p-around_medium">
+                    <p class="radio-question">Would you like to upload Aadhaar or enter details manually?</p>
+
+                    <template if:true={isDesktop}>
+                        <div class="radio-inline-wrapper">
+                            <template for:each={aadharUploadOrFillManuallyOptions} for:item="option">
+                                <lightning-input
+                                    key={option.value}
+                                    type="radio"
+                                    name="aadharUploadOrFill"
+                                    label={option.label}
+                                    value={option.value}
+                                    data-value={option.value}
+                                    onclick={handleAadharUploadOrFillChange}>
+                                </lightning-input>
+                            </template>
+                        </div>
+                    </template>
+
+                    <template if:true={isTablet}>
+                        <div class="radio-wrapper-mobile">
+                            <template for:each={aadharUploadOrFillManuallyOptions} for:item="option">
+                                <lightning-input
+                                    key={option.value}
+                                    type="radio"
+                                    name="aadharUploadOrFill"
+                                    label={option.label}
+                                    value={option.value}
+                                    data-value={option.value}
+                                    onclick={handleAadharUploadOrFillChange}>
+                                </lightning-input>
+                            </template>
+                        </div>
+                    </template>
+
+                    <template if:true={isMobile}>
+                        <div class="radio-wrapper-mobile">
+                            <template for:each={aadharUploadOrFillManuallyOptions} for:item="option">
+                                <lightning-input
+                                    key={option.value}
+                                    type="radio"
+                                    name="aadharUploadOrFill"
+                                    label={option.label}
+                                    value={option.value}
+                                    data-value={option.value}
+                                    onclick={handleAadharUploadOrFillChange}>
+                                </lightning-input>
+                            </template>
+                        </div>
+                    </template>
+                </div>
+            </lightning-card>
+        </template>
+
+        <template if:true={showAadharUploadOption}>
+            <h2 class="slds-text-heading_small slds-p-around_medium"><strong>Enter Aadhaar Details</strong></h2>
+            <lightning-layout multiple-rows class="slds-p-around_medium">
+                <template if:true={isMobile}>
+                    <lightning-layout-item size="12" padding="around-small">
+                         <!--<lightning-input type="file" accept="..pdf,.jpg,.jpeg,.png" label="Aadhaar Front" data-type="Aadhaar Front" onchange={handleUploadAadharFinished} disabled={disableFrontUpload} icon-name="standard:upload"></lightning-input>-->
+                        <lightning-file-upload
+                            label="Aadhaar Front"
+                            name="AadhaarFrontUpload"
+                            accept=".pdf,.jpg,.jpeg,.png"
+                            data-type="Aadhaar Front"
+                            applicant-id={applicantId}
+                            onuploadfinished={handleUploadAadharFinished}
+                            disabled={disableFrontUpload}
+                            icon-name="standard:upload"
+                            multiple="false">
+                        </lightning-file-upload>
+                        <template if:true={showcheckBoxMaskingManualFront}>
+                         <div style="padding-top: 5%;">
+                            The system is currently unable to mask the uploaded Aadhar card. You can try again later or upload a
+                            masked Aadhar Front by clicking the checkbox below.
+                            <lightning-input class="comboBoxSelect" type="checkbox" data-side="front"
+                                label="I acknowledge that I am uploading a masked Aadhaar card Front." 
+                                checked={checkedFront} onchange={handleAckowledgeChangeChange}></lightning-input>
+                        </div>
+                    </template>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" padding="around-small">
+                        <!--<lightning-input type="file" accept=".pdf,.jpg,.jpeg,.png" label="Aadhaar Back" data-type="Aadhaar Back" onchange={handleUploadAadharFinished} disabled={disableBackUpload} icon-name="standard:upload"></lightning-input>-->
+                        <lightning-file-upload
+                            label="Aadhaar Back"
+                            accept=".pdf,.jpg,.jpeg,.png"
+                            record-id={recordId}              
+                            onuploadfinished={handleUploadAadharFinished}
+                            data-type="Aadhaar Back"
+                            applicant-id={applicantId}
+                            multiple="false">
+                        </lightning-file-upload>
+                        <template if:true={showcheckBoxMaskingManualBack}>
+                         <div style="padding-top: 5%;">
+                            The system is currently unable to mask the uploaded Aadhar card. You can try again later or upload a
+                            masked Aadhar Back by clicking the checkbox below.
+                            <lightning-input class="comboBoxSelect" type="checkbox" data-side="back"
+                                label="I acknowledge that I am uploading a masked Aadhaar card Back." 
+                                checked={checkedBack} onchange={handleAckowledgeChangeChange}></lightning-input>
+                        </div>
+                    </template>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" padding="around-small">
+                        <lightning-input type="text" label="Aadhar" value={stampedAadharNumber} max-length="12" disabled></lightning-input>
+                    </lightning-layout-item>
+                    
+                    <template if:true={ShowConfirmAadharUpload}>
+                        <lightning-layout-item size="3" padding="around-small">
+                            <button class="button-green slds-button slds-button_success slds-button_stretch" onclick={handleConfirmAadharUpload} >Confirm Aadhar Upload</button>
+                        </lightning-layout-item>
+                    </template>
+                   
+                </template>
+
+                <template if:true={isTablet}>
+                    <lightning-layout-item size="6" padding="around-small">
+                        <!--<lightning-input type="file" accept=".pdf,.jpg,.jpeg,.png" label="Aadhaar Front" data-type="Aadhaar Front" onchange={handleUploadAadharFinished} disabled={disableFrontUpload} icon-name="standard:upload"></lightning-input>-->
+                        <lightning-file-upload
+                            label="Aadhaar Front"
+                            name="AadhaarFrontUpload"
+                            accept=".pdf,.jpg,.jpeg,.png"
+                            applicant-id={applicantId}
+                            data-type="Aadhaar Front"
+                            onuploadfinished={handleUploadAadharFinished}
+                            disabled={disableFrontUpload}
+                            icon-name="standard:upload"
+                            multiple="false">
+                        </lightning-file-upload>
+                        <template if:true={showcheckBoxMaskingManualFront}>
+                         <div style="padding-top: 5%;">
+                            The system is currently unable to mask the uploaded Aadhar card. You can try again later or upload a
+                            masked Aadhar Front by clicking the checkbox below.
+                            <lightning-input class="comboBoxSelect" type="checkbox" data-side="front"
+                                label="I acknowledge that I am uploading a masked Aadhaar card Front." 
+                                checked={checkedFront} onchange={handleAckowledgeChangeChange}></lightning-input>
+                        </div>
+                    </template>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="6" padding="around-small">
+                        <!--<lightning-input type="file" accept=".pdf,.jpg,.jpeg,.png" label="Aadhaar Back" data-type="Aadhaar Back" onchange={handleUploadAadharFinished} disabled={disableBackUpload} icon-name="standard:upload"></lightning-input>-->
+                        <lightning-file-upload
+                            label="Aadhaar Back"
+                            accept=".pdf,.jpg,.jpeg,.png"
+                           applicant-id={applicantId}              
+                            onuploadfinished={handleUploadAadharFinished}
+                            data-type="Aadhaar Back">
+                        </lightning-file-upload>      
+                        <template if:true={showcheckBoxMaskingManualBack}>
+                         <div style="padding-top: 5%;">
+                            The system is currently unable to mask the uploaded Aadhar card. You can try again later or upload a
+                            masked Aadhar Back by clicking the checkbox below.
+                            <lightning-input class="comboBoxSelect" type="checkbox" data-side="back"
+                                label="I acknowledge that I am uploading a masked Aadhaar card Back." 
+                                checked={checkedBack} onchange={handleAckowledgeChangeChange}></lightning-input>
+                        </div>
+                    </template>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="12" padding="around-small">
+                        <lightning-input type="text" label="Aadhar" value={stampedAadharNumber} max-length="12" disabled></lightning-input>
+                    </lightning-layout-item>
+                    <template if:true={ShowConfirmAadharUpload}>
+                    <lightning-layout-item size="6" padding="around-small">
+                        <button class="button-green slds-button slds-button_success slds-button_stretch" onclick={handleConfirmAadharUpload} >Confirm Aadhar Upload</button>
+                    </lightning-layout-item>
+                </template>
+                </template>
+
+                <template if:true={isDesktop}>
+                    <lightning-layout-item size="3" padding="around-small">
+                        <!--<lightning-input type="file" accept=".pdf,.jpg,.jpeg,.png" label="Aadhaar Front" data-type="Aadhaar Front" onchange={handleUploadAadharFinished} disabled={disableFrontUpload} icon-name="standard:upload"></lightning-input>-->
+                        <lightning-file-upload
+                            label="Upload Aadhaar"
+                            name="AadhaarFrontUpload"
+                            accept=".pdf,.jpg,.jpeg,.png"
+                            data-type="Aadhaar Front"
+                            onuploadfinished={handleUploadAadharFinished}
+                            disabled={disableFrontUpload}
+                            icon-name="standard:upload"
+                            applicant-id={applicantId}
+                            multiple="false">
+                        </lightning-file-upload>
+                        <template if:true={showcheckBoxMaskingManualFront}>
+                            <div style="padding-top: 5%;">
+                                The system is currently unable to mask the uploaded Aadhar card. You can try again later or upload a
+                                masked Aadhar Front by clicking the checkbox below.
+                                <lightning-input class="comboBoxSelect" type="checkbox" data-side="front"
+                                    label="I acknowledge that I am uploading a masked Aadhaar card Front." 
+                                    checked={checkedFront} onchange={handleAckowledgeChangeChange}></lightning-input>
+                            </div>
+                        </template>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="3" padding="around-small">
+                        <!--<lightning-input type="file" accept=".pdf,.jpg,.jpeg,.png" label="Aadhaar Back" data-type="Aadhaar Back" onchange={handleUploadAadharFinished} disabled={disableBackUpload} icon-name="standard:upload"></lightning-input>-->
+                       <!-- <lightning-file-upload
+                            label="Aadhaar Back"
+                            accept=".pdf,.jpg,.jpeg,.png"
+                           applicant-id={applicantId}             
+                            onuploadfinished={handleUploadAadharFinished}
+                            data-type="Aadhaar Back"
+                            multiple="false">
+                        </lightning-file-upload>-->
+                        <template if:true={showcheckBoxMaskingManualBack}>
+                            <div style="padding-top: 5%;">
+                            The system is currently unable to mask the uploaded Aadhar card. You can try again later or upload a
+                            masked Aadhar Back by clicking the checkbox below.
+                            <lightning-input class="comboBoxSelect" type="checkbox" data-side="back"
+                                label="I acknowledge that I am uploading a masked Aadhaar card Back." 
+                                checked={checkedBack} onchange={handleAckowledgeChangeChange}></lightning-input>
+                            </div>
+                        </template>
+                    </lightning-layout-item>
+                    <!--<lightning-layout-item size="3" padding="around-small">
+                        <lightning-input type="text" label="Aadhar" value={stampedAadharNumber} max-length="12" disabled></lightning-input>
+                    </lightning-layout-item>-->
+                    <template if:true={ShowConfirmAadharUpload}>
+                        <lightning-layout-item size="3" padding="around-small">
+                            <button class="button-green slds-button slds-button_success slds-button_stretch" onclick={handleConfirmAadharUpload} >Confirm Aadhar Upload</button>
+                        </lightning-layout-item>
+
+                    </template>
+                </template>
+                
+            </lightning-layout>
+        </template>
+
+        <template if:true={showManualAadharFillOption}>
+            <lightning-layout multiple-rows vertical-align="center">
+                <template if:false ={hideManualDetailsAddButton}>
+                    <template if:true={isMobile}>
+                        <lightning-layout-item size="12" class="slds-p-around_small">
+                            <button class="button-green slds-button slds-button_success slds-button_stretch" onclick={openAadharManualCmp} disabled={disableUploadOption}>Add Aadhar Details Manually</button>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="12" class="slds-p-around_small">
+                            <lightning-input type="text" label="Aadhar" value={stampedAadharNumber} max-length="12" disabled></lightning-input>
+                        </lightning-layout-item>
+                    </template>
+                </template>
+               
+            <template if:true={isDesktop}>
+                <template if:false ={hideManualDetailsAddButton}>
+                      <lightning-layout-item size="3" class="slds-p-around_small">
+                    <button class="button-green slds-button slds-button_success slds-button_stretch" onclick={openAadharManualCmp} disabled={disableUploadOption}>Add Aadhar Details Manually</button>
+                </lightning-layout-item>
+                <lightning-layout-item size="3" class="slds-p-around_small">
+                    <lightning-input type="text" label="Aadhar" value={stampedAadharNumber} max-length="12" disabled></lightning-input>
+                </lightning-layout-item>
+                </template>
+              
+            </template>
+            <template if:true={isTablet}>
+                 <template if:false ={hideManualDetailsAddButton}>
+                    <lightning-layout-item size="6" class="slds-p-around_small">
+                    <button class="button-green slds-button slds-button_success slds-button_stretch" onclick={openAadharManualCmp} disabled={disableUploadOption}>Add Aadhar Details Manually</button>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="6" class="slds-p-around_small">
+                        <lightning-input type="text" label="Aadhar" value={stampedAadharNumber} max-length="12"  disabled></lightning-input>
+                    </lightning-layout-item>
+                 </template>
+                
+            </template>
+            </lightning-layout>
+            
+            <template if:true={manualAadharcmp}>
+                <section role="dialog" class="slds-modal slds-fade-in-open custom-mobile-modal manual-aadhar-modal" style="z-index: 10004;">
+                    <div class="slds-modal__container manual-aadhar-modal-container">
+                        <template if:true={isManualloading}>
+                            <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+                        </template>
+                        <header class="slds-modal__header modal-header manual-aadhar-modal-header" style="background-color: skyblue;">
+                            <h2 class="pan-heading">Add Aadhar Details Manually</h2>
+                        </header>
+
+                        <div class="slds-modal__content slds-p-around_medium manual-aadhar-modal-content">
+                            <table class="slds-table slds-table_bordered">
+                                <thead style="background-color: skyblue;">
+                                    <tr>
+                                        <th>Field</th>
+                                        <th>Value</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>First Name (as per Aadhar)<span style="color: red;">*</span></td>
+                                        <td><lightning-input type="text" value={aadharDetails.firstName} onchange={handleInputAadharChange} data-field="firstName" max-length="150" onkeydown={blockSpaces}></lightning-input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Middle Name (as per Aadhar)</td>
+                                        <td><lightning-input type="text" value={aadharDetails.middleName} onchange={handleInputAadharChange} data-field="middleName" max-length="150" onkeydown={blockSpaces}></lightning-input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Last Name (as per Aadhar)<span style="color: red;">*</span></td>
+                                        <td><lightning-input type="text" value={aadharDetails.lastName} onchange={handleInputAadharChange} data-field="lastName" max-length="150" onkeydown={blockSpaces}></lightning-input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Date of Birth<span style="color: red;">*</span></td>
+                                        <td>
+                                            <lightning-input type="date" value={aadharDetails.dob} onchange={handleInputAadharChange} onblur ={handleInputBlurDate} onfocus={handleInputBlurDate} message-when-bad-input={dobError} data-field="dob"></lightning-input>
+                                            <template if:true={dobError}>
+                                                <div class="slds-text-color_error slds-m-top_xx-small">{dobError}</div>
+                                            </template>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Aadhar Card Number<span style="color: red;">*</span></td>
+                                        <td>
+                                            <template if:true={isHLUser}>
+                                                <lightning-input value={aadharDetails.aadharNumber} onchange={handleInputAadharChange} data-field="aadharNumber" max-length="12" onkeydown={blockSpaces}></lightning-input>
+                                            </template>
+                                            <template if:false={isHLUser}>
+                                                <lightning-input value={aadharDetails.aadharNumber} message-when-pattern-mismatch="Enter Correct Aadhaar Number" pattern="[2-9][0-9]{11}" onchange={handleInputAadharChange} data-field="aadharNumber" max-length="12" onkeydown={blockSpaces}></lightning-input>
+                                            </template>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>Mobile<span style="color: red;">*</span></td>
+                                        <td><lightning-input type="Phone" value={aadharDetails.mobileNumber} onchange={handleInputAadharChange} pattern="^[6-9]\d{9}$" message-when-pattern-mismatch="Enter a valid 10-digit mobile number starting with 6-9" data-field="mobileNumber" max-length="10" onkeydown={blockSpaces}></lightning-input></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Address (as per Aadhar)<span style="color: red;">*</span></td>
+                                        <td>
+                                            
+                                            <lightning-layout multiple-rows class="manual-aadhar-address-layout">
+                                                 <lightning-layout-item size="12" padding="horizontal-small">
+                                                      <lightning-combobox
+                                                        name="Address Type"
+                                                        label="Address Type"
+                                                        variant="label-inline"
+                                                        value={aadharDetails.addType}
+                                                        options={addressTypeOptions}
+                                                        onchange={handleAddressTypeChange}
+                                                        required>
+                                                    </lightning-combobox>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="12" padding="horizontal-small">
+                                                    <lightning-combobox label="Address Ownership" variant="label-inline" data-field="addressOwnership"
+                                                        value={aadharDetails.aadharAddress.addressOwnership} options={addressOwnershipOptions} required
+                                                        onchange={handleInputAadharChange}>
+                                                    </lightning-combobox>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="12" padding="horizontal-small">
+                                                    <lightning-input name="AddLn1" label="Address Line 1" variant="label-inline" max-length="200" data-field="addressLine1" value={aadharDetails.aadharAddress.addressLine1} onchange={handleInputAadharChange} required></lightning-input>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="12" padding="horizontal-small">
+                                                    <lightning-input name="AddLn2" label="Address Line 2" variant="label-inline" max-length="200" data-field="addressLine2" value={aadharDetails.aadharAddress.addressLine2} onchange={handleInputAadharChange} required></lightning-input>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="12" padding="horizontal-small">
+                                                    <lightning-input name="AddLn3" label="Address Line 3" variant="label-inline" max-length="200" data-field="addressLine3" value={aadharDetails.aadharAddress.addressLine3} onchange={handleInputAadharChange}></lightning-input>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="12" padding="horizontal-small">
+                                                    <lightning-input type="text" label="Pincode" variant="label-stacked" value={aadharDetails.aadharAddress.postalCode} data-field="postalCode" onchange={handleInputAadharChange} maxlength="6" pattern="[0-9]{6}" message-when-pattern-mismatch="Pincode must be 6 digits" required></lightning-input>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="12" padding="horizontal-small">
+                                                    <lightning-input type="text" label="City" variant="label-stacked" value={aadharDetails.aadharAddress.city} disabled></lightning-input>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="12" padding="horizontal-small">
+                                                    <lightning-input type="text" label="State" variant="label-stacked" value={aadharDetails.aadharAddress.province} disabled></lightning-input>
+                                                </lightning-layout-item>
+                                                <lightning-layout-item size="12" padding="horizontal-small">
+                                                    <lightning-input type="text" label="Country" variant="label-stacked" value={aadharDetails.aadharAddress.country} disabled></lightning-input>
+                                                </lightning-layout-item>
+                                            </lightning-layout>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <footer class="footer-section manual-aadhar-footer">
+                            <button class="slds-button manual-aadhar-cancel-button" onclick={closeAadharModalManual}>Close</button>
+                            <button class="slds-button manual-aadhar-confirm-button" onclick={handleAddAadharDetailsManually}>Confirm</button>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open" style="z-index: 10003;"></div>
+            </template>
+        </template>
+
+  <template if:true={showAadharModal}>
+    <section role="dialog" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <!-- Spinner -->
+            <template if:true={isConformationLoading}>
+                <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+            </template>
+
+            <!-- Modal Header -->
+            <header class="slds-modal__header" style="background-color: skyblue;">
+                <h2 class="slds-text-heading_medium">Confirmation Screen</h2>
+            </header>
+
+            <!-- Modal Body -->
+            <div class="slds-modal__content slds-p-around_medium">
+                <!-- Aadhaar Image or PDF Preview -->
+                <div class="slds-grid slds-wrap slds-m-bottom_medium slds-align_absolute-center">
+                    <template if:true={isImage}>
+                        <div class="preview-box">
+                            <img src={uploadedAadharUrl} alt="Uploaded Aadhaar" class="uploaded-image" style={zoomStyle} />
+                        </div>
+                        <div class="image-controls slds-m-top_small">
+                            <button onclick={zoomIn} class="zoom-button">+</button>
+                            <button onclick={zoomOut} class="zoom-button">-</button>
+                        </div>
+                    </template>
+                    <template if:true={isPDF}>
+                        <a href={uploadedAadharUrl} target="_blank" rel="noopener noreferrer">
+                            Click here to view the PDF
+                        </a>
+                    </template>
+                </div>
+
+                <!-- Aadhaar Table -->
+                <div class="slds-scrollable_x slds-p-horizontal_small" style="max-width: 960px; margin: auto;">
+                    <table class="slds-table slds-table_bordered slds-table_cell-buffer">
+                        <thead style="background-color: skyblue;">
+                            <tr>
+                                <th>Field</th>
+                                <th>Value</th>
+                                <th>Confidence</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>First Name (as per Aadhaar)<span class="slds-text-color_error">*</span></td>
+                                <td>
+                                    <lightning-input type="text" value={aadharDetails.firstName} onchange={handleInputAadharChange}  data-field="firstName" max-length="150" onkeydown={blockSpaces}></lightning-input>
+                                </td>
+                                <td><lightning-input type="text" value={aadharDetails.firstNameConfidence} disabled></lightning-input></td>
+                            </tr>
+                            <tr>
+                                <td>Middle Name (as per Aadhaar)<span class="slds-text-color_error">*</span></td>
+                                <td>
+                                    <lightning-input type="text" value={aadharDetails.middleName} onchange={handleInputAadharChange} data-field="middleName" max-length="150" onkeydown={blockSpaces}></lightning-input>
+                                </td>
+                                <td><lightning-input type="text" value={aadharDetails.middleNameConfidence} disabled></lightning-input></td>
+                            </tr>
+                            <tr>
+                                <td>Last Name (as per Aadhaar)<span class="slds-text-color_error">*</span></td>
+                                <td>
+                                        <lightning-input type="text" value={aadharDetails.lastName} onchange={handleInputAadharChange} data-field="lastName" max-length="150" onkeydown={blockSpaces}></lightning-input>
+                                </td>
+                                <td><lightning-input type="text" value={aadharDetails.lastNameConfidence} disabled></lightning-input> </td>
+                                </tr>
+                            <template if:true={isAadharBackModalOpen}>
+                                <tr>
+                                    <td>Address<span class="slds-text-color_error">*</span></td>
+                                    <td style="width: 100%;">
+                                        <lightning-textarea type="text-area" value={aadharDetails.aadharFullAddress} onchange={handleInputAadharChange} data-field="aadharFullAddress"></lightning-textarea>
+                                    </td>
+                                    <td><lightning-input type="text" value={aadharDetails.addressConfidence} disabled></lightning-input> </td>
+                                </tr>
+                                <tr>
+                                    <td>Pincode<span class="slds-text-color_error">*</span></td>
+                                    <td>
+                                        <lightning-input type="number" value={aadharDetails.aadharAddress.postalCode} onchange={handleInputAadharChange} data-field="postalCode" max-length="6" pattern="[0-9]{6}" message-when-pattern-mismatch="Pincode must be 6 digits" required></lightning-input>
+                                    </td>
+                                    <td><lightning-input type="text" value={aadharDetails.pinCodeConfidence} disabled></lightning-input></td>
+                                </tr>
+                                <tr>
+                                    <td>Address Type<span class="slds-text-color_error">*</span></td>
+                                    <td>
+                                        <lightning-combobox data-field="addressType" value={aadharDetails.addType} options={addressTypeOptions} 
+                                            onchange={handleInputAadharChange}>
+                                        </lightning-combobox>
+                                    </td>
+                                    <td>
+                                       
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Address Ownership<span class="slds-text-color_error">*</span></td>
+                                    <td>
+                                        <lightning-combobox data-field="addressOwnership"
+                                            value={aadharDetails.aadharAddress.addressOwnership} options={addressOwnershipOptions} 
+                                            onchange={handleInputAadharChange}>
+                                        </lightning-combobox>
+                                    </td>
+                                    <td>
+                                    </td>
+                                </tr>
+                            </template>
+                            <template if:true={isAadharFrontModalOpen}>
+                                <tr>
+                                    <td>Date of Birth<span class="slds-text-color_error">*</span></td>
+                                    <td>
+                                        <lightning-input type="date" value={aadharDetails.dob} onchange={handleInputAadharChange} onblur ={handleInputBlurDate} onfocus={handleInputBlurDate} data-field="dob"></lightning-input>
+                                    </td>
+                                    <td><lightning-input type="text" value={aadharDetails.dobConfidence} disabled></lightning-input></td>
+                                </tr>
+                                <tr>
+                                    <td>Aadhaar Number<span class="slds-text-color_error">*</span></td>
+                                    <td>
+                                        <lightning-input type="text" value={aadharDetails.aadharNumber} onchange={handleInputAadharChange} data-field="aadharNumber" max-length="12" ></lightning-input>
+                                    </td>
+                                    <td><lightning-input type="text" value={aadharDetails.aadharNumberConfidence} disabled=""></lightning-input></td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <footer class="slds-modal__footer">
+                <div class="slds-grid slds-wrap slds-grid_align-center">
+                    <button class="slds-button slds-button_destructive slds-m-right_small" onclick={closeModal}>Close</button>
+                    <button class="slds-button slds-button_brand" onclick={handleConfirm}>Confirm</button>
+                </div>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>
+
+</template>

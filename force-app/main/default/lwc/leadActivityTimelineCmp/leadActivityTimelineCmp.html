@@ -1,0 +1,38 @@
+<!--
+    @description : Static "Activity Timeline" popup - recent customer
+                    interactions for a Home Loan lead (dark navy/purple
+                    theme aligned with leadCustomHeader / leadNotesCmp).
+    @author       : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <div class="lat-backdrop" onclick={handleClose}></div>
+
+    <div class="lat-modal" onclick={handleModalClick}>
+
+        <div class="lat-modal-header">
+            <div class="lat-modal-title-wrap">
+                <div class="lat-modal-title">Activity Timeline</div>
+                <div class="lat-modal-subtitle">Recent customer interactions</div>
+            </div>
+            <button class="lat-close-btn" type="button" onclick={handleClose} aria-label="Close">
+                <lightning-icon icon-name="utility:close" size="x-small" variant="inverse"></lightning-icon>
+            </button>
+        </div>
+
+        <div class="lat-modal-body">
+            <template for:each={activities} for:item="activity">
+                <div key={activity.id} class="lat-activity-card">
+                    <div class={activity.iconClass}>
+                        <lightning-icon icon-name={activity.icon} size="x-small" variant="inverse"></lightning-icon>
+                    </div>
+                    <div class="lat-activity-content">
+                        <div class="lat-activity-title">{activity.title}</div>
+                        <div class="lat-activity-desc">{activity.description}</div>
+                        <div class="lat-activity-date">{activity.date}</div>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+    </div>
+</template>

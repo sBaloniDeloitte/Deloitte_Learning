@@ -1,0 +1,219 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 05-17-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:true={isSpinnerLoading}>
+        <section role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open" style="z-index: 900003;">
+            <div class="slds-modal__container">
+                <div class="slds-spinner--brand slds-spinner slds-spinner--medium" role="alert">
+                    <span class="slds-assistive-text">Loading...</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+        </section> 
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+    <div if:true={showdoc}>
+        <template if:false={loginChecklist}>
+            <!-- <div if:true={fetchagain}> -->
+                <!-- lightning-layout style="margin-top: 10px; margin-bottom: 10px" horizontal-align="start">
+                    <div class="save-button slds-button slds-button_brand slds-float_left" style="border: none">
+                        <button class="save-button slds-button slds-button_brand" style="border: none;" onclick={callCkyc} disabled={isDisabled}>
+                            Fetch Documents
+                        </button>
+                    </div>
+                </lightning-layout -->
+                <lightning-layout style="margin-top: 10px; margin-bottom: 10px" horizontal-align="start">
+                    <div style="border: none">
+                        <!--
+                        <button class="save-button slds-button slds-button_brand" style="border: none;"
+                            onclick={callCkyc} disabled={isDisabled}>
+                            Fetch Documents
+                        </button>
+                        -->
+                        <button class="save-button add-documents-button slds-button slds-button_brand" style="border: none;" onclick={addDoc}
+                            disabled={isDisabled} if:true={appId}>
+                            Add Documents
+                        </button>
+                <!--lightning-layout style="margin-bottom: 10px" horizontal-align="start">
+                    <div style="color: black; margin-top: 5px;">
+                        <span style="color: red;">*</span>The system was unable to fetch the documents from the C-KYC portal. Please retry fetching the documents by clicking on the 'Fetch documents' button above.
+                    </div>
+                </lightning-layout -->
+                    </div>
+                </lightning-layout>  
+            <template if:true={modalVisibility}>
+                <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Meaningful description of the modal content"
+                    class="slds-modal slds-fade-in-open">
+                    <div class="slds-modal__container select-doc-container" style="min-width: 60%;">
+                        <template if:true={isSpinnerLoading}>
+                            <lightning-spinner variant="brand" size="large"> </lightning-spinner>
+                        </template>
+                        <header class="slds-modal__header select-doc-header" style="background-color: #5bb6e3;font-weight:500;">
+                            <div class="slds-text-align_center">
+                                <h2 slot="title"
+                                    style="font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px"
+                                    class="slds-text-heading_medium slds-hyphenate">Select Documents</h2>
+                            </div>
+                        </header>
+                        <div class="slds-modal__content slds-p-around_medium">
+                            <!-- 1) Choose applicant -->
+                            <template if:true={showApplicantPicker}>
+                                <lightning-combobox name="applicant" label="Pick an Applicant" options={applicantOptions}
+                                    value={selectedApplicantId} placeholder="Select an applicant" onchange={handleApplicantChange}>
+                                </lightning-combobox>
+                            </template>
+                        </div>
+                        <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless " id="confirm-body2"
+                            style="min-height: 30% !important;">
+                            <template if:false={showApplicantPicker}>
+                                <template for:each={docCheckList} for:item="doc">
+                                    <div class="doc-category-header" key={doc}>
+                                        {doc.docType}
+                                    </div>
+                                    <template for:each={doc.docList} for:item="doc">
+                                        <div key={doc.Id} style="margin:1.5%;">
+                                            <lightning-input type="checkbox" data-id={doc.Id} data-name={doc.Name} label={doc.Name}
+                                                onchange={docSelectHandler} checked={doc.checked} disabled={doc.isDisabled}>
+                                            </lightning-input>
+                                        </div>
+                                    </template>
+                                </template>
+                            </template>
+                        </div>
+                        <footer class="slds-modal__footer select-doc-footer" style="border: revert;">
+                            <div class="slds-align_absolute-center">
+                                <button class="cancel-button slds-button slds-button_brand select-doc-close-btn" style="border:none"
+                                    onclick={handleClose}>Close</button>
+                                <button class="save-button slds-button slds-button_brand select-doc-confirm-btn" style="border: none;" onclick={addDocHandler}>
+                                    Confirm
+                                </button>
+                            </div>
+                        </footer>
+                    </div>
+                </section>
+                <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+            </template>
+            <!--
+            <lightning-layout style="margin-bottom: 10px" horizontal-align="start">
+                
+                <div style="color: black; margin-top: 5px;">
+                    <span style="color: red;">*</span>The system was unable to fetch the documents from the C-KYC
+                    portal. Please retry fetching the documents by clicking on the 'Fetch documents' button above.
+                </div>
+            </lightning-layout>
+            -->    
+            <!-- </div> -->  
+            <!--<c-document-details-screen documents={documents} record-id={recordId} show-summary-style show-header-footer ></c-document-details-screen>-->
+        </template>
+        
+        <template if:true={showDocumentTable}>
+            <c-document-processing-screen record-id={recordId} process-name="Loan Application" process-object="Loan Application" app-id={appId}
+                filter-master-ids={docMasterIdList} show-summary-style="true" ckyc={ckyc} login-checklist={loginChecklist} onupdatedapplicants ={updateApplicantsDedupe}
+                from-sales={loan} is-disabled={isFieldDisable} ondocumentsupdated={handleDocumentTableUpdated}>
+            </c-document-processing-screen>
+        
+        </template>
+        
+        
+        <!--
+        <div class="tab-block">
+            <template if:false={loginChecklist}>
+                <lightning-accordion allow-multiple-sections-open class="custom-document-accordion">
+                    <template for:each={documents} for:item="docMain">
+                        <lightning-accordion-section key={docMain.documentCategory} name={docMain.documentCategory}
+                            label={docMain.documentCategory}>
+                            
+                            <template if:true={docMain.showMessage}>
+                                                &nbsp;(<span style="font-size: 16px; color: black;">Note:{docMain.message}</span>)
+                                            </template> 
+                            <template if:true={docMain.showMessage}>
+                                            <div class="section-seperator" style="padding-top: 1%;font-weight: 700;width:100%;text-align: center;background: #9bbf56;padding-bottom: 1%;font-size:12px">
+                                                Note:<span style="color: red;">*</span>
+                                                {docMain.message}
+                                            </div>
+                                         </template> 
+                            
+
+
+
+                            <template for:each={docMain.documentList} for:item="doc">
+                                <lightning-layout multiple-rows="true" class={getCustomLayoutStyle} key={doc.docChecklistId}>
+                                    <lightning-layout-item padding="around-small" size="6">
+                                        <c-document-view-cmp record-id={recordId} doc-check-id={doc.docChecklistId}
+                                            ondocmenu={handleView} docname={doc.docMasterName} app-id={appId} ckyc={ckyc}
+                                            from-sales={ckyc} extension={doc.docExtention} login-checklist={loginChecklist}
+                                            salesdocname={doc.acDocName} content-doc-id={doc.docContentId}
+                                            onhanlenextpreviousorsave={handleDocClick} onfileuploaded={fileupload}
+                                            show-masking-check={doc.showMaskingCheck} is-acknowledged={doc.isAcknowledged}
+                                            ocr-applicable={doc.isOcr} content-version={doc.contentVersion} disabled={isDisabled}>
+                                        </c-document-view-cmp>
+                                    </lightning-layout-item>
+                                    <lightning-layout-item padding="around-small" size="6">
+                                        <c-document-details-update-cmp record-id={recordId} doc-check-id={doc.docChecklistId}
+                                            name={doc.docMasterName} app-id={appId} ckyc={ckyc} form-identifier={doc.docMasterName}
+                                            ondetailupdated={fileupload} onupdatedapplicants={updateApplicantsDedupe}
+                                            editfields={doc.uploaded} disabled={isDisabled}>
+                                        </c-document-details-update-cmp>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </template>
+                        </lightning-accordion-section>
+                    </template>
+                </lightning-accordion>
+            </template>
+            
+
+            <template if:true={loginChecklist}>
+                <template for:each={pairedDocs} for:item="pair">
+                    <lightning-layout key={pair.id} multiple-rows="false">
+                        <lightning-layout-item padding="around-small" size="6">
+                            <c-document-view-cmp 
+                                record-id={recordId} 
+                                doc-check-id={pair.first.docChecklistId} 
+                                ondocmenu={handleView} 
+                                docname={pair.first.docName} 
+                                app-id={appId}
+                                ckyc={ckyc}
+                                
+                                login-checklist={loginChecklist}
+                                salesdocname={pair.first.acDocName}
+                                content-doc-id={pair.first.docContentId}
+                                onhanlenextpreviousorsave={handleDocClick}
+                                onfileuploaded={fileupload}>
+                                disabled={isDisabled}
+                            </c-document-view-cmp>
+                        </lightning-layout-item>
+                
+                        <template if:true={pair.second}>
+                            <lightning-layout-item padding="around-small" size="6">
+                                <c-document-view-cmp 
+                                    record-id={recordId} 
+                                    doc-check-id={pair.second.docChecklistId} 
+                                    ondocmenu={handleView} 
+                                    docname={pair.second.docName} 
+                                    app-id={appId}
+                                    ckyc={ckyc}
+                                    login-checklist={loginChecklist}
+                                    salesdocname={pair.second.acDocName}
+                                    content-doc-id={pair.second.docContentId}
+                                    onhanlenextpreviousorsave={handleDocClick}
+                                    onfileuploaded={fileupload}
+                                    disabled={isDisabled}>
+                                </c-document-view-cmp>
+                            </lightning-layout-item>
+                        </template>
+                    </lightning-layout>
+                </template>
+                
+            </template>
+        </div>
+        -->
+    </div>
+
+</template>

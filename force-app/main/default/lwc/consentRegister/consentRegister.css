@@ -1,0 +1,112 @@
+:host {
+    display: block;
+    font-size: 13px;
+    font-family: Arial, Helvetica, sans-serif;
+    --bg-card: #1c2238;
+    --accent: #1467eb;
+    --accent-hover: #0d54c9;
+    --text-primary: #FFFFFF;
+    --text-secondary: rgba(255, 255, 255, 0.7);
+    --text-muted: rgba(255, 255, 255, 0.5);
+    --divider: rgba(255, 255, 255, 0.1);
+    --border-color: #2a2f45;
+    --card-glow: 0 0 20px rgba(20, 103, 235, 0.15);
+}
+
+:host *,
+:host *::before,
+:host *::after {
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.cr-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid #002266;
+    background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+}
+
+.cr-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.01em;
+}
+
+.cr-badge {
+    font-size: 11px;
+    font-weight: 600;
+    color: #ffffff;
+    background: rgba(255, 255, 255, 0.2);
+    padding: 2px 8px;
+    border-radius: 999px;
+    letter-spacing: 0.04em;
+}
+
+.cr-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: var(--card-glow);
+    color: var(--text-primary);
+    font-size: 13px;
+    overflow: hidden;
+}
+
+.cr-body {
+    padding: 0 16px;
+}
+
+.cr-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--divider);
+}
+
+.cr-row-last {
+    border-bottom: none;
+}
+
+.cr-row-content {
+    flex: 1;
+    min-width: 0;
+}
+
+.cr-row-title {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.4;
+}
+
+.cr-row-meta {
+    margin-top: 2px;
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+.cr-pill {
+    padding: 3px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 600;
+    white-space: nowrap;
+    flex-shrink: 0;
+}
+
+.cr-pill-active {
+    background: rgba(34, 197, 94, 0.15);
+    color: #4ade80;
+}
+
+.cr-pill-withdrawn {
+    background: rgba(239, 68, 68, 0.15);
+    color: #f87171;
+}

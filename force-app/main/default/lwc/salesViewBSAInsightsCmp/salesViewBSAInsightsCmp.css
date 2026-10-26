@@ -1,0 +1,9 @@
+@import "c/cssLibrary";
+.custom-table-container {
+    width: 90%;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    border-radius: 10px;
+    
+}

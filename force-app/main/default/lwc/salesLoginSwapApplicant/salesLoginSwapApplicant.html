@@ -1,0 +1,154 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 03-17-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:true={isloading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </template>
+    <!-- <template if:true={openConfirmationScreen}>
+        <span class="styleContainerMini"></span>
+        <template lwc:if={isHomeTab}>
+            <div style="margin-right: 2%;margin-left:2%; margin-bottom:2%;">
+                <div class="instruction-box" style="font-size: medium;">
+                    Do you want to change applicant type?
+                </div>
+                <div class="input-container">
+                    <div class="slds-form-element">
+                        <label class="slds-checkbox_toggle slds-grid">
+                            <input type="checkbox" name="checkbox-toggle-23" value="checkbox-toggle-23" aria-describedby="checkbox-toggle-23" checked={ToggleDefault} onchange={handleToggleChange}/>
+                            <span id="checkbox-toggle-23" class="slds-checkbox_faux_container">
+                                <span class="slds-checkbox_faux"></span>
+                                <span class="slds-checkbox_on">Yes</span>
+                                <span class="slds-checkbox_off">No</span>
+                            </span>
+                        </label>
+                    </div>
+                </div>
+                <div class="andcontainer" style="margin: top 10px;">
+                    <button type="button" class="slds-button previous-button" onclick={SkipChange}>Skip</button>
+                </div>
+            </div>
+        </template>
+    </template> -->
+    <!-- <template if:true={showCoApplicantList}> -->
+
+    <template if:true={isDesktop}>
+      <div style="overflow: auto;"> 
+        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped"
+            style='max-width: 100%; margin-right:1%; margin-top:1%;'>
+            <thead style="position: sticky; top: 0; z-index: 4;">
+                <tr>
+
+                    <th class="tdBorderHeader tableHeaderCell slds-cell-wrap" scope="col"
+                        style="text-align: center; font-size:12px; max-width: 25%;">Name</th>
+                    <th class="tdBorderHeader tableHeaderCell slds-cell-wrap" scope="col"
+                        style="text-align: center; font-size:12px; max-width: 25%;">Mobile
+                    </th>
+                    <th class="tdBorderHeader tableHeaderCell slds-cell-wrap" scope="col"
+                        style="text-align: center; font-size:12px; max-width: 25%;">Applicant
+                        Type</th>
+                    <!--<template if:true={showHLRelatedData}>-->
+                        <th class="tdBorderHeader tableHeaderCell slds-cell-wrap" scope="col"
+                        style="text-align: center; font-size:12px; max-width: 10%;">Select
+                        Key Applicant</th>
+                    <!--</template>-->
+                  
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={applicantList} for:item="iter">
+                    <tr key={iter.applicantId}>
+
+                        <td class="tdBorderHeader" style="text-align: center;">{iter.applicantName}</td>
+                        <td class="tdBorderHeader" style="text-align: center;">{iter.maskedMobileNumber}</td>
+                        <td class="tdBorderHeader" style="text-align: center;">
+                            <template if:false={loginChecklist}>
+                                <lightning-combobox name="actionSelect" variant="label-hidden"
+                                    data-id={iter.applicantId} placeholder="Select Applicant Type"
+                                    value={iter.applicantType} options={applicantTypeOptions} disabled={iter.isDisabled}
+                                    onchange={handleApplicantTypeChange}>
+                                </lightning-combobox>
+                            </template>
+                            <template if:true={loginChecklist}>
+                                <lightning-combobox name="actionSelect" variant="label-hidden"
+                                    data-id={iter.applicantId} placeholder="Select Applicant Type"
+                                    value={iter.applicantType} options={applicantTypeOptions}
+                                    onchange={handleApplicantTypeChange} disabled>
+                                </lightning-combobox>
+                            </template>
+
+                        </td>
+                        <!--<template if:true={showHLRelatedData}>-->
+                            <td class="tdBorderHeader" style="text-align: center;">
+                                <template if:false={loginChecklist}>
+                                    <input type="radio" name="selectedApplicant" checked={iter.isKeyApplicant} data-name={iter.applicantId}  onchange={handleApplicantSelection}/>
+                                </template>
+                                <template if:true={loginChecklist}>
+                                    <input type="radio" name="selectedApplicant" checked={iter.isKeyApplicant} data-name={iter.applicantId}  onchange={handleApplicantSelection} disabled/>
+                                </template>
+                            </td>
+                       <!-- </template>-->
+                       
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+     </div>   
+        <!--<div style="padding: 1%;font-size: 115%;color: green;font-weight: 500;">
+            Please note that we can not select non-individual applicants as key applicants. Hence, the details in the table are filtered to show only individual applicants.
+        </div>-->
+    </template>
+    <template if:true={isMobileOrTablet}>
+        <template for:each={applicantList} for:item="iter">
+            <lightning-card key={iter.applicantId} title="Applicant Details">
+                <div class="custom-mobile-table">
+                    <div class="custom-row">
+                        <div class="custom-cell label">Name</div>
+                        <div class="custom-cell value">{iter.applicantName}</div>
+                    </div>
+                    <div class="custom-row">
+                        <div class="custom-cell label">Mobile</div>
+                        <div class="custom-cell value">{iter.maskedMobileNumber}</div>
+                    </div>
+                    <div class="custom-row">
+                        <div class="custom-cell label">Applicant Type</div>
+                        <div class="custom-cell value">{iter.applicantType}</div>
+                    </div>
+                    <template if:true={showHLRelatedData}>
+                        <div class="custom-row">
+                            <div class="custom-cell label">Key Applicant</div>
+                            <div class="custom-cell value">
+                                <input type="radio" name="selectedApplicantMobile" checked={iter.isKeyApplicant} data-name={iter.applicantId} onchange={handleApplicantSelection}/>
+                            </div>
+                        </div>
+                    </template>
+                  
+                </div>
+            </lightning-card>
+        </template>
+        <div style="padding: 1%;font-size: 115%;color: green;font-weight: 500;">
+            Please note that we can not select non-individual applicants as key applicants. Hence, the details in the table are filtered to show only individual applicants.
+        </div>
+    </template>
+    <template if:false={loginChecklist}>
+        <div class="andcontainer slds-text-align_right" style="margin-top: 1%;">
+            <button type="button" style="width: 117px;" class="slds-button save-button" onclick={validateSaveAndNext}>{saveandnext}</button>
+            <!-- <button type="button" style="width: 117px;" class="slds-button previous-button" onclick={handlePanOnHold}>Hold</button> -->
+
+        </div>
+    </template>
+
+
+
+    <!-- </template> -->
+
+    <template if:true={showExceptionConfirmation}>
+        <c-confirmation-screen confirm-message={cibilExceptionconfirmationMessage} negative-label="Cancel" positive-label="Confirm"
+            onnegativeclick={closeExceptionModal} onpositiveclick={updateException}>
+        </c-confirmation-screen>
+    </template>
+</template>

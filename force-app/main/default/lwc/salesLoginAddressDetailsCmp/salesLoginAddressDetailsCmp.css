@@ -1,0 +1,338 @@
+@import 'c/cssLibrary';
+
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+
+:host {
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+
+    /* combobox / dropdown - Address Type, Address Ownership etc. */
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+    --slds-c-combobox-input-value-text-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: #16283f;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-option-text-color-hover: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+    --slds-c-combobox-label-color: #ffffff;
+    /* The listbox popup (dropdown of options) is a base component that
+       doesn't read the combobox-specific hooks above for its background/
+       option-text/hover colors - it falls back to these global
+       neutral-base ramp tokens instead, which is why the popup rendered
+       white with dark text regardless of the hooks set above. Same root
+       cause/fix already proven on the Aadhar/PAN manual-entry modal
+       dropdowns elsewhere in this codebase. */
+    --slds-g-color-neutral-base-100: #16283f;
+    --slds-g-color-neutral-base-95: #1f3550;
+    --slds-g-color-neutral-base-90: #1f3550;
+    --slds-g-color-neutral-base-10: #ffffff;
+    --lwc-colorBackgroundRowHover: #1f3550;
+    --sds-c-combobox-option-color-background-hover: #1f3550;
+    --sds-c-combobox-option-text-color-hover: #ffffff;
+}
+
+/* ---------------- Table Styling ---------------- */
+.slds-table thead th {
+    color: black;
+    font-weight: bold;
+    text-align: left;
+    padding: 10px;
+    background-color: skyblue; /* Light blue header */
+}
+
+.address-table-box {
+    border: 1px solid #ffffff;
+    padding: 15px;
+    border-radius: 0.75rem;
+}
+
+.table-class {
+    border: 1px solid #ffffff !important;
+    background: #0f1c3f !important;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-left: 1.01%;
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+.table-class thead tr:first-child th:first-child {
+    border-top-left-radius: 0.75rem;
+}
+
+.table-class thead tr:first-child th:last-child {
+    border-top-right-radius: 0.75rem;
+}
+
+.table-class tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 0.75rem;
+}
+
+.table-class tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 0.75rem;
+}
+
+.tdBorderHeader {
+    color: black;
+    height: 20px;
+    border: 1px solid black;
+    padding-left: 1%;
+}
+
+/* Delete action button - match table body background (#0f1c3f) instead of
+   the default SLDS brand blue. lightning-button-icon's styling-hook custom
+   properties are not honored reliably for the "brand" variant, so the
+   Delete action is rendered as a plain HTML button (same pattern used by
+   the Add Address / Reset / Next buttons in this component) with the
+   background applied directly - avoids shadow-DOM style encapsulation. */
+.delete-table-color-btn {
+    background-color: #0f1c3f !important;
+    border: 1px solid #0f1c3f !important;
+    border-radius: 4px;
+    width: 2rem;
+    height: 2rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.delete-table-color-btn:hover:not([disabled]) {
+    background-color: #16283f !important;
+    border-color: #16283f !important;
+}
+
+/* Force the delete utility icon to render white - variant="inverse" alone
+   isn't consistently honored, so the icon foreground colour custom
+   property is set explicitly. These custom properties are inherited CSS
+   values, so they pierce the lightning-icon shadow boundary. */
+.delete-icon-white-color {
+    --slds-c-icon-color-foreground-default: #ffffff;
+    --sds-c-icon-color-foreground-default: #ffffff;
+    --slds-c-icon-color-foreground: #ffffff;
+    --sds-c-icon-color-foreground: #ffffff;
+}
+
+.delete-table-color-btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* ---------------- Responsive Grid ---------------- */
+.getProductByDeviceType {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.getProductByDeviceTypeCol {
+    flex: 1 1 22%;
+    min-width: 200px;
+}
+
+.styleContainer {
+    margin-bottom: 0.5rem;
+}
+
+/* ---------------- Buttons ---------------- */
+/* Reset/Save (and Close/Confirm) buttons - rounded-rectangle shape and
+   red/green colors matching the "Add PAN/Aadhar Details Manually" modal
+   footer buttons already used elsewhere in the sales-login screens. */
+.save-button {
+    padding: 0 1rem;
+    border: none;
+    text-align: center;
+    color: #ffffff !important;
+    background-color: #7c3aed !important;
+    border-color: #7c3aed !important;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    min-width: 110px;
+    height: 2.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: normal;
+    border-radius: 8px;
+    margin-left: 0.5rem;
+    font-weight: 600;
+}
+
+.save-button:hover:not([disabled]) {
+    background-color: #7c3aed !important;
+}
+
+.previous-button {
+    padding: 0 1rem;
+    border: none;
+    text-align: center;
+    color: #ffffff !important;
+    background-color: #16283f !important;
+    border-color: #7c3aed !important;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    min-width: 110px;
+    height: 2.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    line-height: normal;
+    border-radius: 8px;
+    margin-right: 0.5rem;
+    font-weight: 600;
+}
+
+.previous-button:hover:not([disabled]) {
+    background-color: #16283f !important;
+}
+
+/* ---------------- Mobile Adjustments ---------------- */
+@media screen and (max-width: 768px) {
+    .getProductByDeviceTypeCol {
+        flex: 1 1 100%;
+        min-width: 100%;
+    }
+
+    .save-button,
+    .previous-button {
+        width: 100% !important;
+        margin-top: 0.75rem;
+    }
+
+    .slds-float_right {
+        float: none !important;
+        text-align: center;
+        width: 100%;
+    }
+
+    .slds-m-around_large {
+        margin: 1rem;
+    }
+}
+
+/* ---------------- Lightning Input Styling ---------------- */
+lightning-input::part(input) {
+    border: none !important;
+    border-bottom: 2px solid #ccc !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    outline: none !important;
+    padding: 5px 0 !important;
+}
+
+lightning-input::part(input):focus {
+    border-bottom: 2px solid #ffffff !important;
+}
+
+lightning-combobox {
+    min-width: 150px;
+}
+
+/* ---------------- Modal Styling ---------------- */
+
+/* Override SLDS modal so it centers using flex */
+.slds-modal {
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+}
+
+/* Remove Salesforce default container size constraints */
+.slds-modal__container {
+    margin: 0 !important;
+    width: auto !important;
+    max-width: none !important;
+}
+
+/* Backdrop */
+.custom-modal-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.5); /* dim background */
+    display: flex;
+    align-items: center;   /* vertical center */
+    justify-content: center; /* horizontal center */
+    z-index: 9998;
+}
+
+/* Actual modal */
+.custom-modal-container {
+    width: 90vw;             /* Flexible width */
+    max-width: 35rem;        /* ~560px on desktop */
+    max-height: 80vh;        /* Prevents overflow */
+    height: auto;
+    background: #fff;
+    border-radius: 0.5rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;        /* Prevents double scrollbars */
+    z-index: 9999;
+    animation: fadeInScale 0.3s ease; /* smooth open animation */
+}
+
+/* Header & Footer */
+.modal-header,
+.modal-footer {
+    background-color: skyblue;
+    padding: 0.75rem 1rem;
+    font-weight: bold;
+    color: black;
+}
+
+/* Scrollable inner content */
+.custom-modal-content {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+}
+
+/* Ensure smooth scrolling */
+.custom-modal-content::-webkit-scrollbar {
+    width: 6px;
+}
+.custom-modal-content::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 3px;
+}
+.slds-input[disabled], .slds-input.slds-is-disabled {
+    background-color: #16283f !important;
+}
+/* ---------------- Modal Responsive ---------------- */
+@media screen and (max-width: 768px) {
+    .custom-modal-container {
+        width: 95vw;
+        max-width: 95vw;
+        max-height: 90vh;
+        border-radius: 0.25rem;
+    }
+
+    .modal-header,
+    .modal-footer {
+        font-size: 1rem;
+        text-align: center;
+    }
+
+    .custom-modal-content {
+        padding: 0.75rem;
+    }
+}
+
+/* ---------------- Animation ---------------- */
+@keyframes fadeInScale {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}

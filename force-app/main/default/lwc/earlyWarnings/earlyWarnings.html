@@ -1,0 +1,42 @@
+<template>
+    <div class="ew-card">
+        <!-- Header -->
+        <div class="header">
+            <div class="title-section">
+                <span class="green-dot"></span>
+                <h2>Early warnings</h2>
+            </div>
+
+            <div class="counter-pill">
+                4 open
+            </div>
+        </div>
+
+        <!-- Warning List -->
+        <div class="warning-container">
+            <template for:each={warnings} for:item="warning">
+                <div key={warning.id} class="warning-row">
+
+                    <div class={warning.iconWrapperClass}>
+                        <lightning-icon
+                            icon-name={warning.icon}
+                            size="xx-small"
+                            alternative-text="Warning">
+                        </lightning-icon>
+                    </div>
+
+                    <div class="warning-content">
+                        <div class="warning-title">
+                            {warning.title}
+                        </div>
+
+                        <div class="warning-subtitle">
+                            {warning.subtitle}
+                        </div>
+                    </div>
+
+                </div>
+            </template>
+        </div>
+    </div>
+</template>

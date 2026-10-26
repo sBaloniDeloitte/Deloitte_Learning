@@ -1,0 +1,176 @@
+<template>
+    <span class="styleContainer"></span>
+        <lightning-card>
+            <div class="slds-m-around_medium">
+                <template if:true={isLoading}>
+                    <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+                </template>
+                    <template if:true={showGenerateButton}>
+                        <template if:false={dontShowForOps}>
+                            <div class="slds-m-top_medium slds-text-align_left">
+                                <button
+                                    class="save-button slds-button slds-button_brand"
+                                    disabled={disableGenerateSch}
+                                    onclick={hanldeGenerate}>
+                                    Generate
+                                </button>
+                            </div>
+                        </template>
+                    </template>
+                        <!--<button class="disabled-button slds-button slds-button_brand" onclick={hanldeGenerate}>Generate Repayment Schedule</button>-->
+                
+                <template if:false ={showGenerateButton}>
+                    <template if:true ={showMessage}>
+                        <div class="slds-text-color_error slds-m-top_medium">
+                            {infoMessage}
+                        </div>
+                    </template>
+                </template>
+                <template if:false={showGenerateButton}>
+                    <template if:false={showMessage}>
+                    <!--<div style="color: red; font-weight: bold; margin-top: 10px;" class="slds-m-around_small">
+                        * Please scroll to the bottom and click the 'Send to Ops Maker' button
+                    </div>-->
+                    <template if:true={regenerateSchedule}>
+                        <template if:false ={dontShowForOps}>
+                            <template if:true={isButtonVisible}>
+                                <div class="slds-m-top_medium slds-text-align_left">
+                                    <button class="save-button slds-button slds-button_brand" disabled={disableGenerateSch} onclick={hanldeGenerate}>Re-Generate</button>
+                                </div>
+                            </template>
+                        </template>
+                            <!--<button class="disabled-button slds-button slds-button_brand" onclick={hanldeGenerate}>Generate Repayment Schedule</button>-->
+                    </template>
+                    <template if:true={isVariantValueTermLoan}>
+                        <template if:false={isVariantValueBD}>
+                            <div class="slds-scrollable_x" style="overflow: auto;padding: 1%;">
+                                <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right fixed-width" style=" border-color: black; table-layout: fixed; width:100%;">
+                                    <thead>
+                                        <tr class="slds-line-height_reset">
+                                            <th style="text-align: center; " class="fixed-width" scope="col" colspan="1">
+                                                Sl. No.
+                                            </th>
+                                            <th style="text-align: center;  " class="fixed-width" scope="col" colspan="1">
+                                                Date
+                                            </th>
+                                            <th style="text-align: center;  " class="fixed-width" scope="col" colspan="1">
+                                                Cal. Interest/Rate
+                                            </th>
+                                            <th style="text-align: center;  " class="fixed-width" scope="col" colspan="1">
+                                                Interest
+                                            </th>
+                                            <th style="text-align: center;  " class="fixed-width" scope="col" colspan="1">
+                                                Principal
+                                            </th>
+                                            <th style="text-align: center;  " class="fixed-width" scope="col" colspan="1">
+                                                Total Installment
+                                            </th>
+                                            <th style="text-align: center;  " class="fixed-width" scope="col" colspan="1">
+                                                Ending Balance
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <template for:each={schedules} for:item="record">
+                                            <tr key={record.schDate}>
+                                                <td style=" border-color: black">{record.instNumber}</td>
+                                                <td style=" border-color: black">{record.schDateFormatted}</td>
+                                                <td style=" border-color: black">{record.pftAmount}</td>
+                                                <td style=" border-color: black">{record.schdPft}</td>
+                                                <td style=" border-color: black">{record.schdPri}</td>
+                                                <td style=" border-color: black">{record.totalAmount}</td>
+                                                <td style=" border-color: black">{record.endBal}</td>
+
+                                            </tr>
+                                        </template>
+
+
+                                    </tbody>
+                                </table>
+                            </div>
+                        </template>
+                    </template>
+                    <template if:true={isVariantValueBD}>
+                        <template if:false={isVariantValueTermLoan}>
+                            <div class="slds-scrollable_x" style="overflow: auto;padding: 1%;">
+                                <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right fixed-width"  style=" border-color: black; table-layout: fixed; width:100%;">
+                                    <thead>
+                                        <tr class="slds-line-height_reset">
+                                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black;" class="fixed-width" scope="col" colspan="1">
+                                                Sl. No.
+                                            </th>
+                                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black;" class="fixed-width" scope="col" colspan="1">
+                                                EMI Billing Date
+                                            </th>
+                                            <!--<template if:false ={disableForDisbursement}>-->
+                                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black;" class="fixed-width" scope="col" colspan="1">
+                                                EMI Due Date
+                                            </th>
+                                            <!--</template>-->
+                                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black;" class="fixed-width" scope="col" colspan="1">
+                                                Cal. Interest/Rate
+                                            </th>
+                                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black;" class="fixed-width" scope="col" colspan="1">
+                                                Interest
+                                            </th>
+                                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black;" class="fixed-width" scope="col" colspan="1">
+                                                Principal
+                                            </th>
+                                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black;" class="fixed-width" scope="col" colspan="1">
+                                                Total Installment
+                                            </th>
+                                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black;" class="fixed-width" scope="col" colspan="1">
+                                                Utilization
+                                            </th>
+                                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black;" class="fixed-width" scope="col" colspan="1">
+                                                Limit Drop
+                                            </th>
+                                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black;" class="fixed-width" scope="col" colspan="1">
+                                                Available Limit
+                                            </th>
+                                            <th style="text-align: center; background-color: skyblue; color: black; border-color: black;" class="fixed-width" scope="col" colspan="1">
+                                                Dropline Limit
+                                            </th>
+
+                                        </tr>
+                                    </thead>
+
+                                    <tbody>
+                                        <template for:each={schedules} for:item="record">
+                                            <tr key={record.schDate}>
+                                                <td style=" border-color: black">{record.instNumber}</td>
+                                                <td style=" border-color: black">{record.schDateFormatted}</td>
+                                                <td style=" border-color: black"><template if:true ={record.schDueDateFormatted}>{record.schDueDateFormatted}</template></td>
+                                                <td style=" border-color: black">{record.pftAmount}</td>
+                                                <td style=" border-color: black">{record.schdPft}</td>
+                                                <td style=" border-color: black">{record.schdPri}</td>
+                                                <td style=" border-color: black">{record.totalAmount}</td>
+                                                <td style=" border-color: black">{record.endBal}</td>
+                                                <td style=" border-color: black">{record.limitDrop}</td>
+                                                <td style=" border-color: black">{record.availableLimit}</td>
+                                                <td style=" border-color: black">{record.dropLineLimit}</td>
+
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </template>
+                    </template>
+                        <!--<div class="slds-m-top_medium slds-text-align_center">
+                        <button class="save-button slds-button slds-button_brand" onclick={changeStage}>
+                            Send to Ops Maker
+                        </button>
+                        </div>-->
+                       </template> 
+                </template>
+                <!--<template if:false={isLoanRescheduleAPIInvoked}>
+                    <div class="slds-text-align_center slds-m-top_medium">
+                        <strong>No records available</strong>
+                    </div>
+                </template>-->
+            </div>
+        </lightning-card>
+</template>

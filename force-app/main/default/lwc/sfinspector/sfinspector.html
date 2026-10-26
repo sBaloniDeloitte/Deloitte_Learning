@@ -1,0 +1,197 @@
+<template>
+    <lightning-card title="Godrej SOQL Inspector" icon-name="utility:search">
+        <div class="slds-p-horizontal_medium">
+
+            <a class="download-anchor" style="display:none;" aria-hidden="true"></a>
+
+            <!-- ── Debug bar ── -->
+            <template if:true={debugInfo}>
+                <div class="debug-bar">
+                    <span class="debug-pill">clause: <b>{debugClause}</b></span>
+                    <span class="debug-pill">token: <b>{debugToken}</b></span>
+                    <span class="debug-pill">cursor: <b>{debugCursor}</b></span>
+                    <span class="debug-pill">object: <b>{debugObject}</b></span>
+                </div>
+            </template>
+
+            <!-- ── Query Editor ── -->
+            <div class="slds-form-element slds-m-bottom_small">
+                <label class="slds-form-element__label" for="soql-ta">SOQL Query</label>
+                <div class="soql-wrapper">
+                    <textarea
+                        id="soql-ta"
+                        class="slds-textarea soql-textarea"
+                        oninput={handleInput}
+                        onkeydown={handleKeyDown}
+                        onkeyup={handleKeyUp}
+                        onclick={handleCursorMove}
+                        placeholder="SELECT Id, Name FROM Account WHERE ...">
+                    </textarea>
+                </div>
+            </div>
+
+            <!-- ── Suggestion list ── -->
+            <template if:true={hasSuggestions}>
+                <div class="suggestion-list slds-m-bottom_small" role="listbox">
+                    <template for:each={suggestions} for:item="s" for:index="idx">
+                        <div
+                            key={s.key}
+                            role="option"
+                            data-index={idx}
+                            class={s.cssClass}
+                            onmousedown={applySuggestion}>
+                            <span class={s.badgeClass}>{s.type}</span>
+                            <span class="sug-label">{s.label}</span>
+                            <span class="sug-detail">{s.detail}</span>
+                        </div>
+                    </template>
+                </div>
+            </template>
+
+            <!-- ── Toolbar ── -->
+            <div class="toolbar slds-m-bottom_small">
+                <lightning-button
+                    label="Run Query"
+                    variant="brand"
+                    onclick={runQuery}
+                    disabled={isRunning}>
+                </lightning-button>
+                <lightning-button
+                    label="Format"
+                    variant="neutral"
+                    onclick={formatQuery}
+                    class="slds-m-left_x-small">
+                </lightning-button>
+                <lightning-button
+                    label="Clear"
+                    variant="neutral"
+                    onclick={clearAll}
+                    class="slds-m-left_x-small">
+                </lightning-button>
+
+                <!-- Saved Queries button — always shown -->
+                <lightning-button
+                    label={savedQueryBtnLabel}
+                    variant="neutral"
+                    icon-name="utility:open_folder"
+                    onclick={toggleSavedPanel}
+                    class="slds-m-left_x-small">
+                </lightning-button>
+
+                <template if:true={hasResults}>
+                    <lightning-button
+                        label="Download Excel"
+                        variant="success"
+                        icon-name="utility:download"
+                        onclick={downloadExcel}
+                        class="slds-m-left_x-small">
+                    </lightning-button>
+                </template>
+
+                <span class="slds-m-left_small">
+                    <template if:true={isRunning}>
+                        <lightning-spinner alternative-text="Running…" size="small"></lightning-spinner>
+                    </template>
+                    <template if:true={resultSummary}>
+                        <span class="result-summary">{resultSummary}</span>
+                    </template>
+                </span>
+            </div>
+
+            <!-- ── Saved Queries Panel ── -->
+            <template if:true={showSavedPanel}>
+                <div class="saved-panel slds-m-bottom_small">
+                    <div class="saved-panel-header">
+                        <span class="saved-panel-title">
+                            <lightning-icon icon-name="utility:open_folder" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                            Saved Queries
+                            <span class="saved-count">{savedQueryCount}/20</span>
+                        </span>
+                        <button class="saved-panel-close" onclick={toggleSavedPanel} title="Close">✕</button>
+                    </div>
+
+                    <!-- Empty state -->
+                    <template if:false={hasSavedQueries}>
+                        <div class="saved-empty">
+                            No saved queries yet. Run a query to save it automatically.
+                        </div>
+                    </template>
+
+                    <!-- Query list -->
+                    <template if:true={hasSavedQueries}>
+                        <ul class="saved-list">
+                            <template for:each={savedQueries} for:item="sq">
+                                <li key={sq.id} class="saved-item">
+                                    <div class="saved-item-body" data-id={sq.id} onclick={loadSavedQuery}>
+                                        <div class="saved-item-name">{sq.name}</div>
+                                        <div class="saved-item-query">{sq.queryText}</div>
+                                        <div class="saved-item-meta">
+                                            <span>Ran {sq.runCount}x</span>
+                                            <span class="saved-dot">·</span>
+                                            <span>{sq.lastRunFormatted}</span>
+                                        </div>
+                                    </div>
+                                    <button
+                                        class="saved-delete-btn"
+                                        data-id={sq.id}
+                                        onclick={deleteSavedQuery}
+                                        title="Delete">
+                                        <lightning-icon icon-name="utility:delete" size="x-small"></lightning-icon>
+                                    </button>
+                                </li>
+                            </template>
+                        </ul>
+                    </template>
+                </div>
+            </template>
+
+            <!-- ── Error ── -->
+            <template if:true={errorMessage}>
+                <div class="slds-notify slds-notify_alert slds-alert_error slds-m-bottom_small" role="alert">
+                    <lightning-icon icon-name="utility:error" size="x-small" class="slds-m-right_x-small"></lightning-icon>
+                    {errorMessage}
+                    <button class="slds-button slds-button_icon slds-button_icon-small slds-float_right" onclick={clearError} title="Dismiss">
+                        <lightning-icon icon-name="utility:close" size="x-small"></lightning-icon>
+                    </button>
+                </div>
+            </template>
+
+        </div>
+
+        <!-- ── Results Table ── -->
+        <template if:true={hasResults}>
+            <div class="slds-p-around_medium">
+                <div class="slds-scrollable_x">
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered result-table">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <template for:each={columns} for:item="col">
+                                    <th key={col} scope="col">
+                                        <div class="slds-truncate" title={col}>{col}</div>
+                                    </th>
+                                </template>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={rows} for:item="row">
+                                <tr key={row._key} class="slds-hint-parent">
+                                    <template for:each={row.cells} for:item="cell">
+                                        <td key={cell.col} data-label={cell.col}>
+                                            <template if:true={cell.isLink}>
+                                                <a href={cell.href} target="_blank" class="slds-truncate">{cell.value}</a>
+                                            </template>
+                                            <template if:false={cell.isLink}>
+                                                <div class="slds-truncate" title={cell.value}>{cell.value}</div>
+                                            </template>
+                                        </td>
+                                    </template>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </template>
+
+    </lightning-card>
+</template>

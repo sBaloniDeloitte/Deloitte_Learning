@@ -1,0 +1,183 @@
+/* This Code was generated using GenAI tool : Codify, Please check for accuracy */
+/* ____GenAI: Generated code starts here - dark theme restyle to match the
+   rest of the loan login screens. No markup/structure changes.____ */
+.hidden-input {
+    display: none; /* Hide the file input element */
+}
+.hidden-input-finish {
+    /* display: none; Hide the file input element */
+    opacity: 0;
+    position: absolute;
+}
+
+:host {
+    display: block;
+    background-color: #08192f;
+    color: #ffffff;
+    box-sizing: border-box;
+
+    /* Shared dark theme palette (matches hl_incomeAssessmentTabsRenderingCmp /
+       hl_assessedIncomeProgramCmp / bsaSelectBankCmp) */
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #0e1c30;
+    --dt-border: #33455e;
+    
+ --dt-positive: #8b5cf6;
+    --dt-negative: #16283f;
+
+    
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-radius-border: 6px;
+    --slds-c-input-placeholder-text-color: #8a99b3;
+    --slds-c-input-label-color: #ffffff;
+
+    
+    --slds-c-input-color-background: transparent;
+    --slds-c-combobox-input-color-background: transparent;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+    --slds-c-combobox-input-value-text-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: #16283f;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-combobox-text-color: #ffffff;
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+    --slds-c-combobox-label-color: #ffffff;
+
+    --slds-c-checkbox-color-background: #16283f;
+    --slds-c-checkbox-color-border: #33455e;
+    --slds-c-checkbox-label-color: #ffffff;
+
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+
+    /* Global SLDS2 surface/neutral tokens - several base-component internals
+       (field labels, date-picker chrome, combobox listbox rows) fall back to
+       these when no component-specific hook is set, which is why they were
+       still rendering as solid white blocks even though the input text boxes
+       themselves were already dark. Overriding the whole neutral ramp + the
+       surface tokens forces every such fallback dark, regardless of which
+       specific hook a given base component happens to read internally. */
+    --slds-g-color-neutral-base-100: #16283f;
+    --slds-g-color-neutral-base-95: #16283f;
+    --slds-g-color-neutral-base-90: #1d2f45;
+    --slds-g-color-surface: #16283f;
+    --slds-g-color-surface-1: #16283f;
+    --slds-g-color-surface-2: #0a1524;
+    --slds-g-color-surface-container: #16283f;
+    --slds-g-color-surface-container-1: #16283f;
+    --slds-g-color-border-base-1: #33455e;
+    --slds-g-color-neutral-base-30: #ffffff;
+    --slds-g-color-neutral-base-40: #ffffff;
+    --slds-g-color-neutral-base-50: #ffffff;
+
+    --dt-modal-gradient: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+}
+
+/* Belt-and-suspenders: if this API version exposes a "label" shadow part on
+   lightning-input, force it dark/legible too (a no-op, harmless, if the part
+   doesn't exist on this version). */
+lightning-input::part(label),
+lightning-combobox::part(label) {
+    color: #ffffff !important;
+    background: transparent !important;
+}
+
+lightning-input::part(input),
+lightning-combobox .slds-combobox__input {
+    border: 1px solid #33455e !important;
+    border-radius: 6px !important;
+    background: #16283f !important;
+    color: #ffffff !important;
+}
+
+lightning-input::part(input):focus,
+lightning-combobox .slds-combobox__input:focus {
+    border: 1px solid #2563eb !important;
+}
+
+/* File upload dropzone */
+lightning-file-upload {
+    --slds-c-button-color-background: #16283f;
+    --slds-c-button-text-color: #ffffff;
+    --slds-c-button-color-border: #33455e;
+}
+
+/* ____GenAI: Generated code starts here - header/footer/CTA restyled to
+   match the shared dark theme (hl_incomeAssessmentTabsRenderingCmp /
+   hl_assessedIncomeProgramCmp / bsaSelectBankCmp): flat theme-blue header,
+   panel-dark footer, flat pill buttons via --dt-* tokens. Overrides the
+   inline background-color left on the template markup.____ */
+.slds-modal__header,
+.slds-modal__footer {
+        background: var(--dt-modal-gradient) !important;
+    border-bottom: 1px solid var(--dt-border);
+    color: #ffffff !important;
+}
+
+
+
+.save-button {
+    background: var(--dt-positive) !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    height: 30px;
+    padding: 0 10px;
+    min-width: 80px;
+    transition: background 0.2s ease;
+}
+
+.save-button:hover:not([disabled]) {
+    background: #0f52c4 !important;
+}
+/* ____GenAI: Generated code ends here____ */
+
+/* ____GenAI: Generated code starts here - bounded card look for the form
+   content so it reads as a distinct container (matches the reference
+   screenshot's rounded box), plus spacing above the Confirm-button row so
+   a visible gap separates the container from the button instead of both
+   sharing one continuous :host fill.____ */
+.slds-modal__content {
+    border-radius: 12px;
+    border: 1px solid #1d2f45;
+}
+
+.slds-align_absolute-center {
+    margin-top: 18px;
+}
+/* ____GenAI: Generated code ends here____ */
+
+.cancel-button {
+    background: var(--dt-negative) !important;
+    border: none !important;
+    color: #ffffff !important;
+    font-weight: 600 !important;
+    height: 30px;
+    padding: 0 10px;
+    min-width: 80px;
+    transition: background 0.2s ease;
+}
+
+/* ____GenAI: Generated code ends here____ */
+
+.slds-listbox__option {
+    color: #ffffff !important;
+}
+
+.slds-listbox__option-text {
+    color: #ffffff !important;
+}
+
+.slds-media__body {
+    color: #ffffff !important;
+}
+.bank-file-upload {
+    --slds-c-file-selector-color-background: transparent;
+    --slds-c-file-selector-color-background-hover: transparent;
+    --slds-c-file-selector-color-border: transparent;
+}

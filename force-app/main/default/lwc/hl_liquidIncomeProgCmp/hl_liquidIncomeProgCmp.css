@@ -1,0 +1,66 @@
+.slds-table_cell-buffer tr>th:first-child, .slds-table_cell-buffer tr>td:first-child, .slds-table--cell-buffer tr>th:first-child, .slds-table--cell-buffer tr>td:first-child{
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+}
+
+/* ____GenAI: Generated code starts here - dark-navy table theme matched to
+   crimeCheckCmp's Crime Check Individual table (#0e1626 body / #111d30
+   header / #1d2f45 borders / white bold centered header text / 8px
+   rounded corners / #16283f row hover) so this Select/Name table renders
+   with the same visual language as the reference screenshot. Replaces the
+   legacy inline skyblue header, fixed 500px width and hard black
+   table/th/td borders.____ */
+.liquid-table-wrap {
+    background: #0e1626;
+}
+
+.liquid-table {
+    width: 100% !important;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: #0e1626 !important;
+    border: 1px solid #1d2f45 !important;
+    border-radius: 8px;
+    overflow: hidden;
+    color: #ffffff;
+}
+
+.liquid-table thead th.liquid-th {
+    background-color: #111d30 !important;
+    border-color: #1d2f45 !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+    padding: 10px !important;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.liquid-table tbody td.liquid-td {
+    background-color: #0e1626 !important;
+    border-color: #1d2f45 !important;
+    color: #ffffff !important;
+    text-align: center;
+    padding: 10px !important;
+    vertical-align: middle;
+}
+
+.liquid-table tbody tr:hover td.liquid-td {
+    background-color: #16283f !important;
+}
+/* ____GenAI: Generated code ends here____ */
+
+.slds-table thead th {
+    white-space: normal;
+}
+.col-width-10 {
+    width: 40px;
+}
+.col-width-100 {
+    min-width: 100px;
+}
+.cursor-pointer {
+    cursor: pointer;
+}
+:host .slds-modal__content{
+    overflow: initial;
+}

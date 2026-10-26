@@ -1,0 +1,114 @@
+<template>
+   <template lwc:if={isLoading}>
+      <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+   </template>
+   <div class="slds-p-top_small slds-p-left_small slds-p-bottom_xx-small">
+      <button  class="slds-button slds-button_brand save-button" onclick={handleAccordionBtn} lwc:ref="btnTag"></button>
+   </div>
+   <span class="styleContainer"></span>
+   <lightning-accordion allow-multiple-sections-open active-section-name={activeSections}>
+      <lightning-accordion-section name="OCR Definition" label="OCR Definition">
+         <div class="slds-p-around_small">
+            <template if:false={isOcrEditable}>
+                <p class="slds-text-align_center" style="font-style: italic; font-size: 12px;color: red;padding-top:1%;padding-bottom:1%;">OCR is view-only since this is a child Loan.</p>
+            </template>
+            <lightning-layout multiple-rows="true">
+                <lightning-layout-item size="12" medium-device-size="4" padding="around-small">
+                    
+                        <c-search-lookup label="OCR ID" show-label="true" required="true"
+                            placeholder="Search OCR" object-name="Charges_Insurance_Master__c"  selected-id={selectedId} selected-name={ocrId}
+                            return-fields="['Id','OCR_ID__c','Customer_Portion__c','Finance_Type__c']" search-fields="['OCR_ID__c']" filter-criteria="[recordType.Name= OCR Definition; Finance_Type__c=AH;]"
+                            onlookupselected={handleSelectedOcr}
+                            onlookupdeselected={handledeselectedOcr} onclose={handleaddNew}
+                            disabled={isDisable}>
+                        </c-search-lookup>
+                    
+                </lightning-layout-item>
+                <template for:each={ocrDefinitionFields} for:item="data">
+                    <lightning-layout-item key={data.fieldName} size="12" medium-device-size="4" padding="around-small">
+                        <lightning-input
+                            key={data.fieldName}
+                            label={data.label}
+                            type={data.type}
+                            value={data.fieldValue}
+                            onchange={handleInputChange}
+                            step={data.step}
+                            data-field={data.fieldName}
+                            disabled={data.disabled}
+                            required ={data.isRequired}>
+                        </lightning-input>
+                    </lightning-layout-item>
+                </template>
+                
+            </lightning-layout>
+         </div>
+         <lightning-accordion>
+            <lightning-accordion-section name="ocrSteps" label="OCR Steps">
+                <lightning-card>
+                    <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                        <thead>
+                            <tr>
+                                <th>Step Number</th>
+                                <th>Payable by Customer (%)</th>
+                                <th>Payable by Financer (%)</th>
+                                <template if:true={isOcrEditable}>
+                                    <th>Operation</th>
+                                </template>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={steps} for:item="step" for:index="index">
+                                <tr key={step.id}>
+                                    <td>{step.index}</td>
+                                    <td>
+                                        <lightning-input type="number" value={step.customer} 
+                                            onchange={handleCustomerChange} 
+                                            data-index={index}
+                                             step="0.01"
+                                            maxlength="5"
+                                            disabled={step.makeCustomerDisabled}>
+                                        </lightning-input>
+                                    </td>
+                                    <td>
+                                        <lightning-input type="number" value={step.financer} 
+                                            onchange={handleFinancerChange} 
+                                            data-index={index}
+                                            step="0.01"
+                                            maxlength="5"
+                                            disabled={step.makeFinancerDisabled}>
+                                        </lightning-input>
+                                    </td>
+                                    <template if:true={isOcrEditable}>
+                                        <td>
+                                            <lightning-button label="Add" onclick={handleAddRow} data-index={index}></lightning-button>
+                                            <lightning-button label="Delete" onclick={handleDeleteRow} data-index={index} style="padding-left: 10px;"></lightning-button>
+                                        </td>
+                                    </template>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                    <template if:true={isOcrEditable}>
+                        <div class="slds-m-top_medium">
+                            <lightning-button label="Save" onclick={handleSave} disabled={saveButtonDisabled}></lightning-button>
+                            <!--<lightning-button label="Cancel" onclick={handleCancel} class="slds-m-left_small"></lightning-button>-->
+                        </div>
+                    </template>
+                </lightning-card>
+            </lightning-accordion-section>
+        </lightning-accordion>
+      </lightning-accordion-section>
+      <lightning-accordion-section name="OCR Capture" label = "OCR Capture">
+        <c-ocr-capture-details record-id={recordId} 
+        total-receivable={calculatedReceivable} 
+        total-builder-demand-raised={ocrDefinition.totalDemand} 
+        customer-portion={ocrDefinition.customerPortion}
+        onocrsaved={handleOcrSaved} is-ocr-editable={isOcrEditable}>
+        </c-ocr-capture-details>
+      </lightning-accordion-section>
+      <lightning-accordion-section name="OCR Transaction" label="OCR Transaction">
+                <c-ocr-transaction-details record-id={recordId}>
+                </c-ocr-transaction-details>
+      </lightning-accordion-section>
+   </lightning-accordion>
+</template>

@@ -1,0 +1,493 @@
+:host {
+    display: block;
+
+    --primary-blue: #1b96ff;
+    --header-blue: #1d3f6e;
+    --dark-blue: #031d40;
+    --card-blue: #07244a;
+    --border-blue: #1c3e69;
+    --text-primary: #ffffff;
+    --text-secondary: #b8c7dc;
+
+    font-family: "Salesforce Sans", Arial, sans-serif;
+}
+
+/* ==========================================
+   CONTAINER
+========================================== */
+
+:host * {
+    box-sizing: border-box;
+}
+
+.cso-container {
+    width: 100%;
+    max-width: 100%;
+    background: #031d40;
+    border: 2px solid #1b96ff;
+    border-radius: 10px;
+    overflow: hidden;
+    color: white;
+}
+
+/* ==========================================
+   HEADER
+========================================== */
+
+.cso-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    padding: 16px 20px;
+
+    background: linear-gradient(
+        90deg,
+        #12294c,
+        #0a1b34
+    );
+
+    border-bottom: 1px solid var(--border-blue);
+    flex-wrap: wrap;
+}
+
+.cso-header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cso-icon {
+    width: 40px;
+    height: 40px;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    border-radius: 10px;
+
+    background: #1b96ff;
+}
+
+.cso-icon-glyph {
+    color: white;
+    font-size: 18px;
+}
+
+.cso-eyebrow {
+    margin: 0;
+    color: #9fc6ff;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .08em;
+}
+
+.cso-title {
+    margin: 2px 0;
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+}
+
+.cso-subtitle {
+    margin: 0;
+    color: #c8d5e6;
+    font-size: 12px;
+}
+
+.cso-refresh-btn {
+    background: #1b96ff;
+    color: white;
+
+    border: none;
+    border-radius: 6px;
+
+    padding: 8px 16px;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+.cso-refresh-btn:hover {
+    background: #3ca6ff;
+}
+
+/* ==========================================
+   LEGEND
+========================================== */
+
+.cso-legend {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+
+    padding: 10px 20px;
+
+    background: #082852;
+
+    border-bottom: 1px solid var(--border-blue);
+}
+
+.cso-legend-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.cso-legend-label {
+    font-size: 12px;
+    color: #d4dce8;
+}
+
+.cso-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+}
+
+/* ==========================================
+   TOOLBAR
+========================================== */
+
+.cso-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    gap: 16px;
+    flex-wrap: wrap;
+
+    padding: 14px 20px;
+
+    background: #041f42;
+
+    border-bottom: 1px solid var(--border-blue);
+}
+
+.cso-search-wrap {
+    position: relative;
+    flex: 1 1 220px;
+    min-width: 180px;
+    max-width: 350px;
+}
+
+.cso-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 14px;
+}
+
+.cso-search-input {
+    width: 100%;
+
+    padding: 8px 12px 8px 34px;
+
+    border: 1px solid #355b8f;
+    border-radius: 6px;
+
+    background: #0b2d59;
+    color: white;
+}
+
+.cso-search-input::placeholder {
+    color: #90a8c7;
+}
+
+.cso-product-select {
+    min-width: 220px;
+
+    padding: 8px 10px;
+
+    border-radius: 6px;
+    border: 1px solid #355b8f;
+
+    background: #0b2d59;
+    color: white;
+}
+
+/* ==========================================
+   TABLE
+========================================== */
+
+.cso-table-wrapper {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+}
+
+.cso-table {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+    table-layout: fixed;
+    background: #031d40;
+}
+
+.cso-table thead tr {
+    background: linear-gradient(90deg, #16294a, #0d1b33);
+}
+
+.cso-table th {
+    padding: 14px 20px;
+
+    text-align: left;
+
+    color: #bccbdd;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: .07em;
+    text-transform: uppercase;
+}
+
+.cso-table tbody tr {
+    background: #031d40;
+    border-bottom: 1px solid #1d3962;
+}
+
+.cso-table tbody tr:hover {
+    background: #08284f;
+}
+
+.cso-table td {
+    padding: 16px 20px;
+    vertical-align: middle;
+
+    color: #dbe5f2;
+    font-size: 14px;
+    line-height: 1.35;
+
+    overflow-wrap: break-word;
+    word-break: break-word;
+}
+
+/* ==========================================
+   COLUMN WIDTHS
+========================================== */
+
+.cso-table th:nth-child(1),
+.cso-table td:nth-child(1) {
+    width: 15%;
+}
+
+.cso-table th:nth-child(2),
+.cso-table td:nth-child(2) {
+    width: 13%;
+}
+
+.cso-table th:nth-child(3),
+.cso-table td:nth-child(3) {
+    width: 16%;
+}
+
+.cso-table th:nth-child(4),
+.cso-table td:nth-child(4) {
+    width: 34%;
+}
+
+.cso-table th:nth-child(5),
+.cso-table td:nth-child(5) {
+    width: 9%;
+}
+
+.cso-table th:nth-child(6),
+.cso-table td:nth-child(6) {
+    width: 13%;
+}
+
+/* ==========================================
+   APPLICATION
+========================================== */
+
+.cso-app-id {
+    color: #77b0ff;
+    font-size: 13px;
+    font-weight: 700;
+
+    margin-bottom: 4px;
+}
+
+.cso-app-name {
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+/* ==========================================
+   HOUSEHOLD
+========================================== */
+
+.cso-table td:nth-child(2) {
+    color: #d6e0eb;
+    font-size: 14px;
+}
+
+/* ==========================================
+   PRODUCT BADGE
+========================================== */
+
+.cso-badge,
+[class*="badge"] {
+    display: inline-flex;
+    align-items: center;
+
+    padding: 7px 14px;
+
+    min-height: 30px;
+
+    border-radius: 8px;
+    border: 1px solid #1d66c9;
+
+    background: #10376a;
+
+    color: #7fb7ff;
+
+    font-size: 13px;
+    font-weight: 600;
+}
+
+/* ==========================================
+   WHY NOW
+========================================== */
+
+.cso-why-line {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 10px;
+
+    margin-bottom: 5px;
+
+    color: #dbe5f2;
+
+    font-size: 13px;
+    line-height: 1.3;
+}
+
+.cso-why-line:last-child {
+    margin-bottom: 0;
+}
+
+.cso-why-icon {
+    color: #59a4ff;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+/* Semantic color coding: confirmed (green), missing/gap (amber), informational (blue) */
+.cso-icon-success {
+    color: #4ade80;
+}
+
+.cso-icon-warning {
+    color: #fbbf24;
+}
+
+.cso-icon-info {
+    color: #59a4ff;
+}
+
+/* ==========================================
+   EST VALUE
+========================================== */
+
+.cso-col-right {
+    text-align: right;
+}
+
+td.cso-col-right {
+    color: #c7dcff;
+    font-size: 15px;
+    font-weight: 700;
+}
+
+/* ==========================================
+   ACTION BUTTON
+========================================== */
+
+.cso-action-btn {
+    width: 100%;
+    max-width: 180px;
+    min-height: 40px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    padding: 6px 10px;
+
+    border-radius: 8px;
+    border: 1px solid #2f80ff;
+
+    background: #2f6fdf;
+    color: #ffffff;
+
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.25;
+
+    cursor: pointer;
+    white-space: normal;
+    word-break: break-word;
+    text-align: center;
+
+    transition: all 0.2s ease;
+}
+
+.cso-action-btn:hover {
+    background: #4582ee;
+}
+
+/* Secondary (muted) CTA — used for lower-emphasis actions such as insurance offers */
+.cso-action-btn-secondary {
+    background: #152c4f;
+    border: 1px solid #24406c;
+    color: #bcd0ee;
+}
+
+.cso-action-btn-secondary:hover {
+    background: #1c3a63;
+}
+
+.cso-actioned {
+    color: #4ade80;
+    font-size: 14px;
+    font-weight: 700;
+}
+
+/* ==========================================
+   EMPTY STATE
+========================================== */
+
+.cso-empty-state {
+    padding: 40px;
+    text-align: center;
+
+    background: #031d40;
+    color: #bccbdd;
+}
+
+/* ==========================================
+   TOAST
+========================================== */
+
+.cso-toast {
+    position: fixed;
+
+    bottom: 20px;
+    right: 20px;
+
+    background: #1b96ff;
+    color: white;
+
+    padding: 12px 18px;
+
+    border-radius: 8px;
+
+}

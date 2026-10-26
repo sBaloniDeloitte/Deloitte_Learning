@@ -1,0 +1,19 @@
+<template>
+    <template if:true={isModalOpen}>
+        
+        <!-- <div class="custom-container"> -->
+            <!-- HEADER -->
+            <!-- <header class="header-section">
+                <div class="slds-text-align_center">
+                    <h2 class="slds-text-heading_medium slds-hyphenate header-title">{headerTitle}</h2>
+                </div>
+            </header> -->
+
+            <!-- Child Component -->
+            <c-query-module-child-cmp
+                record-id={recordId}
+                onclosemodal={handleCloseModal}>
+            </c-query-module-child-cmp>
+        <!-- </div> -->
+    </template>
+</template>

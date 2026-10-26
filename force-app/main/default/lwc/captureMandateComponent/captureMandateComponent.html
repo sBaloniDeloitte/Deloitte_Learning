@@ -1,0 +1,747 @@
+<template>
+    <lightning-card>
+        
+        <template lwc:if={openModal}>
+            <c-confirmation-screen confirm-message="Are you sure you want to delete this mandate ? " negative-label="No" positive-label="Yes"
+                onnegativeclick={closeModal} onpositiveclick={handleDeleteSelection}>
+            </c-confirmation-screen>
+        </template>
+        <span class="styleContainer"></span>
+        <!-- Repayment Account Details Table -->
+        <div class="slds-m-around_medium">
+            <h2 class="slds-text-title_bold slds-m-bottom_small">Repayment Bank Account Details</h2>
+            <div class="table-container">
+                <table cellpadding="0" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 1px solid black;" class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right custom-table">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th style="width: 25%; text-align: center;">
+                                <div class="slds-truncate" title="Charge Name">A/C Holder Name</div>
+                            </th>
+                            <th style="width: 25%; text-align: center; ">
+                                <div class="slds-truncate" title="Bank Name">Bank Name</div>
+                            </th>
+                            <th style="width: 25%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                                <div class="slds-truncate" title="A/C Number">A/C Number</div>
+                            </th>
+                            <th style="width: 25%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                                <div class="slds-truncate" title="A/C Type">A/C Type</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={repaymentAccounts} for:item="row">
+                            <tr key={row.id}>
+                                <td style="text-align: center; padding: 3px; border: 1px solid black;">{row.accountHolderName} ({row.applicanttype})</td>
+                                <td style="text-align: center; padding: 3px; border: 1px solid black;">{row.bankName}</td>
+                                <td style="text-align: center; padding: 3px; border: 1px solid black;">{row.accountNumber}</td>
+                                <td style="text-align: center; padding: 3px; border: 1px solid black;">{row.accountType}</td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <!-- Info Icon and Help Text -->
+        <div class="slds-m-around_medium slds-grid slds-gutters slds-align_start slds-m-top_small">
+            <lightning-icon 
+                icon-name="utility:info" 
+                alternative-text="Info" 
+                size="small" 
+                class="slds-m-right_x-small">
+            </lightning-icon>
+            <span class="slds-text-body_small">
+                If you want to modify repayment account details, please raise a query and select query type as "Modify Repayment Account Details".
+            </span>
+        </div>
+        <!-- Created Mandate Table (Appears after mandate creation) -->
+        <template if:true={mandateCreated}>
+            <div class="slds-m-around_medium">
+                <h2 class="slds-text-title_bold slds-m-bottom_small">Created Mandate Details</h2>
+                <div>
+                    <table cellpadding="0" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 1px solid black;" class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right custom-table">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th style="width: 11%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                                    <div class="slds-truncate" title="Mandate Type">Mandate Type</div>
+                                </th>
+                                <th style="width: 12.5%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                                    <div class="slds-truncate" title="Mandate Type">Mandate Mode</div>
+                                </th>
+                                <th style="width: 12%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                                    <div class="slds-truncate" title="Mandate Type">Bank Account Number</div>
+                                </th>
+                                <th style="text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                                    <div class="slds-truncate" title="Mandate Type">Bank Name</div>
+                                </th>
+                                <th style="width: 8%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                                    <div class="slds-truncate" title="Max Limit">Max Limit</div>
+                                </th>
+                                <th style="width: 7%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                                    <div class="slds-truncate" title="Start Date">Start Date</div>
+                                </th>
+                                <th style="width: 7%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                                    <div class="slds-truncate" title="End Date">End Date</div>
+                                </th>
+                                <th style="width: 8%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                                    <div class="slds-truncate" title="Periodicity">Periodicity</div>
+                                </th>
+                                <th style="width: 8%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                                    <div class="slds-truncate" title="Status">Status</div>
+                                </th>
+                                <template lwc:if={isEditableUser}>
+                                    <th style="width: 5%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                                        <div class="slds-truncate" title="Edit">Action</div>
+                                    </th>
+                                </template>
+                                <template lwc:if={needToRehitEnach}>
+                                    <th style="width: 5%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                                        <div class="slds-truncate" title="RehitApi"> Re-hit e-NACH</div>
+                                    </th>
+                                </template>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={createdMandate} for:item="mandate">
+                                <tr key={mandate.id}>
+                                    <td style="text-align: center; padding: 3px; border: 1px solid black;">
+                                        {mandate.mandateType}
+                                    </td>
+                                    <td style="text-align: center; padding: 3px; border: 1px solid black;">
+                                        <template if:true={mandate.isEditing}>
+                                            <lightning-combobox 
+                                                class="removeborder" 
+                                                style="width:100%;"
+                                                name="mandateMode" 
+                                                value={mandate.mandateMode} 
+                                                options={mandateModeOptions} 
+                                                onchange={handleEditChange} 
+                                                data-field="mandateMode" 
+                                                data-id={mandate.id}>
+                                            </lightning-combobox>
+                                        </template>
+                                        <template if:false={mandate.isEditing}>
+                                            {mandate.mandateMode}
+                                        </template>
+                                    </td>
+                                    <td style="text-align: center; padding: 3px; border: 1px solid black;">
+                                            {mandate.bankAccountNumber}
+                                    </td>
+                                    <td style="text-align: center; padding: 3px; border: 1px solid black;">
+                                            {mandate.bankName}
+                                    </td>
+                                    <td style="text-align: center; padding: 3px;  border: 1px solid black;">
+                                        <template if:true={mandate.isEditing}>
+                                            <lightning-input 
+                                                class="hideInput"
+                                                variant="bare"
+                                                type="number" 
+                                                value={mandate.maxLimit} 
+                                                data-field="maxLimit" 
+                                                onchange={handleEditChange} 
+                                                data-id={mandate.id}>
+                                            </lightning-input>
+                                        </template>
+                                        <template if:false={mandate.isEditing}>
+                                            {mandate.maxLimit}
+                                        </template>
+                                    </td>
+                                    <td style="text-align: center; padding: 3px;  border: 1px solid black;">
+                                        <template if:true={mandate.isEditing}>
+                                            <lightning-input 
+                                                class="hideInput"
+                                                variant="bare"
+                                                type="date" 
+                                                value={mandate.startDate} 
+                                                data-field="startDate" 
+                                                onchange={handleEditChange} 
+                                                data-id={mandate.id}>
+                                            </lightning-input>
+                                        </template>
+                                        <template if:false={mandate.isEditing}>
+                                            {mandate.startDate}
+                                        </template>
+                                    </td>
+                                    <td style="text-align: center; padding: 3px;  border: 1px solid black;">
+                                        <template if:true={mandate.isEditing}>
+                                            <lightning-input
+                                                class="hideInput"
+                                                variant="bare" 
+                                                type="date" 
+                                                min={minEndDate}
+                                                value={mandate.endDate} 
+                                                data-field="endDate" 
+                                                onchange={handleEditChange}
+                                                data-id={mandate.id}>
+                                            </lightning-input>
+                                        </template>
+                                        <template if:false={mandate.isEditing}>
+                                            {mandate.endDate}
+                                        </template>
+                                    </td>
+                                    <td style="text-align: center; padding: 3px; border: 1px solid black;">
+                                        <template if:true={mandate.isEditing}>
+                                            <lightning-combobox 
+                                                class="removeborder" 
+                                                style="width:100%;"
+                                                name="periodicity" 
+                                                value={mandate.periodicity} 
+                                                options={periodicityOptions} 
+                                                onchange={handleEditChange} 
+                                                data-field="periodicity"
+                                                data-id={mandate.id}>
+                                            </lightning-combobox> <!--Sanwar-->
+                                        </template>
+                                        <template if:false={mandate.isEditing}>
+                                            {mandate.periodicity}
+                                        </template>
+                                    </td>
+                                    <td style="text-align: center; padding: 3px; border: 1px solid black;">
+                                        <!-- {mandate.status} -->
+                                        <template if:true={mandate.isEditing}>
+                                            <lightning-combobox 
+                                                class="removeborder" 
+                                                style="width:100%;"
+                                                name="mandateStatus" 
+                                                value={mandate.status} 
+                                                options={mandateStatusOption} 
+                                                
+                                                data-field="mandateStatus" 
+                                                data-id={mandate.id}
+                                                onblur={handleEditChange}>
+                                            </lightning-combobox>
+                                        </template>
+                                        <template if:false={mandate.isEditing}>
+                                            {mandate.status}
+                                        </template>
+                                    </td>
+                                    <template lwc:if={isEditableUser}>
+                                        <td style="text-align: center; padding: 3px; border: 1px solid black;">
+                                            <!-- 
+                                                <template if:true={mandate.isEditing}>
+                                                <lightning-button-icon 
+                                                    icon-name="utility:save"
+                                                    alternative-text="Save"
+                                                    variant="bare"
+                                                    size="medium"
+                                                    class="slds-m-left_medium"
+                                                    onclick={saveUpdatedMandate} 
+                                                    data-id={mandate.id}>
+                                                </lightning-button-icon>
+                                            </template>
+                                            <template if:false={mandate.isEditing}>
+                                                <lightning-button-icon 
+                                                    icon-name="utility:edit"
+                                                    alternative-text="Edit"
+                                                    variant="bare"
+                                                    size="medium"
+                                                    class="slds-m-left_medium"
+                                                    onclick={toggleEdit}
+                                                    data-id={mandate.id}>
+                                                </lightning-button-icon>
+                                            </template>
+                                                 &nbsp;&nbsp;&nbsp;-->
+                                                 <!--Sanwar - Start-->
+                                                <template if:true={mandate.isEditing}>
+                                                    <lightning-button-icon 
+                                                        icon-name="utility:save"
+                                                        alternative-text="Save"
+                                                        class="slds-m-left_x-medium"
+                                                        variant="bare"
+                                                        size="medium"
+                                                        onclick={saveUpdatedMandate}
+                                                        data-id={mandate.id}>
+                                                    </lightning-button-icon>
+                                                </template>
+                                                <template if:true={isVisible}>
+                                                    <template if:false={mandate.isEditing}>
+                                                        <lightning-button-icon 
+                                                            icon-name="utility:edit"
+                                                            alternative-text="Edit"
+                                                            class="slds-m-left_x-medium"
+                                                            variant="bare"
+                                                            size="medium"
+                                                            onclick={handleEditMandate}
+                                                            data-id={mandate.id}>
+                                                        </lightning-button-icon>
+                                                    </template>
+                                                    <!--Sanwar - End-->
+                                                    <lightning-button-icon 
+                                                        icon-name="utility:delete"
+                                                        alternative-text="Delete"
+                                                        class="slds-m-left_x-medium delete-icon"
+                                                        variant="bare"
+                                                        size="medium"
+                                                        onclick={openModalConfirmation}
+                                                        data-id={mandate.id}>
+                                                    </lightning-button-icon>
+                                                </template>
+                                        </td>
+                                    </template>  
+                                    <template if:true={mandate.showRehit}>
+                                        <td style="text-align: center; padding: 3px; border: 1px solid black;">
+                                            <lightning-button-icon
+                                                icon-name="utility:refresh"
+                                                alternative-text="Re-hit e-NACH"
+                                                title="Re-hit e-NACH"
+                                                onclick={handleRehitEnach}
+                                                data-id={mandate.id}
+                                                variant="border-filled"
+                                                size="medium"
+                                                >
+                                            </lightning-button-icon><!--disabled={isLoading}-->
+                                        </td>
+                                    </template>                                  
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </template>
+        <template lwc:if={isEditableUser}>
+            <template lwc:if={isVisible}>
+            <!-- Mandate Creation Form -->
+                <div class="slds-m-around_medium">
+                    <lightning-card>
+                        <div class="slds-p-around_medium">
+                            <div class="slds-section slds-is-open">
+                                <div class="mandate-header">
+                                        <lightning-icon
+                                            icon-name="utility:chevrondown"
+                                            size="x-small"
+                                            class="section-icon">
+                                        </lightning-icon>
+
+                                        <span>Mandate Details</span>
+                                    </div>
+                                    <div class="mandate-container">
+                                        <div class="slds-grid slds-gutters slds-wrap mandate-form">
+                                        <!-- Mandate Type -->
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <lightning-combobox 
+                                                class="removeborder" 
+                                                style="width:100%;"
+                                                name="mandateType" 
+                                                label="Mandate Type" 
+                                                value={mandate.mandateType}
+                                                options={mandateTypeOptions} 
+                                                onchange={handleMandateTypeChange}
+                                                disabled={disableDocField}
+                                                data-field="mandateType" required>
+                                            </lightning-combobox>
+                                        </div>
+                                        <!-- Mandate Mode -->
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <lightning-combobox
+                                                class="removeborder" 
+                                                style="width:100%;" 
+                                                name="mandateMode" 
+                                                label="Mandate Mode" 
+                                                value={mandate.mandateMode}
+                                                options={mandateModeOptions} 
+                                                onchange={handleInputChange}
+                                                disabled={disableDocField}
+                                                data-field="mandateMode" required>
+                                            </lightning-combobox>
+                                        </div>
+
+                                        <!-- Customer Name (Greyed Out) -->
+                                        
+                                        <template if:true={isSecurityMandate}>
+                                            <div class="slds-col slds-size_1-of-3">
+                                                <lightning-combobox
+                                                    class="removeborder" 
+                                                    style="width:100%;" 
+                                                    name="customerName" 
+                                                    label="Customer Name" 
+                                                    value={selectedApplicantId}
+                                                    options={applicants} 
+                                                    onchange={handleApplicantChange}
+                                                    disabled={disableDocField}
+                                                    required>
+                                            </lightning-combobox>
+                                            </div>
+                                        </template>
+                                        <template if:false={isSecurityMandate}>
+                                            <div class="slds-col slds-size_1-of-3">
+                                                <lightning-combobox
+                                                    class="removeborder" 
+                                                    style="width:100%;" 
+                                                    name="customerName" 
+                                                    label="Customer Name" 
+                                                    value={selectedApplicantId}
+                                                    options={applicants} 
+                                                    onchange={handleApplicantChange}
+                                                    disabled={disableDocField}
+                                                    required>
+                                            </lightning-combobox>
+                                            </div>
+                                        </template>
+
+                                        <!-- Customer Type (Greyed Out) -->
+                                        <template if:true={isSecurityMandate}>
+                                            <div class="slds-col slds-size_1-of-3">
+                                                <lightning-input
+                                                class="hideInput"
+                                                variant="bare" 
+                                                type="text" 
+                                                label="Customer Type" 
+                                                value={selectedApplicantType} 
+                                                disabled>
+                                            </lightning-input>
+                                            </div>
+                                        </template>
+                                        <template if:false={isSecurityMandate}>
+                                            <div class="slds-col slds-size_1-of-3">
+                                                <lightning-input
+                                                    class="hideInput"
+                                                    variant="bare" 
+                                                    type="text" 
+                                                    label="Customer Type" 
+                                                    value={selectedBankDetail.applicanttype} 
+                                                    disabled>
+                                                </lightning-input>
+                                            </div>
+                                        </template>
+                                        
+                                        <!-- Bank Name (Greyed Out) -->
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <lightning-input 
+                                                class="hideInput"
+                                                variant="bare"
+                                                type="text" 
+                                                label="Bank Name" 
+                                                value={selectedBankDetail.bankName} 
+                                                data-field="BankDetail"
+                                                disabled
+                                                required>
+                                            </lightning-input>
+                                        </div>
+                                        <!-- Branch Name (Greyed Out) -->
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <!--Sanwar start(27/11/2025)-->
+                                            <!-- <lightning-combobox
+                                                class="removeborder" 
+                                                style="width:100%;" 
+                                                name="customerName" 
+                                                label="IFSC Code" 
+                                                value ={selectedIfsc} 
+                                                data-field="ifscCode"
+                                                options={branchOptions} 
+                                                onchange={handleInputChange}
+                                                required>
+                                            </lightning-combobox> -->
+                                            <!-- <lightning-combobox
+                                                class="removeborder" 
+                                                style="width:100%;" 
+                                                name="customerName" 
+                                                label="Branch Name" 
+                                                data-field="branchName"
+                                                options={branchOptions} 
+                                                onchange={handleInputChange}
+                                                required>
+                                            </lightning-combobox>Sanwar end(27/11/2025) -->
+                                        <lightning-input
+                                            class="hideInput"
+                                            variant="bare"
+                                            type="search" label="IFSC Code"
+                                            placeholder="Search IFSC Code..." value={selectedIfscLabel}
+                                            onchange={handleInputChange} data-field="ifscCode" disabled
+                                            required>
+                                        </lightning-input>
+
+                                        <template if:true={filteredIfscList.length}>
+                                            <ul class="slds-list_dotted slds-m-top_small slds-box slds-box_x-small">
+                                                <template for:each={filteredIfscList} for:item="ifsc">
+                                                    <li key={ifsc.Id}
+                                                        class="slds-p-vertical_x-small slds-border_bottom">
+                                                        <a href="javascript:void(0);"
+                                                        onclick={handleIfscSelect}
+                                                        data-id={ifsc.Id}
+                                                        data-label={ifsc.label}
+                                                        data-value={ifsc.value}>
+                                                            {ifsc.label}
+                                                        </a>
+                                                    </li>
+                                                </template>
+                                            </ul>
+                                        </template>
+
+                                        </div>
+                                        <!-- Bank Account Number (Greyed Out) -->
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <lightning-input
+                                                class="hideInput"
+                                                variant="bare" 
+                                                type="text" 
+                                                label="Bank Account Number" 
+                                                value={selectedBankDetail.accountNumber} 
+                                                disabled>
+                                            </lightning-input>
+                                        </div>
+                                        <!-- Bank Account Type (Greyed Out) -->
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <lightning-input
+                                                class="hideInput"
+                                                variant="bare" 
+                                                type="text" 
+                                                label="Bank Account Type" 
+                                                value={selectedBankDetail.accountType} 
+                                                disabled>
+                                            </lightning-input>
+                                        </div>
+                                        <!-- Branch Location (Greyed Out) -->
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <lightning-input
+                                                class="hideInput"
+                                                variant="bare" 
+                                                type="text" 
+                                                label="Branch Location" 
+                                                value={selectedBankDetail.branchLocation} 
+                                                disabled>
+                                            </lightning-input>
+                                        </div>
+                                        <!-- IFS Code (Greyed Out) -->
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <!--Sanwar start(27/11/2025)-->
+                                            <!-- <lightning-input 
+                                                class="hideInput"
+                                                variant="bare"
+                                                type="text" 
+                                                label="IFSC Code" 
+                                                value={selectedBankDetail.ifsc} 
+                                                disabled>
+                                            </lightning-input> -->
+                                            <lightning-input
+                                                class="hideInput"
+                                                variant="bare" 
+                                                type="text" 
+                                                label="Branch Name" 
+                                                value={selectedBankDetail.branchName} 
+                                                disabled>
+                                            </lightning-input><!--Sanwar End (27/11/2025)-->
+                                        </div>
+                                        <!-- MICR Code (Greyed Out) -->
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <lightning-input
+                                                class="hideInput"
+                                                variant="bare" 
+                                                type="text" 
+                                                label="MICR Code" 
+                                                value={selectedBankDetail.micr} 
+                                                disabled>
+                                            </lightning-input>
+                                        </div>
+                                        
+                                        <!-- Max Limit (Editable) -->
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <lightning-input
+                                                class="hideInput"
+                                                variant="bare" 
+                                                type="number" 
+                                                label="Max Limit" 
+                                                value={mandate.maxLimit} 
+                                                onchange={handleInputChange} 
+                                                disabled={disableDocField}
+                                                data-field="maxLimit" required>
+                                            </lightning-input>
+                                        </div>
+                                        <!-- Start Date (Editable) -->
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <lightning-input
+                                                class="hideInput"
+                                                variant="bare" 
+                                                type="date" 
+                                                label="Start Date" 
+                                                value={mandate.startDate} 
+                                                onchange={handleInputChange} 
+                                                min={minMandateStartDate}
+                                                disabled={disableDocField}
+                                                data-field="startDate" required>
+                                            </lightning-input>
+                                        </div>
+                                        <!-- End Date (Editable) -->
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <lightning-input 
+                                                class="hideInput"
+                                                variant="bare"
+                                                type="date" 
+                                                label="End Date" 
+                                                min={minEndDate}
+                                                value={mandate.endDate} 
+                                                onchange={handleInputChange} 
+                                                data-field="endDate" required>
+                                            </lightning-input>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <lightning-combobox 
+                                                class="removeborder" 
+                                                style="width:100%;"
+                                                name="periodicity" 
+                                                label="Periodicity" 
+                                                value={mandate.periodicity}
+                                                options={periodicityOptions} 
+                                                onchange={handleInputChange}
+                                                disabled={disableDocField}
+                                                data-field="periodicity" required>
+                                            </lightning-combobox>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <lightning-input
+                                                class="hideInput"
+                                                variant="bare" 
+                                                type="text" 
+                                                label="UMRN Number" 
+                                                value={selectedBankDetail.umrn} 
+                                                disabled>
+                                            </lightning-input>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-3">
+                                            <lightning-input
+                                                class="hideInput"
+                                                variant="bare" 
+                                                type="text" 
+                                                label="Transaction Details" 
+                                                value={selectedBankDetail.txnDet} 
+                                                disabled>
+                                            </lightning-input>
+                                        </div>
+                                        <!-- <div class="slds-col slds-size_1-of-3">
+                                            <lightning-input 
+                                                class="hideInput"
+                                                variant="bare"
+                                                type="date" 
+                                                disabled="true"
+                                                label="Input Date" 
+                                                value={mandate.endDate} 
+                                                onchange={handleInputChange} 
+                                                data-field="endDate">
+                                            </lightning-input>
+                                        </div> -->
+                                        <!-- <div class="slds-col slds-size_1-of-3">
+                                            <lightning-combobox 
+                                                class="removeborder" 
+                                                style="width:100%;"
+                                                name="pennyDrop" 
+                                                label="Penny Drop Result" 
+                                                value={mandate.pennyDrop}
+                                                options={pennyDropOptions} 
+                                                onchange={handleInputChange}
+                                                disabled={disableDocField}
+                                                data-field="pennyDrop" required>
+                                            </lightning-combobox>
+                                        </div> -->
+                                        <!-- <div class="slds-col slds-size_1-of-3">
+                                            <lightning-input 
+                                                class="hideInput"
+                                                variant="bare"
+                                                type="checkbox" 
+                                                disabled="true"
+                                                label="External Mandate" 
+                                                value={mandate.endDate} 
+                                                onchange={handleInputChange} 
+                                                data-field="endDate">
+                                            </lightning-input>
+                                        </div> -->
+                                        <!-- <div class="slds-col slds-size_1-of-3">
+                                            <lightning-input 
+                                                class="hideInput"
+                                                variant="bare"
+                                                type="checkbox" 
+                                                disabled="true"
+                                                label="Swap" 
+                                                value={mandate.endDate} 
+                                                onchange={handleInputChange} 
+                                                data-field="endDate">
+                                            </lightning-input>
+                                        </div> -->
+                                    </div>
+                                    </div>
+                                    <!-- Create Mandate Button -->
+                                    <div class="slds-m-top_medium slds-text-align_right">
+                                        <template if:true={isSecurityMandate}>
+                                            <template if:true ={showBankCreationButton}>
+                                                <button class="slds-button slds-button_brand save-button" onclick={createBankaccnt}>Create Bank Account</button>
+                                            </template>
+                                        </template>
+                                        <template if:false={isSecurityMandate}>
+                                            <template if:false ={isDisable}>
+                                                <button class="slds-button slds-button_brand save-button" onclick={createBankaccnt} disabled={isDisable}>Create Bank Account</button>
+                                            </template>
+                                        </template>
+                                        <button class="slds-button slds-button_brand create-mandate-button" onclick={createMandate}>Create Mandate</button>
+                                    </div>
+                                </div>
+                            
+                        </div>
+                    </lightning-card>
+                    <template if:true={showBankModal}>
+                        <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+                            <div class={cssContainer}>
+                                <header class="slds-modal__header header-section">
+                                    <div class="slds-text-align_center">
+                                        <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">Bank Details</h2>
+                                    </div>
+                                </header>
+                                <div class="slds-modal__content slds-p-around_medium" id="confirm-body">
+                                    <div class="slds-m-around_medium">
+                                        <div class="table-container">
+                                            <table cellpadding="0" cellspacing="0" style="border-collapse: collapse; width: 100%; border: 1px solid black;" class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right custom-table">
+                                                <thead>
+                                                    <tr class="slds-line-height_reset">
+                                                        <th style="width: 20%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                                                            <div class="slds-truncate" title="Select">Select</div>
+                                                        </th>
+                                                        <th style="width: 20%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                                                            <div class="slds-truncate" title="Bank Name">Bank Name</div>
+                                                        </th>
+                                                        <th style="width: 20%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                                                            <div class="slds-truncate" title="IFSC">IFSC</div>
+                                                        </th>
+                                                        <th style="width: 20%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                                                            <div class="slds-truncate" title="Account Number">Account Number</div>
+                                                        </th>
+                                                        <th style="width: 20%; text-align: center; background-color: #5bb6e3;color: black;border: 1px solid black;">
+                                                            <div class="slds-truncate" title="Account Type">Account Type</div>
+                                                        </th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <template for:each={bankDetails} for:item="bank">
+                                                        <tr key={bank.id}>
+                                                            <td style="text-align: center; padding: 3px;border: 1px solid black;">
+                                                                <lightning-input  type="radio" name="bankSelection" 
+                                                                                value={bank.id} data-id={bank.id}
+                                                                                onchange={handleBankSelection}>
+                                                                </lightning-input>
+                                                            </td>
+                                                            <td style="text-align: center; padding: 3px;padding-bottom:3px; border: 1px solid black;">{bank.bankName}</td>
+                                                            <td style="text-align: center; padding: 3px;padding-bottom:3px; border: 1px solid black;">{bank.ifsc}</td>
+                                                            <td style="text-align: center; padding: 3px;padding-bottom:3px; border: 1px solid black;">{bank.accountNumber}</td>
+                                                            <td style="text-align: center; padding: 3px;padding-bottom:3px; border: 1px solid black;">{bank.accountType}</td>
+                                                        </tr>
+                                                    </template>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                                <footer class="footer-section">
+                                    <div class="slds-align_right button-container">
+                                        <button class="slds-button slds-button_brand previous-button" onclick={closeBankModal}>Skip</button>
+                                    </div>
+                                </footer>
+                            </div>
+                        </section>
+                        <div class="slds-backdrop slds-backdrop_open" role="presentation"></div>
+                    </template>
+                    <template if:true={openBankAccountModal}>
+                        <!-- Sanwar (add is-security-mandate) -->
+                        <c-add-bank-account-cmp record-id={recordId} is-modal-open={openBankAccountModal} is-security-mandate={isSecurityMandate} onclosemodal={closeBankAccount} selected-applicant={selectedApplicant} onsavedbankrecord={populateBankDet}></c-add-bank-account-cmp> 
+                    </template>
+                </div>
+            </template>
+        </template>
+    </lightning-card>
+</template>

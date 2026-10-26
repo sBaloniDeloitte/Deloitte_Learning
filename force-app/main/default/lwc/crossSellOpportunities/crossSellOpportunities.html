@@ -1,0 +1,107 @@
+<!--_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________-->
+<template>
+    <div class="cso-container">
+        <!-- Header -->
+        <div class="cso-header">
+            <div class="cso-header-left">
+                <div class="cso-icon">
+                    <span class="cso-icon-glyph">✦</span>
+                </div>
+                <div class="cso-header-text">
+                    <p class="cso-eyebrow">PORTFOLIO · CROSS-SELL</p>
+                    <h1 class="cso-title">Cross-sell opportunities</h1>
+                    <p class="cso-subtitle">8 households flagged · scoped to your book · updated just now</p>
+                </div>
+            </div>
+            <div class="cso-header-right">
+                <button class="cso-refresh-btn" onclick={handleRefresh}>Refresh</button>
+            </div>
+        </div>
+
+        <!-- Legend -->
+        <div class="cso-legend">
+            <template for:each={legendItems} for:item="item">
+                <span class="cso-legend-item" key={item.key}>
+                    <span class={item.dotClass}></span>
+                    <span class="cso-legend-label">{item.label}</span>
+                </span>
+            </template>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="cso-toolbar">
+            <div class="cso-search-wrap">
+                <span class="cso-search-icon">🔍</span>
+                <input
+                    type="text"
+                    class="cso-search-input search-input"
+                    placeholder="Search by student or application id"
+                    onkeyup={handleSearchChange}
+                />
+            </div>
+            <select class="cso-product-select product-select" onchange={handleProductChange}>
+                <template for:each={productOptions} for:item="opt">
+                    <option key={opt.value} value={opt.value}>{opt.label}</option>
+                </template>
+            </select>
+        </div>
+
+        <!-- Table -->
+        <template lwc:if={hasRecords}>
+            <div class="cso-table-wrapper">
+                <table class="cso-table">
+                    <thead>
+                        <tr>
+                            <th>APPLICATION</th>
+                            <th>HOUSEHOLD</th>
+                            <th>PRODUCT OPPORTUNITY</th>
+                            <th>WHY NOW</th>
+                            <th class="cso-col-right">EST. VALUE</th>
+                            <th>ACTION</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={filteredRecords} for:item="rec">
+                            <tr key={rec.id}>
+                                <td>
+                                    <div class="cso-app-id">{rec.applicationId}</div>
+                                    <div class="cso-app-name">{rec.applicantName}</div>
+                                </td>
+                                <td>{rec.household}</td>
+                                <td>
+                                    <span class={rec.badgeClass}>{rec.productLabel}</span>
+                                </td>
+                                <td>
+                                    <template for:each={rec.whyNow} for:item="line">
+                                        <div class="cso-why-line" key={line.text}>
+                                            <span class={line.iconClass}>{line.icon}</span>
+                                            <span>{line.text}</span>
+                                        </div>
+                                    </template>
+                                </td>
+                                <td class="cso-col-right">{rec.estValue}</td>
+                                <td>
+                                    <template lwc:if={rec.actioned}>
+                                        <span class="cso-actioned">✓ Actioned</span>
+                                    </template>
+                                    <template lwc:else>
+                                        <button class={rec.actionBtnClass} data-id={rec.id} onclick={handleAction}>{rec.actionLabel}</button>
+                                    </template>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </template>
+        <template lwc:else>
+            <div class="cso-empty-state">No matching cross-sell opportunities</div>
+        </template>
+
+        <!-- Toast -->
+        <template lwc:if={showToast}>
+            <div class="cso-toast">{toastMessage}</div>
+        </template>
+    </div>
+</template>
+<!--__________________________GenAI: Generated code ends here______________________________-->

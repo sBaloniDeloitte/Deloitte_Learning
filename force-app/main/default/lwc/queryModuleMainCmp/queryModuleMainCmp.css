@@ -1,0 +1,43 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import "c/cssLibrary";
+
+/* ----------------- Dark Theme Palette -----------------
+   Matches the modal colour scheme / gradient header-footer used on
+   homeQuickAction and queryModuleChildCmp so this wrapper stays
+   consistent if its (currently commented-out) header/footer markup is
+   re-enabled. */
+:host {
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-text: #ffffff;
+    --dt-gradient: linear-gradient(135deg, rgb(0, 26, 94) 0%, rgb(0, 48, 135) 55%, rgb(0, 77, 179) 100%);
+}
+
+.header-section {
+    background-image: var(--dt-gradient) !important;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    text-align: center;
+    font-weight: bold;
+    color: var(--dt-text) !important;
+    border-bottom: 1px solid var(--dt-border);
+}
+
+.footer-section {
+    background-image: var(--dt-gradient) !important;
+    position: sticky;
+    bottom: 0;
+    text-align: center;
+    border-top: 1px solid var(--dt-border);
+}
+
+.slds-modal__header .slds-modal__close {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

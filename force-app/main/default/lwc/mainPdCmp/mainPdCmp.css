@@ -1,0 +1,180 @@
+:host {
+	display: block;
+	min-height: 100%;
+	background: #12172b;
+	color: #ffffff;
+	--pd-page-bg: #12172b;
+	--pd-panel-bg: #1c2238;
+	--pd-field-bg: #16283f;
+	--pd-accent: #1467eb;
+	--pd-border: #2a2f45;
+	--pd-muted: #8a99b3;
+	--slds-c-input-label-color: #ffffff;
+	--slds-c-checkbox-label-color: #ffffff;
+	--slds-c-accordion-color-background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+	--slds-c-accordion-section-color-background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+	--slds-c-accordion-summary-color-background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+	--slds-c-accordion-summary-heading-color: #ffffff;
+	--slds-c-accordion-summary-text-color: #ffffff;
+	--slds-c-accordion-color-border: #2a2f45;
+}
+
+.bsa-page {
+	min-height: 100%;
+	padding: 12px;
+	background: var(--pd-page-bg);
+	color: #ffffff;
+}
+
+.example-accordion {
+    --slds-c-accordion-summary-color-background: linear-gradient(
+        135deg,
+        #001a5e 0%,
+        #003087 55%,
+        #004db3 100%
+    ) !important;
+
+    --slds-c-accordion-summary-text-color: white !important;
+    --slds-c-accordion-summary-heading-color: white !important;
+}
+
+/* Accordion Section */
+.example-accordion lightning-accordion-section {
+    --slds-c-accordion-section-color-background: linear-gradient(
+        135deg,
+        #001a5e 0%,
+        #003087 55%,
+        #004db3 100%
+    ) !important;
+
+    --slds-c-accordion-summary-color-background: linear-gradient(
+        135deg,
+        #001a5e 0%,
+        #003087 55%,
+        #004db3 100%
+    ) !important;
+
+    --slds-c-accordion-summary-heading-color: #ffffff !important;
+    --slds-c-accordion-summary-text-color: #ffffff !important;
+    --slds-c-accordion-color-border: var(--pd-border);
+}
+
+/* ____GenAI: Generated code starts here - lightning-accordion-section ships
+   with an inline `background-color: white` set directly on the element
+   itself (confirmed root cause, matching the same fix already proven in
+   salesLoginApplicantOtherInformationCmp.css), so the SLDS custom-property
+   hooks above never had any visible effect - a plain external rule with
+   !important is required, since !important on an external stylesheet rule
+   always wins over a plain inline style regardless of selector specificity.
+   This directly repaints the Physical PD / Video PD / Tele PD section
+   headers with the same blue gradient used by "Personal Discussion".____ */
+.example-accordion lightning-accordion-section {
+    background: linear-gradient(
+        135deg,
+        #001a5e 0%,
+        #003087 55%,
+        #004db3 100%
+    ) !important;
+    color: #ffffff !important;
+}
+/* ____GenAI: Generated code ends here____ */
+
+/* Force all accordion headers */
+.example-accordion .slds-accordion__summary,
+.example-accordion .slds-accordion__summary-heading,
+.example-accordion .slds-accordion__section {
+    background: linear-gradient(
+        135deg,
+        #001a5e 0%,
+        #003087 55%,
+        #004db3 100%
+    ) !important;
+    color: #ffffff !important;
+}
+
+.styleContainer {
+	display: none;
+}
+/* Accordion Header */
+.example-accordion .slds-accordion__summary {
+    background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%) !important;
+}
+
+/* Accordion Section Container */
+.example-accordion .slds-accordion__section {
+    background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%) !important;
+}
+
+/* Accordion Button */
+.example-accordion .slds-accordion__summary-action {
+    background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%) !important;
+    color: white !important;
+}
+
+/* Accordion Text */
+.example-accordion .slds-accordion__summary-heading,
+.example-accordion .slds-accordion__summary-heading button,
+.example-accordion .slds-accordion__summary-action .slds-truncate {
+    color: white !important;
+}
+
+.bsa-page {
+    --slds-c-accordion-summary-color-background: linear-gradient(
+        135deg,
+        #001a5e 0%,
+        #003087 55%,
+        #004db3 100%
+    );
+
+    --slds-c-accordion-heading-text-color: #ffffff;
+}
+
+/* ____GenAI: Generated code starts here - hand-built accordion replacing
+   lightning-accordion/lightning-accordion-section (see mainPdCmp.html for
+   why: the base component's header lives inside its own fully encapsulated
+   shadow root in this org, and neither the SLDS custom-property hooks nor
+   the external tag/class overrides above ever repainted it - confirmed by
+   deploying twice and hard-refreshing with zero visual change both times).
+   These rules style plain divs owned directly by this component, so there
+   is no shadow boundary to cross - guaranteed to render. Colors match the
+   "Personal Discussion" blue gradient used elsewhere in this screen.____ */
+.custom-pd-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.custom-pd-section {
+    border: 1px solid var(--pd-border);
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: var(--pd-page-bg);
+}
+
+.custom-pd-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+    color: #ffffff;
+    cursor: pointer;
+    user-select: none;
+}
+
+.custom-pd-icon {
+    --slds-c-icon-color-foreground-default: #ffffff;
+    --sds-c-icon-color-foreground-default: #ffffff;
+}
+
+.custom-pd-title {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.8125rem;
+}
+
+.custom-pd-body {
+    padding: 12px 16px;
+    background-color: var(--pd-page-bg);
+}
+/* ____GenAI: Generated code ends here____ */

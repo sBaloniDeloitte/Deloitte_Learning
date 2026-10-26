@@ -1,0 +1,183 @@
+:host {
+    display: block;
+    min-height: 100vh;
+    background: linear-gradient(
+        90deg,
+        #060912 0%,
+        #090d1c 40%,
+        #080b18 100%
+    );
+}
+
+.port-home-container {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 6vh 2rem 2rem;
+
+    background: linear-gradient(
+        90deg,
+        #060912 0%,
+        #090d1c 40%,
+        #080b18 100%
+    );
+}
+
+/* Main Card */
+.step-card {
+    width: 100%;
+    max-width: 500px;
+
+    background: linear-gradient(
+        135deg,
+        rgba(19, 24, 39, 0.95),
+        rgba(26, 29, 60, 0.95)
+    );
+
+    border-radius: 12px;
+    padding: 2rem;
+
+    border: 1px solid #1d3d73;
+    border-top: 3px solid #1680ff;
+
+    box-shadow:
+        0 8px 30px rgba(0,0,0,0.45),
+        0 0 25px rgba(71, 104, 255, 0.08);
+
+    color: white;
+}
+
+/* Step Number */
+.step-badge {
+    width: 30px;
+    height: 30px;
+
+    background: linear-gradient(
+        135deg,
+        #004acc,
+        #004acc
+    );
+
+    border-radius: 10px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    font-size: 12px;
+    font-weight: 700;
+    color: white;
+
+    margin-bottom: 20px;
+}
+
+/* Header */
+.step-title {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-align: left;
+    margin-bottom: 8px;
+}
+
+/* Description */
+.step-description {
+    font-size: 13px;
+    color: #9ea4b2;
+    line-height: 1.6;
+    margin-bottom: 24px;
+    text-align: left;
+}
+
+/* Buttons */
+.button-group {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+}
+
+/* Next / Submit Button */
+.red-button {
+    background: #004acc;
+    border: 1px solid #004acc;
+    color: #ffffff;
+    border-radius: 10px;
+    padding: 0 1.5rem;
+    min-width: 80px;
+    height: 2rem;
+    font-size: 0.8750rem;
+    font-weight: 400;
+    cursor: pointer;
+}
+
+.red-button:hover,
+.red-button:focus {
+    background: #004acc;
+    border-color: #004acc;
+}
+
+/* Download Button */
+.download-btn button.slds-button {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.08);
+
+    color: #ffffff;
+
+    border-radius: 10px;
+}
+
+/* Upload Area */
+.upload-section {
+    margin-top: 1.5rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+}
+
+/* Success Section */
+.submit-section {
+    margin-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,.08);
+    padding-top: 1.5rem;
+}
+
+/* Outer Frame  */
+.container {
+    width: 100%;
+    max-width: 1400px;
+    background: transparent;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.dark-btn {
+    --slds-c-button-neutral-color-background: #262a3f;
+    --slds-c-button-neutral-color-background-hover: #2f3450;
+    --slds-c-button-neutral-color-background-focus: #2f3450;
+    --slds-c-button-neutral-color-border: #313751;
+    --slds-c-button-neutral-color-border-hover: #313751;
+    --slds-c-button-text-color: #ffffff;
+    --slds-c-button-text-color-hover: #ffffff;
+    --slds-c-button-radius-border: 10px;
+}
+
+.red-button {
+    --slds-c-button-brand-color-background: #004acc;
+    --slds-c-button-brand-color-background-hover: #004acc;
+
+    --slds-c-button-brand-color-border: #004acc;
+    --slds-c-button-brand-color-border-hover: #004acc;
+
+    --slds-c-button-text-color: #ffffff;
+    --slds-c-button-brand-text-color: #ffffff;
+    --slds-c-button-brand-text-color-hover: #ffffff;
+    --slds-c-button-radius-border: 10px;
+}
+.slds-card {
+    background: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    margin: 0 !important;
+}

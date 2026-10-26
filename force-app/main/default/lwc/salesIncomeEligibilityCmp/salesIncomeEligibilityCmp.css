@@ -1,0 +1,223 @@
+/* This Code was generated using GenAI tool : Codify, Please check for accuracy */
+/* ____GenAI: Generated code starts here - dark theme visual restyle to match
+   the rest of the loan login screens (salesLoanLoginMainCmp / generic screen
+   cmp purple accent theme). No markup/structure changes.____ */
+@import "c/cssLibrary";
+
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+
+    /* accordion */
+    --slds-c-accordion-color-background: #0e1c30;
+    --slds-c-accordion-section-heading-text-color: #ffffff;
+    --slds-c-accordion-section-color-border: #1d2f45;
+    --slds-c-accordion-section-color-background-active: #16283f;
+    --slds-c-accordion-summary-color-background: #16283f;
+    --slds-c-accordion-summary-text-color: #ffffff;
+    --slds-c-accordion-icon-color-foreground: #a78bfa;
+
+    /* legacy design tokens - fallback for base component versions still
+       reading the "--lwc-*" naming instead of the newer style hooks */
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+
+    --slds-g-color-neutral-base-30: #ffffff;
+    --slds-g-color-neutral-base-40: #ffffff;
+    --slds-g-color-neutral-base-50: #ffffff;
+
+    /* lightning-combobox (e.g. "Statement method" picklist rendered by the
+       nested c-sales-loan-login-generic-screen-cmp) - these SLDS style hooks
+       are CSS custom properties and inherit across shadow DOM boundaries, so
+       declaring them here restyles the dropdown without touching the shared
+       child component's CSS. Closed input box + open listbox/options. */
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #1d2f45;
+    --slds-c-input-radius-border: 8px;
+    --slds-c-input-shadow-focus: 0 0 0 1px #a78bfa;
+
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #1d2f45;
+
+    --slds-c-listbox-color-background: #16283f;
+    --slds-c-listbox-radius-border: 8px;
+    --slds-c-listbox-option-color-background: #16283f;
+    --slds-c-listbox-option-color-background-hover: #1d2f45;
+    --slds-c-listbox-option-text-color: #ffffff;
+    --slds-c-listbox-option-text-color-hover: #ffffff;
+
+    /* legacy fallback tokens for older base-component versions */
+    --lwc-colorBackgroundInput: #16283f;
+    --lwc-colorBorderInput: #1d2f45;
+    --lwc-colorBackgroundRowHover: #1d2f45;
+}
+
+/* ----- Accordion container ----- */
+.container.accordian {
+    background-color: #0e1c30 !important;
+    border-color: #1d2f45 !important;
+    border-radius: 10px !important;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
+    overflow: hidden;
+    padding: 4px;
+}
+
+lightning-accordion-section {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    font-weight: 500;
+}
+
+.slds-accordion__summary-action {
+    background-image: radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.12), transparent 45%),
+        linear-gradient(135deg, #0a1440 0%, #123482 55%, #1c4fd6 100%) !important;
+    background-color: #123482 !important;
+}
+
+:host .slds-accordion__summary,
+:host .slds-accordion__summary-heading,
+:host .slds-accordion__summary-action,
+:host .slds-accordion__summary-content,
+:host h2,
+:host h3 {
+    color: #ffffff !important;
+}
+
+:host .slds-accordion__section {
+    background-color: #16283f !important;
+    border-color: #1d2f45 !important;
+}
+
+/* Spaced, rounded accordion list items instead of a tightly stacked default
+   SLDS accordion */
+:host .slds-accordion__list-item {
+    margin-bottom: 8px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #1d2f45;
+}
+
+/* Header bar - navy-to-royal-blue gradient applied uniformly regardless of
+   open/closed state (matches the reference "Abhilash Saini" / "C-KYC
+   Details" theme) */
+:host .slds-accordion__section.slds-is-open .slds-accordion__summary-action {
+    background-image: radial-gradient(circle at 85% 15%, rgba(255, 255, 255, 0.12), transparent 45%),
+        linear-gradient(135deg, #0a1440 0%, #123482 55%, #1c4fd6 100%) !important;
+    background-color: #123482 !important;
+    border-radius: 8px;
+}
+
+:host .slds-accordion__section.slds-is-open .slds-accordion__summary-heading,
+:host .slds-accordion__section.slds-is-open .slds-accordion__summary-heading .slds-truncate {
+    color: #ffffff !important;
+    font-weight: 700;
+}
+
+:host .slds-accordion__section.slds-is-open .slds-accordion__summary-action-icon {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+:host .slds-accordion__summary-action-icon svg {
+    fill: currentColor !important;
+}
+
+/* ----- Applicant Profile / Statement method combobox - reference-matched
+   dark purple dropdown -----
+   The SLDS style-hook custom properties declared on :host above don't
+   reach the listbox in this org's base component version, so fall back to
+   the same deep-selector override pattern already proven to work in
+   salesLoanLoginGenericScreenCmp.css (base lightning-combobox exposes its
+   SLDS classes to synthetic-shadow ancestor stylesheets). Scoped to this
+   component only - the shared generic screen cmp's CSS is untouched. */
+
+/* Label + info icon */
+lightning-combobox .slds-form-element__label,
+lightning-combobox .slds-form-element__legend {
+    color: #ffffff !important;
+}
+
+lightning-combobox lightning-helptext lightning-icon,
+lightning-combobox .slds-form-element__icon lightning-icon {
+    --slds-c-icon-color-foreground: #ffffff;
+    --slds-c-icon-color-foreground-default: #ffffff;
+}
+
+/* Closed field - dashed border box, dark background, white placeholder/value text */
+lightning-combobox .slds-combobox__input {
+    background-color: #14101f !important;
+    border: 1px dashed #6b6480 !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+lightning-combobox .slds-combobox__input::placeholder {
+    color: #ffffff !important;
+    opacity: 0.85;
+}
+
+lightning-combobox .slds-combobox__input:focus {
+    border: 1px dashed #a78bfa !important;
+    box-shadow: none !important;
+}
+
+lightning-combobox .slds-input__icon,
+lightning-combobox .slds-combobox__input-entity-icon {
+    fill: #ffffff !important;
+    color: #ffffff !important;
+}
+
+/* Open dropdown listbox - near-black purple panel */
+lightning-combobox .slds-dropdown,
+lightning-combobox .slds-listbox {
+    background-color: #17121f !important;
+    background-image: linear-gradient(180deg, #1b1428, #14101f) !important;
+    border: 1px solid #2f2743 !important;
+    border-radius: 8px !important;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.55) !important;
+}
+
+lightning-combobox .slds-listbox__option {
+    background-color: transparent !important;
+    color: #ffffff !important;
+    border-bottom: 1px solid #2a2338 !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+}
+
+lightning-combobox .slds-listbox__option:last-child {
+    border-bottom: none !important;
+}
+
+lightning-combobox .slds-listbox__option:hover,
+lightning-combobox .slds-listbox__option:focus {
+    background-color: #241b38 !important;
+    color: #ffffff !important;
+}
+
+lightning-combobox .slds-listbox__option[aria-checked="true"],
+lightning-combobox .slds-listbox__option.slds-is-selected {
+    background-color: #3a2a5c !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+lightning-combobox .slds-listbox__option[aria-disabled="true"] {
+    background-color: transparent !important;
+    color: #6b7a94 !important;
+}
+
+lightning-combobox .slds-listbox__option .slds-media__body,
+lightning-combobox .slds-listbox__option .slds-truncate {
+    color: inherit !important;
+}
+
+lightning-combobox .slds-listbox__option .slds-icon {
+    fill: #ffffff !important;
+}
+/* ____GenAI: Generated code ends here____ */

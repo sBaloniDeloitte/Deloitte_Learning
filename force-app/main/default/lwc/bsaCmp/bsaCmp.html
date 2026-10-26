@@ -1,0 +1,638 @@
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </template>
+    <div class="bsa-page">
+        <div style="margin-left: 15px;">
+            <template if:true={showOpenAll}>
+                <button class="save-button slds-button slds-button_brand" onclick={handleExpandAllClick}>Open
+                    All</button>
+            </template>
+            <template if:false={showOpenAll}>
+                <button class="save-button slds-button slds-button_brand" onclick={handleCloseAllClick}>Close
+                    All</button>
+            </template>
+            <button class="save-button slds-button slds-button_brand" onclick={handleRefeshClick}>Refresh</button>
+        </div>
+        <div>
+
+
+            <lightning-accordion class="example-accordion" allow-multiple-sections-open
+                active-section-name={mainAccordianActiveSactions}>
+                <lightning-accordion-section name="Consolidated Derived Analysis" label="Consolidated Derived Analysis"
+                    style="background-color: white; font-weight: 700">
+                    <lightning-accordion class="example-accordion" allow-multiple-sections-open
+                        active-section-name={consolidatedAccordianActiveSactions}>
+                        <lightning-accordion-section name="CA Consolidated" label="CA Consolidated"
+                            style="background-color: white; font-weight: 700">
+                            <div class="main-tab">
+                                <lightning-tabset>
+                                    <lightning-tab label="Consolidated Derived Analysis">
+                                        <div class="bsa-datatable" style="overflow: auto;">
+                                            <div style="width: 120%;">
+                                            <!--<lightning-datatable key-field="id" data={data} columns={columns}
+                                                sorted-by={sortBy} sorted-direction={sortDirection} onsort={doSorting}
+                                                hide-checkbox-column>
+                                            </lightning-datatable>-->
+                                            <template if:true={daRecPresent}>
+                                            <table
+                                                class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover slds-border_left slds-border_right slds-table_col-bordered slds-table_striped bsa-table"
+                                                style="table-layout: fixed;width: 100%;">
+                                                <tr
+                                                    class="bsa-table-header-row">
+                                                    <td class="bsa-table-header-cell bsa-table-title-cell">
+                                                        Title
+                                                    </td>
+
+                                                    <template for:each={daRecords.headerList} for:item="iter">
+                                                        <td key={iter} class="bsa-table-header-cell">
+                                                            {iter}
+                                                        </td>
+                                                    </template>
+                                                </tr>
+
+                                                <template for:each={daRecords.mainWrapList} for:item="item">
+                                                    <tr key={item.fieldName}>
+                                                        <td class="bsa-table-label-cell">
+                                                            {item.fieldName}
+                                                        </td>
+                                                        <template for:each={item.values} for:item="iter2">
+                                                            <td key={iter2} class="bsa-table-value-cell">
+                                                                <span style="display:inline-flex;">
+                                                                    <p style="font-weight: 400;">{iter2}</p>
+                                                                </span>
+                                                            </td>
+                                                        </template>
+
+                                                    </tr>
+                                                </template>
+                                            </table>
+                                        </template>
+                                        <template if:false={daRecPresent}>
+                                            <div style="text-align: center; padding: 10px; border: solid 1px var(--dt-border); margin-top: 10px;">
+                                                <p>No bank records found.</p>
+                                            </div>
+                                        </template>
+                                            </div>
+                                        </div>
+                                    </lightning-tab>
+                                    <lightning-tab label="EMI">
+                                       <c-emi-track-cmp record-id={recordId} section="CA Consolidated"></c-emi-track-cmp>
+                                    </lightning-tab>
+                                    <lightning-tab label="Bounce">
+                                        <div class="bsa-datatable" style="height: 300px;">
+                                            <template if:true={showCurrentXNSBounce}>
+                                                <lightning-datatable key-field="xnsRecId" data={xnsCurrentBounceData} columns={xnsBounceColumns} onsort={handleSort}
+                                                hide-checkbox-column>
+                                                    
+                                                </lightning-datatable>
+                                            </template>
+                                            <template if:false={showCurrentXNSBounce}>
+                                                <div style="text-align: center; padding: 10px; border: solid 1px var(--dt-border); margin-top: 10px;">
+                                                    <p>No bounce records found.</p>
+                                                </div>
+                                            </template>
+                                            
+                                        </div>
+                                    </lightning-tab>
+                                </lightning-tabset>
+                            </div>
+
+                        </lightning-accordion-section>
+
+                        <lightning-accordion-section name="CC/OD Derived Analysis (Account level)"
+                            label="CC/OD Derived Analysis (Account level)"
+                            style="background-color: white; font-weight: 700">
+                            <!-- <div class="bsa-datatable" style="overflow: auto;">
+                                <div style="width: 120%;">
+                                <template if:true={daCCODRecords}>
+                                <table
+                                    class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover slds-border_left slds-border_right slds-table_col-bordered slds-table_striped bsa-table"
+                                    style="table-layout: fixed;width: 100%;">
+                                    <tr
+                                        class="bsa-table-header-row">
+                                        <td class="bsa-table-header-cell bsa-table-title-cell">
+                                            Title
+                                        </td>
+
+                                        <template for:each={daCCODRecords.headerList} for:item="iter">
+                                            <td key={iter} class="bsa-table-header-cell">
+                                                {iter}
+                                            </td>
+                                        </template>
+                                    </tr>
+
+                                    <template for:each={daCCODRecords.mainWrapList} for:item="item">
+                                        <tr key={item.fieldName}>
+                                            <td class="bsa-table-label-cell">
+                                                {item.fieldName}
+                                            </td>
+                                            <template for:each={item.values} for:item="iter2">
+                                                <td key={iter2} class="bsa-table-value-cell">
+                                                    <span style="display:inline-flex;">
+                                                        <p style="font-weight: 400;">{iter2}</p>
+                                                    </span>
+                                                </td>
+                                            </template>
+
+                                        </tr>
+                                    </template>
+                                </table>
+                            </template>
+                                </div>
+                            </div> -->
+                            
+                            <div class="main-tab">
+                                <lightning-tabset>
+                                    <lightning-tab label="Consolidated Derived Analysis">
+                                        <div class="bsa-datatable" style="overflow: auto;">
+                                            <div style="width: 120%;">
+                                                <template if:true={daCCODRecPresent}>
+                                                    <table
+                                                        class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover slds-border_left slds-border_right slds-table_col-bordered slds-table_striped bsa-table"
+                                                        style="table-layout: fixed;width: 100%;">
+                                                        <tr
+                                                            class="bsa-table-header-row">
+                                                            <td class="bsa-table-header-cell bsa-table-title-cell">
+                                                                Title
+                                                            </td>
+
+                                                            <template for:each={daCCODRecords.headerList} for:item="iter">
+                                                                <td key={iter} class="bsa-table-header-cell">
+                                                                    {iter}
+                                                                </td>
+                                                            </template>
+                                                        </tr>
+
+                                                        <template for:each={daCCODRecords.mainWrapList} for:item="item">
+                                                            <tr key={item.fieldName}>
+                                                                <td class="bsa-table-label-cell">
+                                                                    {item.fieldName}
+                                                                </td>
+                                                                <template for:each={item.values} for:item="iter2">
+                                                                    <td key={iter2} class="bsa-table-value-cell">
+                                                                        <span style="display:inline-flex;">
+                                                                            <p style="font-weight: 400;">{iter2}</p>
+                                                                        </span>
+                                                                    </td>
+                                                                </template>
+                                                            </tr>
+                                                        </template>
+                                                    </table>
+                                                </template>
+                                                <template if:false={daCCODRecPresent}>
+                                                    <div style="text-align: center; padding: 10px; border: solid 1px var(--dt-border); margin-top: 10px;">
+                                                        <p>No bank records found.</p>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </lightning-tab>
+                                    <lightning-tab label="EMI">
+                                        <c-emi-track-cmp record-id={recordId} section="CC/OD Derived Analysis"></c-emi-track-cmp>
+                                    </lightning-tab>
+                                    <lightning-tab label="Bounce">
+                                        <div class="bsa-datatable" style="height: 300px;">
+                                            <template if:true={showCCODXNSBounce}>
+                                                <lightning-datatable key-field="xnsRecId" data={xnsCCODBounceData} columns={xnsBounceColumns} onsort={handleSort}
+                                                hide-checkbox-column>
+                                                    
+                                                </lightning-datatable>
+                                            </template>
+                                            <template if:false={showCCODXNSBounce}>
+                                                <div style="text-align: center; padding: 10px; border: solid 1px var(--dt-border); margin-top: 10px;">
+                                                    <p>No bounce records found.</p>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </lightning-tab>
+                                </lightning-tabset>
+                            </div>
+                        </lightning-accordion-section>
+
+                        <lightning-accordion-section name="SB Consolidated" label="SB Consolidated"
+                            style="background-color: white; font-weight: 700">
+
+                            <!-- <div class="bsa-datatable" style="overflow: auto;">
+                                <div style="width: 120%;"> -->
+                                <!--<lightning-datatable key-field="id" data={data} columns={columns}
+                                    sorted-by={sortBy} sorted-direction={sortDirection} onsort={doSorting}
+                                    hide-checkbox-column>
+                                </lightning-datatable>-->
+                                <!-- <template if:true={daSBRecords}>
+                                <table
+                                    class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover slds-border_left slds-border_right slds-table_col-bordered slds-table_striped bsa-table"
+                                    style="table-layout: fixed;width: 100%;">
+                                    <tr
+                                        class="bsa-table-header-row">
+                                        <td class="bsa-table-header-cell bsa-table-title-cell">
+                                            Title
+                                        </td>
+
+                                        <template for:each={daSBRecords.headerList} for:item="iter">
+                                            <td key={iter} class="bsa-table-header-cell">
+                                                {iter}
+                                            </td>
+                                        </template>
+                                    </tr>
+
+                                    <template for:each={daSBRecords.mainWrapList} for:item="item">
+                                        <tr key={item.fieldName}>
+                                            <td class="bsa-table-label-cell">
+                                                {item.fieldName}
+                                            </td>
+                                            <template for:each={item.values} for:item="iter2">
+                                                <td key={iter2} class="bsa-table-value-cell">
+                                                    <span style="display:inline-flex;">
+                                                        <p style="font-weight: 400;">{iter2}</p>
+                                                    </span>
+                                                </td>
+                                            </template>
+
+                                        </tr>
+                                    </template>
+                                </table>
+                            </template>
+                                </div>
+                            </div> -->
+                        
+
+                            <div class="main-tab">
+                                <lightning-tabset>
+                                    <lightning-tab label="Consolidated Derived Analysis">
+                                        <div class="bsa-datatable" style="overflow: auto;">
+                                            <div style="width: 120%;">
+                                                <template if:true={daSBRecordsPresent}>
+                                                <table
+                                                    class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover slds-border_left slds-border_right slds-table_col-bordered slds-table_striped bsa-table"
+                                                    style="table-layout: fixed;width: 100%;">
+                                                    <tr
+                                                        class="bsa-table-header-row">
+                                                        <td class="bsa-table-header-cell bsa-table-title-cell">
+                                                            Title
+                                                        </td>
+
+                                                        <template for:each={daSBRecords.headerList} for:item="iter">
+                                                            <td key={iter} class="bsa-table-header-cell">
+                                                                {iter}
+                                                            </td>
+                                                        </template>
+                                                    </tr>
+
+                                                    <template for:each={daSBRecords.mainWrapList} for:item="item">
+                                                        <tr key={item.fieldName}>
+                                                            <td class="bsa-table-label-cell">
+                                                                {item.fieldName}
+                                                            </td>
+                                                            <template for:each={item.values} for:item="iter2">
+                                                                <td key={iter2} class="bsa-table-value-cell">
+                                                                    <span style="display:inline-flex;">
+                                                                        <p style="font-weight: 400;">{iter2}</p>
+                                                                    </span>
+                                                                </td>
+                                                            </template>
+
+                                                        </tr>
+                                                    </template>
+                                                </table>
+                                                </template>
+                                                <template if:false={daSBRecordsPresent}>
+                                                    <div style="text-align: center; padding: 10px; border: solid 1px var(--dt-border); margin-top: 10px;">
+                                                        <p>No bank records found.</p>
+                                                    </div>
+                                                </template>
+                                            </div>
+                                        </div>
+                                    </lightning-tab>
+                                    <lightning-tab label="EMI">
+                                        <c-emi-track-cmp record-id={recordId} section="SB Consolidated"></c-emi-track-cmp>
+                                    </lightning-tab>
+                                    <lightning-tab label="Bounce">
+                                        <div class="bsa-datatable" style="height: 300px;">
+                                            <template if:true={showSavingXNSBounce}>
+                                                <lightning-datatable key-field="xnsRecId" data={xnsSavingBounceData} columns={xnsBounceColumns} onsort={handleSort}
+                                                hide-checkbox-column>
+                                                    
+                                                </lightning-datatable>
+                                            </template>
+                                            <template if:false={showSavingXNSBounce}>
+                                                <div style="text-align: center; padding: 10px; border: solid 1px var(--dt-border); margin-top: 10px;">
+                                                    <p>No bounce records found.</p>
+                                                </div>
+                                            </template>
+                                        </div>
+                                    </lightning-tab>
+                                </lightning-tabset>
+                            </div>
+                            
+                        </lightning-accordion-section>
+
+                    </lightning-accordion>
+
+                </lightning-accordion-section>
+
+                <lightning-accordion-section name="XNS Consolidated" label="XNS Consolidated"
+                    style="background-color: white; font-weight: 700">
+                    <div style="padding: 10px 0px;margin-left:0px;" class="slds-grid slds-wrap slds-m-horizontal_small seacrpills">
+
+                        <div class="width-13 slds-m-right_small">
+                            <!--<lightning-input label="Search Bank" onchange={searchBank} type="search">
+                            </lightning-input>-->
+
+                            <c-generic-multi-picklist-selector
+                                                                    data-id="bankOptions" showpills=false
+                                                                    label="Search Bank"
+                                                                    options={bankOptions}
+                                                                    onselectedvalueschange={handleMultiPicklistSelection}>
+                                                                </c-generic-multi-picklist-selector>
+                        </div>
+                        <div class="width-13 slds-m-right_small">
+                            <!--<lightning-input label="Search Account No." onchange={searchAccountNo} type="search">
+                            </lightning-input>-->
+                            <c-generic-multi-picklist-selector
+                            data-id="accountNumberOptions" showpills=false
+                            label="Search Account No."
+                            options={accountNumberOptions}
+                            onselectedvalueschange={handleMultiPicklistSelectionAccount}>
+                        </c-generic-multi-picklist-selector>
+                            
+                        </div>
+                        <div class="width-13 slds-m-right_small">
+                            <lightning-input label="Search Loan Amount" onchange={searchLoanAmt} type="search">
+                            </lightning-input>
+                        </div>
+                        <div class="width-13 slds-m-right_small">
+                            <lightning-input label="Search Description" onchange={searchdescription} type="search">
+                            </lightning-input>
+                        </div>
+                        <div class="width-25 slds-m-right_small">
+                            <!--<lightning-input label="Search Category" onchange={searchCategory} type="search">
+                            </lightning-input>-->
+
+                            <c-generic-multi-picklist-selector
+                                                                    data-id="categoryOptions" showpills=false
+                                                                    label="Search Category"
+                                                                    options={categoryOptions}
+                                                                    onselectedvalueschange={handleMultiPicklistSelectionCategory}>
+                                                                </c-generic-multi-picklist-selector>
+                        </div>
+                        <div class="width-13 slds-m-right_small">
+                            <!-- <lightning-button label="Download CSV" onclick={downloadExcel}></lightning-button>
+                            <a href="" download="xns_data.csv" style="display:none" class="csv-download-link"></a> -->
+                            <template if:true={hasxnsData}>
+                            <button onclick={downloadExcel} class="save-button slds-button slds-button_brand" style="margin-top: 20px; margin-left: 98px;">
+                                Download CSV
+                            </button>
+                            </template>
+                        </div>
+
+                        
+
+                    </div>
+                    <div class="bsa-datatable" style="height: 300px;">
+                        <template if:false={hasPsvOrDisbursalStage}>
+                            <lightning-datatable key-field="xnsRecId" data={xnsData} columns={xnsColumns}
+                                onrowselection={getSelectedRecords} onrowaction={handleRowActions}>
+                                >
+                            </lightning-datatable>
+                        </template>
+                        <template if:true={hasPsvOrDisbursalStage}>
+                            <lightning-datatable key-field="xnsRecId" hide-checkbox-column data={xnsData} columns={xnsColumns}
+                                onrowselection={getSelectedRecords} onrowaction={handleRowActions}>
+                                >
+                            </lightning-datatable>
+                        </template>
+                    </div>
+                    
+                    <template if:false={hasPsvOrDisbursalStage}>
+                    <template if:true={updateCategoryButton}>
+                        <div class="filter-drop" style="">
+                            <button class="save-button slds-button slds-button_brand" disabled={hideButton}
+                                onclick={handleChangeCategoryClick}>Change Category</button>
+                        </div>
+                    </template>
+                    </template>
+                    <template if:true={isShowModal}>
+                        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+                            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open">
+                            <div class="slds-modal__container">
+                                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                                    title="Close" onclick={hideModalBox}>
+                                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                                        size="small"></lightning-icon>
+                                    <span class="slds-assistive-text">Close</span>
+                                </button>
+                                <header class="slds-modal__header header-section">
+                                    <div class="slds-text-align_center">
+                                        <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">
+                                            Change Category</h2>
+                                    </div>
+                                </header>
+                                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1"
+                                    style="text-align:left">
+                                    <lightning-combobox options={options} onchange={handleCategoryChange}
+                                        class="validate" label="Select Category"></lightning-combobox>
+                                </div>
+
+                                <footer class="slds-modal__footer footer-section">
+                                    <div class="slds-align_absolute-center button-container">
+                                        <button class="slds-button slds-button_neutral save-button"
+                                            onclick={saveRows}>Save</button>
+                                        <button class="slds-button slds-button_neutral cancel-button"
+                                            onclick={hideModalBox}>Cancel</button>
+                                    </div>
+                                </footer>
+                            </div>
+                        </section>
+                        <div class="slds-backdrop slds-backdrop_open"></div>
+                    </template>
+                </lightning-accordion-section>
+
+                <lightning-accordion-section name="Current Account" label="Current Account"
+                    style="background-color: white; font-weight: 700">
+                    <div class="bsa-datatable">
+                        <template if:true={daCurrentRecords}>
+                            <lightning-accordion class="example-accordion" allow-multiple-sections-open
+                                active-section-name={consolidatedAccordianActiveSactions}>
+                                <template for:each={daCurrentRecords} for:item="item">
+                                    <lightning-accordion-section key={item.applicantInfo} name={item.applicantInfo}
+                                        label={item.applicantInfo}>
+                                        <div style="overflow: auto;">
+                                            <div style="width: 120%;">
+
+                                            
+                                        <table
+                                            class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover slds-border_left slds-border_right slds-table_col-bordered slds-table_striped bsa-table"
+                                            style="table-layout: fixed;width: 100%;">
+                                            <tr
+                                                class="bsa-table-header-row">
+                                                <td class="bsa-table-header-cell bsa-table-title-cell">
+                                                    Title
+                                                </td>
+
+                                                <template for:each={item.dsData.headerList} for:item="iter">
+                                                    <td key={iter} class="bsa-table-header-cell">
+                                                        {iter}
+                                                    </td>
+                                                </template>
+                                            </tr>
+
+                                            <template for:each={item.dsData.mainWrapList} for:item="item4">
+                                                <tr key={item4.fieldName}>
+                                                    <td class="bsa-table-label-cell">
+                                                        {item4.fieldName}
+                                                    </td>
+                                                    <template for:each={item4.values} for:item="iter2">
+                                                        <td key={iter2} class="bsa-table-value-cell">
+                                                            <span style="display:inline-flex;">
+                                                                <p style="font-weight: 400;">{iter2}</p>
+                                                            </span>
+                                                        </td>
+                                                    </template>
+
+                                                </tr>
+                                            </template>
+                                        </table>
+                                    </div>
+                                </div>
+                                    </lightning-accordion-section>
+                                </template>
+                            </lightning-accordion>
+                        </template>
+
+
+                    </div>
+                </lightning-accordion-section>
+                <lightning-accordion-section name="CC/Overdraft" label="CC/Overdraft"
+                    style="background-color: white; font-weight: 700">
+                    <div class="bsa-datatable">
+                        <template if:true={daOverdraftRecords}>
+                            <lightning-accordion class="example-accordion" allow-multiple-sections-open
+                                active-section-name={consolidatedAccordianActiveSactions}>
+                                <template for:each={daOverdraftRecords} for:item="item">
+                                    <lightning-accordion-section key={item.applicantInfo} name={item.applicantInfo}
+                                        label={item.applicantInfo}>
+
+                                        <div style="overflow: auto;">
+                                            <div style="width: 120%;">
+
+                                        <table
+                                            class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover slds-border_left slds-border_right slds-table_col-bordered slds-table_striped bsa-table"
+                                            style="table-layout: fixed;width: 100%;">
+                                            <tr
+                                                class="bsa-table-header-row">
+                                                <td class="bsa-table-header-cell bsa-table-title-cell">
+                                                    Title
+                                                </td>
+
+                                                <template for:each={item.dsData.headerList} for:item="iter">
+                                                    <td key={iter} class="bsa-table-header-cell">
+                                                        {iter}
+                                                    </td>
+                                                </template>
+                                            </tr>
+
+                                            <template for:each={item.dsData.mainWrapList} for:item="item4">
+                                                <tr key={item4.fieldName}>
+                                                    <td class="bsa-table-label-cell">
+                                                        {item4.fieldName}
+                                                    </td>
+                                                    <template for:each={item4.valuesObj} for:item="iter2">
+                                                        <td key={iter2} class="bsa-table-value-cell">
+                                                            <template if:false={hasPsvOrDisbursalStage}>
+                                                                <template if:true={iter2.isEditable}>
+                                                                    <span style="display:inline-flex;">
+                                                                        <p style="font-weight: 400;" class="inputNumber">
+                                                                            <lightning-input label="Enter some text" variant="label-hidden" 
+                                                                            value={iter2.recVal} data-id={iter2.recId} name={iter2.recFieldName} 
+                                                                             onblur={handleFieldChange}>
+                                                                            </lightning-input>
+                                                                        </p>
+                                                                    </span>
+                                                                </template>
+                                                                <template if:false={iter2.isEditable}>
+                                                                    <span style="display:inline-flex;">
+                                                                        <p style="font-weight: 400;">{iter2.recVal}</p>
+                                                                    </span>
+                                                                </template>
+                                                            </template>
+                                                            <template if:true={hasPsvOrDisbursalStage}>
+                                                                <span style="display:inline-flex;">
+                                                                    <p style="font-weight: 400;">{iter2.recVal}</p>
+                                                                </span>
+                                                            </template>
+                                                            
+                                                        </td>
+                                                    </template>
+
+                                                </tr>
+                                            </template>
+                                        </table>
+                                        </div>
+                                        </div>
+                                    </lightning-accordion-section>
+                                </template>
+                            </lightning-accordion>
+                        </template>
+
+
+                    </div>
+                </lightning-accordion-section>
+                <lightning-accordion-section name="Savings Account" label="Savings Account"
+                    style="background-color: white; font-weight: 700">
+                    <div class="bsa-datatable">
+                        <template if:true={daSavingsRecords}>
+                            <lightning-accordion class="example-accordion" allow-multiple-sections-open
+                                active-section-name={consolidatedAccordianActiveSactions}>
+                                <template for:each={daSavingsRecords} for:item="item">
+                                    <lightning-accordion-section key={item.applicantInfo} name={item.applicantInfo}
+                                        label={item.applicantInfo}>
+                                        <div style="overflow: auto;">
+                                            <div style="width: 120%;">
+                                        <table
+                                            class="slds-table slds-table_cell-buffer slds-table_bordered slds-no-row-hover slds-border_left slds-border_right slds-table_col-bordered slds-table_striped bsa-table"
+                                            style="table-layout: fixed;width: 100%;">
+                                            <tr
+                                                class="bsa-table-header-row">
+                                                <td class="bsa-table-header-cell bsa-table-title-cell">
+                                                    Title
+                                                </td>
+
+                                                <template for:each={item.dsData.headerList} for:item="iter">
+                                                    <td key={iter} class="bsa-table-header-cell">
+                                                        {iter}
+                                                    </td>
+                                                </template>
+                                            </tr>
+
+                                            <template for:each={item.dsData.mainWrapList} for:item="item4">
+                                                <tr key={item4.fieldName}>
+                                                    <td class="bsa-table-label-cell">
+                                                        {item4.fieldName}
+                                                    </td>
+                                                    <template for:each={item4.values} for:item="iter2">
+                                                        <td key={iter2} class="bsa-table-value-cell">
+                                                            <span style="display:inline-flex;">
+                                                                <p style="font-weight: 400;">{iter2}</p>
+                                                            </span>
+                                                        </td>
+                                                    </template>
+
+                                                </tr>
+                                            </template>
+                                        </table>
+                                        </div>
+                                        </div>
+                                    </lightning-accordion-section>
+                                </template>
+                            </lightning-accordion>
+                        </template>
+
+
+                    </div>
+                </lightning-accordion-section>
+            </lightning-accordion>
+        </div>
+    </div>
+</template>

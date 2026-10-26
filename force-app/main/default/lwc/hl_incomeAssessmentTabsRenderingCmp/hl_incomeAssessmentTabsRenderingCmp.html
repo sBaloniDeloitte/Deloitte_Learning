@@ -1,0 +1,62 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-15-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <lightning-card class="hide-header">
+        <template if:true={isSalariedNri}>
+            <c-hl_salaried-n-r-i-screen-cmp record-id={recordId} tab-value={tabValue} onincomeexpenceschanged={handleIncomeExpencesLoaded}></c-hl_salaried-n-r-i-screen-cmp>
+        </template>
+
+        <template if:true={isSalariedIndividual}>
+            <c-hl_salaried-screen-main-cmp record-id={recordId} show-calculator ={showCalculator}></c-hl_salaried-screen-main-cmp>
+        </template>
+
+        <template if:true={isCashProfit}>
+        <c-hl_cash-profit-main-cmp record-id={recordId} tab-value={tabValue} onincomeexpenceschanged={handleIncomeExpencesLoaded}></c-hl_cash-profit-main-cmp>
+        </template>
+        <template if:true={isSepMultiplier}>
+    <c-h-l_-sep-multiplier-parentcmp  record-id={recordId}></c-h-l_-sep-multiplier-parentcmp>
+        </template>
+    <template if:true={isdirectorRenumeration}>
+        <c-hl_-director-renumeration-parent-cmp record-id={recordId}></c-hl_-director-renumeration-parent-cmp>
+    </template>
+    <template if:true={isBanking}>
+        <c-hl_bank-statement-income-assessment-cmp record-id={recordId} onincomeexpenceschanged={handleIncomeExpencesLoaded}></c-hl_bank-statement-income-assessment-cmp>
+    </template>
+    <template if:true={isRentalIncome}>
+            <c-hl_rental-income-program-cmp record-id={recordId} tab-value={tabValue} onincomeexpenceschanged={handleIncomeExpencesLoaded}></c-hl_rental-income-program-cmp>
+    </template>
+    <template if:true={isGrossMargin}>
+        <c-hl_gross-margin-cmp record-id={recordId} tab-value={tabValue} onincomeexpenceschanged={handleIncomeExpencesLoaded}></c-hl_gross-margin-cmp>
+    </template>
+    <template if:true={isFinalAssessment}>
+        <c-hl_final-income-eligibility-screen-cmp record-id={recordId} show-calculator ={showCalculator}></c-hl_final-income-eligibility-screen-cmp>
+    </template>
+    <template if:true={isMerchantNavy}>     
+        <c-hl_merchant-navy-screen-cmp record-id={recordId}></c-hl_merchant-navy-screen-cmp>
+    </template>
+    <template if:true={liquidIncomeProgram}>     
+        <c-hl_liquid-income-prog-cmp record-id={recordId}></c-hl_liquid-income-prog-cmp>
+    </template>
+    <template if:true={isLowLtv}>     
+        <c-hl_low-ltv-income-parent-cmp record-id={recordId} onincomeexpenceschanged={handleIncomeExpencesLoaded} ></c-hl_low-ltv-income-parent-cmp>
+    </template>
+    <!--change by Kunal Bisht for SFHL-1647 start-->
+    <template if:true={isMixedRental}> 
+        <c-hl_mixed-rentalcmp record-id={recordId} onincomeexpenceschanged={handleIncomeExpencesLoaded} ></c-hl_mixed-rentalcmp>
+    </template>
+    <template if:true={isAssessedIncomeProgram}>     
+        <c-hl_assessed-income-program-cmp record-id={recordId} onincomeexpenceschanged={handleIncomeExpencesLoaded} ></c-hl_assessed-income-program-cmp>
+    </template>
+    <!--change by Kunal Bisht for SFHL-1647 end-->
+    <template if:true={isUndefined}>
+        <div style="color: red;">
+            The component for this tab is not yet defined. Kindly contact your administrator.
+        </div>
+    </template>
+    </lightning-card>
+</template>

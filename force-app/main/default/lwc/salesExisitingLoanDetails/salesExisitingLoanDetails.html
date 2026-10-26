@@ -1,0 +1,34 @@
+<template>
+    <template lwc:if={showExistingLoans}>
+        <div class="table-header-box" style="margin-top: 2%;">
+            Existing Loan Details
+        </div>
+        <table class="table-class slds-table slds-table_bordered slds-table_cell-buffer">
+            <thead class="table-head">
+                <tr>
+                    <th class="tdBorderHeader slds-cell-wrap">Loan Application Id</th>
+                    <th class="tdBorderHeader slds-cell-wrap">Product</th>
+                    <th class="tdBorderHeader slds-cell-wrap">Loan Amount</th>
+                    <th class="tdBorderHeader slds-cell-wrap">Stage</th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={existingLoans} for:item="iter">
+                    <tr key={iter.loanNo}>
+                        <td class="tdBorderHeader slds-cell-wrap">
+                            <a href={iter.loanExternalId} target="_blank">{iter.loanNo}</a>
+                        </td>
+                        <!-- <td class="tdBorderHeader slds-cell-wrap">{iter.loanNo}</td> -->
+                        <td class="tdBorderHeader slds-cell-wrap">{iter.product}</td>
+                        <td class="tdBorderHeader slds-cell-wrap">{iter.loanAmount}</td>
+                        <td class="tdBorderHeader slds-cell-wrap">{iter.loanStage}</td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </template>
+    <template lwc:else>
+        <div style="text-align: center; padding: 10px; border: solid 1px #ddd;">No records found!</div>
+    </template>
+    
+</template>

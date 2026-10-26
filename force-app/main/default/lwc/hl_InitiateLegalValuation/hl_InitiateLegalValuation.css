@@ -1,0 +1,243 @@
+@import "c/cssLibrary";
+
+/* ==========================================
+   THEME VARIABLES
+========================================== */
+:host {
+    display: block;
+    min-height: 100%;
+
+    --legal-page-bg: #12172b;
+    --legal-card-bg: #1c2238;
+    --legal-input-bg: #16283f;
+    --legal-header-bg: #12172b;
+    --legal-border: #2a2f45;
+    --legal-text: #ffffff;
+    --legal-link: #b8d7ff;
+    /* Accent used ONLY by the "Initiate Legal" modal chrome below, matched
+       to the Hunter Check accordion's "Initiate Hunter" confirmation box
+       (fcuHunterInitiate.css "--hunter-accent"). Kept separate from
+       --legal-header-bg so the unrelated Legal Records table (which also
+       reads --legal-header-bg) is not affected by this modal restyle. */
+    --legal-modal-accent: #1467eb;
+}
+
+/* ==========================================
+   CONTAINER
+========================================== */
+.slds-p-around_medium {
+    background-color: #12172b !important;
+    color: var(--legal-text);
+}
+
+/* ==========================================
+   LABELS & LEGENDS
+========================================== */
+.slds-form-element__legend,
+.slds-form-element__label {
+    color: var(--legal-text) !important;
+    font-weight: 600;
+}
+
+/* ==========================================
+   LEGAL RECORDS TABLE
+   Matched EXACTLY to the Hunter Check accordion's table
+   (hunterAccordionCmp.css ".fi-table-wrapper .slds-table") - dark-navy
+   #0a1524 outer backdrop (wrapper), #0e1c30 table surface for both
+   header and body, #33455e borders on every cell, 18px rounded corners
+   on the outer cells only, left-aligned bold white header text with
+   12px/10px padding, 13px body text, and the same #16283f row-hover
+   highlight.
+========================================== */
+.legal-records-table-wrap {
+    background-color: #0a1524 !important;
+    padding: 1rem 1.5rem;
+    border-radius: 18px;
+    overflow-x: auto;
+}
+
+.slds-table {
+    width: 100%;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border-radius: 18px;
+    background-color: #0e1c30 !important;
+    border: 1px solid #33455e !important;
+    color: #ffffff;
+}
+
+.slds-table th,
+.slds-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.slds-table thead th {
+    background-color: #0e1c30 !important;
+    background-image: none !important;
+    border-right: 1px solid #33455e !important;
+    border-bottom: 1px solid #33455e !important;
+    border-color: #33455e !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    font-size: 12.5px;
+    letter-spacing: 0.2px;
+    padding: 12px 10px !important;
+    text-align: left !important;
+    box-shadow: none !important;
+    vertical-align: middle;
+}
+
+.slds-table thead th .slds-truncate {
+    color: #ffffff !important;
+    font-weight: bold;
+}
+
+.slds-table thead tr:first-child th:first-child {
+    border-top-left-radius: 18px;
+}
+
+.slds-table thead tr:first-child th:last-child {
+    border-top-right-radius: 18px;
+}
+
+/* ==========================================
+   TABLE BODY
+========================================== */
+.slds-table tbody td {
+    background-color: #0e1c30 !important;
+    border-right: 1px solid #33455e !important;
+    border-bottom: 1px solid #33455e !important;
+    border-color: #33455e !important;
+    color: #ffffff !important;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: left !important;
+    padding: 12px 10px !important;
+    vertical-align: middle;
+}
+
+/* Ensure all content inside cells is white */
+.slds-table tbody td,
+.slds-table tbody td div,
+.slds-table tbody td span,
+.slds-table tbody td .slds-truncate {
+    color: #ffffff !important;
+}
+
+.slds-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 18px;
+}
+
+.slds-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 18px;
+}
+
+/* Row hover */
+.slds-table tbody tr:hover td {
+    background-color: #16283f !important;
+}
+
+/* ==========================================
+   LINKS
+========================================== */
+.slds-table a {
+    color: #7db2ff !important;
+    text-decoration: none;
+}
+
+.slds-table a:hover {
+    color: #ffffff !important;
+    text-decoration: underline;
+}
+
+/* ==========================================
+   BUTTON
+========================================== */
+.initiate-button {
+    background: #1467eb !important;
+    border: 1px solid #1467eb !important;
+    border-radius: 8px;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+.initiate-button:hover {
+    background: #1257c9 !important;
+}
+
+/* ==========================================
+   MODAL
+   "Initiate Legal" popup matched to the Hunter Check accordion's
+   "Initiate Hunter" confirmation box (fcuHunterInitiate.css) - accent
+   blue header, dark-navy content/footer, rounded 8px corners.
+========================================== */
+.slds-modal__container {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.slds-modal__header {
+    background-color: var(--legal-modal-accent) !important;
+    color: #ffffff !important;
+    border-bottom: 1px solid var(--legal-border);
+}
+
+.slds-modal__title {
+    color: #ffffff !important;
+}
+
+.slds-modal__content {
+    background-color: var(--legal-page-bg) !important;
+    color: #ffffff !important;
+}
+
+.slds-modal__footer {
+    background-color: var(--legal-page-bg) !important;
+    border-top: 1px solid var(--legal-border) !important;
+}
+
+/* Negative CTA (Close) - #16283f fill, 1px solid #7c3aed border, 8px
+   radius. Matched to fcuHunterInitiate's ".wave-button". */
+.wave-button {
+    background-color: #16283f !important;
+    border: 1px solid #7c3aed !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* ==========================================
+   LIGHTNING CARD
+========================================== */
+lightning-card {
+    --slds-c-card-color-background: var(--legal-card-bg);
+    --slds-c-card-color-border: var(--legal-border);
+    --slds-c-card-radius-border: 8px;
+}
+
+/* ==========================================
+   INPUTS & COMBOBOXES
+========================================== */
+lightning-input,
+lightning-textarea,
+lightning-combobox {
+    --slds-c-input-color-background: var(--legal-input-bg);
+    --slds-c-input-color-border: var(--legal-border);
+    --slds-c-input-text-color: #ffffff;
+
+    --slds-c-textarea-color-background: var(--legal-input-bg);
+    --slds-c-textarea-color-border: var(--legal-border);
+    --slds-c-textarea-text-color: #ffffff;
+
+    --slds-c-combobox-color-background: var(--legal-input-bg);
+    --slds-c-combobox-color-border: var(--legal-border);
+    --slds-c-combobox-text-color: #ffffff;
+}
+
+/* ==========================================
+   BACKDROP
+========================================== */
+.slds-backdrop_open {
+    background: rgba(10, 15, 30, 0.8);
+}

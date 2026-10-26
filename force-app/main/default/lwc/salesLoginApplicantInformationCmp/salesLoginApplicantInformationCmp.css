@@ -1,0 +1,300 @@
+@import "c/cssLibrary";
+
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+/* Dark theme overrides for salesLoginApplicantInformationCmp (colors only, no structural/functional change) */
+.container.accordian {
+    background-color: #12172b !important;
+    border-color: #2a2f45 !important;
+}
+
+.initiate-button {
+    background-color: #1467eb !important;
+    border-color: #1467eb !important;
+    color: #ffffff !important;
+    margin-top: 16px;
+}
+
+/* SLDS styling hooks so nested lightning-accordion/lightning-accordion-section
+   (base components, shadow-encapsulated) pick up the dark theme via inherited
+   custom properties without altering their markup or behavior */
+:host {
+    --slds-c-accordion-color-background: #12172b;
+    --slds-c-accordion-section-color-background: #1c2238;
+    --slds-c-accordion-summary-color: #ffffff;
+    --slds-c-accordion-summary-heading-color: #ffffff;
+    --slds-c-accordion-color-border: #2a2f45;
+    --slds-c-accordion-summary-text-color: #ffffff;
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+}
+
+.slds-form-element__label {
+    color: #ffffff !important;
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+}
+
+.connector-line {
+    flex-grow: 1;
+    height: 4px;
+    background-color: lightgray;
+    margin: 0 10px;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    position: relative;
+}
+
+.progress-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    flex-grow: 1;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    gap: 0; /* No unnecessary gap */
+}
+
+.progress-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    z-index: 2;
+    background-color: white; /* Ensures icon stays on top */
+    padding: 5px;
+}
+
+.progress-line {
+    position: absolute;
+    width: 50px; /* Adjust line length as needed */
+    height: 4px;
+    background-color: #ccc;
+    top: 50%;
+    left: 50%;
+    transform: translateX(50%); /* Ensures line is exactly between two icons */
+    z-index: 1;
+}
+
+.stage-label {
+    margin-top: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    color: #ffffff !important;
+}
+.progress-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
+.progress-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+}
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+/* Wrapper to hold icon and line */
+.icon-line-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+/* Full-width black line */
+
+
+/* Icons should appear on top of the line */
+.icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    padding: 5px;
+    z-index: 2;
+    border-radius: 50%;
+}
+
+/* Stage Name Below Icon */
+.stage-name {
+    margin-top: 5px;
+    font-weight: 500;
+    color: #ffffff !important;
+    text-align: center;
+    font-size: 7px;
+}
+
+
+.progress-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    padding: 20px 0;
+    background-color: #12172b !important;
+    border-radius: 8px;
+}
+
+.progress-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 90%;
+    position: relative;
+}
+
+/* Step wrapper */
+.progress-step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    width: 100%;
+}
+
+
+.progress-step:first-child .connector {
+    display: none;
+}
+.progress-step:last-child .connector {
+    display: none;
+}
+
+/* Ensure the icon appears above the line */
+.icon-wrapper {
+    z-index: 1;
+    background-color: #2a2f45 !important;
+    padding: 4px;
+    position: relative;
+    border-radius: 50%;
+}
+
+/* Recolor progress-step status icons (visual only, same completed/incomplete
+   logic): completed (was green) -> purple accent to match the app theme;
+   incomplete (was red) -> blue to match the Add Applicant button. */
+.step-icon-completed {
+    --slds-c-icon-color-foreground-default: #7c3aed;
+    --sds-c-icon-color-foreground-default: #7c3aed;
+    --slds-c-icon-color-foreground: #7c3aed;
+}
+
+.step-icon-incomplete {
+    --slds-c-icon-color-foreground-default: #1467eb;
+    --sds-c-icon-color-foreground-default: #1467eb;
+    --slds-c-icon-color-foreground: #1467eb;
+}
+.connector{
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    width: 200%;
+    height: 2px;
+    background-color: #3a3f55;
+    transform: translateX(-50%);
+    z-index: 0;
+}
+.button-red {
+    background-color: #1467eb;
+    color: #ffffff;
+    border-color: #1467eb;
+    font-size: 11px;
+    min-width: 110px;
+    font-weight: 700;
+    display: inline-block;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.600rem;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 0 0.75rem;
+    border-radius: 0.25rem;
+   
+   
+    text-decoration: none;
+    
+}
+.andcontainers{
+    text-align: left;
+    font-weight: bold;
+    margin-top: 5%;
+    margin-bottom: 14px;
+    color: #ffffff;
+}
+
+/* ----- Two-column layout: accordion content left, Process Journey panel
+   right (mirrors the loan login reference layout). Purely presentational -
+   no change to the existing accordion markup/logic. ----- */
+.journey-layout {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    width: 100%;
+}
+
+.journey-main-column {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.journey-side-column {
+    flex: 0 0 300px;
+    width: 300px;
+    position: sticky;
+    top: 8px;
+}
+
+@media (max-width: 1024px) {
+    .journey-layout {
+        flex-direction: column;
+    }
+
+    .journey-side-column {
+        flex: 1 1 auto;
+        width: 100%;
+        position: static;
+    }
+}

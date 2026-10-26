@@ -1,0 +1,67 @@
+<!--_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________-->
+<template>
+    <div class="process-journey-panel">
+        <template if:true={isLoading}>
+            <lightning-spinner alternative-text="Loading" size="small" variant="brand"></lightning-spinner>
+        </template>
+
+        <!-- Process Journey -->
+        <div class="journey-card">
+            <div class="journey-card-header" onclick={toggleJourney}>
+                <div class="journey-card-title-group">
+                    <lightning-icon icon-name="utility:date_time" size="x-small" class="journey-card-icon"></lightning-icon>
+                    <span class="journey-card-title">Process Journey</span>
+                </div>
+                <lightning-icon icon-name={journeyChevron} size="x-small" class="journey-card-toggle"></lightning-icon>
+            </div>
+            <template if:true={isJourneyOpen}>
+                <ul class="journey-list">
+                    <template for:each={stages} for:item="stage">
+                        <li key={stage.key} class={stage.itemClass} data-name={stage.name} onclick={handleStageClick}>
+                            <div class="journey-marker-column">
+                                <span class={stage.numberClass}>
+                                    <template if:true={stage.showCheckIcon}>
+                                        <lightning-icon icon-name="utility:check" size="xx-small" variant="inverse"></lightning-icon>
+                                    </template>
+                                    <template if:false={stage.showCheckIcon}>
+                                        {stage.sequence}
+                                    </template>
+                                </span>
+                                <span class={stage.connectorClass}></span>
+                            </div>
+                            <div class="journey-text">
+                                <div class="journey-name">{stage.name}</div>
+                                <div class={stage.statusClass}>{stage.status}</div>
+                            </div>
+                        </li>
+                    </template>
+                </ul>
+            </template>
+        </div>
+
+        <!-- Applicant Summary -->
+        <div class="journey-card">
+            <div class="journey-card-header" onclick={toggleSummary}>
+                <div class="journey-card-title-group">
+                    <lightning-icon icon-name="utility:identity" size="x-small" class="journey-card-icon"></lightning-icon>
+                    <span class="journey-card-title">Applicant Summary</span>
+                </div>
+                <lightning-icon icon-name={summaryChevron} size="x-small" class="journey-card-toggle"></lightning-icon>
+            </div>
+            <template if:true={isSummaryOpen}>
+                <div class="applicant-summary-grid">
+                    <div class="applicant-summary-item">
+                        <div class="applicant-summary-label">Lead Number</div>
+                        <div class="applicant-summary-value">{leadNumber}</div>
+                    </div>
+                    <div class="applicant-summary-item">
+                        <div class="applicant-summary-label">Customer Name</div>
+                        <div class="applicant-summary-value">{customerName}</div>
+                    </div>
+                </div>
+            </template>
+        </div>
+
+    </div>
+</template>
+<!--__________________________GenAI: Generated code ends here______________________________-->

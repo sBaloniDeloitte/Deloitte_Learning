@@ -1,0 +1,38 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import "c/cssLibrary";
+
+/* ----------------- Dark Theme (matches incomeAssessmentMainCmp / sanctionConditionConvenantsCmp) ----------------- */
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-positive: #1467eb;
+    --dt-negative: #db2929;
+
+    --slds-c-card-color-background: #0a1524;
+}
+
+/* Hide the lightning-card header bar entirely - this is purely a pass-through container */
+.hide-header .slds-card__header {
+    display: none;
+}
+
+.hide-header .slds-card__body {
+    background-color: var(--dt-bg) !important;
+}
+
+/* .slds-table thead tr th, .slds-table tbody tr td {
+    text-align: left;
+} */
+/*__________________________GenAI: Generated code ends here______________________________*/

@@ -1,0 +1,44 @@
+<template>
+    <div class="container">
+    
+       
+<table>
+    <thead>
+    <tr>
+    <th class="section-header banking-header">Banking Details</th>
+    <th class="section-header exposure-header" colspan="4">Summary Exposure</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+    <!-- Banking Details section now spans all Summary Exposure rows -->
+    <td class="banking-data" rowspan="3"> 
+    <p><strong>Total Booked Exposure:</strong> {totalExposure}</p><br>
+    <p><strong>Total WIP Exposure:</strong> {totalExposureGhfHfc}</p><br>
+    <p><strong>Total Exposure in GC:</strong> {totalExposureGc}</p><br>
+    </td>
+    <!-- Summary Exposure Header -->
+    <td class="summary-header">Loan Status</td>
+    <!--<td class="summary-header">Exposure in GHF</td>-->
+    <td class="summary-header">Exposure in Salesforce</td>
+    <td class="summary-header">Exposure in BHN</td>
+    </tr>
+    <tr>
+    <td class="summary-data">WIP Loans</td>
+    <!--<td class="summary-data">{exposureGhfWipLoan}</td>-->
+    <!-- <td class="summary-data">{exposureGhfWipLoan_formated}</td> -->
+    <td class="summary-data">{totalWipLoanSalesforce}</td>
+    <td class="summary-data">Dummy</td>
+    </tr>
+    <tr>
+    <td class="summary-data">Disbursed Loans</td>
+    <!--<td class="summary-data">{exposureGhfDisburstLoan}</td>-->
+    <!-- <td class="summary-data">{exposureGhfDisburstLoan_formated}</td> -->
+    <td class="summary-data">{totalDisbursedLoanSalesforce}</td>
+    <td class="summary-data">Dummy</td>
+    </tr>
+    </tbody>
+    </table>
+           
+    </div>
+    </template>

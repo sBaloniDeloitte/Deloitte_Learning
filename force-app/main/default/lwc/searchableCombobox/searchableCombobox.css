@@ -1,0 +1,68 @@
+/* _______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________ */
+/* ____GenAI: info icon + tooltip for the new optional field-level-help
+   (rendered only when the fieldLevelHelp @api prop is set by the parent).
+   The earlier sky-blue override made this field's icon stand out from every
+   other field's default grey info icon, per explicit follow-up request the
+   color override is removed so this icon now matches the same default grey
+   as the rest of the form. Scoped to this component only, no markup/
+   behavior touched besides the optional prop____ */
+
+/* ____GenAI: Line-format restyle for the "Business Industry" field (this
+   component). Converts the boxed dark input to an underline-only field so
+   it matches every other line-style field on the parent screen. Only the
+   box shape/background is removed - colors match the theme already used
+   for the rest of the form (#33455e idle border, #8b5cf6 focus border,
+   #ffffff text). Label, icon, dropdown and all behavior are untouched.____ */
+:host {
+    display: block;
+}
+
+.slds-form-element__label {
+    color: #ffffff !important;
+}
+
+.slds-combobox__form-element,
+.slds-form-element__control {
+    background-color: transparent !important;
+}
+
+input.slds-input.slds-combobox__input {
+    background-color: transparent !important;
+    color: #ffffff !important;
+    border: none !important;
+    border-bottom: 1px solid #33455e !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    padding: 6px 22px 6px 2px !important;
+}
+
+input.slds-input.slds-combobox__input:focus,
+input.slds-input.slds-combobox__input.slds-has-focus {
+    border-bottom: 1px solid #8b5cf6 !important;
+    box-shadow: none !important;
+}
+
+input.slds-input.slds-combobox__input::placeholder {
+    color: #8a99b3 !important;
+}
+
+.slds-icon.slds-input__icon {
+    fill: #a78bfa !important;
+    color: #a78bfa !important;
+}
+
+.slds-dropdown {
+    background-color: #16283f !important;
+    border: 1px solid #33455e !important;
+}
+
+.slds-listbox__option {
+    color: #ffffff !important;
+}
+
+.slds-listbox__option:hover,
+.slds-listbox__option.slds-has-focus {
+    background-color: #1f3550 !important;
+}
+/* __________________________GenAI: Generated code ends here______________________________ */

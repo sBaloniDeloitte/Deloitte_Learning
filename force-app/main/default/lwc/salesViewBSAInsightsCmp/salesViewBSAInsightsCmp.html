@@ -1,0 +1,94 @@
+<template>
+    <template if:false={showErrorBSA}>
+        <template if:true={showBankTable}>
+
+            <div class="custom-table-container">
+                <table
+                    class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered fixed-table">
+                    <thead>
+                        <tr>
+                            <th
+                                style="background-color: skyblue; color: black; text-align: center; font-size: 14px; border: 1px solid #000000;">
+                                Account Holder Name
+                            </th>
+                            <th
+                                style="background-color: skyblue; color: black; text-align: center; font-size: 14px; border: 1px solid #000000;">
+                                Bank Name
+                            </th>
+                            <th
+                                style="background-color: skyblue; color: black; text-align: center; font-size: 14px; border: 1px solid #000000;">
+                                Account Number
+                            </th>
+                            <th
+                                style="background-color: skyblue; color: black; text-align: center; font-size: 14px; border: 1px solid #000000;">
+                                Perfios Account Type
+                            </th>
+                            <th
+                                style="background-color: skyblue; color: black; text-align: center; font-size: 14px; border: 1px solid #000000;">
+                                Account Type
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={bankAccounts} for:item="row">
+                            <tr key={row.sourceType}>
+                                <td class="sticky-col col-1" style="border-color: black; min-width: 120px;">
+                                    {row.accountHolderName}
+                                </td>
+                                <td class="sticky-col col-1" style="border-color: black; min-width: 120px;">
+                                    {row.bankName}
+                                </td>
+                                <td class="sticky-col col-1" style="border-color: black; min-width: 120px;">
+                                    {row.accountNumber}
+                                </td>
+                                <td class="sticky-col col-1" style="border-color: black; min-width: 120px;">
+                                    {row.perfiosAccountType}
+                                </td>
+                                <template if:true={row.isEdittable}>
+                                    <td class="sticky-col col-1" style="border-color: black; min-width: 120px;">
+                                        <lightning-combobox name="progress" label="Status" value={row.accountType}
+                                            data-id={row.bankId} placeholder="Select Account Type"
+                                            options={accountTypeOptions} variant="label-hidden"
+                                            onchange={handleAccTypeChange}>
+                                        </lightning-combobox>
+                                    </td>
+
+                                    <!-- <td class="sticky-col col-1" style="border-color: black; min-width: 120px;">
+                                {row.accountType}
+                            </td> -->
+                                </template>
+                                <template if:false={row.isEdittable}>
+                                    <td class="sticky-col col-1" style="border-color: black; min-width: 120px;">
+                                        {row.accountType}
+                                    </td>
+                                </template>
+
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+
+        </template>
+        <template if:false={showBankTable}>
+            <div class="center-container button-shadow">
+                <span style="display:inline-flex;margin-bottom: 6%;">
+                    <!-- <img src={notEligibleIcon} alt="Image Preview" style="max-width:80%; max-height:100%;height:79px" class="slds-align_absolute-center" /> -->
+                    <p class="slds-text-align_center"
+                        style="font-style: Lato Bold; font-size: 20px;color:#9bbf56;padding-top:3%">
+                        We are currently analyzing the bank statements you have uploaded. Kindly revisit this section
+                        after some time.
+                    </p>
+                </span>
+            </div>
+        </template>
+
+    </template>
+     <template if:true={showErrorBSA}>
+        <p class="slds-text-align_center"
+                        style="font-style: Lato Bold; font-size: 20px;color:#9bbf56;padding-top:3%">
+        There was an error encountered from Perfios while attempting to perform the analysis of your bank statement.We kindly request you to review the error and take the necessary corrective actions to proceed further. </p>
+    </template>
+
+
+</template>

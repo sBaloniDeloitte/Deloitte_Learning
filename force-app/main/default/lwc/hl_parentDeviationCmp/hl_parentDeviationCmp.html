@@ -1,0 +1,166 @@
+<template>
+    <div class="" style="padding-top: 15px;padding-bottom: 15px;display: flex">
+         <template if:false={disabledCmp}>
+        <template if:false={hasPsvOrDisbursalStage}>
+            <template if:false={isDisabled}>
+                <button class="save-button slds-button slds-button_brand slds-float_left"
+                    onclick={handleAddDeviationRecord}>Add Deviation</button>
+            </template>
+        </template>
+        </template>
+    </div>
+    <!--
+    <div class="" style="margin-left: 10px;display: inline-block;">
+        <template if:false={hasPsvOrDisbursalStage}>
+            <button class="save-button slds-button slds-button_brand slds-float_left"
+                onclick={handleRefresh}>Refresh</button>
+        </template>
+    </div>-->
+
+    <template if:true={showAdditionScreen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Meaningful description of the modal content"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="min-width: 60%;">
+                <header class="slds-modal__header" style="background-color: skyblue; color:white;font-weight:500;">
+
+                    <div class="slds-text-align_center">
+                        <h2 slot="title"
+                            style="color: black;font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px"
+                            class="slds-text-heading_medium slds-hyphenate">Add Deviations</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless " id="confirm-body"
+                    style="min-height: 30% !important;">
+                    <template if:false={showInputText}>
+                        <c-search-lookup label="Select Parameter" show-label="true" required="true"
+                            placeholder="Search Parameter" object-name="Deviation_Mitigant_Master__c"
+                            return-fields="['Id','Deviation_Category__c']"
+                            onlookupselected={handleDeviationSelctiontype}
+                            onlookupdeselected={handleDeviationDeselctiontype} search-fields="['Deviation_Category__c']"
+                            filter-criteria={filterCriteriaCate}></c-search-lookup>
+                        <div if:true={selected}>
+
+                            <c-search-lookup label="Select Deviation" show-label="true" required="true"
+                                placeholder="Search Deviation" object-name="Deviation_Mitigant_Master__c"
+                                return-fields="['Id','Description__c','Approving_Authority__c']"
+                                onlookupselected={handleDeviationSelction}
+                                onlookupdeselected={handleDeviationDeselction} search-fields="['Description__c']" max-results={maxResult}
+                                filter-criteria={filterCriteria}></c-search-lookup>
+
+                            <div if:true={showmitigantsList}>
+                                <br>
+                                <div style="padding-top: 1.3%">
+                                    <lightning-input name="remarks" label="Please add appropriate mitigant(s)."
+                                        value={mitigantsVal} required="true" onchange={handleMitigants}>
+                                    </lightning-input>
+                                </div>
+
+
+
+                                <div style="padding-top: 1.2%;padding-bottom:1%">
+                                    <button class="save-button slds-button slds-button_brand slds-float_left"
+                                        onclick={handleSaveManualDeviation}>Add</button><br />
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+
+                </div>
+                <footer class="slds-modal__footer footer-section" style="border: revert;">
+                    <div class="slds-align_absolute-center">
+                        <button class="cancel-button slds-button slds-button_brand" style="border:none"
+                            onclick={handleClose}>Close</button>
+                        <!-- <button class="SaveButton slds-button slds-button_brand" style="font-size: 11px;width: 140px;background-color: #113451;color: white;border-color: #113451;font-weight: 500;" onclick={handleSave}>Create</button> -->
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+    </template>
+
+    <template if:false={isDataPresent}>
+        <div style="overflow-x: auto; width: 100%;padding-top: 25px;">
+            <div style="min-width: 100%;">
+                <table class="slds-table slds-table_cell-buffer" style="width: 100%; padding-top: 1%;">
+                    <thead style="position: sticky; top: 0; background: white; z-index: 4;">
+                        <tr>
+                            <th
+                                style="width: 10%; text-align: center; background-color: #5bb6e3; color: black; border: 1px solid black;">
+                                Deviation Code</th>
+                            <th
+                                style="width: 35%; text-align: center; background-color: #5bb6e3; color: black; border: 1px solid black;">
+                                Deviation</th>
+                            
+                            <th
+                                style="width: 25%; text-align: center; background-color: #5bb6e3; color: black; border: 1px solid black;">
+                                Mitigants</th>
+                            
+                            <th
+                                style="width: 10%; text-align: center; background-color: #5bb6e3; color: black; border: 1px solid black;">
+                                Approving Authority</th>
+                                <th
+                                style="width: 10%; text-align: center; background-color: #5bb6e3; color: black; border: 1px solid black;">
+                                Approval Status</th>
+                            
+                            
+                            <th
+                                style="width: 10%; text-align: center; background-color: #5bb6e3; color: black; border: 1px solid black;">
+                                Delete</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={deviationTable} for:item="iter">
+                            <tr key={iter.id}>
+                                <td style="width: 10%; border: 1px solid black; text-align: center">{iter.name}
+                                </td>
+                                <td style="width: 35%; border: 1px solid black; text-align: center">
+                                    {iter.Description}</td>
+                                
+                                <td style="width: 25%; border: 1px solid black; text-align: center">
+                                     <template if:false={disabledCmp}>
+                                        <template if:false={hasPsvOrDisbursalStage}>
+                                        <lightning-textarea name="mitigants" value={iter.mitigants} data-id={iter.id}
+                                            onblur={handleSaveRowValue}
+                                            style="white-space: normal; padding: 5px; min-height: 60px;" required=true
+                                            rows="3" disabled={iter.disableMitigants}>
+                                        </lightning-textarea>
+                                    </template>
+                                    <template if:true={hasPsvOrDisbursalStage}>
+                                        {iter.mitigants}
+                                    </template>
+                                     </template>
+                                     <template if:true={disabledCmp}>
+                                          {iter.mitigants}
+                                     </template>
+                                   
+                                </td>
+                                <td style="width: 10%; border: 1px solid black; text-align: center">
+                                    {iter.ApprovalAuthority}</td>
+                                <td style="width: 10%; border: 1px solid black; text-align: center">
+                                    {iter.approvalStatus}</td>
+                                
+                               
+                                
+                                <td style="width: 10%; border: 1px solid black; text-align: center">
+                                    <template if:false={disabledCmp}>
+                                    <template if:true={iter.isDelete}>
+                                        <template if:true={iter.showApprovalButton}>
+                                            <template if:false={iter.hideDeleteButton}>
+                                                <lightning-button-icon variant="basic" icon-name="utility:delete"
+                                                    title="Delete Document" data-id={iter.id} onclick={deleteDeviation}
+                                                    class="slds-m-left_x-small uploaded-view" style="margin-top: 19px;">
+                                                </lightning-button-icon>
+                                            </template>
+                                        </template>
+                                        </template>
+                                    </template>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </template>
+</template>

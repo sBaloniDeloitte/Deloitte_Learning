@@ -1,0 +1,43 @@
+<template>
+    <div class="container">
+
+        <!-- Success Message -->
+        <template if:true={isSubmitted}>
+            <p class="success-title">✅ Success!</p>
+            <p class="success-text">The VAS Waiver request has been submitted successfully.</p>
+
+            <div class="button-row">
+                <button class="btn-cancel" label="Cancel" onclick={handleCancel}>Cancel</button>
+            </div>
+        </template>
+
+        <!-- Pending / Warning Section -->
+        <template if:false={isSubmitted}>
+
+            <p class="warning-title">⚠️ Warning: Record Lock</p>
+
+            <p class="info-text">
+                By clicking <strong>Confirm & Submit</strong>, this Opportunity will be submitted for the VAS Approval Process.
+                The record will be temporarily locked until the Branch Head approves or rejects.
+            </p>
+
+            <!-- Loading Spinner -->
+            <template if:true={isLoading}>
+                <div class="spinner-wrapper">
+                    <lightning-spinner alternative-text="Submitting" size="medium"></lightning-spinner>
+                    <p class="spinner-text">Submitting request and sending email…</p>
+                </div>
+            </template>
+
+            <!-- Buttons -->
+            <template if:false={isLoading}>
+                <div class="button-row">
+                        <button class="btn-cancel" label="Cancel" onclick={handleCancel}>Cancel</button>
+                        <button class="btn-proceed" label="Confirm" onclick={handleSubmit}>Confirm & Submit</button>
+                </div>
+            </template>
+
+        </template>
+
+    </div>
+</template>

@@ -1,0 +1,67 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import 'c/cssLibrary';
+
+:host {
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+}
+.slds-form-element__label {
+    color: #ffffff !important;
+}
+
+.custom-table {
+    border-collapse: collapse; /* Ensures borders merge properly */
+    width: 67%;
+}
+
+th, td {
+    border: 1px solid black; /* Adds border to columns */
+    padding: 10px;
+    text-align: center;
+}
+
+.radio-cell {
+    text-align: center;
+}
+
+
+
+
+.container {
+    width: 90%;
+    border: 1px solid black; /* Outer border */
+	margin: 20px auto;
+}
+
+ .row {
+    display: flex;
+    border: 1px solid black;
+     border-right: 1px solid black; 
+     padding: 1px;  
+    min-height: 10px; 
+    align-items: center;
+} 
+
+
+
+.column {
+    
+    flex: 1;
+    padding: 12px;
+    text-align: center;
+    border-right: 1px solid black; /* Column divider */
+}
+
+.save-button {
+    background-color: #1467eb !important;
+    color: white;
+    border-color: #1467eb !important;
+    font-weight: 600;
+}
+
+.cancel-button {
+    background-color: #2a2f45 !important;
+    color: white;
+    border-color: #2a2f45 !important;
+    font-weight: 400;
+}

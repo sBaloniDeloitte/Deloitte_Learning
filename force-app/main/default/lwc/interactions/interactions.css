@@ -1,0 +1,86 @@
+/* _______________This Code was generated using GenAI tool: Codify, Please check for accuracy_______________ */
+
+:host {
+    display: block;
+}
+
+.int-card {
+    background: transparent;
+    overflow: hidden;
+}
+
+/* Header */
+.int-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 1px solid #002266;
+    background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+}
+
+.int-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.01em;
+}
+
+.int-meta {
+    font-size: 11px;
+    color: rgba(255,255,255,0.75);
+}
+
+/* List */
+.int-list {
+    padding: 0 16px;
+}
+
+/* Row */
+.int-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--divider);
+}
+
+.int-row:last-child {
+    border-bottom: none;
+}
+
+/* Icon circle */
+.int-icon-wrap {
+    width: 28px;
+    height: 28px;
+    min-width: 28px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    --slds-c-icon-color-foreground-default: #cbd5e1;
+}
+
+/* Info */
+.int-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.int-name {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text-primary);
+    line-height: 1.4;
+    margin-bottom: 2px;
+}
+
+.int-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+}
+
+/* __________________________GenAI: Generated code ends here______________________________ */

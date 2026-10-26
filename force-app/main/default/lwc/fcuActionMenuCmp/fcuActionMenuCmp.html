@@ -1,0 +1,22 @@
+<template>
+        <div class="slds-box slds-theme_default slds-m-top_small">
+        <div class="slds-grid slds-align_absolute-left">
+            <template if:true={disableReport}>
+                <div style="margin-right: 8px;"> <!-- Just a container with spacing -->
+                    <button class="slds-button slds-button_neutral"
+                        style="font-size: 11px; width: 150px; background-color: #9bbf56; color: white; border-color: #9bbf56; font-weight: 500;"
+                        onclick={generateReport}>
+                        View Report
+                    </button>
+                </div>
+            </template>
+            <div>
+                <button class="slds-button slds-button_neutral"
+                    style="font-size: 11px; width: 180px; background-color: #9bbf56; color: white; border-color: #9bbf56; font-weight: 500;"
+                    onclick={generateForm}>
+                    View Loan Application Form
+                </button>
+            </div>
+        </div>
+    </div>
+</template>

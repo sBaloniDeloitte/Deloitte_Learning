@@ -1,0 +1,18 @@
+<template>
+    <lightning-card  variant="Narrow">
+        <div>
+            <div style="color: black;font-weight: 700;padding-top: 0.5%;padding-left: 0.5%;">
+                QDE Reasons
+            </div>
+            
+            <div style="padding: 0.5%;">
+                <template for:each={reasons} for:item="data">
+                    <div key={data.srno}>
+                        <p>{data.srno}. {data.data}</p>
+                    </div>
+                </template>
+            </div>
+            
+        </div>
+    </lightning-card>
+</template>

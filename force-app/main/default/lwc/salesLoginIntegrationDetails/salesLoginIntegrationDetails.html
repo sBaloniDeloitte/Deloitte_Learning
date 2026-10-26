@@ -1,0 +1,88 @@
+<template>
+    <div class="slds-grid slds-gutters">
+        <div class="slds-col slds-size_1-of-12" style="margin-top: 10px; margin-left: 6px; font-size: 15px;">View For : </div>
+        <div class="slds-col slds-size_2-of-12">
+            <lightning-combobox placeholder="Select Applicant" options={applicantOptions} value={selctedCustomer} onchange={handleApplicantChange} variant="label-hidden" disabled={disableTable}></lightning-combobox>
+        </div>
+    </div>
+
+    <template if:false={disableTable}>
+        <table class="slds-table slds-no-row-hover slds-border_left slds-border_right slds-m-top_small
+                    slds-table_cell-buffer slds-table_bordered slds-table_col-bordered">
+            <thead>
+                <tr class="slds-line-height_reset">
+                    <th class="slds-cell-wrap" scope="col" 
+                        style="text-align: center; padding-left: 1%; max-width: 15%;
+                            background-color: #5bb6e3; color: white;">
+                        <div class="slds-truncate">Parameters</div>
+                    </th>
+                    <th class="slds-cell-wrap" scope="col" 
+                        style="text-align: center; padding-left: 1%; max-width: 15%;
+                            background-color: #5bb6e3; color: white;">
+                        <div class="slds-truncate">Source</div>
+                    </th>
+                    <th class="slds-cell-wrap" scope="col" 
+                        style="text-align: center; padding-left: 1%; max-width: 15%;
+                            background-color: #5bb6e3; color: white;">
+                        <div class="slds-truncate">Id No.</div>
+                    </th>
+                    <th class="slds-cell-wrap" scope="col" 
+                        style="text-align: center; padding-left: 1%; max-width: 15%;
+                            background-color: #5bb6e3; color: white;">
+                        <div class="slds-truncate">Name</div>
+                    </th>
+                    <th class="slds-cell-wrap" scope="col" 
+                        style="text-align: center; padding-left: 1%; max-width: 15%;
+                            background-color: #5bb6e3; color: white;">
+                        <div class="slds-truncate">Father's Name</div>
+                    </th>
+                    <th class="slds-cell-wrap" scope="col" 
+                        style="text-align: center; padding-left: 1%; max-width: 15%;
+                            background-color: #5bb6e3; color: white;">
+                        <div class="slds-truncate">Mother's Name</div>
+                    </th>
+                    <th class="slds-cell-wrap" scope="col" 
+                        style="text-align: center; max-width: 15%;
+                            background-color: #5bb6e3; color: white;">
+                        <div class="slds-truncate">DOB</div>
+                    </th>
+                    <th class="slds-cell-wrap" scope="col" 
+                        style="text-align: center; padding-left: 1%; max-width: 15%;
+                            background-color: #5bb6e3; color: white;">
+                        <div class="slds-truncate">Verified / Processed Date and Time</div>
+                    </th>
+                    <th class="slds-cell-wrap" scope="col" 
+                        style="text-align: center; padding-left: 1%; max-width: 15%;
+                            background-color: #5bb6e3; color: white;">
+                        <div class="slds-truncate">Status</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <template for:each={tableData} for:item="param">
+                    <template for:each={param.sources} for:item="source" for:index="index">
+                        <tr key={source.idNo}>
+                            <template if:true={source.isFirst}>
+                                <td rowspan={param.sources.length} style="vertical-align: top; display: table-cell;">{param.parameterName}</td>
+                            </template>
+                            <td class="slds-border_left slds-p-vertical_xx-small" style="vertical-align: top !important; display: table-cell; padding-left: 24px;">{source.sourceName}</td>
+                            <td>{source.idNo}</td>
+                            <td>{source.applicantName}</td>
+                            <td>{source.fatherName}</td>
+                            <td>{source.motherName}</td>
+                            <td>{source.dob}</td>
+                            <td>{source.dateandTime}</td>
+                            <td>{source.status}</td>
+                        </tr>
+                    </template>
+                </template>
+            </tbody>
+        </table>
+    </template>
+
+    <template if:true={disableTable}>
+        <div style="text-align: center; padding: 10px; border: solid 1px #000000; margin-top: 15px;">
+            No data fetched!
+        </div>
+    </template>
+</template>

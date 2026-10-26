@@ -1,0 +1,51 @@
+@import 'c/cssLibrary';
+th.tableCss {
+    color: white !important;
+    background-color: #5bb6e3 !important;
+}
+
+.slds-modal_prompt .slds-modal__container .slds-modal__footer .slds-button_neutral{
+    width: 90px;
+    background-color: #dc387e;
+    font-weight: 500;
+    border: none;
+    padding: 1px 0px;
+    color: white;
+}
+.slds-modal_prompt .slds-modal__container .slds-modal__footer .slds-button_brand{
+    width: 140px;
+    background-color: #9bbf56;
+    font-weight: 500;
+    border: none;
+    padding: 1px 0px;
+}
+.custom-confirm-header .slds-modal__header{
+    background: skyblue !important;
+}
+
+/* Fetch Bureau - dark navy background with purple outline
+   ("Previous" button look). Only colors/border changed, labels and
+   click handlers are untouched. */
+.previous-style-btn.slds-button_brand {
+    background-color: #1e58d7fa !important;
+    border: 1px solid #1e58d7fa !important;
+    color: #ffffff !important;
+}
+
+.previous-style-btn.slds-button_brand:hover {
+    background-color: #1e58d7fa !important;
+    border-color: #1e58d7fa !important;
+}
+
+/* Download - solid purple ("Start Application" look). Only
+   colors/border changed, labels and click handlers are untouched. */
+.start-app-style-btn.slds-button_brand {
+    background-color: #1e58d7fa !important;
+    border-color: #8b5cf6 !important;
+    color: #ffffff !important;
+}
+
+.start-app-style-btn.slds-button_brand:hover {
+    background-color: #1e58d7fa !important;
+    border-color: #7c3aed !important;
+}

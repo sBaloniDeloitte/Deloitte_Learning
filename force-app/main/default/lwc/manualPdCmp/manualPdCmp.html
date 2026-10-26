@@ -1,0 +1,298 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 03-25-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <span class="styleContainer"></span>
+    <template if:false={disabledCmp}>
+    <template if:true={showAddRowbutton}>
+    <template lwc:if={showAddPD}>
+        <button class="save-button pd-add-btn slds-button slds-button_brand slds-m-right_medium"
+                onclick={onClickAddButton} disabled={isDisableInitiation}>Add PD</button>
+     </template>
+     </template>
+     </template>
+
+    <template if:false={showAddRowbutton}>
+       <!-- <c-popup-screen record-id={recordId} show-initiate-pd="true" width-percentage="95"
+            header-title="Trigger Physical PD" show-close-btn=true onhandleclose={handleClose} save-btn-text="Initiate" show-save-btn="true" onhndleconfirmationyes={handleCallDedupe} is-loading ={isLoading}>
+        </c-popup-screen>-->
+        <!--<template if:true={isShowModal}>-->
+        <section role="dialog" tabindex="-1" aria-labelledby="modal-heading-01" aria-modal="true"
+            aria-describedby="modal-content-id-1" class="slds-modal slds-fade-in-open physical-pd-modal">
+            <div class="slds-modal__container">
+                <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse"
+                    title="Close" onclick={onClickAddButton}>
+                    <lightning-icon icon-name="utility:close" alternative-text="close" variant="inverse"
+                        size="small"></lightning-icon>
+                    <span class="slds-assistive-text">Close</span>
+                </button>
+                <header class="slds-modal__header header-section">
+                    <div class="slds-text-align_center">
+                        <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">
+                           Trigger Physical PD</h2>
+                    </div>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="modal-content-id-1">
+                    <div class="slds-grid slds-gutters">
+                        <div class="slds-col slds-size_2-of-12">
+        
+                        </div>
+                        <div class="slds-col slds-size_8-of-12">
+                            <div class="filter-drop">
+                                <lightning-combobox value={applicantValue} options={options} onchange={handleApplicantChange}
+                                    class="validate" label="Select Applicant" placeholder="Select Applicant" variant="label-inline"></lightning-combobox>
+                            </div>
+                        </div>
+                        <div class="slds-col slds-size_2-of-12">
+        
+                        </div>
+                    </div>
+
+                  <!--  <lightning-layout multiple-rows>
+                        <lightning-layout-item size="6" class="slds-p-around_medium">
+                            <lightning-input type="text" name="name" value={applicantName} label="Name" disabled></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="6" class="slds-p-around_medium">
+                            <lightning-input type="text" name="cmEmail" value={cmEmail} label="CM Email" disabled></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="6" class="slds-p-around_medium">
+                            <lightning-input type="text" name="mobileNumber" value={applicantMobileNumber} label="Mobile Number" disabled></lightning-input>
+                        </lightning-layout-item>
+                        <lightning-layout-item size="6" class="slds-p-around_medium">
+                            <lightning-input type="text" name="applicantEmail" value={applicantEmail} label="Applicant Email" onchange={handleApplicantEmail}></lightning-input>
+                        </lightning-layout-item>
+                    </lightning-layout>-->
+
+                </div>
+
+                <footer class="slds-modal__footer footer-section">
+                    <div class="slds-align_absolute-center button-container">
+                        <button class="slds-button slds-button_neutral save-button pd-physical-initiate-btn"
+                            onclick={handleInitiate}>Initiate</button>
+                        <button class="slds-button slds-button_neutral cancel-button"
+                            onclick={onClickAddButton}>Cancel</button>
+                    </div>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+   <!-- </template> -->
+    <!--<div class="slds-scrollable_x" style="overflow: auto;min-height: 150px;">
+        <table
+            class="slds-table custom-table"
+            style=" border-color: #2a2f45">
+            <thead>
+                <tr class="slds-line-height_reset">
+
+                    <th style="text-align: center; background-color: skyblue; color: white; border-color: #2a2f45"
+                        scope="col" colspan="1">
+                        Applicant Name
+                    </th>
+                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45;width: 50%;"
+                        scope="col" colspan="1">
+                        PD Notes
+                    </th>
+                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45;width: 17%;"
+                    scope="col" colspan="1">
+                    Upload Images
+                </th>
+                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45;width: 17%;"
+                        scope="col" colspan="1">
+                        Disposition
+                    </th>
+                    <th style="text-align: center; background-color: #1467eb; color: white; border-color: #2a2f45;width: 17%;"
+                        scope="col" colspan="1">
+                        PD Performed By
+                    </th>
+                    
+                    <th style="text-align: center; background-color: skyblue; color: white; border-color: #2a2f45;width: 10%;"
+                        scope="col" colspan="1">
+                        Action
+                    </th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+
+                <tr>
+                    <td>
+                        <lightning-combobox value={applicantValue} options={options} onchange={handleApplicantChange}
+                            class="validate" label="Select Applicant" placeholder="Select Applicant" variant="label-hidden"></lightning-combobox>
+                            <lightning-dual-listbox options={options}></lightning-dual-listbox>
+                    </td>
+                    <td style=" border-color: #2a2f45">
+                        <lightning-textarea label="Enter some text" variant="label-hidden" value={note}
+                            onblur={handleTextNote}></lightning-textarea>
+                    </td>
+                    <td style=" border-color: #2a2f45">
+                        
+                        <template if:false={showImagebutton}>
+                            <div>
+                                <lightning-file-upload label="Attach files" name="fileUploader" accept={acceptedFormats}
+                                record-id={recordId} multiple onuploadfinished={handleUploadFinished}>
+                                </lightning-file-upload>
+                            </div>
+                            
+                        </template>
+                    
+                        <template if:true={showImagebutton}>
+                            <div class ="single-upload-div">
+                                <div>
+                                    <lightning-layout>
+                                        <lightning-layout-item size="3">
+                                        </lightning-layout-item>
+                                        <lightning-layout-item size="6">
+                                            <lightning-file-upload label="Attach files" name="fileUploader" accept={acceptedFormats}
+                                            record-id={recordId} multiple onuploadfinished={handleUploadFinished}>
+                                            </lightning-file-upload>
+                                            <lightning-icon icon-name="action:preview" alternative-text="Event" title="Event" onclick={viewImage}></lightning-icon>    
+                                        </lightning-layout-item>
+                                        <lightning-layout-item size="3">
+                                        </lightning-layout-item>
+                                    </lightning-layout>
+
+                                </div>
+                            
+                            <button class="slds-button slds-button_brand continue-button"
+                                onclick={viewImage}>View</button>
+                                
+                            </div>
+                        </template>
+                    </td>
+                    <td style=" border-color: #2a2f45">
+                        <lightning-combobox name="progress" label="Status" placeholder="Select Disposition"
+                            options={dispositionOptions} variant="label-hidden" onchange={handleChange}
+                            value={disposition}></lightning-combobox>
+                    </td>
+                    <td style=" border-color: #2a2f45">
+                        {userInfo} 
+                        <c-search-lookup label="User" show-label="false" required="true"
+                        placeholder="Search Users" object-name="User"  selected-id={selectedId} filter-criteria="[Profile.Name = Credit Manager;]"
+                           return-fields="['Id','Name']" search-fields="['Name']" 
+                           onlookupselected={handleSelectedUser}
+                           onlookupdeselected={handlelDeselectedUser}></c-search-lookup>
+                    </td>
+                    
+                    
+                    <td style=" border-color: #2a2f45">
+                        <button class="save-button slds-button slds-button_brand" onclick={hanldeSave}>Save</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>-->
+    </template>
+    
+    <div class="title-div">Physical PD History</div>
+    <template if:true={showManualPds}>
+        <div class="phd-table-wrap">
+            <table class="slds-table">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th scope="col" colspan="1">
+                             Applicant Name
+                        </th>
+                        <th scope="col" colspan="1">
+                            Customer Type
+                        </th>
+                        <th scope="col" colspan="1">
+                            Customer Profile
+                        </th>
+                        <th scope="col" colspan="1">
+                            Initiated Time
+                        </th>
+                        <template lwc:if={showAddPD}>
+                        <th scope="col" colspan="1">
+                             Edit
+                        </th>
+                        </template>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <template for:each={manualPds} for:item="item">
+                        <tr key={item.appVeriId}>
+                            
+                            <td>
+                                {item.name}
+                            </td>
+                            <td>
+                                {item.customerType}
+                            </td>
+                            <td>
+                                {item.customerProfile}   
+                            </td>
+                            <td>
+                                {item.initiatedAt}   
+                            </td>
+                            <template lwc:if={showAddPD}>
+                            <td>
+                                <template if:false={disabledCmp}>
+                            <lightning-icon data-id={item.appVeriId} icon-name="utility:edit" alternative-text="Edit Document" title="EDIT" size="x-small" onclick={openPdForm} style="cursor: pointer;" ></lightning-icon> 
+                                    </template>
+                        </td>
+                            </template>
+                        </tr>
+                    </template>
+                
+                </tbody>
+            </table>
+        </div>
+    </template>
+    <template if:true={showImages}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+
+                <header class="slds-modal__header header-section">
+                    <div class="slds-text-align_center">
+                        <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">View Image</h2>
+                    </div>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_medium" id="confirm-body">
+                    <!-- add child component here -->
+
+                    <div style="padding: 10px; text-align: center;">
+                        <div style="margin-top: 2%;">
+                            <div class="content-container" style="height: 300px;">
+                                <template if:true={pdfUrl}>
+                                    <iframe src={pdfUrl} class="content-viewer"
+                                        style="border: 1px solid #000000; height:70%; width:70%; margin-bottom: 5px;"></iframe>
+                                </template>
+                                <template if:true={imageUrl}>
+                                    <div class="scrollable">
+                                        <img src={imageUrl} alt="Document Image" class="content-viewer"
+                                            style="border: 1px solid #000000; margin-bottom: 5px;" />
+                                    </div>
+                                </template>
+                                <div>{documentName}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <footer class="footer-section">
+                    <div class="slds-align_absolute-center button-container">
+                        <template if:true={showNextButton}>
+                        <button class="slds-button slds-button_brand previous-button" onclick={handlePrevious} style="margin-right: 10px;"
+                            disabled={previous}>Previous</button>
+                        <button class="slds-button slds-button_brand continue-button" onclick={handleNext} style="margin-right: 10px;"
+                            disabled={disableNext}>Next</button>
+                        </template>
+                        <button class="slds-button slds-button_brand previous-button" style="margin-right: 10px;"
+                            onclick={handleClose}>Close</button>
+                            <!-- <button class="slds-button slds-button_brand previous-button"
+                            onclick={handledelete}>Delete</button> -->
+                    </div>
+                </footer>
+            </div>
+        </section>
+
+        <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+    </template>
+</template>

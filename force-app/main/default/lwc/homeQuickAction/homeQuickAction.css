@@ -1,0 +1,213 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import 'c/cssLibrary';
+
+/* ----------------- Dark Theme Palette -----------------
+   Matches the modal colour scheme used on rejectLoanApplicationCmp so all
+   the pop-ups in this component look consistent with the rest of the flow. */
+:host {
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-text: #ffffff;
+    --dt-text-muted: #cfd8e6;
+    --dt-placeholder: #8a99b3;
+    --dt-accordion: #1589ee;
+    --dt-positive: #1467eb;
+    --dt-negative: #db2929;
+    --dt-purple: #8d29db;
+    --dt-gradient: linear-gradient(135deg, rgb(0, 26, 94) 0%, rgb(0, 48, 135) 55%, rgb(0, 77, 179) 100%);
+
+    /* lightning-modal (base component) style hooks - covers the native
+       lightning-modal-header/-body/-footer templates used further below */
+    --slds-c-modal-color-background: var(--dt-bg);
+    --slds-c-modal-text-color: var(--dt-text);
+    --slds-c-modal-header-color-background: var(--dt-gradient);
+    --slds-c-modal-header-text-color: var(--dt-text);
+    --slds-c-modal-footer-color-background: var(--dt-gradient);
+    --slds-c-modal-content-color-background: var(--dt-bg);
+}
+
+.header-section {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+    background-image: var(--dt-gradient) !important;
+    color: var(--dt-text) !important;
+    border-bottom: 1px solid var(--dt-border);
+}
+
+/* "X" close button pinned to the top-right corner of the header. header-section
+   above is already position:sticky (a valid positioning context, same as the
+   already-fixed close icon on loanReassignmentScreen/rejectLoanApplicationCmp),
+   so no extra position:relative is needed here. Each button reuses the modal's
+   own existing close/cancel handler - purely additive UI, no behavior change. */
+.home-quick-action-close-btn {
+    position: absolute;
+    top: 50%;
+    right: 16px;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    z-index: 11;
+    --sds-c-icon-color-foreground: #ffffff;
+    --sds-c-icon-color-foreground-default: #ffffff;
+}
+
+.home-quick-action-close-btn:hover,
+.home-quick-action-close-btn:focus {
+    background: rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+}
+
+.header-title {
+    color: var(--dt-text) !important;
+}
+
+.footer-section {
+    position: sticky;
+    bottom: 0;
+    background-image: var(--dt-gradient) !important;
+    border-top: 1px solid var(--dt-border);
+}
+
+/* The dialog wrapper must stay transparent and centre its child instead
+   of stretching it (flexbox default align-items:stretch) - otherwise the
+   coloured container grows to the full dialog height, leaving a large
+   coloured gap above/below the header/footer instead of a tight popup. */
+/* This component never renders a separate .slds-backdrop element - .slds-modal
+   itself IS the full-viewport overlay layer (position:fixed, covering the whole
+   screen), so the dim + blur has to be applied here directly instead of on a
+   .slds-backdrop rule that has nothing to style. Centering behavior (flex/
+   align-items/justify-content) is unchanged. */
+.slds-modal {
+    background-color: rgba(4, 9, 20, 0.55) !important;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.slds-backdrop {
+    background-color: #000000;
+    opacity: 0.8;
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+}
+
+.slds-modal__container {
+    width: 42rem;
+    max-width: 90%;
+    background-color: var(--dt-bg);
+    /* Same root cause as loanReassignmentScreen/rejectLoanApplicationCmp: the
+       shared cssLibrary.css (imported above) forces
+       ".slds-modal__container { padding: 3% 0 !important; }" on every modal in
+       the org, which is the dark empty strip above the header and below the
+       footer seen in this component's popups. Resetting that padding and
+       pinning header/footer as fixed-size flex items (content scrollable in
+       between) makes them sit flush at the top/bottom. Layout only - no
+       markup or button behavior changed. */
+    display: flex;
+    flex-direction: column;
+    padding: 0 !important;
+    flex: 0 1 auto;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.slds-modal__container .header-section,
+.slds-modal__container .footer-section,
+.slds-modal__container .custom-header,
+.slds-modal__container .custom-footer,
+.slds-modal__container header.slds-modal__header,
+.slds-modal__container footer.slds-modal__footer {
+    flex: 0 0 auto;
+}
+
+.slds-modal__container .slds-modal__content {
+    flex: 1 1 auto;
+    overflow-y: auto;
+}
+
+.slds-modal__content {
+    background-color: var(--dt-bg);
+    color: var(--dt-text);
+}
+
+/* Generic catch-all for modal headers/footers still using inline
+   "skyblue" styling further down in the markup - the !important here
+   beats the non-!important inline style attribute. */
+.slds-modal__header,
+header.slds-modal__header {
+    background-image: var(--dt-gradient) !important;
+    color: var(--dt-text) !important;
+}
+
+.slds-modal__footer {
+    background-image: var(--dt-gradient) !important;
+}
+
+.custom-header {
+    background-image: var(--dt-gradient) !important;
+    color: var(--dt-text) !important;
+}
+
+.custom-footer {
+    background-image: var(--dt-gradient) !important;
+    text-align: center;
+    padding: 10px;
+}
+
+/* ----------------- Buttons ----------------- */
+/* Right-hand / positive flowing CTAs - solid purple fill, rounded, glow */
+.save-button,
+.continue-button {
+    background-color: #a855f7 !important;
+    border-color: #a855f7 !important;
+    color: #ffffff !important;
+    border-radius: 0.5rem !important;
+    font-weight: 700 !important;
+    box-shadow: 0 0 12px rgba(168, 85, 247, 0.5) !important;
+}
+
+/* Left-hand / negative flowing CTAs - dark navy outline with purple border/text */
+.close-button,
+.previous-button {
+    background-color: #16283f !important;
+    border: 1px solid #a855f7 !important;
+    color: #a855f7 !important;
+    border-radius: 0.5rem !important;
+    font-weight: 700 !important;
+    box-shadow: none !important;
+}
+
+lightning-textarea::part(textarea),
+lightning-input::part(input),
+lightning-combobox::part(input) {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    color: var(--dt-text) !important;
+}
+
+/* lightning-textarea style hooks - ::part(textarea) alone doesn't reach
+   every rendering; these SLDS 2 hooks stop the Remarks field from
+   showing a white background on top of the dark modal. */
+.remarks-textarea {
+    --slds-c-textarea-color-background: var(--dt-input-bg) !important;
+    --slds-c-textarea-text-color: var(--dt-text) !important;
+    --slds-c-textarea-color-border: var(--dt-border) !important;
+    --slds-c-textarea-radius-border: 6px !important;
+    
+    /* Keep the textarea dark even when focused */
+    --slds-c-textarea-color-background-focus: var(--dt-input-bg) !important;
+    --slds-c-textarea-text-color-focus: var(--dt-text) !important;
+    --slds-c-textarea-color-border-focus: #a855f7 !important;
+}
+.slds-form-element__label {
+    color: var(--dt-text-muted) !important;
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

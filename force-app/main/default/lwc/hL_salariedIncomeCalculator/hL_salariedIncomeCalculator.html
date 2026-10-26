@@ -1,0 +1,665 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 12-12-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:true={spinnerRun}>
+        <section role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open" style="z-index: 900003;">
+            <lightning-spinner></lightning-spinner>
+        </section>
+    </template>
+
+    <lightning-card>
+        <div>
+            <p style="color: red; font-style: italic; font-size: 13px; font-weight: 500;padding: 0 0 10px 0;">
+                *Please add all the months before adding any particulars.
+            </p>
+        </div>
+        <div class="slds-grid slds-wrap slds-scrollable_x">
+            <template if:true={showCalculator}>
+    <table style="width:30%; font-size:0.75rem; border-collapse:collapse; text-align:left; margin:0;">
+        <tr>
+            <td scope="col" class="color-theme" style="padding:2px 0; font-weight:500;">Gross Salary</td>
+            <td style="text-align:right; padding:2px 0;">
+                <lightning-input
+                    type="number"
+                    variant="label-hidden"
+                    name="grossSalary"
+                    value={newmap.grossSalary}
+                    onchange={handleInputChange1}>
+                </lightning-input>
+            </td>
+        </tr>
+
+        <tr>
+            <td scope="col" class="color-theme" style="padding:2px 0; font-weight:500;">Total Deductions</td>
+            <td style="text-align:right; padding:2px 0;">
+                <lightning-input
+                    type="number"
+                    variant="label-hidden"
+                    name="totalDeductions"
+                    value={newmap.totalDeductions}
+                    onchange={handleInputChange2}>
+                </lightning-input>
+            </td>
+        </tr>
+    </table>
+</template>
+            <template if:false={showCalculator}>
+            <table class="slds-table">
+                <thead>
+                    <tr>
+                        <th class="col-width-100 color-theme" rowspan="2" style="width: 175px;">Nature of Component</th>
+                        <th class="col-width-100 color-theme" rowspan="2" style="width: 300px;">Particulars</th>
+                        <th colspan={amtColSpan} class="col-width-100 color-theme">
+                            Amount &nbsp;&nbsp;
+                            <template if:false={disableEdit}>
+                                <template if:false={disableAdditionOfMonth}>
+                                    <button class="slds-button slds-button_brand" style="padding: 0 5px; height: 23px; background-color: #dc387e; color: white; width: 85px; font-size: 12px;" onclick={addMonth}>Add Month</button>
+                                </template>
+                            </template>
+                        </th>
+                        <th class="col-width-100 color-theme" style="width: 150px;" rowspan="2">Average Amount</th>
+                        <th class="color-theme" style="width: 100px;" rowspan="2">Actions</th>
+                    </tr>
+                    <tr>
+                        <template for:each={objSalWrapper.lstMonthLabels} for:item="strMonthLabel">
+                            <th class="col-width-100 color-theme" key={strMonthLabel}>
+                                {strMonthLabel}
+                                <template if:false={disableEdit}>
+                                    <template if:false={disableAdditionOfMonth}>
+                                        &nbsp;&nbsp;
+                                        <lightning-icon icon-name="utility:delete" title="DELETE" size="xx-small" variant="inverse" data-month={strMonthLabel} onclick={delMonth} style="cursor: pointer;"></lightning-icon>
+                                    </template>
+                                </template>
+                            </th>
+                        </template>
+                        <template if:true={boolAddNewMonth}>
+                            <th class="col-width-100 color-theme">
+                                <lightning-input type="text" style="color: black;" variant="label-hidden" name="newMonthLabel" value={newMonthValue} onchange={inputChanged}></lightning-input>
+                                &nbsp;&nbsp;
+                                <!-- <lightning-icon icon-name="utility:save" title="SAVE" size="xx-small" variant="inverse" onclick={saveNewMonth} style="cursor: pointer; margin-right: 10px;"></lightning-icon>
+                                <lightning-icon icon-name="utility:undo" title="UNDO" size="xx-small" variant="inverse" onclick={resetMonth} style="cursor: pointer;"></lightning-icon> -->
+                            </th>
+                        </template>
+                    </tr>
+
+                    <!--Add Earning Rows-->
+                    <tr class="color-theme">
+                        <td colspan={earningsDeductionsColSpan}><div class="slds-text-title_bold" style="text-align: left;">Earnings</div></td>
+                    </tr>
+                </thead>
+                
+                <tbody>
+                    <template if:false={disableEdit}>
+                        <template if:true={showADDcmp}>
+                            <template if:true={refreshADD}>
+                                <tr>
+                                    <td class="col-width-100">
+                                        <lightning-combobox
+                                            options={natureOfCMPvalues}
+                                            data-id="Nature_Of_Component__c"
+                                            onchange={addnewinputChanged}
+                                            variant="label-hidden"
+                                            dropdownalignment="top"
+                                            value={newADDdataWrapper.Nature_Of_Component__c}
+                                        ></lightning-combobox>
+                                    </td>
+                                    <td class="col-width-100">
+                                        <lightning-combobox
+                                            options={addOptions}
+                                            data-id="Type_Of_Component__c"
+                                            onchange={addnewinputChanged}
+                                            variant="label-hidden"
+                                            dropdownalignment="top"
+                                            value={newADDdataWrapper.Type_Of_Component__c}
+                                        ></lightning-combobox>  
+                                    </td>
+                                    <template for:each={objSalWrapper.lstMonthLabels} for:item="monthValue">
+                                        <td key={monthValue}><lightning-input type="number" step="1" max-length="11" name="newMonthValue" variant="label-hidden" data-month={monthValue} onchange={inputChanged}></lightning-input></td>
+                                    </template>
+                                    <template if:false={boolIsMonthDataPresent}>
+                                        <td class="col-width-100"></td>
+                                    </template>
+                                    <td class="col-width-100"></td>
+                                    <td class="col-width-100" style="text-align: center;">
+                                        <!-- <lightning-icon icon-name="utility:save" title="SAVE" size="xx-small" onclick={addNewEarningsParticular} style="cursor: pointer;"></lightning-icon> -->
+                                    </td>
+                                </tr>
+                            </template>
+                        </template>
+                    </template>
+                    <template for:each={objSalWrapper.lstEarningsWrapper} for:item="objEarning">
+                        <tr key={objEarning.strParticulars}>
+                            <td class="col-width-100">{objEarning.strNatureOfComponent}</td>
+                            <td class="col-width-100">{objEarning.strParticulars}</td>
+                            <template for:each={objEarning.lstAmtWrapper} for:item="objMonth">
+                                <td key={objMonth.strMonthLabel} class="col-width-100" style="text-align: center;">{objMonth.strMonthValue}</td>
+                            </template>
+                            <td class="col-width-100" style="text-align: center;">{objEarning.strAverage}</td>
+                            <td class="col-width-100" style="text-align: center;">
+                                <template if:false={disableEdit}>
+                                    <lightning-icon icon-name="utility:delete" data-id={objEarning.recordId} title="DELETE" size="xx-small" onclick={handleDeleteParticular} style="cursor: pointer;"></lightning-icon>
+                                </template>
+                            </td>
+                        </tr>
+                    </template>
+                    <tr>
+                        <td colspan="2" class="no-hover-child" style="background-color: #ddd; font-weight: bold;">Gross Earnings Per Month</td>
+                        <!--this template is to be changed and show gross earnings wrapper-->
+                        <template if:true={showADDgross}>
+                            <template for:each={objSalWrapper.lstTotalAmount} for:item="monthAddTotal">
+                                <td class="no-hover-child" style="background-color: #ddd; font-weight: bold; text-align: center;" key={monthAddTotal}>{monthAddTotal}</td>
+                            </template>
+                            <td class="col-width-100 no-hover-child" style="background-color: #ddd; font-weight: bold; text-align: center;">{totalAvgGross}</td>
+                            <td class="col-width-100 no-hover-child" style="background-color: #ddd; font-weight: bold;"></td>
+                        </template>
+                        <template if:false={showADDgross}>
+                            <td colspan="12" class="col-width-100 no-hover-child" style="background-color: #ddd; font-weight: bold;"></td>
+                        </template>
+                    </tr>
+                    <!--Add Deduction Rows-->
+                    <tr class="color-theme">
+                        <td colspan={earningsDeductionsColSpan} class="no-hover"><div class="slds-text-title_bold" style="text-align: left;">Deductions</div></td>
+                    </tr>
+                    <template if:false={disableEdit}>
+                        <template if:true={showLESScmp}>
+                            <template if:true={refreshLESS}>
+                                <tr>
+                                    <td class="col-width-100">
+                                        <lightning-combobox
+                                            options={natureOfCMPvalues}
+                                            data-id="Nature_Of_Component__c"
+                                            onchange={lessnewinputChanged}
+                                            variant="label-hidden"
+                                            dropdownalignment="top"
+                                            value={newLESSdataWrapper.Nature_Of_Component__c}
+                                        ></lightning-combobox>
+                                    </td>
+                                    <td class="col-width-100">
+                                        <lightning-combobox
+                                            options={lessOptions}
+                                            data-id="Type_Of_Component__c"
+                                            onchange={lessnewinputChanged}
+                                            variant="label-hidden"
+                                            dropdownalignment="top"
+                                            value={newLESSdataWrapper.Type_Of_Component__c}
+                                        ></lightning-combobox>  
+                                    </td>
+                                    <template for:each={objSalWrapper.lstMonthLabels} for:item="strMonthLabel">
+                                        <td key={strMonthLabel}><lightning-input step="1" max-length="11" type="number" variant="label-hidden" name="newMonthValueless" data-month={strMonthLabel} onchange={inputChanged}></lightning-input></td>
+                                    </template>
+                                    <template if:false={boolIsMonthDataPresent}>
+                                        <td class="col-width-100"></td>
+                                    </template>
+                                    <td class="col-width-100"></td>
+                                    <td class="col-width-100" style="text-align: center;">
+                                        <!-- <lightning-icon icon-name="utility:save" title="SAVE" size="xx-small" onclick={lessNewEarningsParticular} style="cursor: pointer;"></lightning-icon> -->
+                                    </td>
+                                </tr>
+                            </template>
+                        </template>
+                    </template>
+                    <template for:each={objSalWrapper.lstDeductionsWrapper} for:item="objEarning">
+                        <tr key={objEarning.strParticulars}>
+                            <td class="col-width-100">{objEarning.strNatureOfComponent}</td>
+                            <td class="col-width-100">{objEarning.strParticulars}</td>
+                            <template for:each={objEarning.lstAmtWrapper} for:item="objMonth">
+                                <td key={objMonth.strMonthLabel} class="col-width-100" style="text-align: center;">{objMonth.strMonthValue}</td>
+                            </template>
+                            <td class="col-width-100" style="text-align: center;">{objEarning.strAverage}</td>
+                            <td class="col-width-100" style="text-align: center;">
+                                <template if:false={disableEdit}>
+                                    <lightning-icon icon-name="utility:delete" data-id={objEarning.recordId} title="DELETE" size="xx-small" onclick={handleDeleteParticular} style="cursor: pointer;"></lightning-icon>
+                                </template>
+                            </td>
+                        </tr>
+                    </template>
+                    <tr>
+                        <td colspan="2" class="no-hover-child" style="background-color: #ddd; font-weight: bold;">Gross Deductions Per Month</td>
+                        <!--this template is to be changed and show gross earnings wrapper-->
+                        <template if:true={showLESSgross}>
+                            <template for:each={objSalWrapper.lstTotalAmountLess} for:item="monthLessTotal">
+                                <td class="no-hover-child" style="background-color: #ddd; font-weight: bold; text-align: center;" key={monthLessTotal}>{monthLessTotal}</td>
+                            </template>
+                            <td class="col-width-100 no-hover-child" style="background-color: #ddd; font-weight: bold; text-align: center;">{totalAvgGrossLess}</td>
+                            <td class="col-width-100 no-hover-child" style="background-color: #ddd; font-weight: bold;"></td>
+                        </template>
+                        <template if:false={showLESSgross}>
+                            <td colspan="12" class="col-width-100 no-hover-child" style="background-color: #ddd; font-weight: bold;"></td>
+                        </template>
+                    </tr>
+                    <template if:true={showNetSalary}>
+                        <tr style="font-weight: bold;">
+                            <td colspan="2" class="no-hover" style="background-color: #5bb6e3; font-weight: bold;">Net Earnings Per Month</td>
+                                <template for:each={objSalWrapper.netSalary} for:item="monthNetSalary">
+                                    <td class="no-hover" style="background-color: #5bb6e3; font-weight: bold; text-align: center;" key={monthNetSalary}>{monthNetSalary}</td>
+                                </template>
+                            <td class="col-width-100 no-hover" style="background-color: #5bb6e3; font-weight: bold; text-align: center;">{netAvgSalary}</td>
+                            <td class="col-width-100 no-hover" style="background-color: #5bb6e3; font-weight: bold; text-align: center;"></td>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+            </template>
+            <table class="slds-table" style="margin-top: 10px;">
+                <thead>
+                    <tr>
+                        <td scope="col" class="color-theme" style="width: 50px;">Sr No.</td>
+                        <td scope="col" class="color-theme" style="min-width: 400px;">Bonus</td>
+                        <td scope="col" class="color-theme" style="width: 150px;">Gross Amount</td>
+                        <td scope="col" class="color-theme" style="width: 150px;">Multiplier</td>
+                        <td scope="col" class="color-theme" style="width: 150px;">I-Tax Slab</td>
+                        <td scope="col" class="color-theme" style="width: 150px;">Net Amount</td>
+                        <template if:false={disableEdit}>
+                            <td scope="col" class="color-theme" style="width: 100px;" colspan="1">Actions</td>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={yearlyChildData} for:item="record">
+                        <tr key={record.id}>
+                            <template if:false={record.editRecord}>
+                                <td style="text-align: center;">{record.srNo}</td>
+                                <td>{record.yearlyComponent}</td>
+                                <td style="text-align: center;">{record.grossAmount}</td>
+                                <td style="text-align: center;">{record.multiplier}</td>
+                                <td style="text-align: center;">{record.taxSlab} %</td>
+                                <td style="text-align: center;">{record.netAmount}</td>
+                                <td style="text-align: center;">
+                                    <lightning-icon data-id={record.id} name="yearly" icon-name="utility:edit" title="EDIT" size="x-small" onclick={handleEditRecord} style="cursor: pointer; margin-right: 10px;"></lightning-icon>
+                                    <lightning-icon data-id={record.id} name="yearly" icon-name="utility:delete" title="DELETE" size="x-small" onclick={handleYearlyComponentDelete} style="cursor: pointer;"></lightning-icon>
+                                </td>
+                            </template>
+                            <template if:true={record.editRecord}>
+                                <td style="text-align: center;">{record.srNo}</td>
+                                <td>
+                                    {record.yearlyComponent}
+                                </td>
+                                <td>
+                                    <lightning-input value={record.grossAmount}
+                                        data-id={record.id}
+                                        data-name="grossAmount" step="1"
+                                        type="number" max-length="13"
+                                       data-yearly-component={record.yearlyComponent}
+                                        onchange={handleTableInputChange}
+                                        class="validate" variant="label-hidden">
+                                    </lightning-input>
+                                </td>
+                                <td>
+                                    <lightning-input value={record.multiplier}
+                                        data-id={record.id}
+                                        data-name="multiplier" step="0.01"
+                                        type="number" max-length="5"
+                                        data-yearly-component={record.yearlyComponent}
+                                        onchange={handleTableInputChange}
+                                        class="validate" variant="label-hidden">
+                                    </lightning-input>
+                                </td>
+                                <td>
+                                    <lightning-input value={record.taxSlab}
+                                        data-id={record.id}
+                                        data-name="taxSlab" step="0.01"
+                                        type="number" max-length="5"
+                                        formatter="percent-fixed"
+                                        data-yearly-component={record.yearlyComponent}
+                                        onchange={handleTableInputChange}
+                                        class="validate" variant="label-hidden">
+                                    </lightning-input>
+                                </td>
+                                <td style="text-align: center;">{record.netAmount}</td>
+                                <template if:false={disableEdit}>
+                                    <td style="text-align: center;">
+                                        <!-- <lightning-icon data-id={record.id} name="yearly" icon-name="utility:save" title="SAVE" size="x-small" onclick={handleSaveRecord} style="cursor: pointer; margin-right: 10px;"></lightning-icon>
+                                        <lightning-icon data-id={record.id} name="yearly" icon-name="utility:undo" title="UNDO" size="x-small" onclick={handleYearlyComponentUndo} style="cursor: pointer;"></lightning-icon> -->
+                                    </td>
+                                </template>
+                            </template>
+                        </tr>
+                    </template>
+                    <tr>
+                        <td class="no-hover-child" style="background-color: #ddd; font-weight: bold;" colspan="2">
+                            Average Bonus
+                        </td>
+                        <td class="no-hover-child" style="background-color: #ddd; font-weight: bold; text-align: center;">{yearlyComponents.averageGrossAmount}</td>
+                        <td class="no-hover-child" style="background-color: #ddd; font-weight: bold;"></td>
+                        <td class="no-hover-child" style="background-color: #ddd; font-weight: bold;"></td>
+                        <td class="no-hover-child" style="background-color: #ddd; font-weight: bold; text-align: center;">{yearlyComponents.averageNetAmount}</td>
+                        <template if:false={disableEdit}>
+                            <td class="no-hover-child" style="background-color: #ddd; font-weight: bold;"></td>
+                        </template>
+                    </tr>
+                    <tr>
+                        <td class="no-hover" style="background-color: #5bb6e3; font-weight: bold;" colspan="2">
+                            Total Bonus
+                        </td>
+                        <td class="no-hover" style="background-color: #5bb6e3; font-weight: bold; text-align: center;">{yearlyComponents.grossAmount}</td>
+                        <td class="no-hover" style="background-color: #5bb6e3; font-weight: bold;"></td>
+                        <td class="no-hover" style="background-color: #5bb6e3; font-weight: bold;"></td>
+                        <td class="no-hover" style="background-color: #5bb6e3; font-weight: bold; text-align: center;">{yearlyComponents.netAmount}</td>
+                        <template if:false={disableEdit}>
+                            <td class="no-hover" style="background-color: #5bb6e3; font-weight: bold;"></td>
+                        </template>
+                    </tr>
+                </tbody>
+            </table>
+
+            <table class="slds-table" style="margin-top: 10px;">
+                <thead>
+                    <tr>
+                        <td scope="col" class="color-theme" style="width: 50px;">Sr No.</td>
+                        <td scope="col" class="color-theme" style="width: 150px;">Incentive</td>
+                        <td scope="col" class="color-theme" style="width: 150px;">Gross Amount</td>
+                        <td scope="col" class="color-theme" style="width: 150px;">Multiplier</td>
+                        <td scope="col" class="color-theme" style="width: 150px;">I-Tax Slab</td>
+                        <td scope="col" class="color-theme" style="width: 150px;">Net Amount</td>
+                        <td scope="col" class="color-theme" style="width: 150px;">Frequency</td>
+                        <template if:false={disableEdit}>
+                            <td scope="col" class="color-theme" style="width: 100px;" colspan="1">Actions</td>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={incentiveChildData} for:item="record">
+                        <tr key={record.id}>
+                            <template if:false={record.editRecord}>
+                                <td style="text-align: center;">{record.srNo}</td>
+                                <td  style="text-align: center;">{record.yearlyComponent}</td>
+                                <td style="text-align: center;">{record.grossAmount}</td>
+                                <td style="text-align: center;">{record.multiplier}</td>
+                                <td style="text-align: center;">{record.taxSlab} %</td>
+                                <td style="text-align: center;">{record.netAmount}</td>
+                                <td style="text-align: center;">{record.frequency}</td>
+                                <td style="text-align: center;">
+                                    <lightning-icon data-id={record.id} name="incentive" icon-name="utility:edit" title="EDIT" size="x-small" onclick={handleEditRecord} style="cursor: pointer; margin-right: 10px;"></lightning-icon>
+                                    <lightning-icon data-id={record.id} name="incentive" icon-name="utility:delete" title="DELETE" size="x-small" onclick={handleYearlyComponentDelete} style="cursor: pointer;"></lightning-icon>
+                                </td>
+                            </template>
+                            <template if:true={record.editRecord}>
+                                <td style="text-align: center;">{record.srNo}</td>
+                                <td style="text-align: center;">{record.yearlyComponent}</td>
+                                <!--<td>
+                                    <lightning-input value={record.yearlyComponent}
+                                        data-id={record.id}
+                                        data-name="yearlyComponent"
+                                        type="text"
+                                        onchange={handleIncentiveTableInputChange}
+                                        class="validate" variant="label-hidden">
+                                    </lightning-input>
+                                </td>-->
+                                <td>
+                                    <lightning-input value={record.grossAmount}
+                                        data-id={record.id}
+                                        data-name="grossAmount" step="1"
+                                        type="number" max-length="13"
+                                        data-incentive={record.yearlyComponent}
+                                        onchange={handleIncentiveTableInputChange}
+                                        class="validate" variant="label-hidden">
+                                    </lightning-input>
+                                </td>
+                                <td>
+                                    <lightning-input value={record.multiplier}
+                                        data-id={record.id}
+                                        data-name="multiplier" step="0.01"
+                                        type="number" max-length="5"
+                                        data-incentive={record.yearlyComponent}
+                                        onchange={handleIncentiveTableInputChange}
+                                        class="validate" variant="label-hidden">
+                                    </lightning-input>
+                                </td>
+                                <td>
+                                    <lightning-input value={record.taxSlab}
+                                        data-id={record.id}
+                                        data-name="taxSlab" step="0.01"
+                                        type="number" max-length="5"
+                                        data-incentive={record.yearlyComponent}
+                                        formatter="percent-fixed"
+                                        onchange={handleIncentiveTableInputChange}
+                                        class="validate" variant="label-hidden">
+                                    </lightning-input>
+                                </td>
+                                <td style="text-align: center;">{record.netAmount}</td>
+                                <td style="text-align: left;">
+                                    <lightning-combobox data-id={record.id} data-name="frequency" value={record.frequency} options={frequencyOptions} onchange={handleIncentiveTableInputChange} variant="label-hidden"></lightning-combobox>
+                                </td>
+                                <template if:false={disableEdit}>
+                                    <td style="text-align: center;">
+                                        <!-- <lightning-icon data-id={record.id} name="incentive" icon-name="utility:save" title="SAVE" size="x-small" onclick={handleSaveRecord} style="cursor: pointer; margin-right: 10px;"></lightning-icon>
+                                        <lightning-icon data-id={record.id} name="incentive" icon-name="utility:undo" title="UNDO" size="x-small" onclick={handleYearlyComponentUndo} style="cursor: pointer;"></lightning-icon> -->
+                                    </td>
+                                </template>
+                            </template>
+                        </tr>
+                    </template>
+                    <!-- <template if:false={disableEdit}>
+                        <template if:false={isUnsavedIncentRow}>
+                            <tr>
+                                <td class="no-hover" style="background-color: #5bb6e3; font-weight: bold; text-align:center; padding-top:0px;">
+                                    <lightning-icon icon-name="utility:add" name="incentive" title="ADD" size="xx-small" variant="inverse" onclick={handleADDRecord} style="cursor: pointer;"></lightning-icon>
+                                </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            </tr>
+                        </template>
+                    </template> -->
+                    <tr>
+                        <td class="no-hover-child" style="background-color: #ddd; font-weight: bold;" colspan="2">
+                            Average Incentive
+                        </td>
+                        <td class="no-hover-child" style="background-color: #ddd; font-weight: bold; text-align: center;">{incentiveComponents.averageGrossAmount}</td>
+                        <td class="no-hover-child" style="background-color: #ddd; font-weight: bold;"></td>
+                        <td class="no-hover-child" style="background-color: #ddd; font-weight: bold;"></td>
+                        <td class="no-hover-child" style="background-color: #ddd; font-weight: bold; text-align: center;">{incentiveComponents.averageNetAmount}</td>
+                        <td class="no-hover-child" style="background-color: #ddd; font-weight: bold;"></td>
+                        <template if:false={disableEdit}>
+                            <td class="no-hover-child" style="background-color: #ddd; font-weight: bold;"></td>
+                        </template>
+                    </tr>
+                    <tr>
+                        <td class="no-hover" style="background-color: #5bb6e3; font-weight: bold;" colspan="2">
+                            Total Incentive
+                        </td>
+                        <td class="no-hover" style="background-color: #5bb6e3; font-weight: bold; text-align: center;">{incentiveComponents.grossAmount}</td>
+                        <td class="no-hover" style="background-color: #5bb6e3; font-weight: bold;"></td>
+                        <td class="no-hover" style="background-color: #5bb6e3; font-weight: bold;"></td>
+                        <td class="no-hover" style="background-color: #5bb6e3; font-weight: bold; text-align: center;">{incentiveComponents.netAmount}</td>
+                        <td class="no-hover" style="background-color: #5bb6e3; font-weight: bold;"></td>
+                        <template if:false={disableEdit}>
+                            <td class="no-hover" style="background-color: #5bb6e3; font-weight: bold;"></td>
+                        </template>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+            <table class="slds-table" style="max-width:500px; margin-top: 25px;">
+                <tbody>
+                    <tr>
+                        <td style="background-color: #5bb6e3; font-weight: bold;">Rental Income Yearly</td>
+                        <td>
+                            <lightning-input type="number" 
+                            step="1" 
+                            variant="label-hidden" 
+                            onblur={handleRentalIncomeChange}
+                            value={rentalIncome}></lightning-input>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td style="background-color: #5bb6e3; font-weight: bold;">Net Income</td>
+                        <td>
+                            <lightning-input type="number" 
+                            step="1" 
+                            variant="label-hidden" 
+                            onblur={handleNetIncome}
+                            value={getNetAmount}
+                            disabled=true></lightning-input>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+                <table class="slds-table" style="max-width:500px; margin-top: 25px;">
+                <tbody>
+                    <tr>
+                        <td style="background-color: #5bb6e3; font-weight: bold;">Total obligation</td>
+                        <td>
+                            <lightning-input type="number" 
+                            step="1" 
+                            variant="label-hidden" 
+                            onblur={handleTotalObligation}
+                            value={newmap.TotalObligation}></lightning-input>
+                        </td>
+                    </tr>
+                </tbody>
+                    <tbody>
+                    <tr>
+                        <td style="background-color: #5bb6e3; font-weight: bold;">Final Tenure Considered</td>
+                        <td>
+                            <lightning-input type="number" 
+                            step="1" 
+                            variant="label-hidden" 
+                            onchange={handletotalTenure}
+                            value={tenureProduct.totalTenure}></lightning-input>
+                        </td>
+                    </tr>
+                </tbody>
+                    <tbody>
+                    <tr>
+                        <td style="background-color: #5bb6e3; font-weight: bold;">Tenor (Months) - Pre-EMI (Moratorium Tenor)</td>
+                        <td>
+                            <lightning-input type="number" 
+                            step="1" 
+                            variant="label-hidden" 
+                            onchange={handleHybridTenure}
+                            value={tenureProduct.hybridtenure}></lightning-input>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td style="background-color: #5bb6e3; font-weight: bold;">Net Tenure</td>
+                        <td>
+                            <lightning-input type="number" 
+                            step="1" 
+                            variant="label-hidden" 
+                            onblur={handleTotalObligation}
+                            value={netTenure}
+                            disabled=true
+                            ></lightning-input>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td style="background-color: #5bb6e3; font-weight: bold;">Documented/Market Value</td>
+                        <td>
+                            <lightning-input type="number" 
+                            step="1" 
+                            variant="label-hidden" 
+                            onblur={handledocmarkVal}
+                            value={docVal}></lightning-input>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td style="background-color: #5bb6e3; font-weight: bold;">Additional FOIR</td>
+                        <td>
+                            <lightning-input type="number" 
+                            step="1" 
+                            variant="label-hidden" 
+                            onblur={hanldeFOIR}
+                            value={foir}></lightning-input>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td style="background-color: #5bb6e3; font-weight: bold;">Requested Loan Amount</td>
+                        <td>
+                            <lightning-input type="number" 
+                            step="1" 
+                            variant="label-hidden" 
+                            onchange={handleRequestedLoanAmt}
+                            value={reqAmount}></lightning-input>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td style="background-color: #5bb6e3; font-weight: bold;">Rate of Interest</td>
+                        <td>
+                            <lightning-input type="number" 
+                            step="1" 
+                            variant="label-hidden" 
+                            onchange={handleRoi}
+                            value={roiVal}></lightning-input>
+                        </td>
+                    </tr>
+                </tbody>
+                <tbody>
+                    <tr>
+                        <td style="background-color: #5bb6e3; font-weight: bold;">Tenure(In Months)</td>
+                        <td>
+                            <lightning-input type="number" 
+                            step="1" 
+                            variant="label-hidden" 
+                            onchange={handleTenure}
+                            value={tenure}></lightning-input>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+    </lightning-card>
+
+    <template if:true={showgenericConfirm}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header" style="background-color: #5bb6e3;">
+                    <h2 class="slds-text-heading_medium">Confirmation Screen</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    {confirmMessage}
+                </div>
+                <footer class="slds-modal__footer slds-text-align_center" style="background-color: #5bb6e3;">
+                    <button class="slds-button slds-button_brand" style="background-color: #dc387e; margin-right: 7px; width: 100px;" onclick={handleNegative}>No</button>
+                    <button class="slds-button slds-button_brand" style="background-color: #9bbf56; width: 100px;" onclick={handlePositive}>Yes</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+
+    <template if:true={showgenericConfirmParticular}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header" style="background-color: #5bb6e3;">
+                    <h2 class="slds-text-heading_medium">Confirmation Screen</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    {confirmMessage}
+                </div>
+                <footer class="slds-modal__footer slds-text-align_center" style="background-color: #5bb6e3;">
+                    <button class="slds-button slds-button_brand" style="background-color: #dc387e; margin-right: 7px; width: 100px;" onclick={handleNegativeParticular}>No</button>
+                    <button class="slds-button slds-button_brand" style="background-color: #9bbf56; width: 100px;" onclick={handlePositiveParticular}>Yes</button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+        <lightning-button style="background-color:#9bbf56;"
+        variant="brand-outline" 
+        label="Fetch Eligibility"
+        title="Fetch Eligibility"
+        class="slds-m-right_small"
+        onclick={fetchEligibility}>
+    </lightning-button>
+</template>

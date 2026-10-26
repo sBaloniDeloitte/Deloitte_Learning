@@ -1,0 +1,25 @@
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="large"></lightning-spinner>
+    </template>
+    <lightning-quick-action-panel header="Enter Remarks">
+         <div class="custom-div">
+                                    <p slot="title" class="required-field"
+                                        style="font-size: 106%;/* font-style: italic; */color: black;font-weight: bold;text-align: left;">
+                                        Enter Remarks ( Kindly do not enter the following combination of special characters
+                                        '%%- and &&-'.)</p>
+                                    <lightning-textarea name="Comments" label="" placeholder="Please add your comments here...."
+                                        value={comment} onchange={handleCommentChange}
+                                        ></lightning-textarea>
+
+
+                                </div>
+
+    <div slot="footer" style="text-align: center;">
+      <button class="save-button slds-button slds-button_brand" onclick={hanldeInitaite}>Submit</button>
+      <button class="slds-button slds-button_neutral cancel-button"
+                            onclick={closeModal}>Cancel</button>
+    </div>
+  </lightning-quick-action-panel>
+</template>

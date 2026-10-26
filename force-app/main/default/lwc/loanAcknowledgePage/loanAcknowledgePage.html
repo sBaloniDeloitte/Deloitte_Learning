@@ -1,0 +1,299 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 11-28-2024s
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template>
+    <template if:true={showTostTrue}>
+        <lightning-toast title={toastTitle} message={toastMessage} variant={toastVariant} onclose={handleToastClose}></lightning-toast>
+    </template>
+    <template lwc:if={isNotLinkExpired}>
+        <span class="styleContainer"></span>
+        <!-- <template if:true={offerRelated}>
+      
+
+            <div class="customer-info-section" style="background: #f9f9f900; border: 1px solid #ccc; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                <p style="font-size: large; font-weight:bold; color:#dc387e;width: 100%;text-align: left;padding-bottom: 1%;">Existing Offer Details</p>
+                <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                    <div style="flex: 1; min-width: 200px;"><strong>Loan Amount:</strong> {loanAmount}</div>
+                    <div style="flex: 1; min-width: 200px;"><strong>Loan Tenure:</strong> {loanTenure}</div>
+                    <div style="flex: 1; min-width: 200px;"><strong>Loan ROI:</strong> {loanROI}</div>
+                    <div style="flex: 1; min-width: 200px;"><strong>Offer Valid Till:</strong> {loanValidTill}</div>
+                </div>
+            </div>
+        </template> -->
+
+        <template if:false={showVerifiedOTP}>
+            <template if:true={showMobileOtpVer}>
+                <template if:false={hideView}>
+                    <div class="slds-m-bottom_small">
+                        <img src={imageURL} width="15%"/>
+                    </div>
+                
+                </template>
+                <!-- <p style="font-style: Lato Regular;">{label.GU_Mobile_Ver_Msg}</p> -->
+                <div class="slds-grid slds-align_absolute-center">
+                    <p style="font-style: Roboto;">{confirmationMessage}</p>
+                </div>
+                
+                <br />
+                <template if:true={isShowcode}>
+                    <div class="slds-grid slds-align_absolute-center">
+                        <div class="slds-size_1-of-2">
+                            <lightning-input class="slds-m-bottom_medium" 
+                                value={verifCode}
+                                onchange={handleVerificationCodeChange} 
+                                data-id="VerificationCode"
+                                placeholder="Enter Verification Code" 
+                                pattern="[0-9_ ]*"
+                                message-when-pattern-mismatch="Enter a 6-digit OTP." 
+                                minlength="6" 
+                                maxlength="6"
+                                disabled={showBox}
+                                message-when-too-short="Enter a 6-digit OTP."
+                                message-when-range-overflow="Enter a 6-digit OTP."
+                                message-when-range-underflow="Enter a 6-digit OTP.">
+                            </lightning-input>
+                        </div>
+                    </div>
+                </template>
+                <template if:true={showverif}>
+                    <div class="slds-m-bottom_medium slds-align_absolute-center">
+                        <button class="custom-continue-button " style="font-size: 1rem;" disabled={disableSendButton}
+                                onclick={SendConsentLink}>Get Verification Code</button>
+                    </div>
+                </template>
+                <template if:true={showverify}>
+                    <div class="slds-m-bottom_medium slds-align_absolute-center button-container">  
+                        <button class="custom-continue-button " onclick={verifiycode} style="font-size: 1rem;">Verify</button>
+                        <template if:true={resend}>
+                            <button  class="custom-continue-button " style="font-size: 1rem;" onclick={SendConsentLink}>{reset}</button>
+                        </template>
+                        <template if:false={resend}>
+                            <button  class="custom-disabled-button" style="font-size: 1rem;">{reset}</button>
+                        </template>
+                    </div>
+                </template>
+                <div style="text-align: center;">
+                    <lightning-layout>
+                        <lightning-layout-item size="12" padding="around-small">
+                            <span><i>{label.otpMsg}</i></span>
+                        </lightning-layout-item>
+                    </lightning-layout>
+                </div>
+            </template>
+        </template>
+        <template if:true={showVerifiedOTP}>
+            <template if:false={offerRelatedBoolean}>
+                <div style="font-family: 'Roboto', sans-serif;">
+                    <template if:false={hideView}>
+                        <div class="slds-m-bottom_small">
+                            <img src={imageURL} width="20%"/>
+                        </div>
+                    
+                        <p style="font-size: large; font-weight:bold; color:#9bbf56;width: 100%;text-align: left;padding-bottom: 1%;">Digital Loan Application Form</p> <!-- font-size: large;  -->
+                    </template>
+                    <div class="customer-info-section" style="background: #f9f9f900; border: 1px solid #ccc; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                        <p style="font-size: large; font-weight:bold; color:#fff;width: 100%;text-align: left;padding-bottom: 1%;">Customer Information</p> <!-- -->
+                        <div style="display: flex; flex-wrap: wrap; gap: 20px; color:#fff">
+                            <template if:false={isNonIndividual}>
+                                <div style="flex: 1; min-width: 250px;"><strong>First Name:</strong> {customerDetails.firstName}</div>
+                                <div style="flex: 1; min-width: 250px;"><strong>Last Name:</strong> {customerDetails.lastName}</div>
+                                <div style="flex: 1; min-width: 250px;"><strong>Nationality:</strong> {customerDetails.nationality}</div>
+                            </template>
+                            <template if:true={isNonIndividual}>
+                                <div style="flex: 1; min-width: 250px;"><strong>Name Of the Organization:</strong> {customerDetails.nameOfOrganization}</div>
+                            </template>
+                            <div style="flex: 1; min-width: 250px;"><strong>Product:</strong> {customerDetails.product}</div>
+                            <div style="flex: 1; min-width: 250px;"><strong>Mobile Number:</strong> {customerDetails.mobileNumber}</div>
+                            <div style="flex: 1; min-width: 250px;"><strong>Pin Code:</strong> {customerDetails.pinCode}</div>
+                            <template if:false={isNonIndividual}>
+                                <div style="flex: 1; min-width: 250px;"><strong>Date of Birth:</strong> {customerDetails.dob}</div>
+                            </template>
+                            <template if:true={isNonIndividual}>
+                                <div style="flex: 1; min-width: 250px;"><strong>Date of Incorporation:</strong> {customerDetails.dateOfIncorporation}</div>
+                            </template>
+                            <!--<div style="flex: 1; min-width: 250px;"><strong>Email ID:</strong> {customerDetails.email}</div>-->
+                            <div lwc:if={applicantId} style="flex: 1; min-width: 250px;"><strong>Purpose Of Loan:</strong> {customerDetails.purposeOfLoan}</div>
+                            <div style="flex: 1; min-width: 250px;"><strong>Loan Amount:</strong> {customerDetails.loanAmount}</div>
+                            <div style="flex: 1; min-width: 250px;"><strong>Email ID:</strong> {customerDetails.email}</div>
+                            <!--<div style="flex: 1; min-width: 250px;" if:true={isSenpCustomer}><strong>Business Industry:</strong> {customerDetails.businessIndustry}</div>
+                            <div style="flex: 1; min-width: 250px;"><strong>Business Vintage:</strong> {customerDetails.businessVintage}</div>-->
+                        </div>
+                    </div>
+
+                    <div class="slds-border_bottom" style="padding-top:2%;border-color:skyblue;width: 95%;border-width: 2px;">
+                        <p style="font-size: large; font-weight:bold; color:#fff;width: 100%;text-align: left;padding-bottom: 1%;padding-left: 2%;">Instructions</p> <!-- font-size: large;  -->
+                        <p style="font-size: small; font-weight:500; color: #fff; width: 100%; text-align:justify; padding-top: 1%; padding-bottom:1%;padding-left: 2%;">Please read all the instructions carefully.</p>
+                    </div>
+            
+                    <div class="slds-m-vertical_small">
+                        <p style="margin-bottom: 15px;padding-left: 2%;color: #fff;">Please review and accept the following terms and conditions to proceed with your loan application:</p>
+                        <p style="font-weight: bold;padding-left: 2%;color: #fff;">Terms and Conditions:</p>
+                        <ul style="margin-bottom: 15px;padding-left: 2%;color: #fff;">
+                            <li>By submitting this application, you consent to the processing of your personal data in accordance with our privacy policy.</li>
+                            <li>You agree that the information provided is accurate and complete to the best of your knowledge.</li>
+                            <li>We may share your information with third-party partners for the purposes of evaluating and processing your application.</li>
+                            <li>You acknowledge that the loan application process involves credit checks and other assessments which may affect your credit score.</li>
+                        </ul>
+                        <p style="font-weight: bold;padding-left: 2%;color: #fff;">Privacy Policy:</p>
+                        <p style="margin-bottom: 15px;padding-left: 2%;color: #fff;">Your personal data will be handled in accordance with our <a href={privacyPolicy} target="_blank" style="color: #0070d2; text-decoration: none;">Privacy Policy</a>. Please review it to understand how your data will be used and protected.</p>
+                    </div>
+                    <template if:false={hideView}>
+                        <div>
+                            <lightning-input type="checkbox" label="Accept Terms & Conditions" onchange={handleCheckboxChange} value={showTNCSubmit} disabled={disableCheckBox}></lightning-input>
+                        </div>
+                        <template if:true={showTNCSubmit}>
+                            <div class="slds-align_absolute-center">
+                                <button type="button" style="width: 150px;font-size:14px; background-color: #9bbf56;text-align: center; color: white;" class="slds-button slds-align_absolute-center" onclick={validateSaveAndNext}>Submit</button>
+                            </div>
+                        </template>
+                    </template>
+                </div>
+            </template>
+            <template if:true={offerRelatedBoolean}>
+      
+
+                <div class="customer-info-section" style="background: #f9f9f900; border: 1px solid #ccc; border-radius: 8px; padding: 15px; margin-bottom: 20px;font-family: 'Roboto', sans-serif;">
+                    <div class="customer-info-section" style="background: #f9f9f900; border: 1px solid #ccc; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                        <p style="font-size: large; font-weight:bold; color:#dc387e;width: 100%;text-align: left;padding-bottom: 1%;">Customer Information</p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                            <div style="flex: 1; min-width: 250px;"><strong>First Name:</strong> {customerDetails.firstName}</div>
+                            <div style="flex:s 1; min-width: 250px;"><strong>Last Name:</strong> {customerDetails.lastName}</div>
+                            <div style="flex: 1; min-width: 250px;"><strong>Mobile Number:</strong> {customerDetails.mobileNumber}</div>
+                            <div style="flex: 1; min-width: 250px;"><strong>Applicant Address:</strong> {customerDetails.addreeDetails}</div>
+                            
+                            
+                        </div>
+                    </div>
+                    <div class="customer-info-section" style="background: #f9f9f900; border: 1px solid #ccc; border-radius: 8px; padding: 15px; margin-bottom: 20px;">
+                        <p style="font-size: large; font-weight:bold; color:#dc387e;width: 100%;text-align: left;padding-bottom: 1%;">Existing Offer Details</p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                            <div style="flex: 1; min-width: 250px;"><strong>Loan Amount:</strong> {loanAmount}</div>
+                            <div style="flex: 1; min-width: 250px;"><strong>Loan Tenure:</strong> {loanTenure}</div>
+                            <div style="flex: 1; min-width: 250px;"><strong>Loan ROI:</strong> {loanROI}</div>
+                            <div style="flex: 1; min-width: 250px;"><strong>Offer Valid Till:</strong> {loanValidTill}</div>
+                        </div>
+                    </div>
+              
+                </div>
+                <div class="customer-info-section" style="background: #f9f9f900; border: 1px solid #ccc; border-radius: 8px; padding: 15px; margin-bottom: 20px;font-family: 'Roboto', sans-serif;">       <!-- Checkboxes -->
+                    <p style="font-size: large; font-weight:bold; color:#dc387e;width: 100%;text-align: left;padding-bottom: 1%;">Manage Offers</p>
+                    <div class="checkbox-container">
+                        <div class="checkbox-item">
+                            <label>
+                                <input type="checkbox" value="changeAddress" onchange={handleCheckboxChangeOffer} checked={selectedOptions.changeAddress} disabled={isAcceptOfferSelected}/> Change Address
+                            </label>
+                            <template if:true={selectedOptions.changeAddress}>
+                                <textarea class="input-field" placeholder="Enter address changes" oninput={handleInputChange} data-field="changeAddress"></textarea>
+                                <!-- <lightning-button-icon icon-name="utility:upload" style ="margin-left: 1%;margin-top: 1%;margin-bottom: 1%;"
+                                alternative-text="Upload" onclick={handleFileUpload} 
+                                ></lightning-button-icon>
+                                <input type="file" accept=".jpg,.jpeg,.png,.pdf" class="hidden-file-input"
+                                onchange={handleUploadFinished} style="display: none">  -->
+                            </template>
+                            
+                        </div>
+                
+                        <div class="checkbox-item">
+                            <label>
+                                <input type="checkbox" value="changeLoanAmount" onchange={handleCheckboxChangeOffer} checked={selectedOptions.changeLoanAmount} disabled={isAcceptOfferSelected}/> Change Loan Amount
+                            </label>
+                            <template if:true={selectedOptions.changeLoanAmount}>
+                                <input type="number" class="input-field" placeholder="Enter new loan amount details" step="0.01" oninput={handleInputChange} data-field="changeLoanAmount"/>
+
+                            </template>
+                        </div>
+                
+                        <div class="checkbox-item">
+                            <label>
+                                <input type="checkbox" value="changeStructure" onchange={handleCheckboxChangeOffer} checked={selectedOptions.changeStructure} disabled={isAcceptOfferSelected}/> Change Structure
+                            </label>
+                            <template if:true={selectedOptions.changeStructure}>
+                                <textarea class="input-field" placeholder="Enter structure modifications" oninput={handleInputChange} data-field="changeStructure"></textarea>
+                            </template>
+                        </div>
+                
+                        <div class="checkbox-item">
+                            <label>
+                                <input type="checkbox" value="acceptOffer" onchange={handleCheckboxChangeOffer} checked={isAcceptOfferSelected}/> Accept Offer
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                  
+                    <p style="margin-bottom: 15px;">Yes I agree to  <a href="/privacy-policy" target="_blank" style="color: #0070d2; text-decoration: none;">Terms and Conditions</a>. Please review it to understand how your data will be used and protected.</p>
+                    <lightning-input type="checkbox" label="Accept Terms & Conditions" onchange={handleConfrim}></lightning-input>
+                </div>
+                <button class="SaveButton slds-button slds-button_brand"
+                style="font-size: 11px;width: 140px;background-color: #dc387e;color: white;border-color: #dc387e;font-weight: 500;    font-size: 11px;margin-top:1%;"
+                onclick={saveOfferDetails} >Confirm</button>
+                
+            </template>
+        </template>
+    </template>
+    <template if:false={isNotLinkExpired}>
+      
+            <div class="success-container slds-align_absolute-center">
+                <div class="icon-text-wrapper">
+                    <!-- Success icon -->
+                    <lightning-icon 
+                        icon-name="utility:success" 
+                        alternative-text="Success" 
+                        variant="success" 
+                        class="success-icon"
+                        >
+                    </lightning-icon>
+                    <!-- Success message -->
+                    <span class="thank-you-message">
+                        Thank you for visiting Godrej Capital! You can close the browser.
+                    </span>
+                </div>
+        </div>
+        
+      
+
+        <!-- <div class="slds-border_bottom" style="padding-top:2%;border-color:skyblue;width: 95%;border-width: 2px;">
+            <p style="font-size: large; font-weight:bold; color:#dc387e;width: 100%;text-align: left;padding-bottom: 1%;">Instructions</p>
+            <p style="font-size: small; font-weight:500; color: #113451; width: 100%; text-align:justify; padding-top: 1%; padding-bottom:1%">Please read all the instructions carefully.</p>
+        </div> -->
+
+ 
+        
+    
+
+        <!-- <div class="offer-table">
+        <table>
+            <thead>
+                <tr class="header-row">
+                    <th colspan="2"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td style="width: 100px;"><b>Loan Amount</b></td>
+                    <td>: &nbsp; {loanAmount}</td>
+                </tr>
+                <tr>
+                    <td><b>Loan Tenure</b></td>
+                    <td>: &nbsp; {loanTenure}</td>
+                </tr>
+                <tr>
+                    <td><b>Loan ROI</b></td>
+                    <td>: &nbsp; {loanROI}</td>
+                </tr>
+                <tr>
+                    <td><b>Offer Valid Till</b></td>
+                    <td>: &nbsp; {loanValidTill}</td>
+                </tr>
+            </tbody>
+            </table>
+        </div> -->
+
+
+    </template>
+    
+</template>

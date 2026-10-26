@@ -1,0 +1,102 @@
+<template>
+    <template if:true={spinnerRun}>
+        <section role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open" style="z-index: 900003;">
+            <div class="slds-modal__container">
+                <div class="slds-spinner--brand slds-spinner slds-spinner--medium" role="alert">
+                    <span class="slds-assistive-text">Loading...</span>
+                    <div class="slds-spinner__dot-a"></div>
+                    <div class="slds-spinner__dot-b"></div>
+                </div>
+            </div>
+        </section> 
+    </template>
+
+    <template if:true={modalVisibility}>
+        <p slot="title" style="font-size:12px; font-style: italic; color: #113451; padding-bottom: 2%;padding:1%;">Please select profile(s) to add it to the queue for sampling.</p>
+
+        <template for:each={profileDatas} for:item="key">
+            <div key={key.name} style="padding:1%;">
+                <h5 slot="title" style="font-style: Lato Bold; font-size:14px; font-weight: bold; padding-bottom: 0.55%" class="slds-text-title_bold">{key.name}</h5>
+
+                <div class="scroll-container">
+                    <table class="slds-table profile-table">
+                        <thead>
+                            <tr class="slds-line-height_reset">
+                                <th class="table-header" scope="col" style="width: 5%;">
+                                    <div class="slds-truncate" title="Select">Select</div>
+                                </th>
+                                <th class="table-header" scope="col" style="width: 15%;">
+                                    <div class="slds-truncate" title="Address Type">Address Type</div>
+                                </th>
+                                <th class="table-header" scope="col" style="width: 15%;">
+                                    <div class="slds-truncate" title="Status">Status</div>
+                                </th>
+                                <th class="table-header" scope="col" style="width: 30%;">
+                                    <div class="slds-truncate" title="Full Address">Full Address</div>
+                                </th>
+                                <th class="table-header" scope="col" style="width: 35%;">
+                                    <div class="slds-truncate" title="Remarks">Remarks</div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template for:each={key.applicantData} for:item="content">
+                                <tr key={content.docCheckListId}>
+                                    <td>
+                                        <lightning-input 
+                                            data-id={content.id} 
+                                            type="checkbox" 
+                                            onchange={handleselectionChange}
+                                            name="rowSelection" checked={content.screening} disabled={content.fcuInitiated}>
+                                        </lightning-input>
+                                    </td>
+                                    <td>{content.addrType}</td>
+                                    <template if:true={content.fcuInitiated}>
+                                        <td>FCU initiated</td>
+                                    </template>
+                                    <template if:false={content.fcuInitiated}>
+                                        <td>{content.screeningstatus}</td>
+                                    </template>
+                                    <td>{content.fullAddr}</td>
+                                    <td>
+                                        <lightning-textarea value={content.remarks} disabled="true"></lightning-textarea>
+                                    </td>
+
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+                <br>
+            </div>
+        </template>
+    </template>
+
+    <template if:true={showgenericConfirm}>
+        <c-confirmation-screen confirm-message={confirmMessage} positive-label={positiveLabel} negative-label={negativelabel} onnegativeclick={handleNegative} onpositiveclick={handlePositive}></c-confirmation-screen>
+    </template>
+    <template if:true={isRemarkScreen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" aria-label="Meaningful description of the modal content" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container" style="max-width: 100%; margin-top:6%">
+                <header class="slds-modal__header" style="background-color: #5bb6e3; color:black;font-weight:500;">
+
+                    <div class="slds-text-align_center">
+                        <h2 slot="title" style="font-style: Lato Bold; font-size:15px; font-weight: bold; margin-top: 5px; margin-bottom: 5px" class="slds-text-heading_medium slds-hyphenate">Remarks Screen</h2>
+                    </div> 
+                </header>
+                <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless slds-scrollable_y" style="max-height: 70% !important;overflow: auto;">
+                    <div class="button-shadow" style="width: 90%;background: white; margin: 20px;padding: 20px;border-radius: 10px;border: 1px solid #5bb6e3;">
+                        <lightning-textarea name="Remarks" label="Remarks" value={remark} onchange={handleRemarkChanges} required="true"></lightning-textarea>
+                    </div>
+                </div>
+                <footer class="slds-modal__footer" style="border: 1px solid #5bb6e3;background: #5bb6e3">
+                    <div class="slds-align_absolute-center">
+                        <button class="cancel-button slds-button slds-button_brand" style="font-size: 11px;background-color: #Dc387E;color: white;border-color: #Dc387E;font-weight: 500;" onclick={cancelRemark}>Cancel</button>
+                        <button class="save-button slds-button slds-button_brand" style="font-size: 11px;background-color: #9bbf56;color: white;border-color: #9bbf56;font-weight: 500;" onclick={handleRemark}>Save</button>
+                    </div>
+                </footer>
+           </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open slds-modal_large"></div>
+    </template>
+</template>

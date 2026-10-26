@@ -1,0 +1,117 @@
+<!--
+  @description       : 
+  @author            : Suhrit Das
+  @group             : 
+  @last modified on  : 12-11-2024
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+
+<template>
+    <template if:true={showClosereason}>
+        <c-popup-screen record-id={recordId} 
+            show-lead-closure-cmp="true"
+            header-title="Lead Closure Remarks"
+            process-name="Lead Closure"
+            show-close-btn=true
+            close-btn-text="Cancel"
+            show-save-btn="true"
+            onhandleclose={handleClose}
+        ></c-popup-screen>
+    </template>
+
+    <template if:true={showConfirmation}>
+        <c-confirmation-screen 
+            confirm-message={confirmMessage} 
+            positive-label="Continue" 
+            negative-label="Close" 
+            onnegativeclick={handleNo} 
+            onpositiveclick={handleYes}
+        ></c-confirmation-screen>
+    </template>   
+
+    <template if:true={showDisposition}>
+        <c-popup-screen record-id={recordId} 
+            show-dialer-disposition-cmp="true"
+            header-title="Save Disposition"
+            show-close-btn=true
+            close-btn-text="Cancel"
+            call-count={count}
+            show-save-btn=true
+            process-name="Save Dialer Disposition"
+            onhandleclose={handleClose}
+        ></c-popup-screen>
+    </template>
+    
+    <template if:true={isLoading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </template>
+
+    <!-- Header for Remarks -->
+    <!-- <template if:true={showbox}> -->
+        <div class="border-field dialer-card">
+
+            <!-- Header Section -->
+            <header class="slds-modal__header header-section">
+                <div class="slds-text-align_center">
+                    <h2 slot="title" class="slds-text-heading_medium slds-hyphenate header-title">Dialer Information</h2>
+                </div>
+            </header>
+        
+            <!-- Call Count and Increment Button Section -->
+            <div class="slds-modal__content slds-p-around_medium">
+
+                <lightning-layout horizontal-align="space-between" vertical-align="center" multiple-rows>
+                    <lightning-layout-item size="3"></lightning-layout-item>
+                    <lightning-layout-item size="1"></lightning-layout-item>
+                    <lightning-layout-item size="3">
+                        <lightning-input class="call-count-input" label="Call Count" value={count} type="number" disabled></lightning-input>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2" class="btn-col">
+                        <div if:true={open} >
+                            <lightning-button-icon 
+                                icon-name="utility:add" 
+                                variant="brand" 
+                                onclick={handleIncrement} 
+                                title="Increment Count"
+                                alternative-text="Increment">
+                            </lightning-button-icon>
+                        </div>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="3"></lightning-layout-item>
+                </lightning-layout>
+
+                <p if:true={showlastdisposition} style="text-align: center; padding-top:0.7rem">
+                    Latest Disposition: <b>{lastDisposition}</b>
+                </p>
+            
+                <h2 style="font-size: 12px; color: #333; margin-top: 1rem; margin-bottom: 3px;">Disposition History</h2>
+
+                <div class="cssContainer-child-no-padding">
+                    <table class="slds-table">
+                        <tbody>
+                            <template lwc:if={hasRemarks}>
+                                <template for:each={notes} for:item="field">
+                                    <tr key={field.id}>
+                                        <td scope="col" style="text-align: left;">
+                                            <b style="color: darkslategray;">{field.key}</b>
+                                            {field.value}
+                                        </td>
+                                    </tr>
+                                </template>
+                            </template>
+                            <template lwc:else>
+                                <tr>
+                                    <td style="text-align: center; padding: 10px;">No records found!</td>
+                                </tr>
+                            </template>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <footer class="footer-section">
+            </footer>
+        </div>
+    <!-- </template> -->
+    
+</template>

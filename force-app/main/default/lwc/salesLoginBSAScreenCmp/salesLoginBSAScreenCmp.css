@@ -1,0 +1,811 @@
+@import "c/cssLibrary";
+
+/* ── Visually hidden utility (screen-reader only) ── */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0,0,0,0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.hidden-input { display: none; }
+
+/* ════════════════════════════════════════════
+   ROOT & DESIGN TOKENS
+════════════════════════════════════════════ */
+/* ____GenAI: Generated code starts here - dark theme repaint. All colors in
+   this file are driven off the custom properties below, so retinting the
+   palette here recolors the whole screen (panels, tables, pills, buttons)
+   without touching any markup or component logic.____ */
+.bsa-root {
+    --c-blue:      #2563EB;
+    --c-blue-dk:   #1d4ed8;
+    --c-blue-bg:   #14243a;
+    --c-green:     #22c55e;
+    --c-green-bg:  #123524;
+    --c-amber:     #f59e0b;
+    --c-amber-bg:  #2a2210;
+    --c-rose:      #f87171;
+    --c-rose-bg:   #2a1620;
+    --c-slate:     #a8b6cc;
+    --c-slate-bg:  #16283f;
+    --c-ink:       #ffffff;
+    --c-ink2:      #cfd8e6;
+    --c-ink3:      #8a99b3;
+    --c-surface:   #101b30;
+    --c-bg:        #0a1524;
+    --c-bdr:       #1d2f45;
+    --c-bdr2:      #33455e;
+    --c-bdr3:      #1d4ed8;
+    --r-sm:  6px;
+    --r-md:  9px;
+    --r-lg:  13px;
+    --r-xl:  16px;
+    --sh-sm: 0 1px 3px rgba(0,0,0,.35), 0 1px 2px rgba(0,0,0,.25);
+    --sh-md: 0 4px 14px rgba(0,0,0,.45), 0 2px 4px rgba(0,0,0,.3);
+    font-family: 'Inter', 'Salesforce Sans', system-ui, sans-serif;
+    font-size: 13px;
+    color: var(--c-ink);
+    /* Richer navy-to-violet gradient backdrop (reference look) instead of
+       the flat single-tone background. */
+    background: linear-gradient(160deg, #0a1524 0%, #0d1330 45%, #150c2b 100%);
+    padding: 20px;
+    box-sizing: border-box;
+    min-height: 100%;
+}
+
+/* Hardcoded light-theme colors that don't route through the tokens above -
+   retinted individually so they stay legible on the dark background */
+.appl-avi[data-color="blue"]   { background: #1d3a5f; color: #93c5fd; }
+.appl-avi[data-color="violet"] { background: #2f2450; color: #c4b5fd; }
+.appl-avi[data-color="teal"]   { background: #123a35; color: #5eead4; }
+.appl-avi[data-color="rose"]   { background: #3a1620; color: #fda4af; }
+
+.spill--emerald { background: var(--c-green-bg);  color: #b41ff4; }
+.spill--amber   { background: var(--c-amber-bg);  color: #fbbf24; }
+.spill--rose    { background: var(--c-rose-bg);   color: #fb7185; }
+.spill--blue    { background: var(--c-blue-bg);   color: #93c5fd; }
+.spill--violet  { background: #2f2450;            color: #c4b5fd; }
+.spill--slate   { background: var(--c-slate-bg);  color: #cfd8e6; }
+
+lightning-combobox,
+lightning-input {
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-combobox-input-color-background: #16283f;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-color-border: #33455e;
+    --slds-c-combobox-label-color: #ffffff;
+    --slds-c-combobox-listbox-color-background: #16283f;
+    --slds-c-combobox-option-text-color: #ffffff;
+}
+/* ____GenAI: Generated code ends here____ */
+
+/* ____GenAI: Generated code starts here - custom "Statement method"
+   dropdown. lightning-combobox rendered its listbox in native shadow DOM
+   here, which blocks external CSS/style-hooks from ever reaching the
+   option text color (background hooks worked, text hooks did not) - so
+   this field was rebuilt as plain light-DOM markup instead, fully
+   stylable below. Same handleMethodChange behaviour/data shape is
+   preserved in the JS.____ */
+.method-select {
+    position: relative;
+    width: 100%;
+}
+
+.method-select__label {
+    display: block;
+    font-size: 12.5px;
+    font-weight: 600;
+    color: var(--c-ink);
+    margin-bottom: 6px;
+}
+
+.method-select__trigger {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 9px 2px;
+    /* Line format (underline only, no boxed background) - matches the
+       same conversion already applied to the other sales-login screens.
+       Idle/hover pinned to the same border color so it never flickers;
+       focus turns the screen's own blue accent. */
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--c-bdr2);
+    border-radius: 0;
+    color: #ffffff;
+    font-size: 13.5px;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    text-align: left;
+    transition: none;
+}
+
+.method-select__trigger:hover {
+    border-bottom-color: var(--c-bdr2);
+}
+
+.method-select__trigger:focus-visible {
+    border-bottom-color: var(--c-blue);
+}
+
+.method-select__trigger:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.method-select__value {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #ffffff;
+}
+
+.method-select__chevron {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+    color: #ffffff;
+}
+
+.method-select__listbox {
+    position: absolute;
+    z-index: 20;
+    top: calc(100% + 2px);
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    background: var(--c-slate-bg);
+    border: 1px solid var(--c-bdr2);
+    border-radius: var(--r-sm);
+    box-shadow: var(--sh-md);
+    overflow: hidden;
+}
+
+.method-select__option {
+    padding: 10px 12px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #ffffff;
+    cursor: pointer;
+    border-bottom: 1px solid var(--c-bdr);
+}
+
+.method-select__option:last-child { border-bottom: none; }
+
+.method-select__option:hover {
+    background: var(--c-bdr2);
+    color: #ffffff;
+}
+
+.method-select__option--selected {
+    background: var(--c-blue-bg);
+    color: #ffffff;
+    font-weight: 600;
+}
+/* ____GenAI: Generated code ends here____ */
+
+/* ── Focus-visible ring (Change 4: keyboard focus indication) ── */
+.bsa-root *:focus-visible {
+    outline: 2px solid var(--c-blue);
+    outline-offset: 2px;
+    border-radius: var(--r-sm);
+}
+
+/* ════════════════════════════════════════════
+   TOPBAR
+════════════════════════════════════════════ */
+.bsa-topbar {
+    display: flex;
+    align-items: center;
+    margin-bottom: 18px;
+}
+.bsa-topbar__left { width: 280px; }
+
+/* ════════════════════════════════════════════
+   LAYOUT
+════════════════════════════════════════════ */
+.bsa-layout {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+}
+
+/* ════════════════════════════════════════════
+   CONFIGURATION PANEL
+════════════════════════════════════════════ */
+.bsa-panel {
+    flex: 0 0 284px;
+    min-width: 260px;
+    background: var(--c-surface);
+    border: 1px solid var(--c-bdr);
+    border-radius: var(--r-xl);
+    box-shadow: var(--sh-sm);
+    overflow: hidden;
+}
+.bsa-panel__header {
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--c-bdr);
+    background: var(--c-bg);
+}
+.bsa-panel__title {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .06em;
+    text-transform: uppercase;
+    color: var(--c-ink3);
+}
+.bsa-panel__body {
+    padding: 14px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+.panel-action { display: flex; justify-content: flex-end; }
+
+/* ════════════════════════════════════════════
+   CONTENT AREA
+════════════════════════════════════════════ */
+.bsa-content {
+    flex: 1 1 0;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+/* ════════════════════════════════════════════
+   APPLICANT CARD
+════════════════════════════════════════════ */
+.appl-card {
+    background: var(--c-surface);
+    border: 1px solid var(--c-bdr);
+    border-radius: var(--r-xl);
+    box-shadow: var(--sh-sm);
+    overflow: hidden;
+    transition: box-shadow .15s;
+}
+.appl-card:hover { box-shadow: var(--sh-md); }
+
+/* Shared accordion header styles */
+.appl-header,
+.appl-header--open {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px 18px;
+    cursor: pointer;
+    user-select: none;
+    transition: background .12s;
+}
+.appl-header {
+    border-bottom: 1px solid transparent;
+}
+.appl-header:hover { background: var(--c-bg); }
+.appl-header--open {
+    background: var(--c-bg);
+    border-bottom: 1px solid var(--c-bdr);
+}
+.appl-header--open:hover { background: var(--c-surface); }
+
+/* Avatar */
+.appl-avi {
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    letter-spacing: .04em;
+}
+.appl-avi[data-color="blue"]   { background: #DBEAFE; color: #1D4ED8; }
+.appl-avi[data-color="violet"] { background: #EDE9FE; color: #6D28D9; }
+.appl-avi[data-color="teal"]   { background: #CCFBF1; color: #0F766E; }
+.appl-avi[data-color="rose"]   { background: #FFE4E6; color: #BE123C; }
+
+.appl-meta { flex: 1; min-width: 0; }
+.appl-name { font-size: 14px; font-weight: 600; color: var(--c-ink); }
+.appl-type { font-size: 11.5px; color: var(--c-ink2); margin-top: 1px; }
+
+
+
+/* Chevron */
+.chevron-icon,
+.chevron-icon--open {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    color: var(--c-ink3);
+    transition: transform .2s cubic-bezier(.4,0,.2,1);
+}
+.chevron-icon--open { transform: rotate(180deg); }
+
+/* ════════════════════════════════════════════
+   TAB STRIP
+════════════════════════════════════════════ */
+.tab-strip {
+    display: flex;
+    background: var(--c-bg);
+    border-bottom: 1px solid var(--c-bdr);
+    padding: 0 18px;
+}
+
+.tab-btn,
+.tab-btn--active {
+    padding: 10px 16px;
+    font-size: 12.5px;
+    cursor: pointer;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    font-family: inherit;
+    white-space: nowrap;
+    transition: color .12s, border-color .12s;
+}
+.tab-btn { font-weight: 400; color: var(--c-ink3); }
+.tab-btn:hover { color: var(--c-ink2); }
+.tab-btn--active {
+    font-weight: 600;
+    color: var(--c-blue);
+    border-bottom-color: var(--c-blue);
+}
+
+
+
+.tab-pane { padding: 14px 18px; }
+
+.tab-strip__spacer { flex: 1; }
+
+/* ____GenAI: Generated code starts here - Refresh restyled to match the
+   "Initiate BSA" solid button (.bsa-btn--solid) exactly: same background,
+   border, radius, padding and hover treatment, for visual consistency.____ */
+.tab-refresh-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 15px;
+    margin: 4px 0;
+    border: 1px solid var(--c-blue);
+    border-radius: var(--r-md);
+    background: var(--c-blue);
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 500;
+    font-family: inherit;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .13s;
+    flex-shrink: 0;
+}
+.tab-refresh-btn svg {
+    width: 13px;
+    height: 13px;
+    flex-shrink: 0;
+}
+.tab-refresh-btn:hover {
+    background: var(--c-blue-dk);
+    border-color: var(--c-blue-dk);
+}
+.tab-refresh-btn:active {
+    transform: scale(0.97);
+}
+/* ____GenAI: Generated code ends here____ */
+
+.tab-footer {
+    display: flex;
+    justify-content: flex-end;
+    padding: 12px 0 0;
+    margin-top: 10px;
+    border-top: 1px solid var(--c-bdr);
+}
+
+/* ════════════════════════════════════════════
+   TRIGGER CARD
+════════════════════════════════════════════ */
+.trigger-card {
+    border: 1px solid var(--c-bdr);
+    border-radius: var(--r-lg);
+    margin-bottom: 8px;
+    overflow: hidden;
+}
+.trigger-card:last-child { margin-bottom: 0; }
+
+.trigger-header,
+.trigger-header--open {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+    cursor: pointer;
+    user-select: none;
+    transition: background .12s;
+}
+.trigger-header { background: var(--c-bg); }
+.trigger-header:hover { background: var(--c-surface); }
+.trigger-header--open {
+    background: var(--c-surface);
+    border-bottom: 1px solid var(--c-bdr);
+}
+
+.trigger-head-meta {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+}
+.trigger-bank {
+    font-size: 12.5px;
+    font-weight: 500;
+    color: var(--c-ink);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Contact + overall status displayed inline in the trigger header */
+.trigger-head-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 1;
+    min-width: 0;
+}
+.trigger-head-contact {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--c-ink2);
+    white-space: nowrap;
+    font-family: 'SF Mono', 'Menlo', monospace;
+}
+.trigger-head-ts {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 11px;
+    font-weight: 400;
+    color: var(--c-ink3);
+    white-space: nowrap;
+}
+.trigger-head-icon {
+    width: 13px;
+    height: 13px;
+    color: var(--c-ink3);
+    flex-shrink: 0;
+}
+.trigger-head-pills {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+.trigger-label-plain {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 10px;
+    letter-spacing: .04em;
+    text-transform: uppercase;
+    flex-shrink: 0;
+    background: var(--c-slate-bg);
+    color: var(--c-slate);
+}
+
+
+
+/* ════════════════════════════════════════════
+   TABLE
+════════════════════════════════════════════ */
+.tbl-scroll {
+    overflow-x: auto;
+    border: 1px solid var(--c-bdr);
+    border-radius: var(--r-md);
+    margin-top: 12px;
+}
+.tbl-scroll:first-child { margin-top: 0; }
+
+.bsa-tbl {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 12px;
+    min-width: 580px;
+}
+/* ____GenAI: Generated code starts here - reference screenshot redesign:
+   flat dark-navy header (no gradient), centered bold white labels, and
+   vertical column dividers to give the boxed-grid look from the
+   reference image.____ */
+/* ____GenAI: Generated code starts here - lightened header fill (was
+   var(--c-slate-bg) #16283f, read as too dark) - kept local to this rule
+   only, --c-slate-bg itself is untouched since status pills elsewhere
+   still rely on it.____ */
+.bsa-tbl thead tr { background: #24405e; }
+/* ____GenAI: Generated code ends here____ */
+.bsa-tbl th {
+    padding: 10px 12px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
+    color: #ffffff;
+    border-bottom: 1px solid var(--c-bdr);
+    border-right: 1px solid var(--c-bdr);
+    white-space: nowrap;
+    letter-spacing: normal;
+    text-transform: none;
+}
+.bsa-tbl th:last-child { border-right: none; }
+.th-cb  { width: 36px; }
+.th-sno { width: 40px; text-align: center; }
+.td-sno {
+    width: 40px;
+    text-align: center;
+    font-size: 11px;
+    font-weight: 600;
+    color: #ffffff;
+}
+.bsa-tbl td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--c-bdr);
+    border-right: 1px solid var(--c-bdr);
+    color: #ffffff;
+    text-align: center;
+    vertical-align: middle;
+}
+.bsa-tbl td:last-child { border-right: none; }
+.td-cb { width: 36px; }
+.bsa-tbl tbody tr:last-child td { border-bottom: none; }
+.bsa-tbl tbody tr { transition: background .1s; }
+.bsa-tbl tbody tr:hover td { background: var(--c-surface); }
+
+/* Force every row value to render in white, overriding the previously
+   tinted status pills / muted colors - scoped to .bsa-tbl only so pills
+   used elsewhere (trigger header, error spills outside the table) keep
+   their semantic colors. */
+.bsa-tbl td,
+.bsa-tbl td span,
+.bsa-tbl .cell-main,
+.bsa-tbl .cell-accno,
+.bsa-tbl .td-nil,
+.bsa-tbl .td-sno,
+.bsa-tbl .spill {
+    color: #ffffff !important;
+}
+/* ____GenAI: Generated code ends here____ */
+
+/* Bank name cell */
+.cell-bank { display: flex; align-items: center; justify-content: center; gap: 7px; }
+.bank-icon { width: 14px; height: 14px; color: var(--c-ink3); flex-shrink: 0; }
+.cell-main { font-weight: 500; white-space: nowrap; }
+
+/* Change 1: masked account number cell */
+.cell-accno {
+    font-family: 'SF Mono', 'Menlo', monospace;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: .04em;
+    white-space: nowrap;
+}
+
+/* Error list */
+.err-list { display: flex; flex-direction: column; align-items: center; gap: 3px; }
+.err-spill { display: inline-flex; white-space: normal; line-height: 1.3; }
+
+/* View cell */
+.view-cell { display: flex; align-items: center; justify-content: center; gap: 6px; }
+
+/* ════════════════════════════════════════════
+   ICON BUTTONS — Change 3: unified icon button pattern
+   Added icon-btn--aa variant for "Check AA status"
+════════════════════════════════════════════ */
+.icon-btn {
+    width: 28px;
+    height: 28px;
+    /* Circular, violet-tinted "view file" button (reference look) instead
+       of a plain bordered square. */
+    border-radius: 50%;
+    border: 1px solid #4c3a78;
+    background: #241a3d;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #b8a4e8;
+    transition: background .12s, border-color .12s, color .12s;
+    flex-shrink: 0;
+}
+.icon-btn svg { width: 13px; height: 13px; }
+.icon-btn:hover {
+    background: #34275c;
+    border-color: #8b6fd6;
+    color: #d6c8fa;
+}
+
+/* Danger (delete) variant */
+.icon-btn--danger:hover {
+    background: var(--c-rose-bg);
+    border-color: #FDA4AF;
+    color: var(--c-rose);
+}
+
+
+
+/* ════════════════════════════════════════════
+   STATUS PILLS
+════════════════════════════════════════════ */
+.spill {
+    display: inline-flex;
+    align-items: center;
+    font-size: 10.5px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+    line-height: 1.5;
+}
+.spill--emerald { background: var(--c-green-bg);  color: #065F46; }
+.spill--amber   { background: var(--c-amber-bg);  color: #92400E; }
+.spill--rose    { background: var(--c-rose-bg);   color: #9F1239; }
+.spill--blue    { background: var(--c-blue-bg);   color: #1E40AF; }
+.spill--violet  { background: #EDE9FE;             color: #5B21B6; }
+.spill--slate   { background: var(--c-slate-bg);  color: #334155; }
+
+/* ════════════════════════════════════════════
+   BSA TOGGLE (compact)
+════════════════════════════════════════════ */
+.bsa-toggle {
+    --slds-c-checkbox-toggle-slider-width: 2rem;
+    --slds-c-checkbox-toggle-slider-height: 1rem;
+    --slds-c-checkbox-toggle-slider-handle-size: 1rem;
+    --slds-c-checkbox-toggle-slider-radius-border: 1rem;
+    --slds-c-checkbox-toggle-slider-handle-radius-border: 50%;
+}
+
+/* ════════════════════════════════════════════
+   BUTTONS
+════════════════════════════════════════════ */
+.bsa-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 15px;
+    border-radius: var(--r-md);
+    font-size: 12.5px;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all .13s;
+    white-space: nowrap;
+    border: 1px solid var(--c-bdr2);
+    background: var(--c-surface);
+    color: var(--c-ink);
+}
+.bsa-btn:hover  { background: var(--c-bg); }
+.bsa-btn:active { transform: scale(0.97); }
+
+.bsa-btn--solid {
+    background: var(--c-blue);
+    color: #fff;
+    border-color: var(--c-blue);
+}
+.bsa-btn--solid:hover { background: var(--c-blue-dk); border-color: var(--c-blue-dk); }
+
+.bsa-btn--ghost {
+    background: transparent;
+    color: var(--c-ink2);
+    border-color: var(--c-bdr2);
+}
+.bsa-btn--ghost:hover { background: var(--c-bg); }
+
+.bsa-btn--xs { padding: 4px 10px; font-size: 11.5px; }
+
+.bsa-btn--next {
+    background: #a855f7;
+    color: #fff;
+    border-color: #a855f7;
+    padding: 8px 22px;
+    font-size: 13px;
+    font-weight: 600;
+    border-radius: var(--r-md);
+}
+.bsa-btn--next:hover { background: #a855f7; }
+
+.btn-icon { width: 11px; height: 11px; flex-shrink: 0; }
+
+/* ════════════════════════════════════════════
+   INLINE ALERTS
+════════════════════════════════════════════ */
+.inline-error {
+    display: flex;
+    align-items: flex-start;
+    gap: 7px;
+    font-size: 12px;
+    color: #9F1239;
+    background: var(--c-rose-bg);
+    border: 1px solid #FECDD3;
+    border-radius: var(--r-md);
+    padding: 9px 12px;
+}
+.inline-error--block { margin-top: 10px; }
+.inline-error__icon {
+    width: 15px;
+    height: 15px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    color: var(--c-rose);
+}
+
+.inline-warn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: #78350F;
+    background: var(--c-amber-bg);
+    border: 1px solid #FDE68A;
+    border-radius: var(--r-md);
+    padding: 9px 12px;
+}
+.inline-warn--block { margin-top: 10px; }
+
+/* ════════════════════════════════════════════
+   MODAL
+════════════════════════════════════════════ */
+.modal-sm { max-width: 460px; }
+.modal-header {
+    background: var(--c-surface);
+    border-bottom: 1px solid var(--c-bdr);
+    padding: 16px 20px;
+}
+.modal-title { font-size: 15px; font-weight: 600; color: var(--c-ink); }
+.modal-body { padding: 20px; }
+.modal-question { font-size: 13px; color: var(--c-ink2); margin-bottom: 14px; }
+.modal-footer {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    padding: 14px 20px;
+    background: var(--c-bg);
+    border-top: 1px solid var(--c-bdr);
+}
+
+/* ════════════════════════════════════════════
+   PAGE FOOTER
+════════════════════════════════════════════ */
+.page-footer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 22px;
+}
+
+/* ════════════════════════════════════════════
+   RESPONSIVE
+════════════════════════════════════════════ */
+@media (max-width: 800px) {
+    .bsa-layout       { flex-direction: column; }
+    .bsa-panel        { flex: 1 1 100%; width: 100%; }
+    .bsa-content      { width: 100%; }
+    .bsa-topbar__left { width: 100%; }
+}

@@ -1,0 +1,436 @@
+@import "c/cssLibrary";
+
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+
+:host {
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+
+    /* ──────────── Actions column (edit/delete) button-icon dark theme ────────────
+       lightning-button-icon variant="border-filled" still rendered a
+       white circle even with the component-scoped hooks below, because
+       border-filled ultimately falls back to these GLOBAL SLDS 2 tokens
+       when no variant-specific hook is wired - same root cause/fix
+       pattern already used for the CKYC combobox's default option text
+       (--slds-g-color-neutral-base-10). Visual only. */
+    --slds-g-color-neutral-base-100: #2a2f45;
+    --slds-g-color-border-base-1: #3a3f55;
+    --slds-g-color-neutral-base-10: #ffffff;
+}
+
+.pan-heading{
+    font-size: 15px;
+    font-weight: 700;
+    color: #000;
+}
+.image-preview {
+    display: flex;
+    justify-content: center;  /* Horizontally center */
+    align-items: center;      /* Vertically center */
+    width: 100%;
+    margin: 10px 0;
+}
+
+.uploaded-image {
+    max-width: 100%;
+    max-height: 300px; /* Adjust height as needed */
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* ──────────── Close/Next/Previous/Confirm button colour scheme -
+   updated to match the purple "Previous"/"Next" theme used elsewhere in
+   the sales-login screens (outlined navy button + solid purple button)
+   instead of the old red/green pair. Class names kept as-is so no
+   markup changes were needed. ──────────── */
+.button-green {
+    background-color: #8b5cf6 !important;
+    background-image: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+    color: #ffffff !important;
+    border-color: #8b5cf6 !important;
+    font-weight: 600;
+    font-size: 11px;
+    min-width: 110px;
+    display: inline-block;
+    font-size: 0.875rem;
+    line-height: 1.600rem;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 0 0.75rem;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.button-red {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    border: 1.5px solid #8b5cf6 !important;
+    font-weight: 600;
+    font-size: 11px;
+    min-width: 110px;
+    display: inline-block;
+    font-size: 0.875rem;
+    line-height: 1.600rem;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 0 0.75rem;
+    border-radius: 0.25rem;
+    text-decoration: none;
+}
+/* ===== Dark navy table theme ===== */
+.slds-table {
+    background-color: #131a30 !important;
+    border: 1px solid #ffffff !important;
+    width: 99%;
+    border-collapse: separate;
+    border-spacing: 0;
+    margin-left: 1.01%;
+    border-radius: 0.75rem;
+    overflow: hidden;
+}
+
+.slds-table thead th,
+.slds-table thead {
+    background-color: #1b2440 !important; /* dark navy header */
+    border: 1px solid #ffffff !important;
+}
+
+.slds-table thead th {
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 0.75rem;
+    letter-spacing: 0.03em;
+    text-align: left;
+    padding: 12px 16px;
+    border: 1px solid #ffffff;
+    border-bottom: 1px solid #ffffff !important;
+}
+
+.slds-table tbody tr{
+    background-color: #131a30 !important;
+    border: 1px solid #ffffff !important;
+}
+
+
+.slds-table tbody td {
+    color: #ffffff !important;
+    padding: 12px 16px;
+    border: 1px solid #ffffff !important;
+    border-bottom: 1px solid #232a45 !important;
+    font-size: 0.85rem;
+}
+
+.slds-table tbody tr:last-child td {
+    border-bottom: none !important;
+}
+
+.slds-table .slds-truncate {
+    color: inherit;
+}
+.table-class thead tr:first-child th:first-child {
+    border-top-left-radius: 0.75rem;
+}
+
+.table-class thead tr:first-child th:last-child {
+    border-top-right-radius: 0.75rem;
+}
+
+.table-class tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 0.75rem;
+}
+
+.table-class tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 0.75rem;
+}
+/* Card wrapping the table */
+lightning-card {
+    --slds-c-card-color-background: #131a30;
+    --slds-c-card-text-color: #ffffff;
+    --lwc-cardColorBackground: #131a30;
+}
+
+.slds-table lightning-button-icon {
+    --slds-c-button-icon-color-foreground: #ffffff;
+    --slds-c-button-icon-color-border: #3a3f55;
+    --slds-c-button-icon-color-background: #2a2f45;
+    --slds-c-button-icon-color-background-hover: #3a3f55;
+    --slds-c-icon-color-foreground: #ffffff;
+    --slds-c-icon-color-foreground-default: #ffffff;
+    border-radius: 6px;
+}
+.image-preview-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.preview-box {
+    width: 400px;            /* Fixed width */
+    height: 300px;           /* Fixed height */
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    background-color: #f9f9f9;
+    display: flex;
+    align-items: center;     /* Vertical center */
+    justify-content: center; /* Horizontal center */
+    overflow: hidden;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 10px;
+}
+
+.uploaded-image {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain; /* Ensures image scales nicely */
+}
+
+.image-controls {
+    display: flex;
+    gap: 10px;
+    margin-top: 5px;
+}
+
+.zoom-button {
+    padding: 5px 10px;
+    font-size: 18px;
+    border: none;
+    border-radius: 4px;
+    background-color: #1467eb !important;
+    color: #ffffff !important;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+ .zoom-button:hover {
+    background-color: #1467eb !important;
+}
+/* 
+.zoom-button:hover {
+    background-color: #005fb2;
+} */
+
+.button-deeppink {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    border: 1.5px solid #8b5cf6 !important;
+    font-size: 15px;
+    min-width: 110px;
+    font-weight: 600;
+    display: inline-block;
+    font-size: 0.875rem;
+    line-height: 1.600rem;
+    text-align: center;
+    vertical-align: middle;
+    white-space: nowrap;
+    cursor: pointer;
+    padding: 0 0.75rem;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+/* Standard SLDS button classes used in the customer-type modal footer -
+   overridden to the same outline-navy (neutral/destructive = Previous/
+   Close) and solid-purple (brand = Next/Confirm) scheme applied above. */
+:host .slds-button_neutral,
+:host .slds-button_destructive {
+    background-color: #16283f !important;
+    color: #101010 !important;
+    border: 1.5px solid #8b5cf6 !important;
+}
+
+:host .slds-button_brand {
+    background-color: #8b5cf6 !important;
+    background-image: linear-gradient(135deg, #8b5cf6, #7c3aed) !important;
+    color: #ffffff !important;
+    border-color: #8b5cf6 !important;
+}
+
+
+.align-item {
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.responsive-button {
+    width: 100%;
+    padding: 0.75rem 1rem;
+    font-weight: bold;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.responsive-button:hover {
+    background-color: #218838;
+}
+
+.radio-inline-wrapper {
+    display: flex;
+    gap: 1rem;
+    margin-left: 1%;
+    margin-bottom: 1%;
+    font-weight: 400;
+}
+.slds-modal__container {
+    max-width: 95vw !important;
+    width: 45% !important;
+}
+
+/* ──────────── "Add PAN Details Manually" / Form 60 manual-entry modals -
+   dark navy theme ──────────── The header already carries an inline
+   navy background, but the SLDS default modal container/content/footer
+   backgrounds are white, which is why the body around "Customer Type"
+   and the footer behind the Close/Next buttons still looked light
+   against the rest of the dark-themed sales-login screens. Matches the
+   navy/gradient-blue modal theme already applied elsewhere in this
+   codebase (e.g. salesLoginAadharDetailsCmp.css). Visual only - no
+   markup/handler changes. */
+:host .slds-modal__container {
+    background-color: #0e1c30 !important;
+}
+
+:host .slds-modal__content {
+    background-color: #16283f !important;
+    color: #ffffff;
+}
+
+:host .slds-modal__footer {
+    background-image: linear-gradient(90deg, #2563eb, #1e3a8a) !important;
+    background-color: #2563eb !important;
+}
+
+/* ──────────── "Add PAN Details Manually" modal - compact, centered
+   popup (same fix pattern already proven working on the CKYC/Aadhar
+   manual-entry modals: the shared cssLibrary.css ".slds-modal__container
+   { padding: 3% 0 !important; }" rule, plus the outer .slds-modal
+   overlay's default flex align-items:stretch/height:100%, were forcing
+   the container to stretch to the full viewport height and adding large
+   empty navy space above the header and below the footer). Scoped to
+   this modal only via the pan-manual-modal / pan-manual-modal-container
+   classes added on the markup, so the Form 60 manual modal and other
+   slds-modal instances in this component are untouched. */
+.pan-manual-modal {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+}
+
+.pan-manual-modal .pan-manual-modal-container {
+    padding: 0 !important;
+    height: auto !important;
+    max-height: 90vh !important;
+    overflow: hidden !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    display: flex !important;
+    flex-direction: column !important;
+}
+
+.pan-manual-modal .pan-manual-modal-header,
+.pan-manual-modal .pan-manual-modal-footer {
+    flex: 0 0 auto !important;
+}
+
+.pan-manual-modal .pan-manual-modal-content {
+    flex: 1 1 auto !important;
+    overflow-y: auto !important;
+    min-height: 0 !important;
+}
+
+@media (max-width: 768px) {
+    .slds-modal__container {
+        width: 80% !important;
+    }
+}
+.table-container {
+    max-width: 960px;
+    margin: 0 auto;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0 1rem;
+}
+
+@media only screen and (max-width: 768px) {
+    .table-container {
+        padding: 0 0.5rem;
+    }
+
+    .slds-table {
+        font-size: 0.875rem;
+    }
+}
+
+.custom-mobile-table {
+    border: 1px solid #d8dde6;
+    border-radius: 0.25rem;
+    background: #fff;
+}
+
+.custom-row {
+    display: flex;
+    border-bottom: 1px solid #d8dde6;
+}
+
+.custom-row:last-child {
+    border-bottom: none;
+}
+
+.custom-cell {
+    padding: 0.5rem;
+    flex: 1;
+    word-break: break-word;
+}
+.custom-mobile-btn {
+    max-width: 100%;
+    display: block;
+    margin: 0 auto;
+    white-space: normal;
+    text-align: center;
+}
+
+.label {
+    background: #f3f2f2;
+    font-weight: bold;
+    flex: 0 0 50%;
+}
+
+.value {
+    flex: 0 0 50%;
+}
+
+/* ──────────── "Upload File" (lightning-file-upload) - remove the default
+   white hover background on the internal "Upload Files" neutral button.
+   Uses the SLDS button-neutral style hooks so the button keeps the dark
+   navy theme on hover instead of flashing white. Visual only. ──────────── */
+lightning-file-upload {
+    --slds-c-button-neutral-color-background: #16283f;
+    --slds-c-button-neutral-color-background-hover: #16283f;
+    --slds-c-button-neutral-color-background-active: #16283f;
+    --slds-c-button-neutral-color-border: #8b5cf6;
+    --slds-c-button-neutral-color-border-hover: #8b5cf6;
+    --slds-c-button-neutral-text-color: #ffffff;
+    --slds-c-button-neutral-text-color-hover: #ffffff;
+    --sds-c-button-neutral-color-background: #16283f;
+    --sds-c-button-neutral-color-background-hover: #16283f;
+    --sds-c-button-neutral-text-color: #ffffff;
+    --sds-c-button-neutral-text-color-hover: #ffffff;
+}
+.radio-question,
+.radio-question  {
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+    color: #ffffff !important;
+}
+.radio-inline-wrapper .slds-form-element__label,
+.radio-wrapper-mobile .slds-form-element__label {
+    font-size: 13.5px !important;
+    font-weight: 600 !important;
+}

@@ -1,0 +1,31 @@
+<!-- //_______________This Code was generated using GenAI tool: Codify, Please check for accuracy_______________// -->
+<template>
+    <div class="portfolio-card">
+
+        <!-- Card Header Row -->
+        <div class="card-header-row">
+            <span class="card-title">Loan portfolio</span>
+            <span class="card-summary">3 loans · 2 live</span>
+        </div>
+
+        <!-- Loan Rows -->
+        <ul class="loan-list">
+            <template for:each={loans} for:item="loan">
+                <li key={loan.id} class="loan-row">
+                    <!-- Left: Loan details -->
+                    <div class="loan-info">
+                        <span class="loan-number">{loan.loanNumber}</span>
+                        <span class="loan-type">{loan.loanType}</span>
+                        <span class="loan-meta">{loan.meta}</span>
+                    </div>
+                    <!-- Right: Status badge -->
+                    <div class="loan-status">
+                        <span class={loan.statusClass}>{loan.status}</span>
+                    </div>
+                </li>
+            </template>
+        </ul>
+
+    </div>
+</template>
+<!-- //__________________________GenAI: Generated code ends here______________________________// -->

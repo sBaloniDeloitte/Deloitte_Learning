@@ -1,0 +1,59 @@
+<template>
+    <div class="slds-p-around_medium">
+         <template if:false={disabledCmp}>
+        
+        <lightning-file-upload
+            label="Upload CAM Calculation"
+            name="fileUploader"
+            accept={acceptedFormats}
+            record-id={recordId}
+            onuploadfinished={handleUploadFinished}
+            disabled ={enableDisabled}>
+        </lightning-file-upload>
+        </template>
+    </div>
+
+    <template if:true={hasFile}>
+        <div class="slds-p-horizontal_medium slds-m-top_x-small">
+            <span class="slds-text-title_bold">CAM Calculation</span>
+            <lightning-button-icon
+                class="slds-m-left_x-small"
+                icon-name="utility:preview"
+                alternative-text="View"
+                variant="border-filled"
+                onclick={openPreview}
+                disabled ={enableDisabled}>
+            </lightning-button-icon>
+        </div>
+    </template>
+
+    <template if:true={isModalOpen}>
+        <section role="dialog" tabindex="-1" aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">{modalTitle}</h2>
+                </header>
+
+                <div class="slds-modal__content slds-p-around_none" style="height:70vh;">
+                    <template if:true={isImage}>
+                        <img src={previewUrl} alt={modalTitle} style="width:100%; height:100%; object-fit:contain;">
+                    </template>
+                    <template if:false={isImage}>
+                        <iframe
+                            src={previewUrl}
+                            title={modalTitle}
+                            style="border:0; width:100%; height:100%;">
+                        </iframe>
+                    </template>
+                </div>
+
+                <footer class="slds-modal__footer slds-grid slds-grid_align-end">
+                    <button class="slds-button slds-button_neutral" onclick={closeModal}>
+                        Close
+                    </button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

@@ -1,0 +1,281 @@
+@import 'c/cssLibrary';
+
+:host {
+    display: block;
+    color: #ffffff;
+    background-color: #12172b;
+    --fcu-page-bg: #0a1524;
+    --fcu-panel-bg: #0e1c30;
+    --fcu-field-bg: #16283f;
+    --fcu-border: #33455e;
+    --fcu-accent: #1467eb;
+}
+
+/* The white area in the Recommend Documents tab belongs to this child LWC,
+   which is rendered inside the parent Lightning Card. */
+.content,
+.content-container,
+.slds-scrollable {
+    background-color: #12172b;
+}
+
+.slds-text-align_center p {
+    color: #ffffff !important;
+}
+
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    background: var(--fcu-page-bg);
+    color: #ffffff;
+}
+.slds-float_right{
+    margin-left: 15%;
+
+}
+.slds-float_left{
+    margin-right: 15%;
+
+}
+
+/* Negative CTA (Cancel/Close/Previous/Next/Hold/No/Un-Screen) -
+   #16283f fill, 1px solid #7c3aed border, 8px radius. */
+.cancel-button, .close-button, .previous-button, .wave-button {
+    width: fit-content;
+    background-color: #16283f !important;
+    border: 1px solid #7c3aed !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    text-wrap-mode: nowrap;
+}
+
+/* Positive CTA (Recommend for FCU/Add to queue/Screen/Save/Yes/Un-Hold) -
+   #7c3aed fill, no border, 8px radius. */
+.save-button, .continue-button, .initiate-button {
+    width: fit-content;
+    background-color: #7c3aed !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    text-wrap-mode: nowrap;
+}
+
+lightning-combobox {
+    --slds-c-combobox-color-background: var(--fcu-field-bg);
+    --slds-c-combobox-text-color: #ffffff;
+    --slds-c-combobox-color-border: var(--fcu-border);
+    --slds-c-combobox-label-color: #ffffff;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-placeholder-text-color: #ffffff;
+    --slds-c-combobox-input-text-color: #ffffff;
+    --slds-c-combobox-input-value-text-color: #ffffff;
+    /* Keep the opened option list on the same FCU dark palette.  These only
+       affect option colours; they do not alter the combobox placement/size. */
+    --slds-c-combobox-listbox-color-background: var(--fcu-field-bg);
+    --slds-c-combobox-option-color-background: var(--fcu-field-bg);
+    --slds-c-combobox-option-color-background-hover: #1f3550;
+    --slds-c-combobox-option-text-color: #ffffff;
+    --slds-c-listbox-color-background: var(--fcu-field-bg);
+    --slds-c-listbox-option-color-background: var(--fcu-field-bg);
+    --slds-c-listbox-option-color-background-hover: #1f3550;
+    --slds-c-listbox-option-color-background-focus: #1f3550;
+    --slds-c-listbox-option-color-background-selected: #1f3550;
+    --slds-c-listbox-option-text-color: #ffffff;
+    /* SLDS uses these global fallback tokens for option labels in some
+       Lightning runtime versions. */
+    --slds-g-color-on-surface: #ffffff;
+    --slds-g-color-neutral-base-30: #ffffff;
+}
+
+lightning-textarea {
+    --slds-c-textarea-color-background: var(--fcu-field-bg);
+    --slds-c-textarea-text-color: #ffffff;
+    --slds-c-textarea-color-border: var(--fcu-border);
+    --slds-c-input-label-color: #ffffff;
+}
+
+.doc-table-css thead th,
+.tableCss {
+    background-color: #111d30 !important;
+    color: #ffffff !important;
+    border-color: var(--fcu-border) !important;
+}
+
+/* Current-document summary: use the same navy surface, white text, and
+   borders as the Documents tab table. */
+.document-status-table,
+.document-status-table td {
+    background-color: #111d30 !important;
+    color: #ffffff !important;
+    border-color: var(--fcu-border) !important;
+}
+
+.document-status-table td:first-child {
+    font-weight: 700;
+}
+.info-button-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 20px;
+}
+
+.doc-info-status {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    flex-grow: 1;
+}
+
+.doc-info, .doc-status {
+    margin: 0;
+    padding: 0;
+}
+
+.button-group {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+}
+
+.SaveButton {
+    font-size: 11px;
+    width: 145px;
+    background-color: #113451;
+    color: white;
+    border-color: #5ab5e3;
+    font-weight: 500;
+    margin-left: 10px;
+}
+
+.previous-button{
+    margin-left: 10px;
+    text-wrap-mode: nowrap;
+}
+
+.disabled-button{
+    margin-left: 10px;
+    text-wrap-mode: nowrap;
+    width:fit-content;
+}
+
+/* Override the inherited disabled brand-button fill (#c7d68a). */
+.disabled-button[disabled] {
+    background-color: transparent !important;
+    border: transparent !important;
+}
+
+.button-text-nowrap{
+    text-wrap-mode: nowrap;
+}
+
+.DisableButton {
+    font-size: 11px;
+    width: 145px;
+    background-color: lightgrey;
+    color: black;
+    border-color: #5ab5e3;
+    font-weight: 500;
+    margin-left: 10px;
+}
+
+.hoverable-icon {
+    cursor: pointer;
+    margin-left: 10px;
+}
+
+.content-container {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    padding: 1%;
+}
+
+.content-viewer {
+    /* width: 100%; */
+    max-width: 800px;
+    height: 600px;
+    margin-bottom: 5px;
+    transition: transform 0.2s ease-in-out;
+    margin-top: 5px;
+}
+
+.line {
+    width: 70%;
+    height: 2px;
+    background-color: #113451;
+    position: relative;
+    position: relative;
+    top: -25%;
+    left: 50%;
+}
+
+.linemobile {
+    width: 80%;
+    height: 2px;
+    background-color: #113451;
+    position: relative;
+    top: -25%;
+    left: 50%;
+}
+.scrollable {
+    height: 250px;; /* Set a fixed height */
+    overflow-y: auto; /* Enable vertical scrolling */
+    border: 1px solid #ccc; /* Optional: Add a border for better visibility */
+    padding: 10px; /* Optional: Add some padding */
+    width: 500px;
+    overflow-x: auto;
+    text-align: center;
+    padding-bottom: 10px
+}
+
+.comboBox{
+    width: 170px;
+}
+.fixed-action-buttons {
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+}
+.document-viewer, .document-image {
+    transition: transform 0.2s ease-in-out; /* Smooth zoom animation */
+    max-width: 100%; /* Ensures it doesn’t exceed parent width */
+    max-height: 100vh; /* Limits height */
+}
+ 
+.document-container, .image-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden; /* Prevents any overflow issues */
+}
+ 
+.viewer-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 10px;
+}
+ 
+.content-viewer {
+    border: 1px solid #000000;
+    margin-bottom: 5px;
+    transition: transform 0.2s ease-in-out;
+}
+ 
+.content-viewer {
+    transition: all 0.3s ease-in-out; /* Smooth zoom effect */
+}
+.scrollable-content {
+    max-height: 70vh;  /* Adjust based on need */
+    overflow-y: auto;
+    padding-bottom: 10px;
+}

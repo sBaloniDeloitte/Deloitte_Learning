@@ -1,0 +1,228 @@
+/* This Code was generated using GenAI tool : Codify, Please check for accuracy */
+/* ____GenAI: Generated code starts here - dark theme restyle. This component
+   renders plain SLDS markup with hardcoded light-theme inline colors
+   (border-bottom:1px solid black, color:black), which is why it showed as a
+   solid white box wherever it's used inside a dark screen. Overriding those
+   with !important here (same stylesheet as the template, so it beats the
+   inline style) fixes every usage of c-search-lookup across the app. No
+   markup/structure changes.____ */
+:host {
+    display: block;
+
+    --lookup-bg: #16283f;
+    --lookup-border: #33455e;
+    --lookup-text: #ffffff;
+    --lookup-label: #dbe7ff;
+    --lookup-hover: #1c2d4d;
+}
+
+.slds-form-element__label {
+    color: #dbe7ff !important;
+    font-weight: 600 !important;
+    font-size: 13px;
+}
+
+.slds-required {
+    color: #f87171 !important;
+}
+
+.slds-form-element__control {
+    background: transparent !important;
+}
+
+/* ____GenAI: converted from a boxed field to an underline/"line format" field
+   per explicit request (matches the same line style already applied to
+   lightning-input/lightning-combobox in leadManagementV2). Background/side
+   borders are removed and replaced with a single bottom border using the
+   SAME border color (#33455e) already used throughout this component's dark
+   theme - no new palette, no markup/handler/search logic changed____ */
+.slds-combobox__form-element {
+    background-color: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid #33455e !important;
+    border-radius: 0 !important;
+}
+
+.slds-combobox__input,
+input.slds-input {
+    background-color: transparent !important;
+    color: #ffffff !important;
+    border: none !important;
+}
+
+.slds-combobox__input::placeholder {
+    color: #8a99b3 !important;
+}
+
+/* focus state: swap the underline to the same purple accent used for
+   buttons/focus elsewhere in this dark theme, instead of a boxed focus ring */
+.slds-combobox__form-element:focus-within {
+    border-bottom-color: #8b5cf6 !important;
+}
+
+/* Selected-value "read only" state (borderLess / branchLookup templates) */
+[role="combobox"] {
+    background-color: transparent !important;
+}
+
+[role="combobox"] .slds-truncate {
+    color: #ffffff !important;
+}
+
+.slds-dropdown {
+    background-color: #0f1d33 !important;
+    border: 1px solid #33455e !important;
+    border-radius: 8px !important;
+    overflow: hidden;
+    padding: 0;
+}
+
+.slds-listbox__item:hover {
+    background-color: #1c2d4d !important;
+}
+
+.slds-listbox > li {
+    border-bottom: 1px solid #33455e;
+}
+
+.slds-listbox__option {
+    border: none !important;
+}
+
+.slds-listbox__item {
+    border-left: none !important;
+    border-right: none !important;
+}
+
+.slds-truncate {
+    color: #dbe7ff !important;
+}
+
+.slds-listbox__option {
+    background-color: #0f1d33 !important;
+}
+
+.slds-listbox__item:hover,
+.slds-listbox__item:hover .slds-listbox__option {
+    background-color: #1c2d4d !important;
+}
+
+.slds-listbox__item:hover .lookup-result-primary,
+.slds-listbox__item:hover .lookup-result-secondary,
+.slds-listbox__item:hover .slds-truncate {
+    color: #ffffff !important;
+}
+
+.slds-has-focus .lookup-result-primary,
+.slds-has-focus .lookup-result-secondary {
+    color: #ffffff !important;
+}
+
+.slds-listbox__option {
+    display: flex;
+    align-items: center;
+    min-height: 42px;
+}
+
+.slds-media__body {
+    display: flex;
+    align-items: center;
+    min-height: 32px;
+}
+
+.slds-listbox__option-icon {
+    margin-right: 8px;
+    border-right: none !important;
+}
+
+.slds-media__figure {
+    border-right: none !important;
+}
+
+.slds-is-disabled span {
+    color: #8a99b3 !important;
+}
+
+.selected-value {
+    color: #ffffff;
+    cursor: default;
+}
+
+.lookup-input {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+
+    border: 1px solid #33455e !important;
+    border-radius: 6px !important;
+
+    padding: 5px;
+}
+
+.lookup-selected {
+    width: 100%;
+    min-height: 38px;
+
+    display: flex;
+    align-items: center;
+
+    background-color: #16283f !important;
+    border: 1px solid #33455e !important;
+    border-radius: 6px !important;
+
+    padding-left: 10px;
+}
+
+.slds-icon-text-default,
+.slds-icon {
+    fill: #cfd8e6 !important;
+}
+
+
+.lookup-result-primary {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.lookup-result-secondary {
+    color: #aebed7;
+    font-size: 12px;
+    margin-top: -8px;
+}
+
+.add-new-text {
+    color: #ffffff !important;
+}
+
+.slds-button__icon {
+    fill: #cfd8e6 !important;
+}
+
+.slds-dropdown table,
+.slds-dropdown tbody,
+.slds-dropdown tr,
+.slds-dropdown td {
+    border: none !important;
+}
+
+.slds-listbox__option-icon,
+.slds-media__figure,
+.slds-media__body,
+.slds-listbox td {
+    border-left: none !important;
+    border-right: none !important;
+}
+
+.slds-listbox__option {
+    padding: 8px 12px !important;
+    display: flex;
+    align-items: center;
+}
+/* ____GenAI: info icon + tooltip for the new optional field-level-help
+   (rendered only when the fieldLevelHelp @api prop is set by the parent).
+   The earlier sky-blue override made this field's icon stand out from every
+   other field's default grey info icon, per explicit follow-up request the
+   color override is removed so this icon now matches the same default grey
+   as the rest of the form. Scoped to this component only, no markup/
+   behavior touched besides the optional prop____ */
+/* ____GenAI: Generated code ends here____ */

@@ -1,0 +1,167 @@
+@import 'c/cssLibrary';
+
+/* Positive CTA (Add PD/Initiate/Save/View/Next) - #7c3aed fill, no
+   border, 8px radius. */
+.save-button, .continue-button {
+    background-color: #7c3aed !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: white;
+    font-weight: 600;
+}
+
+/* "Initiate" (Physical PD, inside the modal) and "Add PD" (the entry
+   button visible before opening the modal) - each scoped independently
+   on top of the shared ".save-button" class (also used by "Save",
+   which is left untouched at #7c3aed). */
+.pd-physical-initiate-btn,
+.pd-add-btn {
+    background-color: #1467eb !important;
+    border: 1px solid #1467eb !important;
+}
+
+/* Negative CTA (Cancel/Previous/Close) - #16283f fill, 1px solid
+   #7c3aed border, 8px radius. */
+.cancel-button, .previous-button {
+    background-color: #16283f !important;
+    border: 1px solid #7c3aed !important;
+    border-radius: 8px !important;
+    color: white;
+    font-weight: 600;
+}
+
+/* Add PD modal. The container has inherited padding and can span most of
+   the viewport, so only color the visible content panel—not the container. */
+.physical-pd-modal .slds-modal__content {
+    background-color: #12172b !important;
+}
+
+.physical-pd-modal .header-section {
+    background-color: #1467eb !important;
+    border-color: #1467eb !important;
+}
+
+.physical-pd-modal .header-title {
+    color: #ffffff !important;
+}
+
+.physical-pd-modal .slds-modal__close {
+    background-color: transparent !important;
+    border: 0 !important;
+    --slds-c-icon-color-foreground: #ffffff;
+    --sds-c-icon-color-foreground: #ffffff;
+}
+
+.physical-pd-modal .footer-section {
+    background-color: #12172b !important;
+    border: 1px solid #12172b !important;
+}
+
+.custom-table .slds-icon-action-preview{
+    border-radius: 0!important;
+    padding: 1px 8px;
+    background-color: #9bbf56;
+}
+
+.single-upload-div lightning-file-upload{
+    float: left;
+    margin-left: 8px;
+}
+
+.custom-table .slds-textarea{
+    min-height: 200px;
+}
+
+.title-div{
+    
+    margin: 15px 0px 5px 0px;
+    background: #00264d;
+    padding: 12px 20px;
+    font-weight: 600;
+}
+
+/* ── Table theme matched EXACTLY to the Hunter Check accordion's table
+   (hunterAccordionCmp.css ".fi-table-wrapper .slds-table") - dark-navy
+   #0a1524 outer backdrop (wrapper), #0e1c30 table surface for both
+   header and body, #33455e borders on every cell, 18px rounded corners
+   on the outer cells only, left-aligned bold white header text with
+   12px/10px padding, 13px body text, and the same #16283f row-hover
+   highlight - replacing the previous #0e1626/#111d30/#1d2f45 theme
+   (no rounded corners, centered text) so this table now matches the
+   Hunter Check table's UI exactly. ── */
+.phd-table-wrap {
+    background-color: #0a1524 !important;
+    padding: 1rem 1.5rem;
+    border-radius: 18px;
+    overflow: auto;
+    min-height: 150px;
+}
+
+.phd-table-wrap .slds-table {
+    width: 100%;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border-radius: 18px;
+    background-color: #0e1c30 !important;
+    border: 1px solid #33455e !important;
+    color: #ffffff;
+}
+
+.phd-table-wrap .slds-table th,
+.phd-table-wrap .slds-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.phd-table-wrap .slds-table thead tr th {
+    background-color: #0e1c30 !important;
+    background-image: none !important;
+    border-right: 1px solid #33455e !important;
+    border-bottom: 1px solid #33455e !important;
+    border-color: #33455e !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    font-size: 12.5px;
+    letter-spacing: 0.2px;
+    padding: 12px 10px !important;
+    text-align: left !important;
+    box-shadow: none !important;
+    vertical-align: middle;
+}
+
+.phd-table-wrap .slds-table thead tr:first-child th:first-child {
+    border-top-left-radius: 18px;
+}
+
+.phd-table-wrap .slds-table thead tr:first-child th:last-child {
+    border-top-right-radius: 18px;
+}
+
+.phd-table-wrap .slds-table tbody tr td {
+    background-color: #0e1c30 !important;
+    border-right: 1px solid #33455e !important;
+    border-bottom: 1px solid #33455e !important;
+    border-color: #33455e !important;
+    color: #ffffff !important;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: left !important;
+    padding: 12px 10px !important;
+    vertical-align: middle;
+}
+
+.phd-table-wrap .slds-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 18px;
+}
+
+.phd-table-wrap .slds-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 18px;
+}
+
+.phd-table-wrap .slds-table tbody tr:hover td {
+    background-color: #16283f !important;
+}
+
+.phd-table-wrap .slds-table a {
+    color: #7db2ff !important;
+}

@@ -1,0 +1,6 @@
+.custom-container{
+	color : black;
+}
+.slds-table th.slds-cell-shrink .slds-checkbox {
+    display: none !important;
+}

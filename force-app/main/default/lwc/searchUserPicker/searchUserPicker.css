@@ -1,0 +1,141 @@
+/* _______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________ */
+/* searchUserPicker had no stylesheet at all before this - it rendered with
+   default SLDS (white input, white dropdown/listbox) regardless of which
+   dark-themed parent it's used in (creditFIInitiationCmp's "Assigned To"
+   column, manualPdCmp, waiverComponent, etc). This matches the same dark
+   field convention already used by those parents: dark navy field/dropdown
+   background, subtle border, white text. */
+:host {
+    display: block;
+}
+
+/* ----- Disabled/read-only "Assigned To" display (native input) -----
+   The disabled lightning-input previously used here relied on
+   --slds-c-input-color-background styling hooks which, per the same
+   failure mode confirmed on lightning-textarea in creditFIInitiationCmp,
+   did not visibly repaint the background (screenshot showed it still
+   light/white). Replaced with a plain native <input> styled directly. */
+.dark-user-input {
+    width: 100%;
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    border: 1px solid #33455e !important;
+    border-radius: 4px;
+    padding: 6px 8px;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 13px;
+    outline: none;
+    box-shadow: none !important;
+    /* Native <input> elements can render the browser/OS's own default
+       "inset" chrome (Windows Chrome in particular) around text inputs
+       unless appearance is explicitly reset - that native chrome can look
+       like a brighter/thicker border layered on top of the CSS border set
+       above, which is what made this input's border look visually
+       different from the <textarea> (textareas aren't affected by this
+       same UA styling). */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+.dark-user-input:focus,
+.dark-user-input:focus-visible {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    border-color: #33455e !important;
+    outline: none;
+    box-shadow: none !important;
+}
+
+.dark-user-input:disabled {
+    background-color: #101d32 !important;
+    color: #8a99b3 !important;
+    opacity: 1;
+    cursor: default;
+}
+
+/* Enabled/selected state (native input + clear button) - the search-variant
+   lightning-input previously here relied on the same --slds-c-input-*
+   styling hooks that don't visibly apply in this org's rendering (screenshot
+   confirmed still light after an inline hook override), so this too moved
+   to a native element for a guaranteed fix. */
+.dark-user-input-wrap {
+    position: relative;
+    width: 100%;
+}
+
+.dark-user-input-wrap .dark-user-input {
+    padding-right: 28px;
+    cursor: pointer;
+}
+
+.dark-user-input-clear {
+    position: absolute;
+    right: 6px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: transparent;
+    border: none;
+    color: #8a99b3;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 4px;
+}
+
+.dark-user-input-clear:hover {
+    color: #ffffff;
+}
+
+/* ----- Selected-state input (lightning-input, once a user is picked) ----- */
+.custom-input-style {
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #2a2f45;
+    --slds-c-input-color-border-focus: #1467eb;
+    --slds-c-input-placeholder-text-color: #8a99b3;
+    --slds-c-input-label-color: #ffffff;
+}
+
+/* ----- Search input (native <input>, before a user is picked) ----- */
+.slds-input {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    border-color: #2a2f45 !important;
+}
+
+.slds-input::placeholder {
+    color: #8a99b3 !important;
+}
+
+.slds-input:focus {
+    background-color: #16283f !important;
+    color: #ffffff !important;
+    border-color: #1467eb !important;
+}
+
+.slds-input__icon svg {
+    fill: #8a99b3;
+}
+
+/* ----- Dropdown / listbox panel ----- */
+.slds-dropdown {
+    background-color: #101d32 !important;
+    border: 1px solid #2a2f45 !important;
+}
+
+.slds-listbox__item .slds-listbox__option {
+    background-color: #101d32 !important;
+}
+
+.slds-listbox__option:hover,
+.slds-listbox__option:focus {
+    background-color: #16283f !important;
+}
+
+.slds-listbox__option-text,
+.slds-media__body,
+.slds-truncate {
+    color: #ffffff !important;
+}

@@ -1,0 +1,151 @@
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={isloading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </template>
+    <template if:true={isMnrlBlacklisted}>
+        <p style="font-size: 14px; color: red; font-weight: bold;">The given Mobile Number is blacklisted by MNRL. Please Change the Mobile Number to Proceed Further.</p>
+    </template>
+    <div if:true={onLoadButton}>
+        <div style="padding-bottom: 4%;padding-top: 1%">
+            <template if:false={isSmall}>
+                <template if:false={isHLUser}>
+                    <button class="save-button slds-button slds-button_brand slds-float_left"
+                        style="border:none" onclick={callAPI} disabled={isMnrlBlacklisted}>Initiate CIBIL</button>
+                </template>
+                <template if:true={isHLUser}>
+                    <button class="save-button slds-button slds-button_brand slds-float_left"
+                        style="border:none" onclick={callCibilAPIFirst} disabled={isMnrlBlacklisted}>Initiate CIBIL</button>
+                </template>
+            </template>
+            <template if:true={isSmall}>
+                <template if:false={isHLUser}>
+                    <button class="save-button-mob slds-button slds-button_brand slds-float_left"
+                        style="border:none" onclick={callAPI} disabled={isMnrlBlacklisted}>Initiate CIBIL</button>
+                </template>
+                <template if:true={isHLUser}>
+                    <button class="save-button-mob slds-button slds-button_brand slds-float_left"
+                        style="border:none" onclick={callCibilAPIFirst} disabled={isMnrlBlacklisted}>Initiate CIBIL</button>
+                </template>
+            </template>
+        </div>
+    </div>
+    <template if:false={isHLUser}>
+        <div if:true={showGetDataButton}>
+            <div style="padding-bottom: 4%; padding-top: 1%">
+                <div class="slds-text-color_success slds-m-bottom_small">
+                    <strong>Report ID generated successfully.</strong><br/>
+                    Click on the "Get CIBIL Data" button to fetch report details.
+                </div>
+                <template if:false={isSmall}>
+                    <button class="save-button slds-button slds-button_brand slds-float_left"
+                        style="border:none" onclick={handleCrifCommercialResponse}>
+                        Get CIBIL Data
+                    </button>
+                </template>
+                <template if:true={isSmall}>
+                    <button class="save-button-mob slds-button slds-button_brand slds-float_left"
+                        style="border:none" onclick={handleCrifCommercialResponse}>
+                        Get CIBIL Data
+                    </button>
+                </template>
+            </div>
+        </div>
+        <div if:true={showRefetchScoreButton}>
+            <div class="refetch-card">
+                <div class="refetch-icon-wrap">
+                    <lightning-icon icon-name="utility:warning" variant="warning" size="small"></lightning-icon>
+                </div>
+                <div class="refetch-content">
+                    <p class="refetch-title">Score Segment Unavailable</p>
+                    <p class="refetch-subtitle">The score segment could not be retrieved for this applicant. You can try fetching it again.</p>
+                </div>
+                <div class="refetch-action">
+                    <button class="refetch-button" onclick={handleRefetchScoreSegment} disabled={isRefetching}>
+                        <lightning-icon icon-name="utility:refresh" size="xx-small" class="refetch-btn-icon"></lightning-icon>
+                        <span>{refetchButtonLabel}</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </template>
+
+    <div if:false={onLoadButton}>
+        <div if:true={showErrorListBureau}>
+            <div if:false={showApplicantAddress}>
+                <div style="padding-bottom: 4%;padding-top: 1%">
+                    <template if:false={isHLUser}>
+                        <template if:false={isSmall}>
+                            <button class="save-button slds-button slds-button_brand slds-float_left"
+                                style="border:none" onclick={callCibilAPI}>Retry</button>
+                        </template>
+                        <template if:true={isSmall}>
+                            <button class="save-button-mob slds-button slds-button_brand slds-float_left"
+                                style="border:none" onclick={callCibilAPI}>Retry</button>
+                        </template>
+                    </template>
+                    <template if:true={isHLUser}>
+                        <template if:false={isSmall}>
+                            <button class="save-button slds-button slds-button_brand slds-float_left"
+                                style="border:none" onclick={callCibilAPIHL}>Retry</button>
+                        </template>
+                        <template if:true={isSmall}>
+                            <button class="save-button-mob slds-button slds-button_brand slds-float_left"
+                                style="border:none" onclick={callCibilAPIHL}>Retry</button>
+                        </template>
+                    </template>
+                </div>
+            </div>
+        </div>
+        <div class="container accordian" style="border-radius: 5px; border: 1px solid;">
+            <template if:true={showErrorListBureau}>
+                <div class="button-shadow" style="width: 90%;background: white; margin: 12px;padding: 12px;border-radius: 10px;border: 1px solid black;">
+                    <span style="display: inline-flex;">
+                        <img src={notEligibleIcon} alt="Image Preview" style="max-width:60%; max-height:100%;height:79px"/>
+                        <p class="slds-text-align_center" style="font-style: Lato Bold; font-size: 14px;color:red;padding-top:5%">{errorList}</p>
+                    </span>
+                </div>
+            </template>
+
+            <template if:false={showErrorListBureau}>
+                <template if:false={isSmall}>
+                    <lightning-accordion active-section-name={activeSection}>
+                        <template for:each={stages} for:item="stage">
+                            <lightning-accordion-section key={stage.name} tyle="background-color: white; font-weight: 700" name={stage.name} label={stage.name}
+                                onclick={handleAccordionClick}>
+                                <template if:true={cibilOneView}>
+                                    <c-cibil-one-view-cmp key={stage.name} app-id={appId} record-id={recordId} from-sales=true is-hl-user={isHLUser}></c-cibil-one-view-cmp>
+                                </template>
+                                <template if:true={viewCibilIsights}>
+                                    <c-cibil-eligibility key={stage.name} record-id={recordId} applicant-detail-id={appId} from-sales=true></c-cibil-eligibility>
+                                </template>
+                            </lightning-accordion-section>
+                        </template>
+                    </lightning-accordion>
+                </template>
+                <template if:true={isSmall}>
+                    <lightning-accordion active-section-name={activeSection}>
+                        <template for:each={stages} for:item="stage">
+                            <lightning-accordion-section key={stage.name} tyle="background-color: white; font-weight: 700" name={stage.name} label={stage.name}
+                                onclick={handleAccordionClick}>
+                                <template if:true={cibilOneView}>
+                                    <c-cibil-one-view-cmp key={stage.name} app-id={appId} record-id={recordId} from-sales=true></c-cibil-one-view-cmp>
+                                </template>
+                                <template if:true={viewCibilIsights}>
+                                    <c-cibil-eligibility key={stage.name} record-id={recordId} applicant-detail-id={appId} from-sales=true></c-cibil-eligibility>
+                                </template>
+                            </lightning-accordion-section>
+                        </template>
+                    </lightning-accordion>
+                </template>
+            </template>
+        </div>
+    </div>
+    <template if:true={isTrue}>
+        <div style="display: flex; justify-content: flex-end; margin-top: 2%;">
+            <button class="SaveButton slds-button slds-button_brand"
+                style="font-size: 11px; width: 140px; background-color:#9bbf56; color: white; border-color: #9bbf56; font-weight: 500;"
+                onclick={handleNext}>Next</button>
+        </div>
+    </template>
+</template>

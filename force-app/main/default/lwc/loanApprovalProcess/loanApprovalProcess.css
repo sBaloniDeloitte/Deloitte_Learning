@@ -1,0 +1,26 @@
+@import "c/cssLibrary";
+
+.wrapped-content{
+    overflow-wrap: break-word;
+}
+
+.card-div{
+    padding: 8px;
+    border: 1px solid;
+    border-radius: 5px;
+}
+
+.custom-table .slds-icon-action-preview{
+    border-radius: 0!important;
+    padding: 1px 8px;
+    background-color: #9bbf56;
+}
+
+.single-upload-div lightning-file-upload{
+    float: left;
+}
+
+.formatted-text {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }

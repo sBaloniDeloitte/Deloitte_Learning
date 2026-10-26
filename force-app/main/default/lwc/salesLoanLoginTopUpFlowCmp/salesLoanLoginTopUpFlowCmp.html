@@ -1,0 +1,331 @@
+<template>
+    <template if:true={isModalOpen}>
+        <section role="dialog" class="slds-modal slds-fade-in-open custom-mobile-modal">
+            <div class="slds-modal__container custom-modal-container">
+
+                <!-- Modal Header -->
+                <header class="slds-modal__header modal-header">
+                    <h2 class="slds-text-heading_medium">Customer Details</h2>
+                </header>
+
+                <!-- Modal Content -->
+                <div class="slds-modal__content slds-p-around_medium">
+                    <template if:true={isloading}>
+                        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+                    </template>
+
+                    <!-- Top-up question -->
+                    <template if:true={showTopupQuestion}>
+                        <div class="slds-p-around_medium slds-m-bottom_medium topup-accordion-section">
+                            <!-- Section heading -->
+                            <template if:false={fromLead}>
+                                <p class="slds-text-heading_small slds-m-bottom_small topup-heading">
+                                    Is it a Top-up Loan Application?
+                                </p>
+                            </template>
+                            <template if:true={fromLead}>
+                                <p class="slds-text-heading_small slds-m-bottom_small topup-heading">
+                                    Is this an existing customer?
+                                </p>
+                                <p style="color: red;">This journey is currently enabled for existing customers only hence you will not be able to make modifications to the flow as of now. The option to select new customer will be enabled in the future.</p>
+                            </template>
+
+                            <div class="slds-m-top_small">
+                                <template if:false={fromLead}>
+                                        <template for:each={topUpOptions} for:item="option">
+                                            <div key={option.value} class="radio-item slds-m-bottom_small">
+                                                <label class="slds-radio topup-radio">
+                                                    <input 
+                                                        type="radio" 
+                                                        name="topUpSelection" 
+                                                        value={option.value} 
+                                                        data-value={option.value} 
+                                                        checked={option.checked} 
+                                                        onchange={handleCheckboxChange}/>
+                                                    <span class="slds-radio_faux"></span>
+                                                    <span class="slds-form-element__label topup-radio-label">{option.label}</span>
+                                                </label>
+                                            </div>
+                                        </template>
+                                </template>
+                                <template if:true={fromLead}>
+                                         <template for:each={topUpOptionsLead} for:item="option">
+                                            <div key={option.value} class="radio-item slds-m-bottom_small">
+                                                <label class="slds-radio topup-radio">
+                                                    <input 
+                                                        type="radio" 
+                                                        name="topUpSelection" 
+                                                        value={option.value} 
+                                                        data-value={option.value} 
+                                                        checked={option.checked} 
+                                                        onchange={handleCheckboxChange}/>
+                                                    <span class="slds-radio_faux"></span>
+                                                    <span class="slds-form-element__label topup-radio-label">{option.label}</span>
+                                                </label>
+                                            </div>
+                                        </template>
+                                </template>
+                              
+                            </div>
+                            <template if:true={showExistOption}>
+                                <p class="slds-text-heading_small slds-m-bottom_small topup-heading">
+                                    Do you wish to stamp the customer details?
+                                </p>
+
+                                <div class="slds-m-top_small">
+                                    <template for:each={existingCustSelectedOption} for:item="option">
+                                        <div key={option.value} class="radio-item slds-m-bottom_small">
+                                            <label class="slds-radio topup-radio">
+                                                <input 
+                                                    type="radio" 
+                                                    name="customerSelection" 
+                                                    value={option.value} 
+                                                    data-value={option.value} 
+                                                    checked={option.checked} 
+                                                    onchange={handleExistingCustCheckboxChange}/>
+                                                <span class="slds-radio_faux"></span>
+                                                <span class="slds-form-element__label topup-radio-label">{option.label}</span>
+                                            </label>
+                                        </div>
+                                    </template>
+                                </div>
+                            </template>
+                        </div>
+                    </template>
+
+                    <!-- Form Fields -->
+                    <template if:true={showFormFields}>
+                        <div class="slds-box slds-m-around_small">
+                            <div class="slds-p-around_medium">
+                                <b class="slds-text-body_small slds-p-bottom_small">Note: Please search either by entering Loan Details or Customer Details.</b>
+                            </div>
+                            <!-- Search By Loan Details -->
+                            <template if:false={fromLead}>
+                                <h2 class="slds-text-heading_small slds-p-bottom_small">Search By Loan Details</h2>
+                                    <div class="slds-grid slds-wrap slds-gutters">
+                                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                            <lightning-input label="Customer ID(CIF)" value={formData.cif} onchange={handleInputChange} name="cif"></lightning-input>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                            <lightning-input label="LMS Loan No." value={formData.lmsLoanNo} onchange={handleInputChange} name="lmsLoanNo"></lightning-input>
+                                        </div>
+                                        <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                            <lightning-input label="Loan Application Number" value={formData.loanAppNo} onchange={handleInputChange} name="loanAppNo"></lightning-input>
+                                        </div>
+                                    </div>
+                            </template>
+                            
+                            <!-- Search By Customer Details -->
+                            <h2 class="slds-text-heading_small slds-p-top_medium slds-p-bottom_small">Search By Customer Details</h2>
+                            <div class="slds-grid slds-wrap slds-gutters">
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                    <lightning-input label="First Name" value={formData.firstName} onchange={handleInputChange} name="firstName" required></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                    <lightning-input label="Last Name" value={formData.lastName} onchange={handleInputChange} name="lastName" required></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                    <lightning-input label="Mobile Number" value={formData.mobileNumber} onchange={handleInputChange} name="mobileNumber"></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                    <lightning-input type="date" label="Date of Birth" value={formData.dob} onchange={handleInputChange} name="dob" required></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                    <lightning-input label="PAN" value={formData.pan} onchange={handleInputChange} name="pan" required></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                    <lightning-input label="Aadhar Number" value={formData.aadharNumber} onchange={handleInputChange} name="aadhar"></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                    <lightning-input label="Driving License" value={formData.drivingLicense} onchange={handleInputChange} name="drivingLicense"></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                    <lightning-input label="Voter ID" value={formData.voterId} onchange={handleInputChange} name="voterId"></lightning-input>
+                                </div>
+                                <div class="slds-col slds-size_1-of-1 slds-medium-size_1-of-2">
+                                    <lightning-input label="Passport" value={formData.passport} onchange={handleInputChange} name="passport"></lightning-input>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+
+                    <template if:true={showRecords}>
+                        <!-- Header with CIF and Customer Name -->
+                        <div class="slds-m-bottom_small slds-grid slds-wrap">
+                            <div class="slds-m-right_large">
+                                <span class="slds-text-title_bold">CIF:</span>
+                                <span class="slds-m-left_small">{cifNumber}</span>
+                            </div>
+                            <div>
+                                <span class="slds-text-title_bold">Customer Name:</span>
+                                <span class="slds-m-left_small">{customerName}</span>
+                            </div>
+                        </div>
+
+                        <!-- Table -->
+                        <!-- ⚡ added role="region" & aria-label for accessibility -->
+                        <div class="table-scroll-container mobile-scroll" role="region" aria-label="Finance Details Table">
+                            <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped wrap-table">
+                                <thead class="table-head">
+                                    <tr class="custom-header-row">
+                                        <th class="tdBorderHeader slds-cell-wrap">Select</th>
+                                        <th class="tdBorderHeader slds-cell-wrap">Loan Application / Loan Number</th>
+                                        <th class="tdBorderHeader slds-cell-wrap">Product</th>
+                                        <th class="tdBorderHeader slds-cell-wrap">Status</th>
+                                        <th class="tdBorderHeader slds-cell-wrap">Sanctioned Amount</th>
+                                        <th class="tdBorderHeader slds-cell-wrap">Outstanding Balance</th>
+                                        <th class="tdBorderHeader slds-cell-wrap">Source</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <template for:each={customerFinanceDetailList} for:item="rec">
+                                        <tr key={rec.finReference}>
+                                            <td>
+                                                <input type="radio" name="financeSelect" 
+                                                    value={rec.finReference} 
+                                                    checked={rec.isSelected} 
+                                                    onchange={handleFinanceSelection} 
+                                                    disabled={rec.isDisabled} />
+                                            </td>
+                                            <td>{rec.finReference}</td>
+                                            <td>{rec.finType}</td>
+                                            <td>{rec.finStatus}</td>
+                                            <td>{rec.finAmount}</td>
+                                            <td>{rec.outstandingBal}</td>
+                                            <td>{rec.source}</td>
+                                        </tr>
+                                    </template>
+                                </tbody>
+                            </table>
+                        </div>
+                    </template>
+
+                    <template if:true={showDuplicateRecords}>
+                        <div class="slds-m-top_medium">
+
+                            <!-- Header -->
+                            <h2 class="slds-text-heading_medium slds-p-around_small slds-theme_shade">
+                                Existing Accounts
+                            </h2>
+
+                            <!-- Scrollable Table -->
+                            <div class="table-scroll-container mobile-scroll">
+                                <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_striped wrap-table">
+                                    <thead class="table-head">
+                                        <tr class="custom-header-row">
+                                            <th class="tdBorderHeader slds-cell-wrap">Select</th>
+                                            <th class="tdBorderHeader slds-cell-wrap">CIF</th>
+                                             <th class="tdBorderHeader slds-cell-wrap">UCIC</th>
+                                            <th class="tdBorderHeader slds-cell-wrap">Name</th>
+                                            <th class="tdBorderHeader slds-cell-wrap">PAN</th>
+                                            <th class="tdBorderHeader slds-cell-wrap">Mobile Number</th>
+                                            <th class="tdBorderHeader slds-cell-wrap">Aadhar</th>
+                                            <th class="tdBorderHeader slds-cell-wrap">Voter ID</th>
+                                            <th class="tdBorderHeader slds-cell-wrap">Passport</th>
+                                            <th class="tdBorderHeader slds-cell-wrap">Driving License</th>
+                                            <th class="tdBorderHeader slds-cell-wrap">Customer Type</th>
+                                            <template if:false={fromLead}>
+                                                <th class="tdBorderHeader slds-cell-wrap">Source System</th>
+                                                <th class="tdBorderHeader slds-cell-wrap">Match Reason</th>
+                                            </template>
+                                         
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <template for:each={duplicateCustomers} for:item="cust">
+                                             <tr key={cust.key}>
+                                                <template if:true={fromLead}>
+                                                    <td>
+                                                        <input 
+                                                            type="radio"
+                                                            name="customerRadio"
+                                                            data-id={cust.key}
+                                                            checked={cust.isSelected}
+                                                            onchange={handleCustomerSelection}
+                                                            disabled={cust.isDisabled}
+                                                        />
+                                                    </td>
+                                                </template>
+                                                <template if:false={fromLead}>
+                                                   <td>
+                                                        <input type="checkbox"
+                                                            data-id={cust.key}
+                                                            checked={cust.isSelected}
+                                                            onchange={handleCustomerSelection} 
+                                                            disabled={cust.isDisabled}/>
+                                                    </td>
+                                                </template>
+
+                                               
+                                                <td>{cust.cif}</td>
+                                                <td>{cust.ucic}</td>
+                                                <td>{cust.name}</td>
+                                                <td>{cust.pan}</td>
+                                                <td>{cust.mobileNumber}</td>
+                                                <td>{cust.aadhar}</td>
+                                                <td>{cust.voterId}</td>
+                                                <td>{cust.passport}</td>
+                                                <td>{cust.drivingLicense}</td>
+                                                <td>{cust.customerType}</td>
+                                                <template if:false={fromLead}>
+                                                    <td>{cust.sourceSystem}</td>
+                                                    <td>{cust.matchReason}</td>
+                                                </template>
+                                                
+                                            </tr>
+                                        </template>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </template>
+
+                </div>
+
+                <!-- Modal Footer -->
+                <footer class="slds-modal__footer modal-footer">
+                    <!-- <template if:true={showPrevious}>
+                            <button class="slds-button slds-button_neutral footer-btn"
+                                    onclick={handlePrevious}>
+                                Previous
+                            </button>
+                        </template> -->
+                            <template if:true={showFormFields}>
+                            <button class="slds-button slds-button_brand initiate-button footer-btn"
+                                    onclick={handleSearch}>
+                                Search
+                            </button>
+                        </template>
+
+                        <template if:true={showPrevious}>
+                            <button class="slds-button slds-button_neutral footer-btn"
+                                    onclick={handlePrevious}>
+                                Previous
+                            </button>
+                        </template>
+
+                        <template if:true={showNext}>
+                            <button class="slds-button slds-button_brand initiate-button footer-btn"
+                                    onclick={handleNext}>
+                                Next
+                            </button>
+                        </template>
+                        <!-- <template if:true={fromLead}> -->
+                             <button class="slds-button slds-button_brand initiate-button footer-btn"
+                                    onclick={handleClose}>
+                                Close
+                            </button>
+                        <!-- </template> -->
+
+                      <!--  <button class="slds-button slds-button_destructive footer-btn"
+                                onclick={handleClose}>
+                            Close
+                        </button>-->
+
+                </footer>
+
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

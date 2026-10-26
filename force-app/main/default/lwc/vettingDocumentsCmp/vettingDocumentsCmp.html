@@ -1,0 +1,59 @@
+<template>
+    <span class="styleContainer"></span>
+    <lightning-tabset class="tabStickChild" variant="scoped">
+        <lightning-tab label="Application Form" id="subtab-1" class="tabStickChild">
+            <iframe src={pdfUrl} width="100%" height="600px" title="PDF Viewer"></iframe>
+        </lightning-tab>
+      
+        <template for:each={tabList} for:item="item">
+            <lightning-tab key={item} label={item.Label} id ={item.DeveloperName} class="tabStickChild" onactive={handleActive} value={item.Field_Value__c}>
+                <template if:false={showImage}>
+                    <template if:false={showPdfModal}>
+                    <template for:each={docList} for:item="item">
+                        <lightning-accordion key={item} style="margin-top: 2%;">
+                            <lightning-accordion-section label={item.name}>
+                                    <div style="display: flex;flex-wrap: wrap;">
+                                        <template for:each={item.docList} for:item="iter"> 
+                                            <template if:true={iter.isPdf}>
+                                                <div style="width: 30%;margin: 5px;" key={iter} class="slds-align_absolute-center slds-cell-wrap">
+                                                    <iframe src={iter.docUrl} 
+                                                     style="border: 1px solid #000000; margin-bottom: 5px;" width="100%" height="300px" title="PDF Viewer" ></iframe>
+                                                     <button type="button" class="slds-button normal-button previous-button" style="position: absolute" data-src={iter.docUrl}
+                                                        onclick={openPdfModal}>View</button>
+                                                </div>
+                                            </template>
+                                            <template if:true={iter.isImg}>
+                                                <div style="width: 30%;margin: 5px;" key={iter} class="slds-align_absolute-center slds-cell-wrap">
+                                                    <img data-id={iter.docUrl} data-name={iter.contentId} src={iter.docUrl} alt="Image Preview" style="border: 1px solid #000000; height:140px; width:200px; margin-bottom: 5px;" onclick={openFullImage} class="rotate-image"/>
+                                                </div>
+                                            </template>
+                                            
+                                        </template>
+                                    </div>
+                            </lightning-accordion-section>
+                        </lightning-accordion>
+                    </template>
+                </template>
+                </template>
+                <template if:true={showImage}>
+                    <div style="display: flex;flex-wrap: wrap;" class="slds-align_absolute-center">
+                        <img src={currentImageUrl} alt="Image Preview" style="border: 1px solid #000000;margin-top:4%" class="rotate-image"/>
+                    </div>
+                    <div class="andcontainer slds-align_absolute-center" style="margin-top :2%;position: sticky;bottom: 0;z-index: 4;background: white;height: 42px;padding-top: 6px;border: 0.7px solid;border-radius: 5px;border-color: lightgrey;background: #5bb6e3;">
+                        <button type="button" class="slds-button capsule-button previous-button"
+                            onclick={resetClick}>Back</button>
+                    </div>
+                </template>
+                <template if:true={showPdfModal}>
+                    <div style="display: flex;flex-wrap: wrap;" class="slds-align_absolute-center">
+                        <iframe src={pdfUrl} title="PDF Viewer" style="border: 1px solid #000000;margin-top:4%" width="100%" height="300px"></iframe>
+                    </div>
+                    <div class="andcontainer slds-align_absolute-center" style="margin-top :2%;position: sticky;bottom: 0;z-index: 4;background: white;height: 42px;padding-top: 6px;border: 0.7px solid;border-radius: 5px;border-color: lightgrey;background: #5bb6e3;">
+                        <button type="button" class="slds-button capsule-button previous-button"
+                            onclick={resetPdfClick}>Back</button>
+                    </div>
+                </template>
+            </lightning-tab>
+        </template>
+    </lightning-tabset>
+</template>

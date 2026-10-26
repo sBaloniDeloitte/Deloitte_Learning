@@ -1,0 +1,418 @@
+@import "c/cssLibrary";
+
+:host {
+    display: block;
+    min-height: 100%;
+    background: #12172b;
+    color: #ffffff;
+    --fi-page-bg: #12172b;
+    --fi-panel-bg: #1c2238;
+    --fi-field-bg: #16283f;
+    --fi-accent: #1467eb;
+    --fi-border: #2a2f45;
+    --fi-muted: #8a99b3;
+    --slds-c-input-label-color: #ffffff;
+    --slds-c-checkbox-label-color: #ffffff;
+}
+
+.toggle-container,
+.accordion-container {
+    background-color: var(--fi-page-bg) !important;
+    color: #ffffff !important;
+}
+
+.toggle-container {
+    border: 1px solid var(--fi-border);
+    border-radius: 8px;
+    padding: 12px 16px;
+}
+
+.accordion-container {
+    border: 1px solid var(--fi-border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.accordion-container lightning-accordion-section {
+    --slds-c-accordion-section-color-background:
+        linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%) !important;
+
+    --slds-c-accordion-summary-color-background:
+        linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%) !important;
+
+    --slds-c-accordion-summary-heading-color: #ffffff !important;
+    --slds-c-accordion-summary-text-color: #ffffff !important;
+    --slds-c-accordion-color-border: var(--fi-border);
+}
+
+/* ____GenAI: Generated code starts here - lightning-accordion-section ships
+   with an inline `background-color: white` set directly on the element
+   itself (confirmed root cause, matching the same fix already proven in
+   salesLoginApplicantOtherInformationCmp.css), so the SLDS custom-property
+   hooks above never had any visible effect - a plain external rule with
+   !important is required, since !important on an external stylesheet rule
+   always wins over a plain inline style regardless of selector specificity.
+   This directly repaints the "Vendor PD" section header with the same blue
+   gradient used by "Personal Discussion".____ */
+.accordion-container lightning-accordion-section {
+    background: linear-gradient(
+        135deg,
+        #001a5e 0%,
+        #003087 55%,
+        #004db3 100%
+    ) !important;
+    color: #ffffff !important;
+}
+/* ____GenAI: Generated code ends here____ */
+
+/* ____GenAI: Generated code starts here - hand-built accordion replacing
+   lightning-accordion/lightning-accordion-section (see creditFIInitiationCmp.html
+   for why: the base component's header lives inside its own fully
+   encapsulated shadow root in this org, and neither the SLDS custom-property
+   hooks nor the external tag/class overrides above ever repainted it -
+   confirmed by deploying twice and hard-refreshing with zero visual change
+   both times). These rules style plain divs owned directly by this
+   component, so there is no shadow boundary to cross - guaranteed to
+   render. Colors match the "Personal Discussion" blue gradient used
+   elsewhere in this screen.____ */
+.custom-pd-accordion {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.custom-pd-section {
+    border: 1px solid var(--fi-border);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.custom-pd-header {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 16px;
+    background: linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%);
+    color: #ffffff;
+    cursor: pointer;
+    user-select: none;
+}
+
+.custom-pd-icon {
+    --slds-c-icon-color-foreground-default: #ffffff;
+    --sds-c-icon-color-foreground-default: #ffffff;
+}
+
+.custom-pd-title {
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 0.8125rem;
+}
+
+.custom-pd-body {
+    padding: 12px 16px;
+    background-color: var(--fi-page-bg);
+}
+/* ____GenAI: Generated code ends here____ */
+
+.accordion-container {
+    border: 1px solid var(--fi-border);
+    border-radius: 8px;
+    overflow: hidden;
+
+    --slds-c-accordion-summary-color-background:
+        linear-gradient(135deg, #001a5e 0%, #003087 55%, #004db3 100%) !important;
+
+    --slds-c-accordion-summary-heading-color: #ffffff !important;
+    --slds-c-accordion-summary-text-color: #ffffff !important;
+}
+
+/* Top padding for the Initiate/Waive/Refresh action row (right side of the
+   "Step 1..." instruction row) so the buttons and icon don't sit flush
+   against the row above - scoped to this wrapper only (not the shared
+   .initiate-button/.wave-button classes) so the other components reusing
+   those classes are unaffected. */
+.fi-header-actions {
+    padding-top: 15px;
+}
+
+/* Positive CTA (Initiate) - #7c3aed fill, no border, 8px radius. */
+.initiate-button,
+.save-button {
+    background-color: #7c3aed !important;
+    border: none !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    padding-top: 2px;
+}
+
+/* "Initiate Vendor PD" only - scoped override on top of the shared
+   ".initiate-button" class (also used by the plain "Initiate" buttons
+   elsewhere in this file, left untouched) so only the Vendor PD action
+   changes to #1467eb. */
+.vendor-pd-initiate-btn {
+    background-color: #1467eb !important;
+    border: 1px solid #1467eb !important;
+}
+
+/* Negative CTA (Waive) - #16283f fill, 1px solid #7c3aed border, 8px radius. */
+.wave-button {
+    background-color: #16283f !important;
+    border: 1px solid #7c3aed !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+    font-weight: 600;
+    padding-top: 2px;
+}
+
+/* Table theme matched to the Document Processing screen's data table
+   (documentProcessingScreen.css ".doc-table" / ".table-header" rules) -
+   same dark-navy surface (#0e1c30), same border color (#33455e), same
+   18px outer corner radius, same 12px/10px cell padding, left-aligned
+   text, bold white header text and the same #16283f row-hover highlight -
+   so the Field Investigation Initiation table shares the exact visual
+   language of the Document Processing table instead of its previous
+   blue-header (#1467eb) theme. */
+/* Outer framing wrapper matched to Document Processing's ".scroll-container"
+   (documentProcessingScreen.css) - the #33455e border reads as a DIFFERENT
+   color depending on what sits behind it: Document Processing places its
+   table on a page-level #0a1524 backdrop via .scroll-container, while this
+   table previously sat directly on the lighter accordion-section panel
+   (--fi-panel-bg: #1c2238). Same border hex, different surrounding
+   contrast = perceived color mismatch. This wrapper reproduces that exact
+   dark backdrop so the border reads identically in both screens. */
+.fi-table-wrapper {
+    background-color: #0a1524 !important;
+    padding: 1rem 1.5rem;
+    border-radius: 18px;
+    overflow-x: auto;
+}
+
+.accordion-container .slds-table {
+    width: 100%;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border-radius: 18px;
+    border: 1px solid #33455e !important;
+    background-color: #0e1c30 !important;
+    color: #ffffff;
+    overflow: hidden;
+}
+
+.accordion-container .slds-table th,
+.accordion-container .slds-table td {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.accordion-container .slds-table thead th {
+    background-color: #0e1c30 !important;
+    background-image: none !important;
+    color: #ffffff !important;
+    font-weight: bold;
+    font-size: 12.5px;
+    letter-spacing: 0.2px;
+    padding: 12px 10px;
+    text-align: left;
+    border-right: 1px solid #33455e !important;
+    border-bottom: 1px solid #33455e !important;
+    border-color: #33455e !important;
+    box-shadow: none !important;
+    vertical-align: middle;
+}
+
+.accordion-container .slds-table thead tr:first-child th:first-child {
+    border-top-left-radius: 18px;
+}
+
+.accordion-container .slds-table thead tr:first-child th:last-child {
+    border-top-right-radius: 18px;
+}
+
+.accordion-container .slds-table tbody td {
+    background-color: #0e1c30 !important;
+    color: #ffffff !important;
+    font-size: 13px;
+    font-weight: normal;
+    text-align: left !important;
+    padding: 12px 10px;
+    border-right: 1px solid #33455e !important;
+    border-bottom: 1px solid #33455e !important;
+    border-color: #33455e !important;
+    vertical-align: middle;
+}
+
+.accordion-container .slds-table tbody tr:last-child td:first-child {
+    border-bottom-left-radius: 18px;
+}
+
+.accordion-container .slds-table tbody tr:last-child td:last-child {
+    border-bottom-right-radius: 18px;
+}
+
+.accordion-container .slds-table tbody tr:hover td {
+    background-color: #16283f !important;
+}
+
+.accordion-container .slds-table a {
+    color: #7db2ff !important;
+}
+
+/* Border color aligned to the table cell border (#33455e) instead of the
+   old --fi-border (#2a2f45) - those two hex values are close but NOT
+   identical, so cells holding a lightning-input/textarea/combobox (the
+   checkbox, remarks, assignee-picker columns) rendered the CONTROL's own
+   border in #2a2f45 while plain-text cells showed the <td> border in
+   #33455e, i.e. the border color visibly differed cell-to-cell. Forcing
+   every in-cell form control to the same #33455e removes that mismatch. */
+.accordion-container lightning-input,
+.accordion-container lightning-textarea,
+.accordion-container lightning-combobox {
+    --slds-c-input-color-background: var(--fi-field-bg);
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-textarea-color-background: var(--fi-field-bg);
+    --slds-c-textarea-text-color: #ffffff;
+    --slds-c-textarea-color-border: #33455e;
+    --slds-c-combobox-color-background: var(--fi-field-bg);
+    --slds-c-combobox-text-color: #ffffff;
+    --slds-c-combobox-color-border: #33455e;
+}
+
+/* Remarks textarea - lightning-textarea's SLDS styling hooks
+   (--slds-c-textarea-color-background above) did not visibly repaint the
+   native <textarea> background in this org's rendering (confirmed via
+   screenshot: still white despite the hook + an inline hook override on
+   the element). Same reliable fallback already proven in
+   deDuplicationScreenCmp.dark-textarea - a plain native <textarea> with
+   directly-set CSS instead of relying on base-component styling hooks. */
+.dark-textarea {
+    width: 100%;
+    min-height: 60px;
+    background: #16283f !important;
+    color: #ffffff !important;
+    border: 1px solid #33455e !important;
+    border-radius: 4px;
+    padding: 8px;
+    font-family: inherit;
+    font-size: 13px;
+    resize: vertical;
+    box-sizing: border-box;
+}
+
+.dark-textarea:focus {
+    background: #16283f !important;
+    color: #ffffff !important;
+    border-color: #1467eb !important;
+    outline: none;
+}
+
+.dark-textarea::placeholder {
+    color: #8fa1c2;
+}
+
+.dark-textarea:disabled {
+    background: #101d32 !important;
+    color: #8fa1c2 !important;
+    opacity: 1;
+}
+
+.header-section {
+    background-color: var(--fi-accent) !important;
+    color: #ffffff !important;
+    border-bottom: 1px solid var(--fi-border);
+}
+
+.header-title {
+    color: #ffffff !important;
+}
+
+.slds-modal__content {
+    background-color: var(--fi-panel-bg) !important;
+    color: #ffffff !important;
+}
+
+.footer-section,
+.slds-modal__footer {
+    background-color: var(--fi-page-bg) !important;
+    border-top: 1px solid var(--fi-border);
+}
+
+/* Negative CTA (Cancel/Previous) - #16283f fill, 1px solid #7c3aed border, 8px radius. */
+.cancel-button,
+.previous-button {
+    background-color: #16283f !important;
+    border: 1px solid #7c3aed !important;
+    border-radius: 8px !important;
+    color: #ffffff !important;
+}
+
+.hidden-input {
+    display: none;
+}
+
+.label-active {
+    color: #ffffff !important;
+    font-weight: bold;
+    margin-right: 0.5rem;
+}
+
+.label-inactive {
+    color: #ffffff !important;
+    margin-right: 0.5rem;
+}
+
+.toggle-container {
+    display: flex;
+    align-items: center;
+}
+
+.toggle-input {
+    margin-left: 0.5rem;
+    /* The "Active"/"Inactive" on/off text of a lightning-input toggle is
+       drawn inside the base component's own shadow DOM, so ordinary class
+       selectors (.slds-checkbox_on / .slds-checkbox_off) can't reach it —
+       only inherited custom properties cross that boundary. Overriding the
+       SLDS2 global neutral-base text ramp (same technique already used in
+       salesLoginAadharDetailsCmp for this exact shadow-DOM-piercing need)
+       is what forces that label text to white; font-weight is forced bold
+       via the checkbox-toggle label token where the base component honors
+       it, plus the same global ramp as a fallback. */
+    --slds-g-color-neutral-base-30: #ffffff;
+    --slds-g-color-neutral-base-40: #ffffff;
+    --slds-g-color-neutral-base-50: #ffffff;
+    --slds-c-checkbox-toggle-label-color: #ffffff;
+    --slds-c-checkbox-toggle-label-color-checked: #ffffff;
+}
+.header-section {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.footer-section {
+    position: sticky; 
+    bottom: 0;
+}
+.accordion-container{
+    background-color: var(--fi-page-bg);
+}
+/* Force accordion headers */
+.accordion-container .slds-accordion__summary,
+.accordion-container .slds-accordion__summary-action,
+.accordion-container .slds-accordion__section {
+    background: linear-gradient(
+        135deg,
+        #001a5e 0%,
+        #003087 55%,
+        #004db3 100%
+    ) !important;
+
+    color: #ffffff !important;
+}
+
+.accordion-container .slds-accordion__summary-heading,
+.accordion-container .slds-truncate {
+    color: #ffffff !important;
+}

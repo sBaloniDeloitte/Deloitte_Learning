@@ -1,0 +1,68 @@
+<template>
+    <lightning-card>
+    <div class="emi-dark-theme">
+    <span class="styleContainer"></span>
+    <template if:true={spinner}>
+        <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+    </template>
+    <template if:true={showBankDetails}>
+        <div class="slds-grid slds-gutters slds-m-vertical_medium"> <!-- slds-p-horizontal_small -->
+            <div class="slds-col slds-size_1-of-6">
+                <lightning-combobox
+                    label="Filter by Bank Name"
+                    value={selectedBank}
+                    options={accountOptions}
+                    onchange={handleBankSelection}>
+                </lightning-combobox>
+            </div>
+        </div>
+    </template>
+        <template if:true={showBankDetails}>
+		
+            <table class="emi-table sortable slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right">
+                <thead>
+                    <tr>
+                        <th scope="col" colspan="1">Bank Name</th>
+                        <th scope="col" colspan="1">Account No.</th>
+                        <th scope="col" colspan="1">Applicant</th>
+                    </tr>
+                </thead>
+                <tbody>
+                         <tr>
+                            <td>{selectedBankName}</td>
+                            <td>{selectedAccountNumber}</td>
+                            <td>{selectedCustomerName}</td>
+                        </tr>
+                </tbody>
+            </table>
+        </template>
+
+    <template if:true={processedData.length}>
+        <table class="emi-table slds-table slds-table_bordered slds-table_cell-buffer">
+        <thead>
+        <tr>
+         <template for:each={columns} for:item="col">
+        <th scope="col" colspan="1" key={col}>{col}</th> <!-- Dynamic Columns -->
+        </template>
+        </tr>
+        </thead>
+        <tbody>
+        <template for:each={processedData} for:item="row">
+            <tr key={row.id}> <!-- Unique key for each row -->
+                <template for:each={row.values} for:item="cell">
+                <td key={cell.id}>{cell.value}</td> <!-- Each cell now has a unique key -->
+                </template>
+                </tr>
+        </template>
+        </tbody>
+        </table>
+        </template>
+         
+        <!-- <template if:false={processedData.length}> -->
+        <template if:false={showBankDetails}>
+        <p>No records found.</p>
+        </template>
+        </div>
+        </lightning-card>
+         
+</template>

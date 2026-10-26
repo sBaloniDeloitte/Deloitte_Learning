@@ -1,0 +1,268 @@
+/*_______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________*/
+@import 'c/cssLibrary';
+
+/* ----------------- Dark Theme (matches incomeAssessmentMainCmp / customerNegotiationScreen) ----------------- */
+:host {
+    display: block;
+    background-color: #0a1524;
+    color: #ffffff;
+
+    --slds-c-input-color-background: #16283f;
+    --slds-c-input-text-color: #ffffff;
+    --slds-c-input-color-border: #33455e;
+    --slds-c-input-placeholder-text-color: #8a99b3;
+    --slds-c-input-label-color: #ffffff;
+
+    --lwc-formLabelTextColor: #ffffff;
+    --lwc-inputTextColor: #ffffff;
+    --lwc-colorTextLabel: #ffffff;
+    --lwc-colorTextDefault: #ffffff;
+
+    --dt-bg: #0a1524;
+    --dt-panel-bg: #0e1c30;
+    --dt-input-bg: #16283f;
+    --dt-header-bg: #1467eb;
+    --dt-border: #33455e;
+    --dt-positive: #1467eb;
+    --dt-negative: #db2929;
+}
+
+.custom-combobox {
+  height: auto; 
+  overflow: visible; 
+}
+
+.boaderStyle {
+  border-left: 1px solid var(--dt-border);
+  border-right: 1px solid var(--dt-border);
+}
+
+.bottomBoaderStyle {
+  border-bottom: 1px solid var(--dt-border) !important;
+}
+
+.boaderStyle:last-of-type {
+    border-bottom: 1px solid var(--dt-border) !important;
+}
+
+.tabstyle {
+    background-color: var(--dt-header-bg);
+    font-weight: 500;
+    height: 45px;
+    font-size: 20px;
+    width: 100%;
+    border-left: 1px solid var(--dt-border);
+    border-right: 1px solid var(--dt-border);
+    border-top: 1px solid var(--dt-border);
+    pointer-events: none;
+    color: #ffffff;
+    text-align: center;
+    padding-top: 0.7%;
+}
+
+.secondTabStyle {
+  background-color: var(--dt-header-bg);
+  font-weight: 500;
+  min-height: 45px;
+  font-size: 20px;
+  border-left: 1px solid var(--dt-border);
+  border-right: 1px solid var(--dt-border);
+  border-top: 1px solid var(--dt-border);
+  pointer-events: none;
+  min-width: 100%;
+  color: #ffffff;
+  text-align: center;
+  padding-top: 0.7%;
+}
+
+.commonStyle {
+	border-color: var(--dt-border) !important;
+}
+
+.tableHeader {
+  background-color: var(--dt-header-bg);
+  color: #ffffff;
+}
+
+/* ----------------- Table ----------------- */
+.custom-table {
+    border-radius: 0.75rem;
+    border-collapse: separate !important;
+    border-spacing: 0;
+    border: 1px solid var(--dt-border) !important;
+    background-color: var(--dt-panel-bg) !important;
+}
+
+.custom-table th {
+    background-color: var(--dt-header-bg) !important;
+    color: #ffffff !important;
+    border-color: var(--dt-border) !important;
+}
+
+.custom-table td {
+    background-color: var(--dt-panel-bg) !important;
+    color: #ffffff !important;
+    border-color: var(--dt-border) !important;
+}
+
+tr {
+  color: #ffffff;
+}
+
+/* ----------------- Inputs / Combobox (fixes white background mismatch) ----------------- */
+lightning-input::part(input),
+lightning-combobox::part(input) {
+    background-color: var(--dt-input-bg) !important;
+    border: 1px solid var(--dt-border) !important;
+    border-radius: 6px !important;
+    color: #ffffff !important;
+}
+
+lightning-input[disabled]::part(input),
+lightning-combobox[disabled]::part(input) {
+    background-color: var(--dt-panel-bg) !important;
+    color: #8a99b3 !important;
+    opacity: 1 !important;
+    -webkit-text-fill-color: #8a99b3 !important;
+}
+
+/* ----------------- CTA Buttons (theme parity) ----------------- */
+.save-button,
+.save-button.slds-button_brand {
+    background-color: var(--dt-positive) !important;
+    border: 1px solid var(--dt-positive) !important;
+    color: #ffffff !important;
+    border-radius: 1.25rem !important;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
+.cancel-button,
+.cancel-button.slds-button_brand {
+    background-color: var(--dt-negative) !important;
+    border: 1px solid var(--dt-negative) !important;
+    color: #ffffff !important;
+    border-radius: 1.25rem !important;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+}
+
+.slds-modal__header,
+.slds-modal__footer {
+    background-color: var(--dt-header-bg) !important;
+    color: #ffffff !important;
+}
+
+.slds-modal__content {
+    background-color: var(--dt-panel-bg) !important;
+    color: #ffffff !important;
+}
+
+.vasCode {
+  max-width: 10%;
+  width: 10%;
+}
+
+.customerName {
+  max-width: 12%;
+  width: 12%;
+}
+
+.description {
+  max-width: 20%;
+  width: 20%;
+}
+
+.selfFunded {
+  max-width: 8%;
+  width: 8%;
+}
+
+.valueDate {
+  max-width: 15%;
+  width: 15%;
+}
+
+.feeAccuralDate {
+  max-width: 15%;
+  width: 15%;
+}
+
+.modeOfPayment {
+  max-width: 10%;
+  width: 10%;
+}
+
+.actions {
+  max-width: 10%;
+  width: 10%;
+}
+
+.editIcon {
+  padding: 4px;
+}
+
+.deleteIcon {
+  padding: 4px;
+}
+
+.textAlignment {
+  text-align: center !important;
+}
+
+/* ------------------------------------------------------------ */
+/* Make table scrollable on mobile */
+/* ------------------------------------------------------------ */
+
+.slds-p-around_small {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ------------------------------------------------------------ */
+/* Responsive design for small devices */
+/* ------------------------------------------------------------ */
+@media only screen and (max-width: 600px) {
+
+    /* Reduce padding for mobile */
+    .slds-p-around_small {
+        padding: 4px !important;
+    }
+
+    /* Make table scroll smoothly */
+    table {
+        min-width: 600px !important;
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    /* Smaller input fields inside table */
+    lightning-input,
+    lightning-combobox {
+        font-size: 14px;
+    }
+
+    /* Smaller buttons */
+    .save-button,
+    .cancel-button,
+    .slds-button_brand {
+        padding: 4px 8px !important;
+        font-size: 12px !important;
+    }
+
+    /* Reduce height & padding in table rows */
+    tr {
+        height: auto !important;
+    }
+
+    td {
+        padding: 2px !important;
+    }
+
+    .editIcon,
+    .deleteIcon {
+        padding: 2px !important;
+    }
+}
+/*__________________________GenAI: Generated code ends here______________________________*/

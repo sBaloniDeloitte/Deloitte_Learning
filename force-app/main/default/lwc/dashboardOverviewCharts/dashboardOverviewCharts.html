@@ -1,0 +1,154 @@
+<!-- _______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________ -->
+<template>
+    <template if:false={isHidden}>
+        <div class="dash-overview-container">
+
+            <div class="dash-row-top">
+
+                <!-- Dashboard 1: Loan Applications -->
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <div class="dash-card-heading">
+                            <h3 class="dash-card-title">Loan Applications</h3>
+                            <p class="dash-card-subtitle">Lead progression through the application journey</p>
+                        </div>
+                        <span class="dash-badge">{totalLeadsBadge}</span>
+                    </div>
+
+                    <div class="loan-steps-container">
+                        <template for:each={loanAppSteps} for:item="step">
+                            <div key={step.key} class="loan-step-row">
+                                <div class="loan-step-line">
+                                    <div class="loan-step-bar" style={step.barStyle}>
+                                        <span class="loan-step-number">{step.num}</span>
+                                        <span class="loan-step-label">{step.label}</span>
+                                        <span class="loan-step-value">{step.value}</span>
+                                    </div>
+                                    <template if:true={step.percentBadge}>
+                                        <span class="loan-step-percent-badge">{step.percentBadge}</span>
+                                    </template>
+                                </div>
+                                <template if:true={step.showConnector}>
+                                    <div class="loan-step-connector">
+                                        <svg class="connector-arrow-svg" viewBox="0 0 20 26" width="20" height="26" aria-hidden="true">
+                                            <line x1="10" y1="0" x2="10" y2="16" class="connector-line"></line>
+                                            <polyline points="4,12 10,18 16,12" class="connector-head"></polyline>
+                                        </svg>
+                                    </div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
+
+                    <div class="dash-card-footer">
+                        <span class="dash-footer-label">Overall Lead &#8594; Sanction Conversion</span>
+                        <span class="dash-footer-value">{overallConversionPct}</span>
+                    </div>
+                </div>
+
+                <!-- Dashboard 2: Lead Conversion Status -->
+                <div class="dash-card">
+                    <div class="dash-card-header">
+                        <div class="dash-card-heading">
+                            <h3 class="dash-card-title">Lead Conversion Status</h3>
+                            <p class="dash-card-subtitle">Current lead disposition overview</p>
+                        </div>
+                        <span class="dash-badge">{donutTotalLeadsBadge}</span>
+                    </div>
+
+                    <div class="donut-chart-wrapper">
+                        <div class="donut-ring-area">
+                            <svg class="donut-svg" viewBox="0 0 180 180" aria-hidden="true">
+                                <template for:each={donutSegments} for:item="segment">
+                                    <circle
+                                        key={segment.key}
+                                        class="donut-segment"
+                                        cx="90"
+                                        cy="90"
+                                        r="76"
+                                        fill="none"
+                                        stroke-width="18"
+                                        stroke-dasharray={segment.dashArray}
+                                        stroke-dashoffset={segment.dashOffset}
+                                        stroke-linecap="round"
+                                        style={segment.pathStyle}
+                                        transform="rotate(-90 90 90)"
+                                    ></circle>
+                                </template>
+                            </svg>
+                            <div class="donut-center-text">
+                                <span class="donut-center-value">{donutTotal}</span>
+                                <span class="donut-center-label">Total Leads</span>
+                                <span class="donut-center-pill">{convertedPct} Converted</span>
+                            </div>
+                            <template for:each={satelliteStats} for:item="stat">
+                                <div key={stat.key} class={stat.positionClass}>
+                                    <span class="satellite-value">{stat.value}</span>
+                                    <span class="satellite-label">{stat.label}</span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <ul class="donut-legend-row">
+                        <template for:each={donutSegments} for:item="segment">
+                            <li key={segment.key} class="legend-item">
+                                <span class="legend-swatch" style={segment.swatchStyle}></span>
+                                <span class="legend-label">{segment.label}</span>
+                            </li>
+                        </template>
+                    </ul>
+                </div>
+
+            </div>
+
+            <div class="dash-row-bottom">
+
+                <!-- Dashboard 3: Application Status with Stages -->
+                <div class="dash-card dash-card-full">
+                    <div class="dash-card-header">
+                        <div class="dash-card-heading">
+                            <h3 class="dash-card-title">Application Status with Stages</h3>
+                            <p class="dash-card-subtitle">Application volume and stage-wise progression</p>
+                        </div>
+                        <span class="dash-badge">{stageActiveBadge}</span>
+                    </div>
+
+                    <div class="bar-line-chart">
+                        <div class="bar-line-track">
+                            <template for:each={stageChartBars} for:item="bar">
+                                <div key={bar.key} class="bar-column">
+                                    <span class="bar-value-label">{bar.value}</span>
+                                    <div class="bar-fill" style={bar.barStyle}>
+                                        <template if:true={bar.percentBadge}>
+                                            <span class="bar-percent-badge">{bar.percentBadge}</span>
+                                        </template>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                        <div class="bar-axis-labels">
+                            <template for:each={stageChartBars} for:item="bar">
+                                <div key={bar.key} class="bar-axis-item">
+                                    <span class="bar-axis-number">{bar.num}</span>
+                                    <span class="bar-axis-label">{bar.label}</span>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                    <div class="stage-dashboard-footer">
+                        <span class="stage-footer-caption">Application volume decreases progressively across stages</span>
+                        <span class="stage-footer-badge">
+                            <span class="stage-footer-dot"></span>
+                            Stage progression
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+
+        </div>
+    </template>
+</template>
+<!-- __________________________GenAI: Generated code ends here______________________________ -->

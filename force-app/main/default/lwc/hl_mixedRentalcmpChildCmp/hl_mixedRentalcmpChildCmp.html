@@ -1,0 +1,86 @@
+<template>
+    <span class="styleContainer"></span>
+    <template if:true={spinnerRun}>
+        <section role="dialog" tabindex="-1" aria-labelledby="header43" class="slds-modal slds-fade-in-open"
+            style="z-index: 900003;">
+            <lightning-spinner></lightning-spinner>
+        </section>
+    </template>
+    <div style="margin-top: 0.75rem; margin-bottom: 0.75rem; display: flex; gap: 0.75rem;">
+      <button class="btn-add-action slds-button slds-button_brand" style="border:none;"
+              onclick={addPropertyIncomeAssessment}>
+        Add Property
+      </button>
+    </div>
+    <template if:true={loadTable}>
+        <div class="slds-grid slds-wrap slds-scrollable_x">
+            <table class="slds-table" style="max-width:57%">
+                <thead>
+                    <tr>
+                        <template for:each={screenDataResult.headerValues} for:item="iter">
+                            <th key={iter.recordId} class="col-width-10 color-theme" style="padding: 9px;">{iter}
+                            </th>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={processedParticularsData} for:item="iterPar">
+                        <tr key={iterPar.label}>
+                            <template if:true={iterPar.isInput}>
+                                <td>
+                                   <lightning-input type="text"
+                                        variant="label-hidden" 
+                                        onblur={updateMonthNames}
+                                        value={iterPar.label}
+                                        placeholder="Enter Month in format Mmm-YY e.g: Jun-25"
+                                        disabled={iterPar.isHeaderDisabled}
+                                        >
+                                    </lightning-input>
+                                </td>
+                            </template>
+                            <template if:false={iterPar.isInput}>
+                                <td>{iterPar.label}</td>
+                            </template>
+                            <template if:true={iterPar.isEligibility}>
+                                <td colspan={eligibilityColspan}>
+                                    <lightning-combobox name="eligibilityPicklist" variant="label-hidden"
+                                        value={eligibilityOption} options={eligibilityOptions}
+                                        onchange={handleEligibilityChange}>
+                                    </lightning-combobox>
+                                </td>
+                            </template>
+                            <template if:false={iterPar.isEligibility}>
+                                <template for:each={iterPar.values} for:item="val">
+                                    <td key={val}>
+                                        <lightning-input type="text"
+                                            variant="label-hidden" name={iterPar.nameapi} data-child={val.childId}
+                                            data-id={val.recordId} onblur={handleInputValueChange}
+                                            value={val.val} disabled={iterPar.isDisabled}>
+                                        </lightning-input>
+                                    </td>    
+                                </template>
+                            </template>
+                        </tr>
+                    </template>
+                </tbody>
+            </table>
+        </div>
+        <table class="slds-table" style="max-width:500px; margin-top: 25px;">
+            <tbody>
+                <tr>
+                    <td class="mrc-summary-label">Additional FOIR</td>
+                    <td>
+                        <lightning-input type="number" 
+                        step="1" 
+                        variant="label-hidden" 
+                        onblur={handleSustainableValueChange}
+                        name="additionalFOIR"
+                        value={additionalFoir}></lightning-input>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+    </template>
+
+</template>

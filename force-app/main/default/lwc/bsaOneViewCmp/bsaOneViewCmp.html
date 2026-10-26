@@ -1,0 +1,17 @@
+<template>
+    <span class="styleContainer"></span>
+    <div class="main-tab">
+        <c-perfios-statement-cmp record-id={recordId} from-sales={fromSales}></c-perfios-statement-cmp>
+    <lightning-tabset active-tab-value ={activeTab}>
+        <lightning-tab label="Select Bank" value="Select Bank">
+            <c-bsa-select-bank-cmp record-id={recordId} onhandleanalysisclick={handleAnalysisButtonClick} from-sales={fromSales} has-loan-stage-psv-or-disbursement={hasLoanStagePsvOrDisbursement}></c-bsa-select-bank-cmp>
+        </lightning-tab>
+        <lightning-tab label="BSA" value="BSA">
+            <c-bsa-cmp record-id={recordId} selected-banks={selectedBanksId} has-psv-or-disbursal-stage={fromSales}></c-bsa-cmp>
+        </lightning-tab>
+        <!--<lightning-tab label="Eligibility Parameters" value="Eligibility Parameters">
+            <c-eligibility-parameter-cmp record-id={recordId} ></c-eligibility-parameter-cmp>
+        </lightning-tab>-->
+    </lightning-tabset>
+    </div>
+</template>

@@ -1,0 +1,288 @@
+<template>
+    <div class="sad-root">
+
+        <div class="sad-topbar">
+            <div class="sad-topbar-left">
+                <span class="sad-icon">🔍</span>
+                <h1 class="sad-title">Show All Data</h1>
+                <template if:true={recordData}>
+                    <span class="sad-object-badge">{recordData.objectLabel}</span>
+                </template>
+            </div>
+            <div class="sad-topbar-right">
+                <template if:true={recordData}>
+                    <button class="sad-btn sad-btn-ghost" onclick={handleCopyId}>
+                        📋 Copy ID
+                    </button>
+                    <button class="sad-btn sad-btn-ghost" onclick={handleOpenSetup}>
+                        ⚙️ Setup
+                    </button>
+                </template>
+            </div>
+        </div>
+
+        <div class="sad-input-row">
+            <input
+                class="sad-id-input"
+                type="text"
+                placeholder="Paste a Salesforce Record ID"
+                value={inputRecordId}
+                oninput={handleIdInput}
+                onkeydown={handleIdKeyDown}
+            />
+            <button class="sad-btn sad-btn-primary" onclick={handleLoad}>
+                Load Record
+            </button>
+        </div>
+
+        <template if:true={isLoading}>
+            <div class="sad-loader">
+                <div class="sad-spinner"></div>
+                <span>Fetching all field data...</span>
+            </div>
+        </template>
+
+        <template if:true={errorMessage}>
+            <div class="sad-error">
+                <span class="sad-error-icon">⚠️</span>
+                <span>{errorMessage}</span>
+            </div>
+        </template>
+
+        <template if:true={recordData}>
+            <div class="sad-record-header">
+                <div class="sad-record-meta">
+                    <div class="sad-meta-row">
+                        <span class="sad-meta-label">Record ID</span>
+                        <span class="sad-meta-value sad-mono">{recordData.recordId}</span>
+                    </div>
+                    <div class="sad-meta-row">
+                        <span class="sad-meta-label">Name</span>
+                        <span class="sad-meta-value">{recordData.recordName}</span>
+                    </div>
+                    <div class="sad-meta-row">
+                        <span class="sad-meta-label">Created</span>
+                        <span class="sad-meta-value">{recordData.createdDate}</span>
+                    </div>
+                    <div class="sad-meta-row">
+                        <span class="sad-meta-label">Last Modified</span>
+                        <span class="sad-meta-value">{recordData.lastModifiedDate}</span>
+                    </div>
+                </div>
+                <div class="sad-field-count">
+                    <span class="sad-count-num">{totalFieldCount}</span>
+                    <span class="sad-count-label">fields</span>
+                </div>
+            </div>
+
+            <div class="sad-toolbar">
+                <div class="sad-search-wrap">
+                    <span class="sad-search-icon">🔎</span>
+                    <input
+                        class="sad-search"
+                        type="text"
+                        placeholder="Search fields by label, API name, value"
+                        value={searchTerm}
+                        oninput={handleSearch}
+                    />
+                    <template if:true={searchTerm}>
+                        <button class="sad-clear-search" onclick={clearSearch}>✕</button>
+                    </template>
+                </div>
+
+                <div class="sad-filters">
+                    <button class={filterAllClass} data-filter="all" onclick={handleFilter}>
+                        All ({totalFieldCount})
+                    </button>
+                    <button class={filterEditableClass} data-filter="editable" onclick={handleFilter}>
+                        Editable ({editableCount})
+                    </button>
+                    <button class={filterFormulaClass} data-filter="formula" onclick={handleFilter}>
+                        Formula ({formulaCount})
+                    </button>
+                    <button class={filterBlankClass} data-filter="blank" onclick={handleFilter}>
+                        Blank ({blankCount})
+                    </button>
+                </div>
+
+                <button class="sad-btn sad-btn-ghost" onclick={handleToggleSave} disabled={isNotDirty}>
+                    💾 Save Changes ({dirtyCount})
+                </button>
+            </div>
+
+            <div class="sad-table-wrap">
+                <table class="sad-table">
+                    <thead>
+                        <tr>
+                            <th class="sad-th sad-th-label" onclick={sortByLabel}>
+                                Field Label
+                                <template if:true={sortByLabelActive}>
+                                    <span class="sad-sort-arrow">{sortArrow}</span>
+                                </template>
+                            </th>
+                            <th class="sad-th sad-th-api" onclick={sortByApi}>
+                                API Name
+                                <template if:true={sortByApiActive}>
+                                    <span class="sad-sort-arrow">{sortArrow}</span>
+                                </template>
+                            </th>
+                            <th class="sad-th sad-th-type">Type</th>
+                            <th class="sad-th sad-th-value">Value</th>
+                            <th class="sad-th sad-th-actions">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <template for:each={filteredFields} for:item="field">
+                            <tr key={field.apiName} class={field.rowClass}>
+                                <td class="sad-td sad-td-label">
+                                    <span class="sad-field-label">{field.label}</span>
+                                    <template if:true={field.helpText}>
+                                        <span class="sad-help-badge" title={field.helpText}>?</span>
+                                    </template>
+                                    <template if:true={field.isFormula}>
+                                        <span class="sad-formula-badge">fx</span>
+                                    </template>
+                                </td>
+                                <td class="sad-td sad-td-api">
+                                    <span class="sad-mono sad-api-name">{field.apiName}</span>
+                                </td>
+                                <td class="sad-td sad-td-type">
+                                    <span class="sad-type-badge" data-type={field.fieldType}>
+                                        {field.fieldType}
+                                    </span>
+                                </td>
+                                <td class="sad-td sad-td-value">
+                                    <template if:true={field.isEditing}>
+                                        <input
+                                            class="sad-inline-input"
+                                            type="text"
+                                            value={field.editValue}
+                                            data-field={field.apiName}
+                                            oninput={handleEditInput}
+                                            onkeydown={handleEditKeyDown}
+                                            onblur={handleEditBlur}
+                                        />
+                                    </template>
+                                    <template if:false={field.isEditing}>
+                                        <span
+                                            class={field.valueClass}
+                                            ondblclick={handleDblClick}
+                                            data-field={field.apiName}
+                                            title="Double-click to edit">
+                                            <template if:true={field.hasValue}>
+                                                {field.displayValue}
+                                            </template>
+                                            <template if:false={field.hasValue}>
+                                                <em class="sad-null">null</em>
+                                            </template>
+                                        </span>
+                                    </template>
+                                    <template if:true={field.isDirty}>
+                                        <span class="sad-dirty-dot" title="Unsaved change">●</span>
+                                    </template>
+                                </td>
+                                <td class="sad-td sad-td-actions">
+                                    <template if:true={field.isUpdateable}>
+                                        <button
+                                            class="sad-action-btn"
+                                            data-field={field.apiName}
+                                            onclick={handleEditClick}
+                                            title="Edit field">✏️
+                                        </button>
+                                    </template>
+                                    <button
+                                        class="sad-action-btn"
+                                        data-field={field.apiName}
+                                        data-value={field.displayValue}
+                                        onclick={handleCopyValue}
+                                        title="Copy value">📋
+                                    </button>
+                                    <button
+                                        class="sad-action-btn"
+                                        data-field={field.apiName}
+                                        data-object={recordData.objectApiName}
+                                        onclick={handleAnalyzeUsage}
+                                        title="Analyze field usage">📊
+                                    </button>
+                                    <button
+                                        class="sad-action-btn"
+                                        data-field={field.apiName}
+                                        data-object={recordData.objectApiName}
+                                        onclick={handleOpenFieldSetup}
+                                        title="Open field in Setup">🔗
+                                    </button>
+                                </td>
+                            </tr>
+                        </template>
+                    </tbody>
+                </table>
+
+                <template if:true={noResults}>
+                    <div class="sad-no-results">
+                        No fields match your search
+                    </div>
+                </template>
+            </div>
+
+            <template if:true={isDirty}>
+                <div class="sad-save-bar">
+                    <span>{dirtyCount} unsaved change(s)</span>
+                    <button class="sad-btn sad-btn-danger" onclick={handleDiscardChanges}>
+                        Discard
+                    </button>
+                    <button class="sad-btn sad-btn-success" onclick={handleSaveAll} disabled={isSaving}>
+                        <template if:true={isSaving}>Saving...</template>
+                        <template if:false={isSaving}>Save All</template>
+                    </button>
+                </div>
+            </template>
+        </template>
+
+        <template if:true={showUsageModal}>
+            <div class="sad-modal-backdrop" onclick={closeUsageModal}></div>
+            <div class="sad-modal">
+                <div class="sad-modal-header">
+                    <h2>Field Usage Analysis</h2>
+                    <button class="sad-modal-close" onclick={closeUsageModal}>✕</button>
+                </div>
+                <template if:true={usageLoading}>
+                    <div class="sad-loader">
+                        <div class="sad-spinner"></div>
+                        <span>Analyzing...</span>
+                    </div>
+                </template>
+                <template if:false={usageLoading}>
+                    <template if:true={usageData}>
+                        <div class="sad-usage-content">
+                            <p class="sad-usage-field">{usageData.fieldApiName}</p>
+                            <div class="sad-usage-stats">
+                                <div class="sad-stat">
+                                    <span class="sad-stat-num">{usageData.populatedRecords}</span>
+                                    <span class="sad-stat-label">Records with value</span>
+                                </div>
+                                <div class="sad-stat">
+                                    <span class="sad-stat-num">{usageData.totalRecords}</span>
+                                    <span class="sad-stat-label">Total records</span>
+                                </div>
+                                <div class="sad-stat">
+                                    <span class="sad-stat-num">{usageData.percentageFilled}%</span>
+                                    <span class="sad-stat-label">Populated</span>
+                                </div>
+                            </div>
+                            <div class="sad-progress-bar-wrap">
+                                <div class="sad-progress-bar" style={usageBarStyle}></div>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+            </div>
+        </template>
+
+        <template if:true={toast.visible}>
+            <div class={toast.cssClass}>
+                <span>{toast.message}</span>
+            </div>
+        </template>
+
+    </div>
+</template>

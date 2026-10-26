@@ -1,0 +1,301 @@
+.custom-tab-active {
+    color: rgb(12, 8, 35) !important; /* Ensure text is black when active */
+}
+
+.custom-tab-inactive {
+    color: white !important; /* Ensure text is white when inactive */
+}
+
+.custom-tab-container {
+    margin: 10px;
+    background-color: #0e1c30; /* dark navy background to match screenshot */
+    color: #ffffff;
+}
+
+.custom-tabs {
+    display: flex;
+    border-bottom: 2px solid #ccc;
+}
+
+.custom-tab {
+    padding: 10px 15px;
+    cursor: pointer;
+    border: none;
+    outline: none;
+    background-color: #0e1c30;
+    color: rgba(15, 8, 8, 0.58);
+    font-size: 14px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    margin-right: 5px;
+}
+
+.custom-tab:hover {
+    opacity: 0.8;
+}
+
+.tab-content {
+    display: block;
+    padding: 10px;
+    border-top: 2px solid #1a4fb4;
+    background-color: #0e1c30; /* page background color */
+}
+
+.fixed-width-combobox {
+    width: 200px; /* Set a fixed width */
+    margin-left: 16px; /* nudge the "All" selector slightly right, off the edge */
+    margin-bottom: 10px;
+}
+
+.fixed-width-combobox lightning-base-combobox {
+    min-width: 200px !important; /* Ensures dropdown stays same width */
+    max-width: 200px !important;
+}
+
+/* "All" selector styled to match the header bar colour from the screenshot */
+.fixed-width-combobox .slds-combobox__input {
+    background-color: #1a73f0 !important;
+    border: 1px solid #0d3f9c !important;
+    color: #ffffff !important;
+    font-weight: 700 !important;
+}
+
+.fixed-width-combobox .slds-input__icon {
+    fill: #ffffff !important;
+}
+
+.fixed-width-combobox lightning-base-combobox-item {
+    overflow: hidden;
+    text-overflow: ellipsis; /* Prevents text from overflowing */
+    white-space: nowrap;
+}
+
+.row-error {
+    background-color: #ffcccc; /* Light red background for error rows */
+}
+
+.input-error {
+    border: 2px solid red !important;
+    background-color: #ffcccc !important; /* Light Red Background */
+}
+
+/* ==================== Table Layout (moved out of HTML inline styles) ==================== */
+/* Wrapper carries the rounded-corner outer border. Tables render border-radius +
+   outer border unreliably (especially combined with border-collapse), so the
+   border/radius/clip live on this plain div instead of on the <table> itself. */
+.checklist-table-wrapper {
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+table.checklist-table {
+    max-width: 100%;
+    width: 100%;
+    padding-top: 1%;
+    background-color: #0e1c30; /* matches header colour */
+    border-collapse: collapse !important; /* merge cell borders into one continuous line; !important wins over SLDS .slds-table default */
+}
+
+.checklist-thead {
+    top: 0;
+    background-color: #0e1c30 !important;
+    z-index: 4;
+}
+
+/* Header cells restyled - black background, bold white text */
+/* Higher specificity + !important needed to win over SLDS default .slds-table thead th background */
+table.checklist-table thead.checklist-thead tr th.checklist-header-cell {
+    text-align: center;
+    border: 1px solid #ffffff !important;
+    padding: 2px 1% !important;
+    height: 22px !important;
+    min-height: 22px !important;
+    line-height: 1.5 !important;
+    background-color: #0e1c30 !important;
+    color: #ffffff !important;
+    font-weight: 700;
+    font-size: 12px;
+}
+
+/* Body cells - black background, white text */
+.checklist-cell {
+    text-align: center;
+    border: 1px solid #ffffff;
+    padding-left: 1%;
+    background-color: #0e1c30;
+    color: #ffffff;
+}
+
+/* Description width increased from 15% to 23% (+8pts = +20% of the original
+   40% Remark column width), per Remark column redistribution below */
+.checklist-cell-desc {
+    width: 23%;
+}
+
+.checklist-cell-doc,
+.checklist-cell-category {
+    width: 10%;
+}
+
+/* Remark (textarea) column - 6th column in the row, uses a fully dynamic
+   class={record.inputClass} so it cannot be targeted by a stable class name;
+   width reduced from the implicit 40% (remaining space) to 24% - a 40%
+   reduction of its original width, with the removed 16pts redistributed
+   equally (+8pts each) to Description and Remark History below */
+.checklist-table tbody tr td:nth-child(6) {
+    width: 24%;
+    background-color: #0e1c30;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+}
+
+.checklist-cell-radio {
+    text-align: left;
+    vertical-align: top;
+    border: 1px solid #ffffff;
+    padding-left: 1%;
+    padding-top: 8px;
+    width: 10%;
+    background-color: #0e1c30;
+}
+
+/* Force radio options into a single straight vertical column so Status and
+   OVD Verified rows line up consistently across every row of the table */
+.checklist-cell-radio lightning-radio-group {
+    display: block;
+    width: 100%;
+}
+
+.checklist-cell-radio .slds-form-element__control {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 4px;
+}
+
+.checklist-cell-radio .slds-radio {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin: 0;
+}
+
+/* Action column "View" icon button restyled to match screenshot (dark box, blue border, green eye icon) */
+.checklist-action-cell {
+    text-align: center;
+    border: 1px solid #ffffff;
+    padding-left: 1%;
+    width: 7%;
+    background-color: #0e1c30;
+}
+
+/* Radio group and textarea readability overrides on the dark background */
+.checklist-cell-radio lightning-radio-group {
+    --slds-c-radio-label-color: #ffffff;
+    --slds-c-radio-color-foreground: #ffffff;
+    color: #ffffff;
+}
+
+.checklist-cell-radio .slds-radio__label .slds-form-element__label {
+    color: #ffffff !important;
+}
+
+/* Remarks column - native textarea (lightning-textarea's shadow DOM
+   re-asserts a white background on :focus that no SLDS styling hook can
+   override from outside; a plain textarea styled directly avoids that
+   entirely, same escape hatch already used elsewhere in this project). */
+.remarks-textarea {
+    width: 100%;
+    background-color: #0e1c30;
+    color: #ffffff;
+    border: 1px solid #ffffff;
+    border-radius: 4px;
+    padding: 6px;
+    font-family: inherit;
+    font-size: 13px;
+    resize: vertical;
+}
+
+.remarks-textarea:focus,
+.remarks-textarea:hover,
+.remarks-textarea:active {
+    background-color: #0e1c30;
+    color: #ffffff;
+    outline: none;
+}
+
+.remarks-textarea:disabled {
+    background-color: #0e1c30;
+    color: #ffffff;
+    opacity: 0.7;
+}
+
+.view-action-btn {
+    --slds-c-icon-color-foreground: #21c15c;
+    --slds-c-icon-color-foreground-default: #21c15c;
+    --slds-c-button-color-border: #1a73f0;
+    --slds-c-button-radius-border: 4px;
+    background-color: #0a1c33;
+    border: 1px solid #1a73f0;
+    border-radius: 4px;
+}
+
+.checklist-btn-noborder {
+    border: none;
+}
+
+/* Remark History modal - same visual look as before, moved to CSS */
+.checklist-modal-header {
+    background-color: #0e1c30;
+    color: #0e1c30;
+    font-weight: 500;
+}
+
+.checklist-modal-title {
+    font-style: Lato Bold;
+    font-size: 15px;
+    font-weight: bold;
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
+
+.checklist-modal-footer {
+    border: revert;
+}
+
+/* Modal content inherits color:#ffffff from .custom-tab-container, which
+   renders invisible white-on-white text against the modal's default white
+   background - force a dark, readable color here instead. */
+.checklist-modal-content {
+    color: #ffffff;
+    background-color: #0e1c30;
+}
+
+.checklist-modal-content lightning-formatted-rich-text {
+    color: #ffffff;
+}
+
+.cancel-button {
+    background-color: #16283f !important;
+    border-color: #16283f !important;
+    color: #ffffff !important;
+}
+
+.cancel-button:hover,
+.cancel-button:focus {
+    background-color: #101d30 !important;
+    border-color: #101d30 !important;
+}
+/* Override SLDS row hover */
+.checklist-table tbody tr:hover,
+.checklist-table tbody tr:hover td,
+.checklist-table tbody tr:hover th {
+    background-color: #123055 !important;
+    color: #ffffff !important;
+}
+.fixed-width-combobox lightning-combobox {
+    --slds-c-input-color-background: #1a73f0;
+    --slds-c-input-color-border: #0d3f9c;
+    --slds-c-input-text-color: #ffffff;
+}

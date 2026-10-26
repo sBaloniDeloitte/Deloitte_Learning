@@ -1,0 +1,413 @@
+<template>
+    <template lwc:if={genericInitiate}>
+        <template if:false={disableLoanReject}>
+            <div class="slds-box slds-theme_default progress-container" style="margin-top:1%">
+                <div class={getProgressBar} style="overflow: auto;">
+                    <template for:each={progressStages} for:item="stage" for:index="index">
+                        <div key={stage.key} class="progress-step">
+
+                            <!-- Connector Line -->
+                            <template if:true={stage.showLine}>
+                                <div class="connector"></div>
+                            </template>
+
+                            <!-- Stage Icon -->
+                            <template if:true={stage.completed}>
+                                <div class="icon-wrapper icon-wrapper-completed">
+                                    <span class="check-mark-text" aria-label="Completed">&#10003;</span>
+                                </div>
+                            </template>
+                            <template if:false={stage.completed}>
+                                <div class="icon-wrapper icon-wrapper-pending">
+                                    <span class="step-number-text">{stage.sequence}</span>
+                                </div>
+                            </template>
+
+                            <!-- Stage Name -->
+                            <div class="slds-text-align_center">
+                                <p class="stage-name">{stage.label}</p>
+                            </div>
+                        </div>
+                    </template>
+                </div>
+            </div>
+            <div class="slds-p-vertical_xx-small">
+                <legend class="slds-form-element__legend slds-form-element__label"><abbr class="slds-required" title="required">* </abbr>Step 1 : Select Type of Evaluations</legend>
+                <lightning-combobox name="comboBox" variant="label-hidden" label="Step 1 : Select Type of Evaluations" options={optionsList} value={value} onchange={handleValueChange} required></lightning-combobox>
+            </div>
+    
+            <template if:true={legalSearchReportYears}>
+                <div class="slds-modal__content slds-p-vertical_xx-small">
+                    <!--<legend class="slds-form-element__legend slds-form-element__label"><abbr class="slds-required" title="required">* </abbr>Legal Search Report Years</legend>
+                    <lightning-combobox name="legalSearchYears" variant="label-hidden" label="Legal Search Report Years" value={selectedLegalYears} options={optionsLegalYears} required onchange={handleselectedLegalYears}></lightning-combobox>-->
+                    <legend class="slds-form-element__legend slds-form-element__label"><abbr class="slds-required" title="required">* </abbr>Title Search Period</legend>
+                    <lightning-combobox name="legalSearchYears" variant="label-hidden" label="Title Search Period" value={selectedLegalYears} options={optionsLegalYears} required onchange={handleselectedLegalYears}></lightning-combobox>
+                </div>
+            </template>
+    
+            <template if:true={checkLoan}>
+                <div class="slds-p-vertical_xx-small">
+                    <legend class="slds-form-element__legend slds-form-element__label"><abbr class="slds-required" title="required">* </abbr>Step 2 : Related Collateral</legend>
+                    <lightning-combobox name="selectCollateral" variant="label-hidden" label="Related Collateral" value={selectedValueCollateral} options={optionsListCollateral} required onchange={handleselectedValueCollateral}></lightning-combobox> 
+                </div>
+            </template>
+    
+            <template if:true={isCollateralSelected}>
+                <div class="slds-p-vertical_xx-small">
+                    <legend class="slds-form-element__legend slds-form-element__label"><abbr class="slds-required" title="required">* </abbr>Step 3 : Assignee</legend>
+                    <lightning-combobox name="select" variant="label-hidden" label="Assignee" value={selectedValue} options={options} required onchange={handleSelectedValue} disabled={isDisableAssignee}></lightning-combobox>
+                </div>
+            </template>
+    
+            <template lwc:if={isUserSelected}>
+                <div class="slds-grid slds-wrap">
+                  <legend class="slds-form-element__legend slds-form-element__label slds-m-vertical_xx-small"><abbr class="slds-required" title="required">* </abbr>Step 4 :  Upload Legal Document</legend></br>
+                </div>
+                <div class="slds-grid slds-wrap">
+                  <button class="slds-button slds-button_inverse slds-m-vertical_small" style="font-size: 11px;width: 170px;background-color: #7c3aed;color: #ffffff;border: none;font-weight: 500;" onclick={openDocumentModal}>
+                    <lightning-icon class="slds-p-right_small" icon-name="utility:add" alternative-text="Add" title="Add" variant="inverse" size="x-small"></lightning-icon>
+                    Add New Document
+                  </button>        
+                </div>
+            </template>          
+    
+            <template lwc:if={selectedValue}>
+                <template if:true={showDocTable}>
+                    <div class="slds-p-vertical_small slds-p-horizontal_medium slds-scrollable_x" style="overflow-x: auto;">
+                        <table class="slds-table slds-table_cell-buffer slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="" scope="col" style="background-color: #5bb6e3; color: black; font-weight: 500; padding: 10px; word-wrap: break-word; white-space: normal;">
+                                        <div class="slds-truncate" title="Close Date">Sr. No</div>
+                                    </th>
+                                    <th class="" scope="col" style="background-color: #5bb6e3; color: black; font-weight: 500; padding: 10px; word-wrap: break-word; white-space: normal;">
+                                        <div class="slds-truncate" title="Stage">Description</div>
+                                    </th>
+                                    <th class="" scope="col" style="background-color: #5bb6e3; color: black; font-weight: 500; padding: 10px; word-wrap: break-word; white-space: normal;">
+                                        <div class="slds-truncate" title="Confidence">Upload</div>
+                                    </th>
+                                    <th class="" scope="col" style="background-color: #5bb6e3; color: black; font-weight: 500; padding: 10px; word-wrap: break-word; white-space: normal;">
+                                        <div class="slds-truncate" title="Confidence">Uploaded Files</div>
+                                    </th>
+                                    <th class="" scope="col" style="background-color: #5bb6e3; color: black; font-weight: 500; padding: 10px; word-wrap: break-word; white-space: normal;">
+                                        <div class="slds-truncate" title="Contact">Delete</div>
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={documents} for:item="document" for:index="index">
+                                    <tr key={document.Id} class="slds-hint-parent">
+                                        <td data-label="Account Name">
+                                            <div class="slds-truncate">{document.srno}</div>
+                                        </td>
+                                        <td data-label="Close Date">
+                                            <div class="slds-truncate">{document.docName}</div>
+                                        </td>
+                                        <td data-label="Prospecting" class="uploadFileView" style="text-align: center; vertical-align: middle; word-wrap: break-word; white-space: normal;">
+                                            <div style="margin-bottom: 13px;">
+                                                <lightning-file-upload
+                                                    variant="label-hidden"
+                                                    name="fileUploader"
+                                                    data-id={document.docId}
+                                                    onuploadfinished={handleFileChange}
+                                                    class="file-upload-input"
+                                                    data-record-id={document.docId}
+                                                    disabled={document.isUploadNeeded}
+                                                    accept={acceptedFormats}
+                                                    multiple>
+                                                </lightning-file-upload>
+                                            </div>
+                                          </td>
+                                          <td data-label="Prospecting">
+                                            <table class="slds-table slds-table_bordered slds-scrollable_x slds-border_right slds-border_left">
+                                              <tbody>
+                                                  <template for:each={document.uploadedFiles} for:item="iterFile">
+                                                    <tr style="background: #f2f2f2;border-color: white;" key={iterFile.contentDocId}>
+                                                        <td style="border: none;">
+                                                            <a href="javascript:void(0);" data-id={iterFile.contentDocId} onclick={handlePreview}>{iterFile.fileName}</a>
+                                                        </td>
+                                                      </tr>
+                                                  </template>
+                                              </tbody>
+                                            </table>
+                                        </td>
+                                        <td data-label="Amount">
+                                            <div class="slds-truncate">
+                                                <lightning-button-icon data-index={index} data-id={document.docId} icon-name="utility:delete"  size="medium"   alternative-text="View More" class="slds-m-left_xx-small" onclick={deleteCheckList}></lightning-button-icon>
+                                            </div>
+                                        </td>
+                                        <!-- <td data-label="Prospecting">
+                                            <div class="slds-truncate">
+                                                <lightning-button-icon data-index={index} data-id={document.docId} icon-name="utility:upload"  size="medium"   alternative-text="View More" class="slds-m-left_xx-small" onclick={uploadDocument} disabled={document.isUploadNeeded}></lightning-button-icon>
+                                                <button data-id={document.contentId} style="margin-left : 4px" class="slds-button slds-button_icon slds-button_icon-border"  disabled={document.isUploaded} onclick={viewDocument}>
+                                                <template lwc:if={document.isUploaded}>
+                                                    <lightning-icon icon-name="utility:preview" size="x-small"></lightning-icon>
+                                                </template>
+                                                <template lwc:else>
+                                                    <lightning-icon icon-name="utility:preview" variant="success" size="x-small" disabled={document.isUploaded}></lightning-icon>
+                                                </template>
+                                                </button>
+                                                <lightning-button-icon data-index={index} data-id={document.contentId} icon-name="utility:refresh"  size="medium"   alternative-text="View More" class="slds-m-left_xx-small" disabled={document.isUploaded} onclick={deleteDocument}></lightning-button-icon>
+                                            </div>
+                                        </td> -->
+                                        <!-- <td data-label="Confidence">
+                                            <div class="slds-truncate">
+                                                <button data-id={document.contentId}  class="slds-button slds-button_icon slds-button_icon-border"  disabled={document.isUploaded} onclick={viewDocument}>
+                                                    <template lwc:if={document.isUploaded}>
+                                                    <lightning-icon icon-name="utility:preview" size="x-small"></lightning-icon>
+                                                    </template>
+                                                    <template lwc:else>
+                                                    <lightning-icon icon-name="utility:preview" variant="success" size="x-small"></lightning-icon>
+                                                    </template>
+                                                </button>
+                                            </div>
+                                        </td> -->
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>  
+                </template>
+            </template>
+    
+            <template lwc:if={isUserSelected}>
+                <template if:true={showMorgateDocTable}>
+                    <div class="slds-grid slds-wrap">
+                        <legend class="slds-form-element__legend slds-form-element__label slds-m-vertical_xx-small">Step 5 :  Select Mortgage Document</legend></br>
+                    </div>
+                    <div class="slds-p-vertical_small slds-p-horizontal_medium">
+                        <table class="slds-table slds-table_cell-buffer slds-no-row-hover slds-table_bordered slds-table_col-bordered slds-border_left slds-border_right">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="" scope="col"  style="width: 10%; text-align: center; word-wrap: break-word; white-space: normal;background-color: #5bb6e3;color: black;">
+                                        Select
+                                    </th>
+                                    <th class="" scope="col"  style="width: 20%; text-align: center; word-wrap: break-word; white-space: normal;background-color: #5bb6e3;color: black;">
+                                        Name 
+                                    </th>
+                                    <th class="" scope="col"  style="width: 20%; text-align: center; word-wrap: break-word; white-space: normal;background-color: #5bb6e3;color: black;">
+                                        Nature of the Document
+                                    </th>
+                                    <th class="" scope="col"  style="width: 10%; text-align: center; word-wrap: break-word; white-space: normal;background-color: #5bb6e3;color: black;">
+                                        Demand At
+                                    </th>
+                                    
+                                    <th class="" scope="col"  style="width: 10%; text-align: center; word-wrap: break-word; white-space: normal;background-color: #5bb6e3;color: black;">
+                                        Document Number
+                                    </th>
+                                    <th class="" scope="col"  style="width: 10%; text-align: center; word-wrap: break-word; white-space: normal;background-color: #5bb6e3;color: black;">
+                                        Document Registration Date
+                                    </th>
+                                    <th class="" scope="col"  style="width: 15%; text-align: center; word-wrap: break-word; white-space: normal;background-color: #5bb6e3;color: black;">
+                                        Name of the Vendor/Doner/Seller/Transferor
+                                    </th>
+                                    <th class="" scope="col"  style="width: 15%; text-align: center; word-wrap: break-word; white-space: normal;background-color: #5bb6e3;color: black;">
+                                        Name of the Vendee/Donee/Purchaser/Transferee
+                                    </th>
+                                    <th class="" scope="col"  style="width: 15%; text-align: center; word-wrap: break-word; white-space: normal;background-color: #5bb6e3;color: black;">
+                                        Uploaded
+                                    </th>
+                                </tr>
+                            </thead>
+                            <template for:each={allMorgateDocuments} for:item="record">
+                                <tbody key={record.Id}>
+                                    <td style="word-wrap: break-word; white-space: normal;">
+                                        <template if:true={record.isUploaded}>
+                                            <input type="checkbox" name="checkbox-toggle-18" value="checkbox-toggle-16" data-id={record.Id} onchange={handleMortgagteselecteion}/>
+                                        </template>
+                                        <template if:false={record.isUploaded}>
+                                            <input type="checkbox" name="checkbox-toggle-18" value="checkbox-toggle-16" data-id={record.Id} disabled onchange={handleMortgagteselecteion}/>
+                                        </template>
+                                    </td>
+                                    <td style="word-wrap: break-word; white-space: normal;">{record.Name}</td>
+                                    <td style="word-wrap: break-word; white-space: normal;">{record.Original_Photocopy__c}</td>
+                                    <td style="word-wrap: break-word; white-space: normal;">{record.Demand_At__c}</td>
+                                    <td style="word-wrap: break-word; white-space: normal;">{record.Document_Number__c}</td>
+                                    <td style="word-wrap: break-word; white-space: normal;">{record.Registration_Date__c}</td>
+                                    <td style="word-wrap: break-word; white-space: normal;">{record.Vendor_Name__c}</td>
+                                    <td style="word-wrap: break-word; white-space: normal;">{record.Vendee_Name__c}</td>
+                                    <td data-label="Prospecting">
+                                        <div class="slds-truncate">
+                                            <template if:true={record.isUploaded}>
+                                                <lightning-button-icon data-id={record.Id} icon-name="utility:upload"  size="medium"   alternative-text="View More" class="slds-m-left_xx-small" onclick={uploadDocument} disabled=true></lightning-button-icon>
+                                                <button data-id={record.Content_Document_Id__c} style="margin-left : 4px;cursor: pointer;" class="slds-button slds-button_icon slds-button_icon-border" onclick={viewDocument}>
+                                                    <lightning-icon icon-name="utility:preview" variant="success" size="x-small" style="cursor: pointer;"></lightning-icon>
+                                                </button>
+                                                <lightning-button-icon data-id={record.Content_Document_Id__c} icon-name="utility:refresh"  size="medium"   alternative-text="View More" class="slds-m-left_xx-small" onclick={deleteDocument}></lightning-button-icon>
+                                            </template>
+                                            <template if:false={record.isUploaded}>
+                                                <lightning-button-icon data-id={record.Id} icon-name="utility:upload"  size="medium"   alternative-text="View More" class="slds-m-left_xx-small" onclick={uploadDocument}></lightning-button-icon>
+                                                <button style="margin-left : 4px;cursor: pointer;" class="slds-button slds-button_icon slds-button_icon-border">
+                                                    <lightning-icon icon-name="utility:preview" size="x-small"></lightning-icon>
+                                                </button>
+                                                <lightning-button-icon icon-name="utility:refresh"  size="medium"   alternative-text="View More" class="slds-m-left_xx-small" disabled=true></lightning-button-icon>
+                                            </template>
+                                        </div>
+                                    </td>
+                                                            
+                                </tbody>
+                            </template>
+                        </table>
+                    </div>
+                </template>
+            </template>
+    
+            <!-- <div class="slds-border_bottom slds-m-vertical_x-small"></div> -->
+    
+            <div class="slds-align_absolute-center">
+                <button class="slds-button slds-button_brand slds-m-top_large cancel-button" style="font-size: 11px;width: 140px;color: #ffffff; background-color: #16283f;border: 1px solid #7c3aed;font-weight: 600;" onclick={closeAction}>Cancel</button>
+                <template if:true={showDocTable}>
+                    <button class="SaveButton slds-button slds-button_brand slds-m-top_large" style="font-size: 11px;width: 145px;background-color: #7c3aed;color: #ffffff;border: none;font-weight: 600;" onclick={createLegal}>Initiate</button>
+                </template>
+                <!--<template if:false={showDocTable}> >>>selectedValue
+                    <button class="SaveButton slds-button slds-button_brand slds-m-top_large" style="font-size: 11px;width: 145px;font-weight: 500;" disabled>Initiate</button>
+                </template>-->
+            </div>
+        </template>
+        
+        <template lwc:if={showLegalTable}>
+            <div class="legal-child-table-container" style="max-height:20rem; overflow:auto;">
+              <legend class="slds-form-element__legend slds-form-element__label slds-m-vertical_xx-small">Legal Records</legend>
+              
+              <table class="slds-table" aria-label="Example table of Opportunities with vertical borders">
+                  <thead>
+                      <tr class="slds-line-height_reset">
+                         <th scope="col">
+                              <div class="slds-truncate" title="Close Date">Collateral</div>
+                          </th>
+                          <th scope="col">
+                              <div class="slds-truncate" title="Close Date">Sr. No</div>
+                          </th>
+                          <th scope="col">
+                              <div class="slds-truncate" title="Stage">Name</div>
+                          </th>
+                          <th scope="col">
+                              <div class="slds-truncate" title="Confidence">Status</div>
+                          </th>
+                          <th scope="col">
+                              <div class="slds-truncate" title="Amount">Assigned To</div>
+                          </th>
+                          <th scope="col">
+                            <div class="slds-truncate" title="Contact">Report Type</div>
+                        </th>
+                          <th scope="col">
+                              <div class="slds-truncate" title="Contact">Initiated By</div>
+                          </th>
+                          <th scope="col">
+                            <div class="slds-truncate" title="Contact">Initiated On</div>
+                        </th>
+                        <!--
+                        <th class="" scope="col" style="background-color: #5bb6e3; color: black; font-weight: 500; padding: 10px;">
+                            <div class="slds-truncate" title="Contact">Collateral</div>
+                        </th>-->
+                        <th scope="col">
+                          <div class="slds-truncate" title="Contact">Address</div>
+                      </th>
+                      </tr>
+                  </thead>
+                  <tbody>
+                    <template for:each={groupedLegals} for:item="group">
+                        <template for:each={group.records} for:item="legal" for:index="index">
+                            <tr key={legal.Id} class="slds-hint-parent">
+                                <template if:true={legal.isFirst}>
+                                    <td rowspan={group.rowspan} style="font-weight: bold;">
+                                        {group.collateral}
+                                    </td>
+                                </template>
+                                <td data-label="Sr No.">
+                                    <div class="slds-truncate" title="srno">{legal.srno}</div>
+                                </td>
+                                <td data-label="Name">
+                                    <div class="slds-truncate" title="4/14/2015"><a data-id={legal.id} onclick={navigateToRecord}>{legal.name}</a></div>
+                                </td>
+                                <td data-label="Status">
+                                    <div class="slds-truncate" title="4/14/2015">{legal.status}</div>
+                                </td>
+                                <td data-label="Owner">
+                                    <div class="slds-truncate" title="4/14/2015">{legal.assignedTo}</div>
+                                </td>
+                                <td data-label="Owner">
+                                    <div class="slds-truncate" title="4/14/2015">{legal.reportType}</div>
+                                </td>
+                                <td data-label="Initiated By">
+                                    <div class="slds-truncate" title="4/14/2015">{legal.initiatedBy}</div>
+                                </td>
+                                <td data-label="Initated On">
+                                    <div class="slds-truncate" title="4/14/2015">{legal.initiatedOn}</div>
+                                </td>
+                          <!--<td data-label="Collateral Type">
+                                    <div class="slds-truncate">{legal.collateralType}</div>
+                                </td>-->
+                                <td data-label="Collateral Address">
+                                    <div class="slds-truncate" style="word-wrap: break-word; white-space: nowrap; overflow:visible">{legal.collateralAddress}</div>
+                                </td>
+                            </tr>
+                        </template>
+                    </template>
+                  </tbody>
+              </table>
+            </div>  
+        </template>
+
+        <template if:true={disableLoanReject}>
+            <template if:false={showLegalTable}>
+              <div style="text-align: center">
+                <p slot="title" style="font-size:12px; font-style: italic; color: #5bb6e3;">No legal record(s) found for this loan application.</p>
+              </div>
+            </template>
+          </template>
+        <template if:true={spin}>
+            <lightning-spinner alternative-text="Loading" size="small"></lightning-spinner>
+        </template>
+    </template>
+    <input 
+        type="file" 
+        style="display:none"
+        accept="image/*,.pdf" 
+        capture="environment" 
+        onchange={handleUpload} 
+        class="genericFileUpload2"
+    />  
+
+    <template lwc:if={openAddDocModal}>
+        <c-document-checklist-modal record-id={recordId} onclosemodal={closeDocumentModal} ondocumentsadded={handleDocumentsAdded} type={value} application-coll-id={selectedValueCollateral}></c-document-checklist-modal><!--onhandledoccreation={handleDocumentCreation}--><!--onreset={resetDocuments} onhandledocadded={handleDocumentsAdded}-->
+    </template>
+
+    <template if:true={showConfirmDocModal}>
+    <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+        <div class="slds-modal__container">
+            <header class="slds-modal__header">
+                <h2 class="slds-text-heading_medium">Confirm Change</h2>
+            </header>
+            <div class="slds-modal__content slds-p-around_medium">
+                <p>Are you sure you want to delete the documents before making any changes?</p>
+            </div>
+            <footer class="slds-modal__footer">
+                <lightning-button variant="neutral" label="No" onclick={closeConfirmDocModal}></lightning-button>
+                <lightning-button class="slds-m-left_small" variant="brand" label="Yes" onclick={confirmDocDeletion}></lightning-button>
+            </footer>
+        </div>
+    </section>
+    <div class="slds-backdrop slds-backdrop_open"></div>
+</template>
+
+    <template if:true={showConfirmModal}>
+        <section role="dialog" tabindex="-1" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_medium">Confirm Cancellation</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium">
+                    <p>Are you sure you want to cancel?</p>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-layout-item size="5" style="text-align: right;">
+                        <button class="slds-button slds-button_brand wave-button" onclick={closeConfirmModal}>No</button>
+                        <button class="slds-button slds-button_brand initiate-button" onclick={confirmCloseAction}>Yes</button>
+                    </lightning-layout-item>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

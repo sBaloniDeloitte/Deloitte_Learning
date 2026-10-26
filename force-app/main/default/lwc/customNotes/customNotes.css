@@ -1,0 +1,166 @@
+.notes-card {
+    background: #ffffff;
+    border: 1px solid #cfe3f5;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(23, 58, 120, 0.08);
+}
+
+.notes-header {
+    background: linear-gradient(
+        135deg,
+        #173a78 0%,
+        #20498c 100%
+    );
+    color: white;
+    height: 64px;
+    padding: 0 20px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-title {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.count-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.15);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-weight: 700;
+    color: white;
+}
+
+.input-section {
+    padding: 20px;
+    background: #f6fbff;
+    border-bottom: 1px solid #e4effa;
+}
+
+lightning-textarea {
+    --slds-c-textarea-color-border: #b7d8f6;
+    --slds-c-textarea-radius-border: 12px;
+}
+
+.input-footer {
+    margin-top: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.character-count {
+    color: #7789a5;
+    font-size: 12px;
+}
+
+.button-group {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.save-button {
+    --slds-c-button-brand-color-background: #173a78;
+    --slds-c-button-brand-color-border: #173a78;
+}
+
+.notes-list {
+    max-height: 450px;
+    overflow-y: auto;
+}
+
+.note-record {
+    padding: 18px 20px;
+    border-bottom: 1px solid #edf3fa;
+    transition: background 0.2s ease;
+}
+
+.note-record:hover {
+    background: #fafcff;
+}
+
+.note-author {
+    color: #173a78;
+    font-weight: 700;
+    font-size: 15px;
+}
+
+.note-date {
+    color: #72819b;
+    font-size: 13px;
+    margin-left: 8px;
+}
+
+.note-message {
+    margin-top: 10px;
+    color: #384861;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.new-tag {
+    background: #eaf3ff;
+    color: #0b74de;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 8px;
+    border-radius: 12px;
+    margin-left: 8px;
+}
+
+/* Common */
+.action-btn {
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: 600;
+    border-radius: 999px;
+    transition: all 0.25s ease;
+    min-width: 120px;
+    height: 46px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Clear Button */
+.cancel-btn {
+    background: #ffffff;
+    color: #2d4c83;
+    border: 1.5px solid #b9d8f5;
+}
+.cancel-btn:hover {
+    background: #f5fbff;
+    border-color: #8fc2f0;
+}
+/* Save Button */
+.save-btn {
+    background: linear-gradient(
+    135deg,
+    #e8231a 0%,
+    #e8231a 100%
+    );
+    color: #ffffff;
+    box-shadow:
+    0 8px 20px rgba(23, 58, 120, 0.22);
+}
+.save-btn:hover {
+    transform: translateY(-1px);
+    box-shadow:
+    0 10px 24px rgba(120, 23, 23, 0.3);
+}
+.btn-icon {
+    --slds-c-icon-color-foreground-default: white;
+}

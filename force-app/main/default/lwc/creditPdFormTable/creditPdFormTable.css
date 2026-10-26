@@ -1,0 +1,35 @@
+@import 'c/cssLibrary';
+.save-button{
+    color: white;
+    font-weight: 400;
+}
+.cancel-button{
+    color: white;
+    font-weight: 400;
+}
+
+.custom-table {
+    font-weight: 400;
+}
+
+.custom-table .slds-icon-action-preview{
+    border-radius: 0!important;
+    padding: 1px 8px;
+    background-color: #9bbf56;
+}
+.custom-icon{
+    --sds-c-icon-color-foreground: green; 
+}
+
+/* .large-textarea  .slds-textarea  { */
+ .slds-modal__content .lightning-textarea .slds-form-element__control .slds-grow .textarea-container .slds-textarea {
+    min-height: 200px !important;
+    /* height: 200px !important; */
+}
+
+.large-textarea .slds-textarea{
+    min-height: 300px;
+}
+.custom-table .slds-textarea{
+    min-height: 200px;
+}

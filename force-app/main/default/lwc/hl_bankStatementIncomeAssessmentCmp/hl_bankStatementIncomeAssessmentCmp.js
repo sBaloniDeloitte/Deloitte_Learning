@@ -1,0 +1,131 @@
+import { LightningElement,api,track} from 'lwc';
+import getApplicants from '@salesforce/apex/HL_CashProfitController.getApplicants';
+import deleteCamRecords from '@salesforce/apex/HL_BankingIncomeController.deleteCamRecords';
+import createCamRecordsOnLoad from '@salesforce/apex/HL_BankingIncomeController.createCamRecordsOnLoad';
+
+export default class Hl_bankStatementIncomeAssessmentCmp extends LightningElement {
+         @api recordId;
+        applicantList;
+        dataLoaded = false;
+        tabList;
+        showTab = false;
+        spinnerRun = false;
+        confirmationScreen = false;
+        pendingUncheck = { appId: null, checkboxEl: null };
+        recToBeDeletedForApplicants =[];
+        applicantIds = [];
+    
+        connectedCallback() {
+            this.getApplicants();
+        }
+        getApplicants(){
+            getApplicants({
+                loanId: this.recordId,
+                recordTypeName: 'Banking'
+            }).then(response=>{
+                this.applicantList = response;
+                this.dataLoaded = true;
+                console.log(' this.applicantList ------'+ this.applicantList);
+                if(this.applicantList != undefined && this.applicantList != null && this.applicantList.length>0){
+                    this.tabList = this.applicantList.filter(item => {
+                        return item.isDataCreated == true;
+                    });
+                    console.log('tabList------'+this.tabList);
+                    if(this.tabList != undefined && this.tabList != null && this.tabList.length >0){
+                        this.showTab = true;
+                    }
+                }
+            }).catch(error=>{
+    
+            })
+        }
+        handleCheckboxChange(event){
+            const appId = event.target.dataset.id
+            if(event.target.checked){
+                this.spinnerRun = true;
+                if (!this.applicantIds.includes(appId)) {
+                    this.applicantIds.push(appId);
+                    createCamRecordsOnLoad({
+                        loanId: this.recordId,
+                        apDetId: event.target.dataset.id
+                    }).then(response=>{
+                        this.spinnerRun = false;
+                        this.getApplicants();
+                        setTimeout(() => {
+                            this.dispatchEvent(
+                                new CustomEvent('incomeexpenceschanged', {
+                                    detail: { 
+                                        change: 'Income Assessment Checked'
+                                    },
+                                })
+                            );
+                        }, 500);
+                    }).catch(error=>{
+                        this.spinnerRun = false;
+                    })
+                }
+            }
+            else{
+                // this.spinnerRun = true;
+                // deleteCamRecords({
+                //     loanId: this.recordId,
+                //     apDetId: event.target.dataset.id
+                // }).then(response=>{
+                //     this.spinnerRun = false;
+                //     this.getApplicants();
+                // }).catch(error=>{
+                //     this.spinnerRun = false;
+                // })
+                console.log('Inside else 72');
+                this.spinnerRun = false; 
+                this.pendingUncheck = { appId, checkboxEl: event.target };
+                 console.log('Inside else 75');
+                this.confirmationScreen = true;
+            }
+        }
+    
+         onClickModalYes(){
+            this.spinnerRun = true;
+            const { appId } = this.pendingUncheck;
+            this.applicantIds = this.applicantIds.filter(id => id !== appId);
+            this.recToBeDeletedForApplicants.push(appId);
+    
+            this.confirmationScreen = false;
+            this.pendingUncheck = { appId: null, checkboxEl: null };
+            setTimeout(() => {
+                this.deleteCamRecords();
+            }, 100);
+           
+        }
+    
+        onClickModalNo(){
+            if (this.pendingUncheck.checkboxEl) {
+                this.pendingUncheck.checkboxEl.checked = true;
+            }
+    
+            this.confirmationScreen = false;
+            this.pendingUncheck = { appId: null, checkboxEl: null };
+            this.spinnerRun = false;
+        }
+    
+        deleteCamRecords(){
+            console.log('recToBeDeletedForApplicants----'+this.recToBeDeletedForApplicants);
+              deleteCamRecords({
+                    loanId: this.recordId,
+                    applicantIds: this.recToBeDeletedForApplicants
+                }).then(response=>{
+                     console.log('response----'+this.response);
+                    this.spinnerRun = false;
+                    this.getApplicants();
+                     this.dispatchEvent(
+                    new CustomEvent('incomeexpenceschanged', {
+                        detail: { 
+                            change: 'Income Assessment Deleted'
+                        },
+                    })
+                );
+                }).catch(error=>{
+                    this.spinnerRun = false;
+                })
+        }
+}

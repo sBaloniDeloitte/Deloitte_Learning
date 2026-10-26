@@ -1,0 +1,1093 @@
+<!--
+  @description       : 
+  @author            : ChangeMeIn@UserSettingsUnder.SFDoc
+  @group             : 
+  @last modified on  : 03-17-2025
+  @last modified by  : ChangeMeIn@UserSettingsUnder.SFDoc
+-->
+<template> 
+    <span class="styleContainer"></span>
+    <template if:true={isloading}>
+        <lightning-spinner alternative-text="Loading" variant="brand" size="large"></lightning-spinner>
+    </template>
+    <template if:false={isOneView}>
+    <lightning-card> 
+    <p class="product-details-subtext">Provide product configuration and loan preference details.</p>
+    <!-- {showEditLayoutActive}
+    {showEditLayout} -->
+    <template if:true={showEditLayoutActive}>      
+        <div class="slds-box slds-m-around_small">
+            <span class="styleContainer"></span>
+
+            <!-- ===== Product Selection Row ===== -->
+            <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-combobox class="removeborder" name="Product" label="Product"
+                        value={savedProductId} options={productOptions} onchange={handleProductChange}
+                        required disabled={disableProduct}>
+                    </lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-combobox class="removeborder" name="Sub Product" label="Sub Product"
+                        value={savedSubProductId} options={subProductOptions} onchange={handleSubProductChange}
+                        required disabled={isSubProductDisabled}>
+                    </lightning-combobox>
+                </div>
+                <template if:false={isHLUser}>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-combobox class="removeborder" name="Transaction Type" label="Transaction Type"
+                        value={savedTransactionTypeId} options={transactionTypeOptions} onchange={handleTransactionTypeChange}
+                        required disabled={isVariantDisabled}>
+                    </lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" type="text" name="Loan Purpose" label="Loan Purpose"
+                        value={loanPurpose} disabled>
+                    </lightning-input>
+                </div>
+                 
+                </template>
+                <!-- // Anish -->
+                <template if:true={isHLUser}>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <lightning-combobox class="removeborder" name="Transaction Type" label="Transaction Type"
+                            value={savedTransactionTypeId} options={transactionTypeOptions} onchange={handleTransactionTypeChange}
+                            required disabled={isVariantDisabled}>
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <lightning-combobox class="removeborder" name="Loan Purpose" label="Loan Purpose"
+                            value={savedLoanPurposeId} options={loanPurposeOptions} onchange={handleLoanPurposeChange}
+                            required disabled={isVariantDisabled}>
+                        </lightning-combobox>
+                    </div>
+                </template>
+                
+            </div>
+
+            <!-- ===== Scheme Row ===== -->
+            <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-combobox class="removeborder" name="Repayment Variant" label="Repayment Variant"
+                        value={savedVarientId} options={variantOptions} onchange={handleVariantChange}
+                        required disabled={isVariantDisabled}>
+                    </lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-combobox class="removeborder" name="Sub Variant" label="Sub Variant"
+                        value={savedSubVarientId} options={subVariantOptions} onchange={handleSubVariantChange}
+                        required disabled={isSubvariantDisabled}>
+                    </lightning-combobox>
+                </div>
+                <template if:true={showDuration}>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <lightning-input class="removeInputborder" name="Moratorium Period" label="Moratorium Period" onchange={handleDurationChange}
+                            value={totalDuration}>
+                        </lightning-input>
+                    </div>
+                </template>    
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-combobox class="removeborder" name="Scheme" label="Scheme"
+                        value={savedSchemeId} options={schemeOptions} onchange={handleSchemeChange} required>
+                    </lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-combobox class="removeborder" name="Loan Facility" label="Loan Facility"
+                        value={selectedLoanFacility} options={loanFacilityOptions}
+                        onchange={handleLoanFacilityChange} required disabled={isSchemeSelected}>
+                    </lightning-combobox>
+                </div>
+                
+            </div>
+
+            <!-- ===== EMI Row ===== -->
+            <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" type="number" name="Requested Loan Amount"
+                        label="Requested Loan Amount" value={requestedLoanAmount}
+                        onchange={handlereqLoanAmountChange} required disabled={isSchemeSelected}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                   <lightning-input 
+                        class="removeInputborder"
+                        type="number"
+                        name="Requested ROI(%)"
+                        label="Requested ROI(%)"
+                        value={requestedROI}
+                        onchange={handleRequestedROIChange}
+                        step="0.01"     
+                        required 
+                        disabled={isSchemeSelected}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" name="Full EMI(In Months)" label="Full EMI Tenure(In Months)"
+                        value={savedFullEMIId} onchange={handleFullEMIChange} required disabled={isSchemeSelected}>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" name="Interest only tenure(In Months)"
+                        label="Interest only tenure(In Months)" value={hybridTenureId}
+                        onchange={handleHybridTenureChange} required={isHybridTenureRequired} disabled={isHybridTenureDisabled}>
+                    </lightning-input>
+                </div>
+            </div>
+             <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" name="Total Tenure(In Months)" label="Total Tenure(In Months)"
+                        value={totalTenure} disabled>
+                    </lightning-input>
+                </div>
+
+                <!-- Ansih -->
+                <template if:true={isHLUser}>
+                    <template if:false={isFlexiProd}>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                            <lightning-combobox class="removeborder" name="Property Type" label="Property Type"
+                                value={savedPropertyTypeId} options={propertyTypeOptions} onchange={handlePropertyTypeChange}
+                                required disabled={isVariantDisabled}>
+                            </lightning-combobox>
+                        </div>
+                    </template>
+                    <template if:true={isFlexiProd}>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                            <lightning-combobox class="removeborder" name="Property Type" label="Property Type"
+                                value={savedPropertyTypeId} options={propertyTypeOptions} onchange={handlePropertyTypeChange}
+                                 disabled={isVariantDisabled}>
+                            </lightning-combobox>
+                        </div>
+                    </template>
+                  
+                </template> <!-- Ansih -->
+            </div>
+
+            <!-- ===== BT Details Section ===== -->
+            <template if:false={hideBtDetails}>
+                <h2 class="slds-text-heading_small slds-p-around_small slds-m-bottom_medium">BT Details</h2>
+                <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <lightning-input class="removeInputborder" type="number"
+                            name="OriginalSanctionedAmount" label="Original Sanctioned Amount"
+                            value={originalSanctionedAmount} onchange={handleOriginalSanctionedAmountChange} required>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <lightning-input class="removeInputborder" name="FinancialInstitutionName"
+                            label="Financial Institution Name" value={financialInstitutionName}
+                            onchange={handleFinancialInstitutionNameChange} required>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <lightning-input class="removeInputborder" type="number" name="OriginalTenure"
+                            label="Original Tenure (In months)" value={originalTenure}
+                            onchange={handleOriginalTenureChange} required>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <lightning-input class="removeInputborder" type="number"
+                            name="NumberOfInstallmentsPaid" label="Number of Installments Paid"
+                            value={numberOfInstallmentsPaid} onchange={handleNumberOfInstallmentsPaidChange} required>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <lightning-input class="removeInputborder" type="date"
+                            name="ExistingLoanStartDate" label="Existing Loan Start Date"
+                            value={existingLoanStartDate} onchange={handleExistingLoanStartDateChange} required>
+                        </lightning-input>
+                    </div>
+                </div>
+            </template>
+
+            <!-- ===== Save Button ===== -->
+            <div class="slds-p-around_small slds-m-around_large">
+                <button type="button" class="slds-button save-button slds-float_right"
+                    onclick={saveProduct} disabled={enableDisabled}>
+                    <lightning-icon icon-name="utility:save" size="xx-small" variant="inverse" class="slds-m-right_x-small"></lightning-icon>Save Product</button>
+            </div>
+        </div>
+    </template>
+
+  <!-- Only show edit layout when a product is selected -->
+    <template if:true={showEditLayout}>
+        <div class="slds-box slds-m-around_small">
+            <span class="styleContainer"></span>
+
+            <!-- Non-editable fields (Product row) -->
+            <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" value={selectedProduct.prodName} label="Product" disabled></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" value={selectedProduct.subProdName} label="Sub Product" disabled></lightning-input>
+                </div>
+                <template if:false={isHLUser}>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" value={selectedProduct.transactionType} label="Transaction Type" disabled></lightning-input>
+                </div>
+                 <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" value={selectedProduct.loanPurpose} label="Loan Purpose" disabled></lightning-input>
+                </div>
+                </template>
+                <!-- Ansih -->
+                <template if:true={isHLUser}>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <!-- <lightning-input class="removeInputborder" value={selectedProduct.transactionType} label="Transaction Type" disabled></lightning-input> -->
+                        <lightning-combobox class="removeborder" name="Transaction Type" label="Transaction Type"
+                            value={selectedProduct.transactionTypeName} options={transactionTypeOptions} required disabled>
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <!-- <lightning-input class="removeInputborder" value={selectedProduct.loanPurpose} label="Loan Purpose" disabled></lightning-input> -->
+                        <lightning-combobox class="removeborder" name="Loan Purpose" label="Loan Purpose"
+                            value={selectedProduct.loanPurposes} options={loanPurposeOptions} required disabled>
+                        </lightning-combobox>
+                    </div>
+                </template><!-- Ansih -->
+            </div>
+
+            <!-- Editable fields row -->
+            <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" value={selectedProduct.variant} label="Repayment Variant" disabled></lightning-input>
+                </div>
+                 <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" value={selectedProduct.subvariantName} label="Sub Variant" disabled></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" value={selectedProduct.schemeProdName} label="Scheme" disabled></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-combobox class="removeborder" name="Loan Facility" label="Loan Facility"
+                        value={selectedLoanFacility} options={loanFacilityOptions}
+                        onchange={handleLoanFacilityChange} required>
+                    </lightning-combobox>
+                </div>
+            </div>
+
+            <!-- EMI row -->
+            <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" type="number" name="Requested Loan Amount"
+                        label="Requested Loan Amount" value={requestedLoanAmount}
+                        onchange={handlereqLoanAmountChange} required>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input 
+                        class="removeInputborder"
+                        type="number"
+                        name="Requested ROI(%)"
+                        label="Requested ROI(%)"
+                        value={requestedROI}
+                        onchange={handleRequestedROIChange}
+                        step="0.01"     
+                        required >
+                    </lightning-input>
+                </div>
+                 <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" name="Full EMI" label="Full EMI Tenure"
+                        value={savedFullEMIId} onchange={handleFullEMIChange} required>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" name="Interest only tenure" label="Interest only tenure"
+                        value={hybridTenureId} onchange={handleHybridTenureChange} required={isHybridTenureRequired} disabled={isHybridTenureDisabled}>
+                    </lightning-input>
+                </div>
+            </div>
+             <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+             <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                <lightning-input class="removeInputborder" name="Total Tenure" label="Total Tenure"
+                    value={totalTenure} disabled>
+                </lightning-input>
+            </div>
+             
+            <!-- Ansih -->
+            <template if:true={isHLUser}>
+                <template if:false={isFlexiProd}>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-combobox class="removeborder" name="Property Type" label="Property Type"
+                        value={selectedProduct.propertyTypeName} options={propertyTypeOptions} required disabled>
+                    </lightning-combobox>
+                </div>
+                </template>
+                <template if:true={isFlexiProd}>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-combobox class="removeborder" name="Property Type" label="Property Type"
+                        value={selectedProduct.propertyTypeName} options={propertyTypeOptions}  disabled>
+                    </lightning-combobox>
+                </div>
+                </template>
+                
+            </template><!-- Ansih -->
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-combobox class="removeborder" name="Primary/Secondary" label="Primary/Secondary"
+                        value={productType} options={productTypeOptions}
+                        onchange={handleProductTypeChane} required disabled={disableProductType}>
+                    </lightning-combobox>
+            </div>
+             </div>
+
+            <!-- BT Details -->
+            <template if:false={hideBtDetails}>
+                <h2 class="slds-text-heading_small slds-p-around_small slds-m-bottom_medium">BT Details</h2>
+                <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <lightning-input class="removeInputborder" type="number" name="OriginalSanctionedAmount"
+                            label="Original Sanctioned Amount" value={originalSanctionedAmount}
+                            onchange={handleOriginalSanctionedAmountChange} required>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <lightning-input class="removeInputborder" name="FinancialInstitutionName"
+                            label="Financial Institution Name" value={financialInstitutionName}
+                            onchange={handleFinancialInstitutionNameChange} required>
+                        </lightning-input>
+                    </div>
+                    <template if:false={isHLUser}>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                            <lightning-input class="removeInputborder" type="number" name="OriginalTenure"
+                                label="Original Tenure (In months)" value={originalTenure}
+                                onchange={handleOriginalTenureChange} required>
+                            </lightning-input>
+                        </div>
+                    </template>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <lightning-input class="removeInputborder" type="number" name="NumberOfInstallmentsPaid"
+                            label="Number of Installments Paid" value={numberOfInstallmentsPaid}
+                            onchange={handleNumberOfInstallmentsPaidChange} required>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <lightning-input class="removeInputborder" type="date" name="ExistingLoanStartDate"
+                            label="Existing Loan Start Date" value={existingLoanStartDate}
+                            onchange={handleExistingLoanStartDateChange} required>
+                        </lightning-input>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Action buttons -->
+            <div class="slds-p-around_small slds-m-around_large">
+                <span class="styleContainer"></span>
+                <button type="button" class="slds-button cancel-button slds-float_right slds-m-left_small" onclick={cancelEdit}>Cancel</button>
+                <button type="button" class="slds-button save-button slds-float_right" onclick={updateProductRecord}>Update Product</button>
+            </div>
+        </div>
+    </template>
+    <!--Edit Layout for HL CO User-->
+    <template if:true={showEditLayoutHLCO}>
+        <div class="slds-box slds-m-around_small">
+            <span class="styleContainer"></span>
+
+            <!-- Non-editable fields (Product row) -->
+            <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" value={selectedProduct.prodName} label="Product" disabled></lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                     <lightning-combobox class="removeborder" value={savedSubProductId} name="Sub Product"  label="Sub Product" options={subProductOptions} onchange={handleSubProductChange}
+                        required></lightning-combobox>
+                </div>
+                <template if:false={isHLUser}>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" value={selectedProduct.transactionType} label="Transaction Type" disabled></lightning-input>
+                </div>
+                 <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" value={selectedProduct.loanPurpose} label="Loan Purpose" disabled></lightning-input>
+                </div>
+                </template>
+                <!-- Ansih -->
+                <template if:true={isHLUser}>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <!-- <lightning-input class="removeInputborder" value={selectedProduct.transactionType} label="Transaction Type" disabled></lightning-input> -->
+                        <lightning-combobox class="removeborder" name="Transaction Type" label="Transaction Type"
+                            value={savedtransactionTypeId} options={transactionTypeOptions} onchange={handleTransactionTypeChange}
+                        required>
+                        </lightning-combobox>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <!-- <lightning-input class="removeInputborder" value={selectedProduct.loanPurpose} label="Loan Purpose" disabled></lightning-input> -->
+                        <lightning-combobox class="removeborder" name="Loan Purpose" label="Loan Purpose"
+                            value={savedLoanPurposeId} options={loanPurposeOptions} onchange={handleLoanPurposeChange} required>
+                        </lightning-combobox>
+                    </div>
+                </template><!-- Ansih -->
+            </div>
+
+            <!-- Editable fields row -->
+            <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                     <lightning-combobox class="removeborder" value={savedVarientId} options={variantOptions} name="Repayment Variant" label="Repayment Variant" onchange={handleVariantChange}
+                        required></lightning-combobox>
+                </div>
+                 <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                     <lightning-combobox class="removeborder" value={savedSubVarientId} name="Sub Variant" label="Sub Variant" options={subVariantOptions} onchange={handleSubVariantChange}
+                        required></lightning-combobox>
+                </div>
+                <template if:true={showDuration}>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <lightning-input class="removeInputborder" name="Moratorium Period" label="Moratorium Period" onchange={handleDurationChange}
+                            value={totalDuration}>
+                        </lightning-input>
+                    </div>
+                </template>    
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                     <lightning-combobox class="removeborder" value={savedSchemeId} name="Scheme" label="Scheme" options={schemeOptions} onchange={handleSchemeChange} required></lightning-combobox>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-combobox class="removeborder" name="Loan Facility" label="Loan Facility"
+                        value={selectedLoanFacility} options={loanFacilityOptions}
+                        onchange={handleLoanFacilityChange} required>
+                    </lightning-combobox>
+                </div>
+            </div>
+
+            <!-- EMI row -->
+            <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" type="number" name="Requested Loan Amount"
+                        label="Requested Loan Amount" value={requestedLoanAmount}
+                        onchange={handlereqLoanAmountChange} required>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input 
+                        class="removeInputborder"
+                        type="number"
+                        name="Requested ROI(%)"
+                        label="Requested ROI(%)"
+                        value={requestedROI}
+                        onchange={handleRequestedROIChange}
+                        step="0.01"     
+                        required >
+                    </lightning-input>
+                </div>
+                 <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" name="Full EMI" label="Full EMI Tenure"
+                        value={savedFullEMIId} onchange={handleFullEMIChange} required>
+                    </lightning-input>
+                </div>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-input class="removeInputborder" name="Interest only tenure" label="Interest only tenure"
+                        value={hybridTenureId} onchange={handleHybridTenureChange} required={isHybridTenureRequired} disabled={isHybridTenureDisabled}>
+                    </lightning-input>
+                </div>
+            </div>
+             <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+             <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                <lightning-input class="removeInputborder" name="Total Tenure" label="Total Tenure"
+                    value={totalTenure} disabled>
+                </lightning-input>
+            </div>
+            <!-- Ansih -->
+            <template if:true={isHLUser}>
+             <template if:false={isFlexiProd}>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-combobox class="removeborder" name="Property Type" label="Property Type"
+                        value={savedPropertyTypeId} options={propertyTypeOptions} required onchange={handlePropertyTypeChange}>
+                    </lightning-combobox>
+                </div>
+             </template>
+             <template if:true={isFlexiProd}>
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-combobox class="removeborder" name="Property Type" label="Property Type"
+                        value={savedPropertyTypeId} options={propertyTypeOptions}  onchange={handlePropertyTypeChange}>
+                    </lightning-combobox>
+                </div>
+             </template>
+                
+            </template><!-- Ansih -->
+                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                    <lightning-combobox class="removeborder" name="Primary/Secondary" label="Primary/Secondary"
+                        value={productType} options={productTypeOptions}
+                        onchange={handleProductTypeChane} required disabled={disableProductType}>
+                    </lightning-combobox>
+            </div>
+             </div>
+
+            <!-- BT Details -->
+            <template if:false={hideBtDetails}>
+                <h2 class="slds-text-heading_small slds-p-around_small slds-m-bottom_medium">BT Details</h2>
+                <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <lightning-input class="removeInputborder" type="number" name="OriginalSanctionedAmount"
+                            label="Original Sanctioned Amount" value={originalSanctionedAmount}
+                            onchange={handleOriginalSanctionedAmountChange} required>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <lightning-input class="removeInputborder" name="FinancialInstitutionName"
+                            label="Financial Institution Name" value={financialInstitutionName}
+                            onchange={handleFinancialInstitutionNameChange} required>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <lightning-input class="removeInputborder" type="number" name="NumberOfInstallmentsPaid"
+                            label="Number of Installments Paid" value={numberOfInstallmentsPaid}
+                            onchange={handleNumberOfInstallmentsPaidChange} required>
+                        </lightning-input>
+                    </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                        <lightning-input class="removeInputborder" type="date" name="ExistingLoanStartDate"
+                            label="Existing Loan Start Date" value={existingLoanStartDate}
+                            onchange={handleExistingLoanStartDateChange} required>
+                        </lightning-input>
+                    </div>
+                </div>
+            </template>
+
+            <!-- Action buttons -->
+            <div class="slds-p-around_small slds-m-around_large">
+                <span class="styleContainer"></span>
+                <button type="button" class="slds-button cancel-button slds-float_right slds-m-left_small" onclick={cancelEdit}>Cancel</button>
+                <button type="button" class="slds-button save-button slds-float_right" onclick={updateProductRecord}>Update Product</button>
+            </div>
+        </div>
+    </template>
+    
+        <template if:true={showAllProducts}>
+                    <div class="slds-box slds-m-around_small table-scroll-wrapper" style="overflow: auto;">
+                        <table class="table-class slds-box slds-table slds-table_bordered slds-table_cell-buffer slds-table_striped">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Product Name</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Sub Product</th>
+                                    <template if:false={isHLUser}>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Transaction Type</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Loan Purpose</th>
+                                    </template>
+                                    <!-- Ansih -->
+                                    <template if:true={isHLUser}>
+                                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Transaction Type</th>
+                                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Loan Purpose</th>
+                                    </template><!-- Ansih -->
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Repayment Variant</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Sub Variant</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Morat Period(If Applicable)</th>
+                                    <!-- <template if:false={isPSVStage}> -->
+                                        <!-- <template if:false={isDisbursementStage}> -->
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Interest only tenure</th>
+                                        <!-- </template> -->
+                                    <!-- </template> -->
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Loan Facility</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Scheme Name</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Requested Loan Amount</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Requested ROI(%)</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Primary/Secondary</th>
+                                    <!-- <template if:false={isPSVStage}> -->
+                                        <!--<template if:false={isDisbursementStage}>-->
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Full EMI Tenure</th>
+                                        <!--</template>-->
+                                    <!-- </template> -->
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Total Tenure</th> 
+                                    <!-- Ansih --> 
+                                    <template if:true={isHLUser}>
+                                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Property Type</th>
+                                    </template><!-- Ansih -->                                 
+                                    <template if:true={showBTDetails}>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Original Sactioned Amount</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Financial Institution Name</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Number Of Installments Paid</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Existing Loan Start Date</th>
+                                    </template>
+                                    <template if:false={hideNext}>
+                                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Delete</th>
+                                    </template>
+                                    <template if:false={hideNext}>
+                                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Edit</th>
+                                    </template>
+                                    <!-- <template if:true={hideNext}>
+                                        <template if:false={isDisbursementStage}>
+                                            <th class="tdBorderHeader" scope="col" style="text-align: center;white-space: nowrap;">Edit</th>
+                                        </template>
+                                    </template> -->
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={products} for:item="product">
+                                    <tr key={product.Id}>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.prodName}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.subProdName}</td>
+                                        <template if:false={isHLUser}>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.transactionType}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.loanPurpose}</td>
+                                        </template>
+                                        <!-- Ansih -->
+                                        <template if:true={isHLUser}>
+                                            <td class="tdBorderHeader" style="text-align: center;">{product.transactionTypeName}</td>
+                                            <td class="tdBorderHeader" style="text-align: center;">{product.loanPurposeName}</td>
+                                        </template><!-- Ansih -->
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.variant}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.subvariantName}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.moratPeriod}</td>
+                                        <!-- <template if:false={isPSVStage}> -->
+                                            <!-- <template if:false={isDisbursementStage}> -->
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.hybridTenureName}</td>
+                                            <!-- </template> -->
+                                        <!-- </template> -->
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.loanFacility}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.schemeProdName}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.loanAmoutReq}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.requestedROI}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.prodType}</td>
+                                        <!-- <template if:false={isPSVStage}> -->
+                                            <!-- <template if:false={isDisbursementStage}> -->
+                                                <td class="tdBorderHeader" style="text-align: center;">{product.fullEMI}</td>
+                                            <!-- </template> -->
+                                        <!-- </template> -->
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.totalTenure}</td>
+                                        <!-- Ansih -->
+                                        <template if:true={isHLUser}>
+                                            <td class="tdBorderHeader" style="text-align: center;">{product.propertyTypeName}</td>
+                                        </template><!-- Ansih -->
+                                        <template if:true={showBTDetails}>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.originalSanctionedAmount}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.financialInstitutionName}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.numberOfInstallmentsPaid}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.existingLoanStartDate}</td>
+                                        </template>
+                                        <template if:false={hideNext}>
+                                            <td class="tdBorderHeader" style="text-align: center;">
+                                                <lightning-icon size="small" icon-name="utility:delete" variant="brand" title="Delete Document" 
+                                                data-id={product.Id} data-name={product.Id} onclick={handleDelete} class="red-utility-icon" disabled={enableDisabled}>
+                                                </lightning-icon>
+                                            </td>
+                                        </template>
+                                        <template if:false={hideNext}>
+                                            <td class="tdBorderHeader" style="text-align: center;">
+                                            <lightning-button-icon icon-name="utility:edit" alternative-text="Edit"
+                                                    title="Edit" variant="border-filled" class="slds-m-right_xx-small"
+                                                    data-id={product.Id} data-name={product.Id} onclick={handleEditRow} disabled={enableDisabled}>
+                                                </lightning-button-icon>
+                                            </td>
+                                        </template>
+                                        <!-- <template if:true={hideNext}>
+                                            <template if:false={isDisbursementStage}>
+                                            <td class="tdBorderHeader" style="text-align: center;">
+                                                <lightning-button-icon icon-name="utility:edit" alternative-text="Edit"
+                                                    title="Edit" variant="border-filled" class="slds-m-right_xx-small"
+                                                    data-id={product.Id} data-name={product.Id} onclick={handleEdit}>
+                                                </lightning-button-icon>
+                                            </td>
+                                            </template>
+                                        </template> -->
+                                        
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <template if:true={hideNext}>
+                        <template if:true={editMode}>     
+                            <div class="slds-box slds-m-around_small">
+                                <span class="styleContainer"></span>
+                                <!-- <h2 class="slds-text-heading_small slds-p-around_small">Add New Product</h2> -->
+                                <div class={getProductByDeviceType}>
+                                    <span class="styleContainer"></span>
+                                    
+                                    <div class={getProductByDeviceTypeCol}>
+                                        <span class="styleContainer"></span>
+                                        <lightning-combobox class="removeborder" name="Product" label="Product" value={editProduct.productMaster} 
+                                            options={productOptions} onchange={handleEditProductChange} disabled>
+                                        </lightning-combobox>
+                                    </div>
+                                    <template if:true={isPSVStage}>
+                                        <div class={getProductByDeviceTypeCol}>
+                                            <span class="styleContainer"></span>
+                                            <lightning-combobox class="removeborder" name="Sub Product" label="Sub Product" 
+                                                value={editProduct.subProductMaster} options={subProductOptions} onchange={handleEditSubProductChange}
+                                                disabled>    
+                                            </lightning-combobox>
+                                        </div>
+                                    </template>
+                                    <template if:false={isPSVStage}>
+                                    <div class={getProductByDeviceTypeCol}>
+                                        <span class="styleContainer"></span>
+                                        <lightning-combobox class="removeborder" name="Sub Product" label="Sub Product" 
+                                            value={editProduct.subProductMaster} options={subProductOptions} onchange={handleEditSubProductChange}
+                                            required>    
+                                        </lightning-combobox>
+                                    </div>
+                                    </template>
+                                    <div class={getProductByDeviceTypeCol}>
+                                        <span class="styleContainer"></span>
+                                        <lightning-combobox class="removeborder" name="Repayment Variant" label="Repayment Variant" 
+                                            value={editProduct.variantProductMaster} options={variantOptions} onchange={handleVariantEditChange}
+                                            required>
+                                        </lightning-combobox>
+                                    </div>
+                                    <div class={getProductByDeviceTypeCol}>
+                                        <span class="styleContainer"></span>
+                                        <lightning-combobox class="removeborder" name="Sub Variant" label="Sub Variant" 
+                                            value={editProduct.subVariantProductMaster} options={subVariantOptions} onchange={handleSubVariantEditChange}
+                                            required>
+                                        </lightning-combobox>
+                                    </div>
+                                
+                                </div>
+                
+                                <div class={getProductByDeviceType}>
+                                    <span class="styleContainer"></span>
+                                    <div class={getProductByDeviceTypeCol}>
+                                        <span class="styleContainer"></span>
+                                        <lightning-input class="removeInputborder" name="Interest only tenure" label="Interest only tenure"
+                                    value={editProduct.hybridRecProductName} onchange={handleHybridTenureEditChange}
+                                    required="true" >
+                                </lightning-input>
+                                    </div>
+                
+                                    <div class={getProductByDeviceTypeCol}>
+                                        <span class="styleContainer"></span>
+                                        <lightning-combobox class="removeborder" name="Scheme" label="Scheme"
+                                            value={editProduct.schemeProductMaster} options={schemeOptions} onchange={handleSchemeEditChange}
+                                            required>
+                                        </lightning-combobox>
+                                    </div>
+                
+                                    <div class={getProductByDeviceTypeCol}>
+                                        <span class="styleContainer"></span>
+                                        <lightning-input class="removeInputborder" name="Full EMI" label="Full EMI Tenure"
+                                    value={editProduct.fullEMIProductName}  onchange={handleFullEMIEditChange}
+                                    required="true" >
+                                </lightning-input>
+                                    </div>
+                
+                                    <div class={getProductByDeviceTypeCol}>
+                                        <span class="styleContainer"></span>
+                                        <!-- <lightning-combobox class="removeborder" name="Total Tenure" label="Total Tenure"
+                                            value={editProduct.totalTenureProductMaster} options={totalTenureOptions} onchange={handleTotalTenureEditChange}
+                                            required>
+                                        </lightning-combobox> -->
+                                        <lightning-input class="removeborder" name="Total Tenure" label="Total Tenure"
+                                            value={editProduct.totalTenureProductName} options={totalTenureOptions} disabled>
+                                        </lightning-input>
+                                    </div>
+                                </div>
+                                
+                
+                                <div class="slds-p-around_small slds-m-around_large">
+                                    <span class="styleContainer"></span>
+                                    <div class="slds-float_right">
+                                        <button type="button" class="slds-button previous-button" onclick={cancelUpdate}>Cancel</button>
+                                        <button type="button" class="slds-button save-button" onclick={updateProduct}>Update</button>  
+                                    </div>
+                                </div>
+                            </div>
+                        </template>
+                    </template>
+
+                    <template if:true={showVASConfirmation}>
+                        <div class="slds-grid slds-gutters slds-m-around_small" style="padding-left: 1%;">
+                            <div class="slds-form-element" style="align-items: center;">
+                                <div class="slds-checkbox">
+                                    <input type="checkbox" name="options" id="checkbox-unique-id-81" value="checkbox-unique-id-81" onchange={handleVASConfirmation} checked={isVASOnlyLoan} />
+                                    <label class="slds-checkbox__label" for="checkbox-unique-id-81">
+                                        <span class="slds-checkbox_faux"></span>
+                                        <span class=" checkboxLabel">Please check to confirm whether the loan is a VAS only loan application.</span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+        <template if:true={showConfirmationForSendBack}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-label="This is a confirmation modal for step loan record deletion"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+               <header class="slds-modal__header header-section">
+                  <div class="slds-text-align_center">
+                     <h2 slot="title" class="header-title slds-text-heading_medium slds-hyphenate">Confirmation Screen</h2>
+                  </div>
+               </header>
+               <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless textAlignment slds-text-align_center">
+                Sub Variant Updated!<br/>Click Yes and proceed with Resanction on the Loan Application.
+               </div>
+               <footer class="slds-modal__footer footer-section">
+                  <div class="slds-align_absolute-center">
+                     <button class="save-button slds-button slds-button_brand" onclick={enableResanction}>Yes</button>
+                     <button class="cancel-button slds-button slds-button_brand" onclick={closeResanctionModal}>No</button>
+                  </div>
+               </footer>
+            </div>
+         </section>
+        </template>
+        <template if:true={showConfirmationForDeletion}>
+            <section role="dialog" tabindex="-1" aria-modal="true" aria-label="This is a confirmation modal for step loan record deletion"
+            class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container">
+               <header class="slds-modal__header header-section">
+                  <div class="slds-text-align_center">
+                     <h2 slot="title" class="header-title slds-text-heading_medium slds-hyphenate">Confirmation Screen</h2>
+                  </div>
+               </header>
+               <div class="slds-modal__content slds-p-around_medium slds-modal__content_headless textAlignment slds-text-align_center">
+                Repayment Variant updated!<br/>This action may erase data. Do you want to continue?
+               </div>
+               <footer class="slds-modal__footer footer-section">
+                  <div class="slds-align_absolute-center">
+                     <button class="save-button slds-button slds-button_brand" onclick={deleteRecreateTransaction}>Yes</button>
+                     <button class="cancel-button slds-button slds-button_brand" onclick={closeConfirmationForDeletion}>No</button>
+                  </div>
+               </footer>
+            </div>
+         </section>
+        </template>
+
+        <template if:false={hideNext}>
+            <div class="slds-p-around_small slds-m-around_large">
+                <button type="button" class="slds-button save-button slds-float_right" onclick={goToNext}>Next</button>
+            </div>
+        </template>
+
+    </lightning-card>
+    </template>
+    <template if:true={isOneView}>
+        <template if:true={showAllProducts}>
+            <template if:true={showEditLayout}>
+                <div class="slds-box slds-m-around_small">
+                    <span class="styleContainer"></span>
+
+                    <!-- Non-editable fields (Product row) -->
+                    <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                            <lightning-input class="removeInputborder" value={selectedProduct.prodName} label="Product" disabled></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                            <lightning-input class="removeInputborder" value={selectedProduct.subProdName} label="Sub Product" disabled></lightning-input>
+                        </div>
+                        <template if:false={isHLUser}>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                            <lightning-input class="removeInputborder" value={selectedProduct.transactionType} label="Transaction Type" disabled></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                            <lightning-input class="removeInputborder" value={selectedProduct.loanPurpose} label="Loan Purpose" disabled></lightning-input>
+                        </div>
+                        </template>
+                        <!-- Ansih -->
+                        <template if:true={isHLUser}>
+                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                                <lightning-combobox class="removeborder" name="Transaction Type" label="Transaction Type"
+                                    value={selectedProduct.transactionTypeName} options={transactionTypeOptions} required disabled>
+                                </lightning-combobox>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                                <lightning-combobox class="removeborder" name="Loan Purpose" label="Loan Purpose"
+                                    value={selectedProduct.loanPurposes} options={loanPurposeOptions} required disabled>
+                                </lightning-combobox>
+                            </div>
+                        </template><!-- Ansih -->
+                        
+                    </div>
+
+                    <!-- Editable fields row -->
+                    <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                            <lightning-input class="removeInputborder" value={selectedProduct.variant} label="Repayment Variant" disabled></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                            <lightning-combobox class="removeborder" name="Sub Variant" label="Sub Variant"
+                                value={savedSubVarientId} options={subVariantOptions} onchange={handleSubVariantChange}
+                                required>
+                            </lightning-combobox>
+                        </div>
+                        <template if:true={showDuration}>
+                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                                <lightning-input class="removeInputborder" name="Moratorium Period" label="Moratorium Period" onchange={handleDurationChange}
+                                    value={totalDuration}>
+                                </lightning-input>
+                            </div>
+                        </template>                        
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                            <lightning-input class="removeInputborder" value={selectedProduct.schemeProdName} label="Scheme" disabled></lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                            <lightning-combobox class="removeborder" name="Loan Facility" label="Loan Facility"
+                                value={selectedLoanFacility} options={loanFacilityOptions}
+                                onchange={handleLoanFacilityChange} required>
+                            </lightning-combobox>
+                        </div>
+                    </div>
+
+                    <!-- EMI row -->
+                    <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                            <lightning-input class="removeInputborder" name="Full EMI" label="Full EMI Tenure"
+                                value={savedFullEMIId} onchange={handleFullEMIChange} required>
+                            </lightning-input>
+                        </div>
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                            <lightning-input class="removeInputborder" name="Interest only tenure" label="Interest only tenure"
+                                value={hybridTenureId} onchange={handleHybridTenureChange} required={isHybridTenureRequired} disabled={isHybridTenureDisabled}>
+                            </lightning-input>
+                        </div>
+                    <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                            <lightning-input class="removeInputborder" name="Total Tenure" label="Total Tenure"
+                                value={totalTenure} disabled>
+                            </lightning-input>
+                        </div>
+                        <!-- Ansih -->
+                        <template if:true={isHLUser}>
+                            <template if:false={isFlexiProd}>
+                                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                                    <lightning-combobox class="removeborder" name="Property Type" label="Property Type"
+                                        value={selectedProduct.propertyTypeName} options={propertyTypeOptions} required disabled>
+                                    </lightning-combobox>
+                                    </div>
+                            </template>
+                            <template if:true={isFlexiProd}>
+                                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                                    <lightning-combobox class="removeborder" name="Property Type" label="Property Type"
+                                        value={selectedProduct.propertyTypeName} options={propertyTypeOptions}  disabled>
+                                    </lightning-combobox>
+                                </div>
+                            </template>
+                           
+                        </template><!-- Ansih -->
+                        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                            <lightning-combobox class="removeborder" name="Primary/Secondary" label="Primary/Secondary"
+                                value={productType} options={productTypeOptions}
+                                onchange={handleProductTypeChane} disabled>
+                            </lightning-combobox>
+                    </div>
+                    </div>
+
+                    <!-- BT Details -->
+                    <template if:false={hideBtDetails}>
+                        <h2 class="slds-text-heading_small slds-p-around_small slds-m-bottom_medium">BT Details</h2>
+                        <div class="slds-grid slds-wrap slds-gutters slds-m-bottom_medium">
+                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                                <lightning-input class="removeInputborder" type="number" name="OriginalSanctionedAmount"
+                                    label="Original Sanctioned Amount" value={originalSanctionedAmount}
+                                    onchange={handleOriginalSanctionedAmountChange} required>
+                                </lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                                <lightning-input class="removeInputborder" name="FinancialInstitutionName"
+                                    label="Financial Institution Name" value={financialInstitutionName}
+                                    onchange={handleFinancialInstitutionNameChange} required>
+                                </lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                                <lightning-input class="removeInputborder" type="number" name="NumberOfInstallmentsPaid"
+                                    label="Number of Installments Paid" value={numberOfInstallmentsPaid}
+                                    onchange={handleNumberOfInstallmentsPaidChange} required>
+                                </lightning-input>
+                            </div>
+                            <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-4">
+                                <lightning-input class="removeInputborder" type="date" name="ExistingLoanStartDate"
+                                    label="Existing Loan Start Date" value={existingLoanStartDate}
+                                    onchange={handleExistingLoanStartDateChange} required>
+                                </lightning-input>
+                            </div>
+                        </div>
+                    </template>
+
+                    <!-- Action buttons -->
+                    <div class="slds-p-around_small slds-m-around_large">
+                        <span class="styleContainer"></span>
+                        <button type="button" class="slds-button cancel-button slds-float_right slds-m-left_small" onclick={cancelEdit}>Cancel</button>
+                        <button type="button" class="slds-button save-button slds-float_right" onclick={updateProductRecord}>Update Product</button>
+                    </div>
+                </div>
+            </template>
+                    <div class="slds-box slds-m-around_small table-scroll-wrapper" style="overflow: auto;">
+                        <table class="table-class slds-box slds-table slds-table_bordered slds-table_cell-buffer slds-table_striped">
+                            <thead>
+                                <tr class="slds-line-height_reset">
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Product Name</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Sub Product</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Loan Purpose</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Repayment Variant</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Sub Variant</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Interest only tenure</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Loan Facility</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Scheme Name</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Requested Loan Amount</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Requested ROI(%)</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Primary/Secondary</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Full EMI Tenure</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Total Tenure</th>
+                                    <template if:true={showBTDetails}>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Original Sactioned Amount</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Financial Institution Name</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Number Of Installments Paid</th>
+                                    <th class="tdBorderHeader" scope="col" style="text-align: center;">Existing Loan Start Date</th>
+                                    </template>
+                                    <!--<template if:false={hideNext}>
+                                        <th class="tdBorderHeader" scope="col" style="text-align: center;">Delete</th>
+                                    </template>-->
+                                    <template if:true={customerNegotiationHL}>
+                                            <th class="tdBorderHeader" scope="col" style="text-align: center;">Edit</th>
+                                    </template>
+                                    <!-- <template if:true={hideNext}>
+                                        <template if:false={isDisbursementStage}>
+                                            <th class="tdBorderHeader" scope="col" style="text-align: center;white-space: nowrap;">Edit</th>
+                                        </template>
+                                    </template> -->
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <template for:each={products} for:item="product">
+                                    <tr key={product.Id}>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.prodName}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.subProdName}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.loanPurpose}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.variant}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.subvariantName}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.hybridTenureName}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.loanFacility}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.schemeProdName}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.loanAmoutReq}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.requestedROI}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.prodType}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.fullEMI}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.totalTenure}</td>
+                                        <template if:true={showBTDetails}>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.originalSanctionedAmount}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.financialInstitutionName}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.numberOfInstallmentsPaid}</td>
+                                        <td class="tdBorderHeader" style="text-align: center;">{product.existingLoanStartDate}</td>
+                                        </template>
+                                        <!--
+                                        <template if:false={hideNext}>
+                                            <td class="tdBorderHeader" style="text-align: center;">
+                                                <lightning-icon size="small" icon-name="utility:delete" variant="brand" title="Delete Document" 
+                                                data-id={product.Id} data-name={product.Id} onclick={handleDelete} class="red-utility-icon">
+                                                </lightning-icon>
+                                            </td>
+                                        </template> -->
+                                        <template if:true={customerNegotiationHL}>
+                                                    <td class="tdBorderHeader" style="text-align: center;">
+                                                    <lightning-button-icon icon-name="utility:edit" alternative-text="Edit"
+                                                            title="Edit" variant="border-filled" class="slds-m-right_xx-small"
+                                                            data-id={product.Id} data-name={product.Id} onclick={handleEditRow} disabled={enableDisabled}>
+                                                        </lightning-button-icon>
+                                                    </td>
+                                        </template>
+                                    
+                                        <!-- <template if:true={hideNext}>
+                                            <template if:false={isDisbursementStage}>
+                                            <td class="tdBorderHeader" style="text-align: center;">
+                                                <lightning-button-icon icon-name="utility:edit" alternative-text="Edit"
+                                                    title="Edit" variant="border-filled" class="slds-m-right_xx-small"
+                                                    data-id={product.Id} data-name={product.Id} onclick={handleEdit}>
+                                                </lightning-button-icon>
+                                            </td>
+                                            </template>
+                                        </template> -->
+                                        
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    
+        </template>
+    </template>
+</template>

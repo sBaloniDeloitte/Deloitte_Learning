@@ -1,0 +1,286 @@
+/* _______________This Code was generated using GenAI tool : Codify, Please check for accuracy_______________ */
+@import "c/cssLibrary";
+
+/* ── Dark theme tokens (matching "Sourcing Branch" reference design) ────── */
+:host {
+    --disp-bg-page:      #0d0d17;
+    --disp-card-bg:      #171728;
+    --disp-card-border:  rgba(139, 92, 246, 0.18);
+    --disp-accent-start: #7c3aed;
+    --disp-accent-end:   #a855f7;
+    --disp-text-title:   #ffffff;
+    --disp-text-sub:     #9ca3af;
+    --disp-radius-lg:    16px;
+
+    display: block;
+    width: 100%;
+    background: var(--disp-card-bg) !important;
+    border-radius: var(--disp-radius-lg);
+    padding: 1rem;
+    color: var(--disp-text-title);
+}
+
+/* ── Intro paragraph text ────────────────────────────────────────────── */
+p {
+    color: var(--disp-text-title) !important;
+}
+
+/* ── Force all labels (combobox / input / textarea) to white, and match
+   the input field's own background/border/text to the dark theme ────────
+   lightning-input / lightning-combobox / lightning-textarea render their
+   label markup inside NATIVE shadow DOM, so descendant selectors like
+   ".slds-form-element__label" or "label" (kept below as a harmless
+   no-op fallback) can never reach it. CSS custom properties are the
+   only thing that legitimately crosses that boundary — so every label
+   styling hook (current SLDS 2 name + legacy LWC name + per-component
+   variants) is set here to guarantee the required-field labels
+   ("Disposition", "Sub-Disposition", "Remarks") render pure white
+   instead of the default SLDS gray/black, for clear contrast against
+   the dark card background. ── */
+lightning-combobox,
+lightning-input,
+lightning-textarea {
+    --slds-c-input-label-color: #ffffff !important;
+    --sds-c-input-label-color: #ffffff !important;
+    --slds-c-combobox-label-color: #ffffff !important;
+    --sds-c-combobox-label-color: #ffffff !important;
+    --slds-c-textarea-label-color: #ffffff !important;
+    --sds-c-textarea-label-color: #ffffff !important;
+    --lwc-colorTextLabel: #ffffff !important;
+    --lwc-labelColorForeground: #ffffff !important;
+    --lwc-formLabelTextColor: #ffffff !important;
+
+    --slds-c-input-color-background: var(--disp-card-bg) !important;
+    --sds-c-input-color-background: var(--disp-card-bg) !important;
+    --lwc-colorBackgroundInput: var(--disp-card-bg) !important;
+
+    --slds-c-input-text-color: var(--disp-text-title) !important;
+    --sds-c-input-text-color: var(--disp-text-title) !important;
+    --lwc-colorTextInput: var(--disp-text-title) !important;
+
+    --slds-c-input-color-border: var(--disp-card-border) !important;
+    --sds-c-input-color-border: var(--disp-card-border) !important;
+    --lwc-colorBorderInput: var(--disp-card-border) !important;
+
+    display: block;
+    margin-bottom: 0.75rem;
+}
+
+/* ── Light-DOM fallback (no-op for the base components' internal
+   labels, kept for any light-DOM label markup rendered directly in
+   this component's own template) ──────────────────────────────────── */
+.slds-form-element__label,
+label {
+    color: #ffffff !important;
+    font-weight: 600;
+}
+
+/* ── Required-field asterisk — brighten to the theme accent so it
+   reads clearly as an indicator against the dark background too ──── */
+.slds-required,
+abbr.slds-required {
+    color: var(--disp-accent-end) !important;
+}
+
+.remarks-textarea {
+    /* ____GenAI: Remarks textarea was rendering with the browser/SLDS default
+       white background because lightning-textarea reads the "-textarea-"
+       style hooks, while the shared rule above only set the "-input-"/
+       "-combobox-" hooks used by the Disposition/Sub-Disposition fields.
+       Reusing the SAME theme tokens (--disp-card-bg / --disp-text-title /
+       --disp-card-border) as those fields - instead of the old unused bright
+       blue (#2196D3) placeholder values - makes the Remarks field match the
+       other fields' color exactly. Color only; no field/label/required
+       logic changed____ */
+    --slds-c-textarea-color-background: var(--disp-card-bg) !important;
+    --slds-c-textarea-text-color: var(--disp-text-title) !important;
+    --slds-c-textarea-placeholder-text-color: var(--disp-text-sub) !important;
+    --slds-c-textarea-color-border: var(--disp-card-border) !important;
+
+    --sds-c-textarea-color-background: var(--disp-card-bg) !important;
+    --sds-c-textarea-text-color: var(--disp-text-title) !important;
+    --sds-c-textarea-placeholder-text-color: var(--disp-text-sub) !important;
+    --sds-c-textarea-color-border: var(--disp-card-border) !important;
+
+    /* ____GenAI: the background reverted to white specifically on focus/typing
+       (cursor placed inside the field) - the base-value hooks above only cover
+       the resting state; the base component reads a SEPARATE "-focus" hook
+       for its background once the field is active, which falls back to the
+       browser/SLDS default white when unset. Pointing that focus hook at the
+       SAME theme background (plus a themed focus ring instead of the default
+       blue outline) keeps the field's color unchanged while typing. Color/
+       focus-ring only - no field/label/required/validation logic touched____ */
+    --slds-c-textarea-color-background-focus: var(--disp-card-bg) !important;
+    --sds-c-textarea-color-background-focus: var(--disp-card-bg) !important;
+    --slds-c-textarea-text-color-focus: var(--disp-text-title) !important;
+    --sds-c-textarea-text-color-focus: var(--disp-text-title) !important;
+    --slds-c-textarea-color-border-focus: var(--disp-accent-end) !important;
+    --sds-c-textarea-color-border-focus: var(--disp-accent-end) !important;
+    --slds-c-textarea-shadow-focus: 0 0 0 1px var(--disp-accent-end) !important;
+    --sds-c-textarea-shadow-focus: 0 0 0 1px var(--disp-accent-end) !important;
+
+    --lwc-colorBackgroundInputActive: var(--disp-card-bg) !important;
+    --lwc-colorBackgroundInputFocus: var(--disp-card-bg) !important;
+    --lwc-colorBorderInputActive: var(--disp-accent-end) !important;
+    --lwc-shadowButtonFocus: 0 0 0 1px var(--disp-accent-end) !important;
+}
+/* =========================================================
+   CUSTOM WHITE FIELD LABELS
+   ========================================================= */
+
+.field-wrapper {
+    width: 100%;
+    margin-bottom: 0.75rem;
+}
+
+.custom-field-label {
+    display: block;
+    color: #ffffff !important;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 0.25rem;
+}
+
+.required-star {
+    color: #ff3b30 !important;
+    margin-right: 2px;
+}
+
+/* ================================
+   CUSTOM DARK COMBOBOX
+   ================================ */
+
+.field-wrapper {
+    width: 100%;
+    margin-bottom: 0.75rem;
+    position: relative;
+}
+
+.custom-field-label {
+    display: block;
+    color: #ffffff !important;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 0.25rem;
+}
+
+.required-star {
+    color: #ff3b30 !important;
+    margin-right: 2px;
+}
+
+/* Combobox wrapper */
+.custom-combobox {
+    position: relative;
+    width: 100%;
+}
+
+/* Main input/button */
+.custom-combobox-button {
+    width: 100%;
+    height: 2.5rem;
+    padding: 0 0.75rem;
+    border: 1px solid #33455e;
+    border-radius: 0.25rem;
+    background: #16283f;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    cursor: pointer;
+    font-size: 0.875rem;
+    box-sizing: border-box;
+}
+
+.custom-combobox-button:hover,
+.custom-combobox-button:focus {
+    background: #16283f;
+    border-color: #7c3aed;
+    outline: none;
+    box-shadow: 0 0 0 1px #7c3aed;
+}
+
+/* Placeholder */
+.dropdown-placeholder {
+    color: #9ca3af !important;
+}
+
+/* Selected value */
+.dropdown-selected-text {
+    color: #ffffff !important;
+}
+
+/* Arrow */
+.dropdown-arrow {
+    color: #9ca3af;
+    font-size: 1rem;
+    line-height: 1;
+}
+
+/* Dropdown */
+.custom-dropdown {
+    position: absolute;
+    top: calc(100% + 2px);
+    left: 0;
+    right: 0;
+    z-index: 99999;
+
+    background: #16283f !important;
+    border: 1px solid #33455e;
+    border-radius: 0.25rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.45);
+
+    max-height: 180px;
+    overflow-y: auto;
+}
+
+/* Options */
+.custom-dropdown-option {
+    min-height: 2.5rem;
+    padding: 0.65rem 0.75rem;
+
+    display: flex;
+    align-items: center;
+
+    background: #16283f !important;
+    color: #ffffff !important;
+
+    font-size: 0.875rem;
+    cursor: pointer;
+    box-sizing: border-box;
+}
+
+/* Hover */
+.custom-dropdown-option:hover {
+    background: #1f3550 !important;
+    color: #ffffff !important;
+}
+
+/* Selected option */
+.custom-dropdown-option.selected,
+.custom-dropdown-option:focus {
+    background: #1f3550 !important;
+    color: #ffffff !important;
+}
+
+/* Scrollbar */
+.custom-dropdown::-webkit-scrollbar {
+    width: 6px;
+}
+
+.custom-dropdown::-webkit-scrollbar-track {
+    background: #0f1d2e;
+}
+
+.custom-dropdown::-webkit-scrollbar-thumb {
+    background: #33455e;
+    border-radius: 4px;
+}
+
+.custom-dropdown::-webkit-scrollbar-thumb:hover {
+    background: #4b6080;
+}
+/* __________________________GenAI: Generated code ends here______________________________ */

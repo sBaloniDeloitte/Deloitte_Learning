@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deviation Module - Functionality Overview</title>
+<style>
+:root{--blue:#0b5cab;--light:#eaf3fc;--grey:#f4f6f9;--border:#d0d7e2;--warn:#fff4e5;--bad:#fdecea}
+*{box-sizing:border-box}
+body{font-family:Segoe UI,Arial,sans-serif;margin:0;color:#1d2b3a;background:#fff;line-height:1.5}
+header{background:var(--blue);color:#fff;padding:24px 40px}
+header h1{margin:0;font-size:26px}
+nav{background:var(--grey);border-bottom:1px solid var(--border);padding:10px 40px;position:sticky;top:0;z-index:5}
+nav a{margin-right:18px;color:var(--blue);text-decoration:none;font-weight:600;font-size:14px}
+main{padding:20px 40px;max-width:1200px;margin:auto}
+h2{border-bottom:2px solid var(--blue);padding-bottom:6px;margin-top:40px;color:var(--blue)}
+h3{margin-top:24px}
+table{border-collapse:collapse;width:100%;margin:12px 0;font-size:14px}
+th{background:var(--blue);color:#fff;text-align:left;padding:8px}
+td{border:1px solid var(--border);padding:7px;vertical-align:top}
+tr:nth-child(even) td{background:var(--grey)}
+code{background:#eef1f5;padding:1px 5px;border-radius:3px;font-size:13px}
+.box{background:var(--light);border-left:4px solid var(--blue);padding:10px 14px;margin:12px 0}
+.warn{background:var(--warn);border-left:4px solid #f5a623;padding:10px 14px;margin:12px 0}
+.flow{display:flex;flex-wrap:wrap;align-items:stretch;gap:6px;margin:14px 0}
+.step{background:var(--light);border:1px solid var(--blue);border-radius:6px;padding:8px 10px;width:170px;font-size:13px}
+.step b{display:block;color:var(--blue)}
+.arrow{align-self:center;font-size:20px;color:var(--blue)}
+.er{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:14px;margin:14px 0}
+.ent{border:2px solid var(--blue);border-radius:6px;background:#fff}
+.ent h4{margin:0;background:var(--blue);color:#fff;padding:6px 10px;font-size:14px}
+.ent.master h4{background:#2e7d32}
+.ent.cfg h4{background:#6a1b9a}
+.ent ul{margin:0;padding:8px 10px 8px 26px;font-size:13px}
+.tag{display:inline-block;font-size:11px;padding:1px 6px;border-radius:10px;background:#e0e0e0;margin-left:4px}
+details{border:1px solid var(--border);border-radius:6px;margin:8px 0;padding:6px 12px}
+summary{cursor:pointer;font-weight:600}
+</style>
+</head>
+<body>
+<header>
+<h1>Deviation Module - Functionality Overview</h1>
+<div>Opportunity (Loan Application) &rarr; Add / View / Approve Deviations &nbsp;|&nbsp; Components: parentDeviationCmp, deviationRecordsCmp, search-lookup &nbsp;|&nbsp; Apex: DeviationRecordPageController, Utility, Utility_V1</div>
+</header>
+<nav>
+<a href="#overview">Overview</a><a href="#addflow">Add Flow</a><a href="#visibility">Button Rules</a><a href="#approver">Approver Logic</a><a href="#apexmap">LWC &rarr; Apex Map</a><a href="#objects">Object Relationships</a><a href="#master">Master Data</a><a href="#observations">Observations</a>
+</nav>
+<main>
+
+<h2 id="overview">1. Overview</h2>
+<p>The <code>parentDeviationCmp</code> LWC sits on the Opportunity (Loan Application) record page. It lets a Credit/Sales user raise <b>manual deviations</b> against a Deviation master, tag them to a <b>product</b> and to the <b>applicants</b> they apply to, and capture <b>mitigants</b>. Automatic deviations are generated elsewhere and are shown (read-only) in the child list.</p>
+<table>
+<tr><th>Piece</th><th>Role</th></tr>
+<tr><td><code>parentDeviationCmp</code> (LWC)</td><td>Host: Add Deviation / Refresh buttons, "Add Deviations" modal, "New Deviation Conditions" table of just-created records.</td></tr>
+<tr><td><code>c-deviation-records-cmp</code></td><td>Child list of all deviations on the loan (data from <code>getDevationsDetails</code>); receives <code>record-id</code> and <code>has-psv-or-disbursal-stage</code>. Parent calls its <code>changeMessage()</code> and <code>handleValueChange()</code> to refresh.</td></tr>
+<tr><td><code>c-search-lookup</code></td><td>Non-HL path: searchable lookup on <code>Deviation_Mitigant_Master__c</code> (fields Id, Description__c, Deviation_Number__c; filter RecordType = Deviation, Product = Home Loan).</td></tr>
+<tr><td><code>DeviationRecordPageController</code></td><td>All deviation Apex: list, create, delete, duplicate check, applicants, mitigants, approval status.</td></tr>
+<tr><td><code>Utility</code> / <code>Utility_V1</code></td><td>Stage, profile, editability (<code>getLoanStage</code>, <code>getCurrentUserProfileName</code>, <code>getComponentEditability</code>) and product detection (<code>getProductDetails</code>).</td></tr>
+</table>
+<div class="box"><b>HL vs non-HL:</b> on load <code>Utility_V1.getProductDetails</code> returns <code>isHLRelated</code> (true when the parent Product2 is Home Loan, Flexi Loan or Non Home Loan, or the split-parent loan is Home Loan). HL users first pick a <b>Product</b> (combobox from <code>getProduct</code>) and see a searchable table of masters (<code>getDeviationMasterList</code>). Others use the <code>c-search-lookup</code>.</div>
+
+<h2 id="addflow">2. Add Deviation Flow</h2>
+<div class="flow">
+<div class="step"><b>1. Open</b>Click "Add Deviation" &rarr; modal opens</div><div class="arrow">&rarr;</div>
+<div class="step"><b>2. Product (HL)</b><code>getProduct</code> fills combobox (Product2 on loan, RT = Product)</div><div class="arrow">&rarr;</div>
+<div class="step"><b>3. Pick deviation</b>Search master table or lookup</div><div class="arrow">&rarr;</div>
+<div class="step"><b>4. Duplicate check</b><code>checkSameDeviationadded</code> (loan + master + product)</div><div class="arrow">&rarr;</div>
+<div class="step"><b>5. Applicable for</b><code>getApplicantsByLoanId</code>; also <code>fetchmitigants</code></div><div class="arrow">&rarr;</div>
+<div class="step"><b>6. Mitigants</b>Tick applicants, type mitigants (required)</div><div class="arrow">&rarr;</div>
+<div class="step"><b>7. Add</b><code>createDeviationRecord</code></div><div class="arrow">&rarr;</div>
+<div class="step"><b>8. Refresh</b><code>fetchCurrScreenDev</code> shows table; child list refreshed</div>
+</div>
+<ul>
+<li>If the master's <code>Deviation_Applicable_For__c = 'Loan'</code>, the only option is "Loan Application" and the applicant checkboxes are skipped (mitigant box shown directly).</li>
+<li>Otherwise one option per <code>Application_Applicant__c</code>; label = Company (Non-Individual) or Applicant Name, plus "(Applicant Type)".</li>
+<li>Duplicate found &rarr; toast "There is an existing deviation record created with this condition..." and selection is reset.</li>
+<li>Save validates: product selected, mitigants not blank, at least one applicant ticked; otherwise a toast is shown.</li>
+<li>On create, the record gets: <code>Deviation_Master__c</code>, <code>Deviation_Code__c</code> (master number), <code>Deviation__c</code> (master description), <code>Approving_Authority__c</code> (from master), <code>Deviation_Category__c = 'Manual'</code>, <code>Deviation_Applicable_For__c</code> (comma-joined applicants), <code>HL_Product__c</code>, <code>Mitigants__c</code>, <code>Remarks__c</code>.</li>
+<li>In the "New Deviation Conditions" table the user can open the record (new tab) or delete it (<code>deleteDeviation</code>).</li>
+</ul>
+
+<h2 id="visibility">3. Who Sees What (Button / Edit Rules)</h2>
+<table>
+<tr><th>Rule</th><th>Where</th><th>Effect</th></tr>
+<tr><td>Stage = PSV or Disbursement</td><td><code>fetchLoanStage</code> &rarr; <code>hasPsvOrDisbursalStage</code></td><td>Add Deviation and Refresh hidden; passed to child.</td></tr>
+<tr><td>Stage = Credit Underwriting and user profile = Sales</td><td><code>fetchLoanStage</code> &rarr; <code>isDisabled</code></td><td>Add Deviation hidden. Child also disables mitigant edit (<code>disableMitigants</code>).</td></tr>
+<tr><td>Stage = Credit Underwriting</td><td>Opportunity wire</td><td>Buttons shown only for System Administrator; Credit Officer / Credit Manager when Sub stage = "Credit Processing Verification"; Credit Manager when Sub stage = "Credit in-progress". Others hidden.</td></tr>
+<tr><td>Sub stage = Disbursed, or Approval Status in Hard Rejected / Soft Rejected 1 / Soft Rejected 2</td><td>Opportunity wire</td><td><code>hideButton = true</code>.</td></tr>
+<tr><td>Component editability</td><td><code>Utility.getComponentEditability</code></td><td>Returns true (hide) when the loan's Sub stage is in label <code>Disabled_Sub_Stages</code> (semicolon list).</td></tr>
+<tr><td>Delete button (child list)</td><td><code>getDevationsDetails</code></td><td><code>isDelete=false</code> for Automatic; <code>hideDeleteButton</code> when Rejected; <code>showDeleteButtonToManualOwner</code> when Credit Underwriting + Manual + Pending + loan owner = current user.</td></tr>
+<tr><td>Mitigants editable</td><td><code>getDevationsDetails</code></td><td>Disabled if (Sales profile and Credit Underwriting) or Approval Status = Approved.</td></tr>
+</table>
+
+<h2 id="approver">4. Approver Logic and Approval Status</h2>
+<ol>
+<li><code>getDeviationApprover</code> reads the loan's <code>Branch_Master__c</code> (Account).</li>
+<li>It finds the current user's <code>AccountTeamMember</code> on that branch with role <b>Credit</b>; <code>Level__c</code> is converted to an integer (digits only, e.g. "L2" &rarr; 2).</li>
+<li>For each deviation, the master-derived <code>Approving_Authority__c</code> is converted the same way. <b>showApprovalButton = true</b> only when the user's level &gt;= required level; false if either is missing.</li>
+<li><code>changeApprovalStatus</code> updates <code>Approval_Status__c</code> only if <code>Mitigants__c</code> is filled, else returns "Mitigants is required to be updated.".</li>
+<li>Automatic deviations show Approval Authority and Status as "-".</li>
+<li>Loan-level approval (<code>HL_LoanApplicationApprovalController.checkIfAllDeviationsApproved</code>) uses these deviations before final approval.</li>
+</ol>
+
+<h2 id="apexmap">5. LWC &rarr; Apex Method Map</h2>
+<table>
+<tr><th>LWC call</th><th>Apex method</th><th>Purpose</th></tr>
+<tr><td>fetchProducDetails</td><td><code>Utility_V1.getProductDetails(inputMap{oppId})</code></td><td>isHLRelated, product info</td></tr>
+<tr><td>fetchLoanStage</td><td><code>Utility.getLoanStage</code></td><td>Stage name</td></tr>
+<tr><td>fetchLoanStage</td><td><code>Utility.getCurrentUserProfileName</code></td><td>Profile of user</td></tr>
+<tr><td>checkEditability</td><td><code>Utility.getComponentEditability</code></td><td>Disable by sub stage</td></tr>
+<tr><td>getProductOptions</td><td><code>DeviationRecordPageController.getProduct</code></td><td>Map Product name &rarr; Id</td></tr>
+<tr><td>getDeviationList / search</td><td><code>getDeviationMasterList(searchText)</code></td><td>Masters (RT Deviation, Home Loan)</td></tr>
+<tr><td>select deviation</td><td><code>checkSameDeviationadded</code></td><td>Duplicate check</td></tr>
+<tr><td>select deviation</td><td><code>getApplicantsByLoanId</code></td><td>Applicable-for options</td></tr>
+<tr><td>select deviation</td><td><code>fetchmitigants</code></td><td>Mitigant masters (child masters via <code>Deviation__c</code>)</td></tr>
+<tr><td>handleSaveManualDeviation</td><td><code>createDeviationRecord</code></td><td>Insert Application_Deviation__c</td></tr>
+<tr><td>fetchRecords</td><td><code>fetchCurrScreenDev(recIds)</code></td><td>Rows created in this session</td></tr>
+<tr><td>deleteDeviation</td><td><code>deleteDeviation(devId)</code></td><td>Delete record</td></tr>
+<tr><td>child list (deviationRecordsCmp)</td><td><code>getDevationsDetails(recordId)</code>, <code>updateRemarksOnDeviation</code>, <code>changeApprovalStatus</code></td><td>List, edit remarks/mitigants, approve/reject</td></tr>
+<tr><td>(not wired / unused)</td><td><code>removeMitigants</code>, <code>fetchsameCurrScreenDev</code></td><td>Present in Apex; <code>removeMitigants</code> not imported in the LWC</td></tr>
+</table>
+
+<h2 id="objects">6. Object Relationships</h2>
+<div class="box">Derived from the pasted code. The object/field metadata is not present in <code>force-app/main/default/objects</code> in this workspace, so API names were not cross-checked against metadata files.</div>
+<div class="er">
+<div class="ent"><h4>Opportunity (Loan Application)</h4><ul>
+<li>StageName, Sub_stage__c, Approval_Status__c, OwnerId</li>
+<li>Product__c, HL_AHL_Vertical__c</li>
+<li>Branch_Master__c &rarr; Account</li>
+<li>Split_Parent_Loan_Application__c, Parent_Loan_Application__c</li></ul></div>
+<div class="ent"><h4>Application_Deviation__c <span class="tag">child of Opportunity</span></h4><ul>
+<li>Loan_Application__c &rarr; Opportunity</li>
+<li>Deviation_Master__c &rarr; Deviation_Mitigant_Master__c</li>
+<li>Applicant__c &rarr; Application_Applicant__c</li>
+<li>HL_Product__c &rarr; Product2</li>
+<li>Deviation_Code__c, Deviation__c, Deviation_Category__c (Manual/Automatic)</li>
+<li>Deviation_Applicable_For__c, Mitigants__c, Remarks__c</li>
+<li>Approving_Authority__c / _FICO__c, Approval_Status__c, Deviation_Stage__c</li></ul></div>
+<div class="ent"><h4>Application_Applicant__c <span class="tag">child of Opportunity</span></h4><ul>
+<li>Loan_Application__c &rarr; Opportunity</li>
+<li>Applicant_Type__c (Primary / Co / Guarantor...)</li>
+<li>Customer_Type__c, Company__c, Applicant_Name__c</li></ul></div>
+<div class="ent"><h4>Product2 <span class="tag">child of Opportunity</span></h4><ul>
+<li>Loan_Application__c &rarr; Opportunity</li>
+<li>Record types: Product, Sub Product, Transaction Type, Total/Hybrid Tenure</li>
+<li>Product_Type__c (Parent), Product__c (sub &rarr; product)</li></ul></div>
+<div class="ent"><h4>Account (Branch)</h4><ul>
+<li>Referenced by Opportunity.Branch_Master__c</li>
+<li>AccountTeamMember: role Credit, Level__c</li></ul></div>
+<div class="ent master"><h4>Deviation_Mitigant_Master__c <span class="tag">master</span></h4><ul>
+<li>Record types: Deviation, Mitigant</li>
+<li>Name, Description__c, Deviation_Number__c</li>
+<li>Product_Name__c (e.g. Home Loan)</li>
+<li>Deviation_Applicable_For__c (Loan / applicant-level)</li>
+<li>Approving_Authority__c</li>
+<li>Deviation__c &rarr; self lookup (mitigant &rarr; deviation)</li></ul></div>
+</div>
+<pre style="background:#f4f6f9;padding:12px;border:1px solid #d0d7e2;overflow:auto">
+Opportunity (Loan Application)
+ |-- Application_Deviation__c  (Loan_Application__c)
+ |        |-- Deviation_Mitigant_Master__c  (Deviation_Master__c)   [master data]
+ |        |-- Application_Applicant__c      (Applicant__c)
+ |        '-- Product2                      (HL_Product__c)
+ |-- Application_Applicant__c  (Loan_Application__c)
+ |-- Product2                  (Loan_Application__c)
+ '-- Account (Branch_Master__c) -- AccountTeamMember (role Credit, Level__c)
+
+Deviation_Mitigant_Master__c (RT Mitigant) --Deviation__c--> Deviation_Mitigant_Master__c (RT Deviation)
+</pre>
+
+<h2 id="master">7. Master / Configuration Data Tagged to the Opportunity</h2>
+<table>
+<tr><th>Data</th><th>Type</th><th>How it links to the Opportunity</th><th>Used for</th></tr>
+<tr><td>Deviation_Mitigant_Master__c (RT Deviation)</td><td>Master data</td><td>Indirect: copied into Application_Deviation__c (Deviation_Master__c, Code, Description, Approving Authority) when added to the loan</td><td>Deviation catalogue; filtered to Product = Home Loan</td></tr>
+<tr><td>Deviation_Mitigant_Master__c (RT Mitigant)</td><td>Master data</td><td>Child of a deviation master via Deviation__c</td><td>Suggested mitigants (<code>fetchmitigants</code>)</td></tr>
+<tr><td>Product2 (RT Product / Sub Product / Transaction Type)</td><td>Loan-level product data</td><td>Direct lookup Loan_Application__c; Name must match Opportunity.Product__c for the parent</td><td>HL detection, product selection on deviation</td></tr>
+<tr><td>Branch (Account) + AccountTeamMember</td><td>Org master</td><td>Opportunity.Branch_Master__c</td><td>Credit approver level</td></tr>
+<tr><td>Application_Applicant__c</td><td>Transactional</td><td>Loan_Application__c</td><td>"Applicable for" selection</td></tr>
+<tr><td>Constants__mdt</td><td>Custom metadata</td><td>None (global); Home_Loan label</td><td>HL product name comparison</td></tr>
+<tr><td>Labels: Profile_Level_Disablity, Sub_Stage_Level_Disability, Disabled_Sub_Stages</td><td>Custom labels</td><td>None (compared with profile / Opportunity.Sub_stage__c)</td><td>Disable add/edit by profile or sub stage</td></tr>
+</table>
+
+<h2 id="observations">8. Observations from the Code</h2>
+<div class="warn"><ul>
+<li><b>Parameter mismatch:</b> <code>handleSave</code> calls <code>createDeviationRecord</code> with loanId, deviationId, deviationName, mitigants, deviationCategory, productId, but the Apex signature is (sanctionMaster, recordId, remark, appIds, mitigants, productId). <code>handleSave</code> appears unused; <code>handleSaveManualDeviation</code> matches.</li>
+<li><b>Broken method:</b> <code>deleteMitigants</code> uses <code>removeMitigants</code> (not imported) and an undefined <code>Id</code> variable.</li>
+<li><b>SOQL injection risk:</b> <code>getDeviationMasterList</code> concatenates <code>searchText</code> into dynamic SOQL without <code>String.escapeSingleQuotes</code> or bind variables.</li>
+<li><b>Single-applicant selection bug:</b> when only "Loan Application" exists, <code>selectedValue</code> is set to a string, not an array, then <code>.length</code> and <code>String.join</code> behave on a string/list mismatch.</li>
+<li><b>Wire ordering:</b> the Opportunity wire reads <code>userProfile</code>, which is populated by another wire and may still be empty on first run.</li>
+<li><b>Editability:</b> <code>getComponentEditability</code> ignores the <code>component</code> and profile arguments and only checks the sub stage label.</li>
+<li><b>Hard-coded values:</b> profile names, stage names and sub stages are literals in the LWC and Apex.</li>
+<li><b>Fetch with null:</b> <code>checkSameDeviationadded</code> and <code>getApplicantsByLoanId</code> have no try/catch; <code>createDeviationRecord</code> is not wrapped in AuraHandledException.</li>
+<li><b>Duplicate code:</b> <code>handleDeviationSelction</code> and <code>handleDeviationSelection</code> repeat the same logic; many <code>console.log</code> calls remain.</li>
+</ul></div>
+
+<p style="color:#667;font-size:12px;margin-top:40px">Generated from the supplied parentDeviationCmp (HTML/JS), DeviationRecordPageController, Utility and Utility_V1 sources. Child component deviationRecordsCmp was not provided; its behavior is inferred from Apex and the parent.</p>
+
+</main>
+</body>
+</html>

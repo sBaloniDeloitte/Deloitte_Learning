@@ -49,3 +49,9 @@ $RECYCLE.BIN/
 
 # Codify AI plans (auto-generated, do not commit)
 .codify/
+
+# --- added by sf-cicd-init: keep local tool state & secrets out of git ---
+.sf-cicd/
+GitHubActionsCI.crt
+GitHubActionsCI.key
+delta/

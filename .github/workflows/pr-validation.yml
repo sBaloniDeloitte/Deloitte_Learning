@@ -2,7 +2,7 @@ name: PR Validation
 on:
   pull_request:
     types: [opened, synchronize, reopened]
-    branches: [uat, main]
+    branches: [UAT, main]
     paths: ["force-app/**", "manifest/**", ".github/**", "package.json"]
 
 concurrency:
@@ -18,7 +18,7 @@ jobs:
       - id: map
         run: |
           case "${{ github.base_ref }}" in
-            uat) echo "environment=uat" >> "$GITHUB_OUTPUT" ;;
+            UAT) echo "environment=UAT" >> "$GITHUB_OUTPUT" ;;
             main) echo "environment=production" >> "$GITHUB_OUTPUT" ;;
           esac
 
